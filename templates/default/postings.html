@@ -1,0 +1,57 @@
+<a name="top"></a>
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
+  <tr>
+    <td>
+      <table width="100%" border="0" cellspacing="1" cellpadding="3">
+        <tr class="color4">
+          <td width="15%">$style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>Autor</strong></span>$style[smallfontend]</td>
+          <td width="90%">$style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>Thread  - Seiten: $pages_nav</strong></span>$style[smallfontend]</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+$POSTINGROWS
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
+  <tr>
+    <td>
+      <table width="100%" border="0" cellspacing="1" cellpadding="3">
+        <tr class="color4">
+          <td>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td>$style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>Seiten: $pages_nav &nbsp;&nbsp;&nbsp; [ <a class="hefo" href="_('board.php?boardid=$board[boardid]$linkappend')">$board[boardname]</a> ]</strong></span>$style[smallfontend]</td>
+                <td>$style[smallfont]&nbsp;$style[smallfontend]</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<br />
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr> 
+    <td valign="top"><form method="post" action="_('board.php')" name="jumpform">$JUMP_MENU</form></td>
+    <td valign="top" align="right"><form name="theform" method="post" action="_('threadops.php')">
+      <input type="hidden" name="thread[threadid]" value="$thread[threadid]">
+      <select class="tbselect" name="action" onChange="Submit.click()">
+	  <!--
+        <option value="">Optionen:</option>
+        <option value="markthread">&nbsp;&nbsp;Markieren</option>
+        <option value=""></option> -->
+        <option value="">Admin:</option>
+        <option value="close">&nbsp;&nbsp;Schlie&szlig;en/&Ouml;ffnen</option>
+        <option value="delete">&nbsp;&nbsp;L&ouml;schen</option>
+        <option value="move">&nbsp;&nbsp;Verschieben</option>
+        <option value="merge">&nbsp;&nbsp;Verschmelzen</option>
+        <option value="top">&nbsp;&nbsp;Festmachen/L&ouml;sen</option>
+      </select>
+      <input class="tbbutton" type="submit" name="Submit" value="Go >>">
+    </form></td>
+  </tr>
+</table>
+
+$REPLYFORM

@@ -1,0 +1,44 @@
+<?php
+/* $Id: thwb_lastvisitedfix.update 87 2004-11-07 00:19:15Z td $ */
+
+class CUpdate
+{
+	var		$UpdaterVer		= 1.0;
+	var		$OldVersion		= '2.7';
+	var		$NewVersion		= '2.7';
+	var		$Prefix			= '';
+	var		$Error			= '';
+	var		$Author			= 'ThWboard Development Team';
+	var		$Date			= '09.03.2002';
+	var		$Notes			= 'Dieses Update bitte nur durchf&#xFC;hren, falls die Tabelle `lastvisited` fehlt!';
+	
+	function AllowUpdate()
+	{
+		// sollte immer ausfuehrbar sein!
+		return 1;
+	}
+	
+	function SetError($errmsg)
+	{
+		$this->Error = $errmsg;
+	}
+	
+	function GetError()
+	{
+		return $this->Error;
+	}
+
+	function RunUpdate()
+	{
+		thwb_query("CREATE TABLE `$this->Prefix"."lastvisited` (
+  `boardid` int(10) unsigned NOT NULL default '0',
+  `userid` int(10) unsigned NOT NULL default '0',
+  `lastvisitedtime` int(10) unsigned NOT NULL default '0',
+  KEY `useridboardid` (`userid`,`boardid`)
+) TYPE=MyISAM;");
+
+		return 0;
+	}	
+}
+
+?>

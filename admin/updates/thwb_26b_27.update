@@ -1,0 +1,181 @@
+<?php
+/* $Id: thwb_26b_27.update 87 2004-11-07 00:19:15Z td $ */
+
+class CUpdate
+{
+	var		$UpdaterVer		= 1.0;
+	var		$OldVersion		= '2.6b';
+	var		$NewVersion		= '2.7';
+	var		$Prefix			= '';
+	var		$Error			= '';
+	var		$Author			= 'ThWboard Development Team';
+	var		$Date			= '09.03.2002';
+	var		$Notes			= '';
+	
+	function AllowUpdate()
+	{
+		// hack code for 2.6b, because we didnt store the version until 2.7
+		return 1;
+	}
+	
+	function SetError($errmsg)
+	{
+		$this->Error = $errmsg;
+	}
+	
+	function GetError()
+	{
+		return $this->Error;
+	}
+
+	function MassExec($queries)
+	{
+		$a_query = explode(';', $queries);
+		while( list(, $query) = each($a_query) )
+		{
+			if( trim($query) )
+			{
+				thwb_query(trim($query));
+			}
+		}
+	}
+	
+	function UpdateConf()
+	{
+		include('../inc/config.inc.php');
+		
+		$fp = fopen('../inc/config.inc.php', 'w');
+		fwrite($fp, '<?php
+$mysql_h    = \''.$mysql_h.'\';
+$mysql_u    = \''.$mysql_u.'\';
+$mysql_p    = \''.$mysql_p.'\';
+$mysql_db   = \''.$mysql_db.'\';
+$pref       = \''.$this->Prefix.'\';
+$inst_lock  = 1;
+?>');
+		fclose($fp);
+	}
+	
+	function RunUpdate()
+	{
+		// alte conf datei muss entfernt werden..
+		$this->UpdateConf();
+		
+		// update queries hier ..
+		thwb_query("CREATE TABLE $this->Prefix"."registry (
+  keyname varchar(255) NOT NULL default '',
+  keyvalue mediumtext NOT NULL,
+  keytype enum('string','integer','boolean','array') NOT NULL default 'string',
+  keydescription varchar(32) NOT NULL default '',
+  keydetails varchar(255) NOT NULL default '',
+  keygroupid int(10) unsigned NOT NULL default '0',
+  keydisplayorder int(11) unsigned NOT NULL default '0',
+  PRIMARY KEY  (keyname)
+) TYPE=MyISAM;");
+
+		thwb_query("CREATE TABLE $this->Prefix"."registrygroup (
+  keygroupid int(10) unsigned NOT NULL auto_increment,
+  keygroupname varchar(64) NOT NULL default '',
+  keygroupdisplayorder int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (keygroupid)
+) TYPE=MyISAM;");
+
+		thwb_query("CREATE TABLE $this->Prefix"."calendar (
+  eventid int(11) NOT NULL auto_increment,
+  eventtime date default NULL,
+  eventsubject varchar(255) default NULL,
+  eventtext text,
+  eventactive smallint(1) NOT NULL default '1',
+  PRIMARY KEY  (eventid)
+) TYPE=MyISAM;");
+
+		thwb_query("CREATE TABLE $this->Prefix"."group (
+  groupid int(10) unsigned NOT NULL auto_increment,
+  name varchar(128) NOT NULL default '',
+  accessmask int(10) unsigned NOT NULL default '0',
+  nodelete tinyint(1) unsigned NOT NULL default '0',
+  PRIMARY KEY  (groupid)
+) TYPE=MyISAM;");
+
+		thwb_query("CREATE TABLE $this->Prefix"."groupboard (
+  boardid int(10) unsigned NOT NULL default '0',
+  groupid int(10) unsigned NOT NULL default '0',
+  accessmask int(10) unsigned NOT NULL default '0',
+  KEY boardid (boardid,groupid)
+) TYPE=MyISAM;");
+
+		thwb_query("DROP TABLE $this->Prefix"."moderator");
+		thwb_query("DROP TABLE $this->Prefix"."boardaccess");
+
+		thwb_query("ALTER TABLE $this->Prefix"."user ADD groupid INT UNSIGNED not null");
+		thwb_query("ALTER TABLE $this->Prefix"."board ADD boardnoguests TINYINT (1) UNSIGNED not null");
+		thwb_query("ALTER TABLE $this->Prefix"."board ADD boarddisabled TINYINT (1) UNSIGNED not null");
+		thwb_query("ALTER TABLE $this->Prefix"."news ADD boardid VARCHAR (255) not null");
+		thwb_query("ALTER TABLE $this->Prefix"."style ADD styletemplate VARCHAR (32) DEFAULT 'default' not null");
+		thwb_query("ALTER TABLE $this->Prefix"."user ADD usermsn VARCHAR (50) not null");
+		thwb_query("ALTER TABLE $this->Prefix"."user ADD useraim VARCHAR (50) not null");
+		thwb_query("ALTER TABLE $this->Prefix"."board DROP boardcanpostnew");
+		thwb_query("ALTER TABLE $this->Prefix"."board DROP boardcanreply");
+		thwb_query("ALTER TABLE $this->Prefix"."board DROP boardisprivate");
+		
+		thwb_query("UPDATE $this->Prefix"."style SET styletemplate='default'");
+
+		thwb_query("INSERT INTO $this->Prefix"."group VALUES (0,'Default Group',135,1)");
+		thwb_query("UPDATE $this->Prefix"."group SET groupid='0' WHERE name='Default Group'");
+
+		$this->MassExec("
+INSERT INTO $this->Prefix"."registrygroup VALUES (1,'General','');
+INSERT INTO $this->Prefix"."registrygroup VALUES (2,'Options',1);
+INSERT INTO $this->Prefix"."registrygroup VALUES (3,'General Vars',2);
+INSERT INTO $this->Prefix"."registrygroup VALUES (4,'Post Options',3);
+INSERT INTO $this->Prefix"."registrygroup VALUES (5,'Misc',5);
+INSERT INTO $this->Prefix"."registrygroup VALUES (6,'Signature Control',4);");
+
+		$this->MassExec("
+INSERT INTO $this->Prefix"."registry VALUES ('board_name','Forum-name','string','Board name','',1,'');
+INSERT INTO $this->Prefix"."registry VALUES ('board_baseurl','http://localhost/','string','Board URL','Used in eMails',1,1);
+INSERT INTO $this->Prefix"."registry VALUES ('board_admin','root@localhost','string','Board Admin/Tech eMail','',1,2);
+INSERT INTO $this->Prefix"."registry VALUES ('site_name','Your site\'s name','string','Board site name','',1,3);
+INSERT INTO $this->Prefix"."registry VALUES ('site_url','Your site\'s URL','string','Board site URL','',1,4);
+INSERT INTO $this->Prefix"."registry VALUES ('userrating','','boolean','Enable Userrating','(doesnt work atm)',2,'');
+INSERT INTO $this->Prefix"."registry VALUES ('privatemessages','1','boolean','Allow private messages?','',2,1);
+INSERT INTO $this->Prefix"."registry VALUES ('smilies','','boolean','Allow Smilies?','',2,2);
+INSERT INTO $this->Prefix"."registry VALUES ('enable_quicklinks','','boolean','Enable Quicklinks?','',2,3);
+INSERT INTO $this->Prefix"."registry VALUES ('enable_ranks','','boolean','Enable Userranks?','',2,4);
+INSERT INTO $this->Prefix"."registry VALUES ('debugmode','','boolean','Enable debug-mode?','Prints debug/development messages for admins',2,5);
+INSERT INTO $this->Prefix"."registry VALUES ('forumclosed','','boolean','Forum Closed?','Allows you to close your forums, eg for maintenance',5,1);
+INSERT INTO $this->Prefix"."registry VALUES ('use_email','','boolean','Use eMail functions?','If your server does not support sending eMails via php\'s mail() function, disable this.',2,7);
+INSERT INTO $this->Prefix"."registry VALUES ('guestmode','','boolean','Allow guests to post?','Enables guests to post with a special name prefix, however it\'s not recommended to enable it.',2,8);
+INSERT INTO $this->Prefix"."registry VALUES ('guestprefix','~','string','Guest name prefix','The char put in front ofa guest name.',2,9);
+INSERT INTO $this->Prefix"."registry VALUES ('showprivateboards','1','boolean','Show private boards?','View boards that are inaccessisble for a user? (The user is still not able to view it)',2,10);
+INSERT INTO $this->Prefix"."registry VALUES ('uppercase_prot','1','boolean','Use uppercase topic protection?','Prevents users from using only caps in topics. CAN BE VERY USEFUL',2,11);
+INSERT INTO $this->Prefix"."registry VALUES ('allowregister','1','boolean','Allow users to register?','You can disable the register option for users here.',2,12);
+INSERT INTO $this->Prefix"."registry VALUES ('vars_t_amount','30','integer','Topics per page','The number of topic rows per board-page.',3,'');
+INSERT INTO $this->Prefix"."registry VALUES ('vars_m_amount','25','integer','Message amount','The number of posts within a thread.',3,1);
+INSERT INTO $this->Prefix"."registry VALUES ('subject_maxlength','64','integer','Topic maxlength','The maximum length (in chars) allowed in a thread\'s topic.',3,2);
+INSERT INTO $this->Prefix"."registry VALUES ('subject_minlength','2','integer','Topic minlength','The minmum length.',3,3);
+INSERT INTO $this->Prefix"."registry VALUES ('message_maxlength','10000','integer','Message maxlength','The maximum length in a Post\'s text (in chars).',3,4);
+INSERT INTO $this->Prefix"."registry VALUES ('message_minlength','2','integer','Message minlength','Minimum Post length.',3,5);
+INSERT INTO $this->Prefix"."registry VALUES ('showpostslevel','2','integer','Show posts level','Show posts:<br>0 - Never, dont show any post counts.<br>1 - Show own postcount only.<br>2 - No restriction',3,6);
+INSERT INTO $this->Prefix"."registry VALUES ('imageslevel','1','integer','Image usage level','Allow images:<br>0 - No restriction<br>1 - Allow images in posts only<br>2 - Do not allow any images',3,7);
+INSERT INTO $this->Prefix"."registry VALUES ('max_usernamelength','24','integer','Maximum user name length','The maximum length of a username, in chars.',3,8);
+INSERT INTO $this->Prefix"."registry VALUES ('min_usernamelength','2','integer','Minimum user name length','The minimum length of a username, in chars.',3,9);
+INSERT INTO $this->Prefix"."registry VALUES ('pm_maxlength','8000','integer','Private message maximum length','The maximum length of a private message, in chars.',3,10);
+INSERT INTO $this->Prefix"."registry VALUES ('postdelay','30','integer','Post flood protection','Minimum delay between posts, in seconds.',4,'');
+INSERT INTO $this->Prefix"."registry VALUES ('editlimit','1800','integer','Edit time limit','Users will be unable to edit posts after posttime + limit. Set to 0 to disable.',4,1);
+INSERT INTO $this->Prefix"."registry VALUES ('timeoffset','','integer','Time offset','Time offset, in hours (can be negative)',5,'');
+INSERT INTO $this->Prefix"."registry VALUES ('closedmsg','<BR>Sorry</B><BR>\r\n<BR>\r\nDas Forum ist derzeit leider nicht verfügbar','array','Forum closed message','This forum appears if users try to access the closed forum.',5,2);
+INSERT INTO $this->Prefix"."registry VALUES ('bannednames','','array','Nick register protection','Allows you to specify invalid nicks. Users will be unable to register these nicks, one name per line. Example: \"adm\" disallows Admin as well as fooadmbar...',5,4);
+INSERT INTO $this->Prefix"."registry VALUES ('bannedemails','','array','Email register protection','Allows you to specify invalid email addresses. Use one eMail per line, eg @aol bans dude@aol.com as well as notme@aol.net',5,3);
+INSERT INTO $this->Prefix"."registry VALUES ('version','2.7','string','Version','The internal version, please do not change.','0','0');
+INSERT INTO $this->Prefix"."registry VALUES ('max_privmsg','30','integer','Max PM count','The maximum amount of private messages per user. Users will be unable to recieve pm\'s if their box is full.',3,11);
+INSERT INTO $this->Prefix"."registry VALUES ('pmalive','','integer','PM max life','Set the maximum age of private messages, in days. Set to 0 to disable life check.',3,12);
+INSERT INTO $this->Prefix"."registry VALUES ('sig_maxlen','600','integer','Max. signature length','The maximum length of a signature, in bytes (chars).',6,1);
+INSERT INTO $this->Prefix"."registry VALUES ('sig_maxlines','5','integer','Max. signature lines','The maximum number of lines allowed in a signature. Note that a line can be wrapped depending on the users browser size. Thus you should set an appropriate max length in chars as well. One average line has about 120 chars at a resolution of 1024*768.',6,2);
+INSERT INTO $this->Prefix"."registry VALUES ('sig_restrict','1','boolean','Enable signature restrictions?','Enable this to restrict the signature length using the options below.',6,0);");
+
+		return 0;
+	}	
+}
+
+?>

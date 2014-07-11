@@ -1,0 +1,13 @@
+Hi!
+
+In dem Topic '$email[threadtopic]' gibt es einen neuen Beitrag!
+
+Benutzen Sie diesen Link, um zum Topic zu gelangen:
+$config[board_baseurl]/showtopic.php?threadid=$thread[threadid]&pagenum=lastpage
+
+Ihr $config[board_name]-Team
+
+----------------------------------
+
+Mit diesem Link koennen Sie Benachrichtigungen zum Thread deaktivieren:
+$config[board_baseurl]/listthreads.php

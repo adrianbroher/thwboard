@@ -1,0 +1,24 @@
+a:link { color: #1B6ECC; text-decoration: none; }
+a:visited { color: #1B6ECC; text-decoration: none; }
+a:hover { color: #69B271; text-decoration: none; }
+a:active { color: #1B6ECC; text-decoration: none; }
+a.bglink:link { color: #454545; text-decoration: underline; }
+a.bglink:visited { color: #454545; text-decoration: underline; }
+a.bglink:hover { color: #454545; text-decoration: none; }
+a.bglink:active { color: #454545; text-decoration: underline; }
+a.hefo:link { color: #ECECEC; text-decoration: underline; }
+a.hefo:visited { color: #ECECEC; text-decoration: underline; }
+a.hefo:hover { color: #ECECEC; text-decoration: none; }
+a.hefo:active { color: #ECECEC; text-decoration: underline; }
+body { background-color: #FAFAFA; color: #323232; }
+h1 { color: #ECECEC; font-size: 18px; padding: 0px; margin: 0px; font-weight: bold; font-family: Verdana, Helvetica }
+.border-col { background-color: #DEDEDE; }
+.cella { background-color: #FAFAFA; }
+.cellb { background-color: #F5F5F5; }
+.color4 { background-color: #1B6ECC; }
+.tbbutton { font-family: Verdana; font-size: 8pt; }
+.tbinput { background-color: #EEEEEE; font-family: Verdana; font-size: 8pt; }
+.tbselect { background-color: #EEEEEE; font-family: Verdana; font-size: 8pt; }
+.tbtextarea { background-color: #EEEEEE; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt; }
+.smallfont { font-family: Verdana, Helvetica; font-size:10px; }
+.stdfont { font-family: Verdana, Helvetica; font-size:12px; }

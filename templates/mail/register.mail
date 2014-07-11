@@ -1,0 +1,25 @@
+Hallo $register[username],
+
+vielen Dank, dass Sie sich bei $config[board_name] registriert haben!
+Hier sind Ihre Login-Daten:
+
+Benutzername: $register[username]
+Passwort: $register[userpassword]
+
+Damit Sie $config[board_name] nutzen koennen, muessen Sie ihre Email-Adresse erst noch verifizieren.
+Dies geschieht durch Klick auf den unten angegebenen Aktivierungslink.
+Sollten Sie Probleme bei der Aktivierung haben, wenden Sie sich bitte unter Angabe der Aktivierungs-ID an einen Administrator ( $config[board_baseurl]/team.php ), damit dieser Sie manuell freischaltet.
+
+Aktivierungs-ID: $register[hash]
+Aktivierungslink: $config[board_baseurl]/misc.php?action=user_activate&userid=$register[userid]&hash=$register[hash]
+(<a href="$config[board_baseurl]/misc.php?action=user_activate&userid=$register[userid]&hash=$register[hash]&">fuer AOL-User</a>)
+
+Sie finden unsere Foren hier:
+$config[board_baseurl]/index.php
+
+Nach der Aktivierung muessen Sie sich zunächst mit obigen Daten einmalig einloggen.
+Hier können Sie sich einloggen:
+$config[board_baseurl]/login.php
+
+Viel Spass wuenscht Ihnen
+das $config[board_name]-Team!

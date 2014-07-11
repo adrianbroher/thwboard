@@ -1,0 +1,17 @@
+Hallo $pm[username],
+$g_user[username] hat Ihnen ueber das Forum auf "$config[board_name]( $config[board_baseurl] )" eine E-Mail zugeschickt.
+
+$pm[pmtopic]
+---
+$pm[pmtext]
+---
+
+
+
+
+
+
+
+
+
+

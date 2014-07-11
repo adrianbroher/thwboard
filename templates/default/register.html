@@ -1,0 +1,44 @@
+<form name="regform" method="post" action="do_register.php">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
+  <tr>
+    <td>
+      <table width="100%" border="0" cellspacing="1" cellpadding="3">
+        <tr class="color4"> 
+          <td colspan="2"><strong>$style[smallfont]<span style="color:$style[col_he_fo_font]">Registrieren</span>$style[smallfontend]</strong></td>
+        </tr>
+        <tr class="cellA"> 
+          <td width="20%">$style[stdfont]Name$style[stdfontend]</td>
+          <td> 
+            <input class="tbinput" type="text" name="register_username">$style[smallfont] Der Benutzername muss aus minimal $config[min_usernamelength] und maximal $config[max_usernamelength] Zeichen bestehen.$style[smallfontend]</td>
+        </tr>
+        <tr class="cellB"> 
+          <td width="20%">$style[stdfont]Email$style[stdfontend]</td>
+          <td> 
+            <input class="tbinput" type="text" name="register[useremail]">
+            $style[smallfont]Bitte geben Sie eine g&uuml;ltige Emailadresse an.$style[smallfontend]</td>
+        </tr>
+$passwordfield
+        <tr class="cellA"> 
+          <td colspan="2">$style[stdfont]<strong>Hinweis:</strong> Bitte geben Sie eine g&uuml;ltige Email-Adresse an, da Ihr Passwort an selbige geschickt wird!<br />
+          <br />
+          Mit der Registrierung akzeptieren Sie die Forumregeln auf der Vorseite bedingungslos!<br />
+          <br />
+          Weitere Benutzereinstellungen k&ouml;nnen Sie im Profil vornehmen sobald Sie registriert und eingeloggt sind.$style[stdfontend]</td>
+        </tr>
+        <tr class="color4"> 
+          <td colspan="2" align="center"> 
+            
+              <input class="tbbutton" type="submit" name="Submit" value="Registrieren">
+            
+          </td>
+        </tr>
+      </table>
+    </td>                     
+  </tr>
+</table>
+</form>
+<script type="text/javascript">
+<!--
+if (document.regform) document.regform.register_username.focus();
+// -->
+</script>

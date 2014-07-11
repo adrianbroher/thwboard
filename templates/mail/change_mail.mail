@@ -1,0 +1,4 @@
+Hallo $g_user[username],
+
+Um ihre E-Mail-Adresse zu ändern, klicken Sie bitte diesen Link an:
+$config[board_baseurl]/misc.php?action=change_email&userid=$g_user[userid]&email=$user[usernewemail]&hash=$g_user[userpassword]

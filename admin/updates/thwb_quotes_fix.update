@@ -1,0 +1,64 @@
+<?php
+/* $Id: thwb_quotes_fix.update 87 2004-11-07 00:19:15Z td $ */
+
+class CUpdate
+{
+	var		$UpdaterVer		= 1.0;
+	var		$OldVersion		= '2.82';
+	var		$NewVersion		= '2.82';
+	var		$Prefix			= '';
+	var		$Error			= '';
+	var		$Author			= 'ThWboard Development Team';
+	var		$Date			= '19.05.2003';
+	var		$Notes			= '';
+
+	function CUpdate()
+	  {
+	    // this is a little hack so that we always get the correct date.
+
+	    $this->Date = preg_replace('/^\$'.'Date: ([0-9]{4})\/([0-9]{2})\/([0-9]{2}) [0-9]{2}:[0-9]{2}:[0-9]{2} \$$/', '\3.\2.\1', '$Date: 2004-11-07 01:19:15 +0100 (Sun, 07 Nov 2004) $');
+	  }
+
+	function AllowUpdate()
+	{
+		$r_registry = thwb_query("SELECT keyvalue FROM $this->Prefix"."registry WHERE keyname='version'");
+		$registry = mysql_fetch_array($r_registry);
+		
+		if( $registry['keyvalue'] != $this->OldVersion )
+		  return 1;
+		else
+			return 1;
+	}
+	
+	function SetError($errmsg)
+	{
+		$this->Error = $errmsg;
+	}
+	
+	function GetError()
+	{
+		return $this->Error;
+	}
+
+	/*
+	 * RETURN VALUE
+	 *	1 - update failed (set error with $this->SetError() )
+	 *	0 - update sucessfull
+	 */
+	function RunUpdate()
+	{
+	  $r_post = thwb_query("SELECT postid, posttext FROM {$this->Prefix}post WHERE posttext LIKE '%[QUOTE]%' OR posttext LIKE '%[/QUOTE]%'");
+	  $a_post = array();
+	  
+	  while($a_post = mysql_fetch_array($r_post))
+	  {
+	    $a_post['posttext'] = preg_replace("/\[(\/|)QUOTE\]/", "[$1quote]", $a_post['posttext']);
+
+	    thwb_query("UPDATE {$this->Prefix}post SET posttext='".addslashes($a_post['posttext'])."' WHERE postid=$a_post[postid]");
+	  }
+	  
+	  return 0;
+	}	
+}
+
+?>

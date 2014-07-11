@@ -1,0 +1,77 @@
+
+<form method="POST" action="_('pm.php')" name="pmform">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
+    <tr> 
+      <td> 
+        <table width="100%" border="0" cellspacing="1" cellpadding="3">
+          <tr class="color4"> 
+            <td><span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Private Message 
+              Center</strong>$style[smallfontend]</span></td>
+          </tr>
+          <tr class="cellB">
+            <td>
+              <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td>
+                    <table width="250" border="0" cellspacing="0" cellpadding="3">
+                      <tr>
+                        <td>$style[smallfont]Inhalt Inbox$style[smallfontend]</td>
+                        <td>$style[smallfont]<strong>$inbox_mails</strong> Nachricht(en)$style[smallfontend]</td>
+                      </tr>
+                      <tr>
+                        <td>$style[smallfont]Inhalt Outbox$style[smallfontend]</td>
+                        <td>$style[smallfont]<strong>$outbox_mails</strong> Nachricht(en)$style[smallfontend]</td>
+                      </tr>
+                    </table>
+                  </td>
+                  <td align="right">
+                    $style[smallfont]<strong>$full_box</strong> / <strong>$config[max_privmsg]</strong> Nachrichten - <strong>$diskquota%</strong> belegt<br />$style[smallfontend]
+                    $style[stdfont]<a href="_('pm.php?action=new')">Neue Nachricht</a> || <a href="_('pm.php?action=deleteall')">Alle Nachrichten L&ouml;schen</a>$style[stdfontend]
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
+    <tr> 
+      <td> 
+        <table width="100%" border="0" cellspacing="1" cellpadding="3">
+          <tr class="color4"> 
+            <td colspan="5"><span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Posteingang</strong>$style[smallfontend]</span></td>
+          </tr>
+$PMROWS_INBOX 
+          <tr class="color4"> 
+            <td colspan="5"><span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Postausgang</strong>$style[smallfontend]</span></td>
+          </tr>
+$PMROWS_OUTBOX 
+          <tr class="color4"> 
+            <script type="text/javascript">
+              function invert_selection()
+              {
+                  var c = document.forms[0].deletepms;
+                  
+                  if(c.length)
+                  {
+                      for(var i = 0; i < c.length; ++i)
+                      {
+                          c[i].checked = !c[i].checked;
+                      }
+                  }
+                  else
+                  {
+                      c.checked = !c.checked;
+                  }
+              }
+            </script>
+            <td colspan="5" align="right">$style[smallfont]<strong><span style="color:$style[col_he_fo_font]">[ <a class="hefo" href="javascript:invert_selection();">Auswahl umkehren</a> | <a href="javascript:document.pmform.submit();" class="hefo">markierte Nachrichten l&ouml;schen</a> ]</span></strong>$style[smallfontend]</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</form>

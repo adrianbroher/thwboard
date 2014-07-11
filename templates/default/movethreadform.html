@@ -1,0 +1,42 @@
+<form name="movethreadform" method="post" action="_('threadops.php')">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
+    <tr>
+      <td>
+        <table width="100%" border="0" cellspacing="1" cellpadding="3">
+          <tr class="color4">
+            <td>$style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>Thread Verschieben</strong></span>$style[smallfontend]</td>
+          </tr>
+          <tr class="cellA">
+            <td align="center">
+              <br />
+                $style[stdfont]Neues Forum: $style[stdfontend]<select class="tbselect" name="into">
+$MOVEOPTIONS
+                </select>
+              <br />
+              <br />
+            </td>
+          </tr>
+          <tr class="cellB">
+            <td>
+              <input type="checkbox" name="createlink" value="1" checked>
+              $style[smallfont]Einen Link auf den Thread im aktuellen Forum hinterlassen$style[smallfontend]</td>
+          </tr>
+          <tr class="cellA">
+            <td>$style[stdfont]Nach dem Verschieben:$style[stdfontend]<br />
+              <input type="radio" name="redir" value="thread" checked>
+              $style[smallfont]Auf den Thread weiterleiten$style[smallfontend]<br />
+              <input type="radio" name="redir" value="currentforum">
+              $style[smallfont]Auf das jetztige Forum weiterleiten$style[smallfontend]            </td>
+          </tr>
+          <tr class="color4">
+            <td align="center">
+              <input class="tbbutton" type="submit" name="Submit" value="Thread verschieben">
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+<input type="hidden" name="action" value="do_move">
+<input type="hidden" name="thread[threadid]" value="$thread[threadid]">
+</form>

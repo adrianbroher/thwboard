@@ -1,0 +1,102 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
+  <tr>
+    <td>
+      <table width="100%" border="0" cellspacing="1" cellpadding="0">
+        <tr class="color4"> 
+          <td height="18">$style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>&nbsp;ThWboard Kalender</strong></span>$style[smallfontend]</td>
+        </tr>
+        <tr class="cellB"> 
+          <td>
+		    <Table border="0" cellspacing="0" cellpadding="0" width="100%">
+			 <tr>
+			  <TD align=center colspan="2" width="100%">
+			    <Table border="0" width="100%" cellspacing="0" cellpadding="0">
+				  <tr>
+				    <TD width="50%" valign=top>
+					  <Table>
+					    <tr>
+						  <TD width="20">
+						    &nbsp;
+						  </TD>
+						  <td>
+							$style[smallfont]Heute ist der <a href="_('calendar.php?month=$a_current[month]&amp;year=$a_current[year]')">$a_current[date]</a> $calendaradmin $style[smallfontend]
+						  </TD>
+						</TR>
+						<tr>
+						  <form action="_('calendar.php')" method="post" name="calendarform">
+						  <TD width="20">
+                &nbsp;
+						  </TD>
+						  <td>
+					        $gotomonthform
+						    .
+						    $gotoyearform
+						    <input type="submit" value="Los !" class="tbbutton"></strong>
+						  </TD>
+						  </form>
+						</TR>
+					  </TABLE>
+					</TD>
+				    <TD width="50%" align=right>
+					  <Table border="0" width="200" cellspacing="0" cellpadding="0">
+					    <tr>
+						  $eventbox
+						</TR>
+					  </TABLE>
+					</TD>
+				  </TR>
+				</TABLE>
+			  </TD>
+  			</TR>
+			<tr>
+			  <TD align=center colspan="2" width="100%">
+			  	<table>
+				  <tr>
+	  			    <td>
+                    <A HREF="_('calendar.php?month=$lastmonth&amp;year=$lastyear')">&laquo;</A>
+			         $style[stdfont] <strong>$month_name $year</strong> $style[stdfontend]
+			        <A HREF="_('calendar.php?month=$nextmonth&amp;year=$nextyear')">&raquo;</A>
+			       </td>
+			     </tr>
+		       </table>
+			  </TD>
+			 </TR>
+			 <tr>
+			   <TD width="100%" colspan="2">
+			   <table class="border-col" cellpadding=2 cellspacing=1 border=0 width="100%">
+            	<tr class="color4">
+            	  <td width=14%>$style[stdfont]<span style="color:$style[col_he_fo_font]"> <strong>Montag </strong> </span>$style[stdfontend]</td>
+    	          <td width=14%>$style[stdfont]<span style="color:$style[col_he_fo_font]"> <strong>Dienstag </strong> </span>$style[stdfontend]</td>
+      		      <td width=14%>$style[stdfont]<span style="color:$style[col_he_fo_font]"> <strong>Mittwoch </strong> </span>$style[stdfontend] </td>
+   	 	          <td width=14%>$style[stdfont]<span style="color:$style[col_he_fo_font]"> <strong>Donnerstag </strong> </span>$style[stdfontend] </td>
+   	   		      <td width=14%>$style[stdfont]<span style="color:$style[col_he_fo_font]"> <strong>Freitag </strong> </span>$style[stdfontend] </td>
+    	          <td width=14%>$style[stdfont]<span style="color:$style[col_he_fo_font]"> <strong>Samstag </strong> </span>$style[stdfontend] </td>
+			 	  <td width=14%>$style[stdfont]<span style="color:$style[col_he_fo_font]"> <strong>Sonntag </strong> </span>$style[stdfontend] </td>
+				</tr> 
+				$calendar
+			  </table>
+  		      </TD>
+			 </TR>
+			 <tr>
+			   <TD align=center colspan="2">
+			     <table>
+		    	  <tr>
+			 		<td>
+              		<A HREF="_('calendar.php?month=$lastmonth&amp;year=$lastyear')">&laquo;</A>
+			         $style[stdfont] <strong>$month_name $year</strong> $style[stdfontend]
+			  		<A HREF="_('calendar.php?month=$nextmonth&amp;year=$nextyear')">&raquo;</A>
+			  		</td>
+				  </tr>
+		 	    </table>
+			  </TD>
+			</TR>
+		  </TABLE>
+          </td>
+        </tr>
+		<tr> 
+          <td colspan="" class="color4">$style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>&nbsp;</strong></span>$style[smallfontend]</td>
+        </tr>      
+      </table>
+    </td>
+  </tr>
+</table>

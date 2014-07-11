@@ -1,0 +1,195 @@
+<?php
+/* $Id: thwb_283_284.update 87 2004-11-07 00:19:15Z td $ */
+
+class CUpdate
+{
+	var		$UpdaterVer		= 1.0;
+	var		$OldVersion		= '2.83';
+	var		$NewVersion		= '2.84';
+	var		$Prefix			= '';
+	var		$Error			= '';
+	var		$Author			= 'ThWboard Development Team';
+	var		$Date			= '';
+	var		$Notes			= '';
+
+	function writestyle($id)
+	  {
+	    global $pref;
+	    
+	    $r_style = thwb_query("SELECT colorbg, colorbgfont, color4, col_he_fo_font, color1, CellA, CellB, border_col, color_err, col_link, col_link_v, col_link_hover, stdfont FROM $this->Prefix"."style WHERE styleid=$id");
+	    
+	    $style = mysql_fetch_array($r_style);
+	    
+	    $str = "a:link { color: $style[col_link]; text-decoration: none; }\n".
+	      "a:visited { color: $style[col_link_v]; text-decoration: none; }\n".
+	      "a:hover { color: $style[col_link_hover]; text-decoration: none; }\n".
+	      "a:active { color: $style[col_link]; text-decoration: none; }\n".
+	      "a.bglink:link { color: $style[colorbgfont]; text-decoration: underline; }\n".
+	      "a.bglink:visited { color: $style[colorbgfont]; text-decoration: underline; }\n".
+	      "a.bglink:hover { color: $style[colorbgfont]; text-decoration: none; }\n".
+	      "a.bglink:active { color: $style[colorbgfont]; text-decoration: underline; }\n".
+	      "a.hefo:link { color: $style[col_he_fo_font]; text-decoration: underline; }\n".
+	      "a.hefo:visited { color: $style[col_he_fo_font]; text-decoration: underline; }\n".
+	      "a.hefo:hover { color: $style[col_he_fo_font]; text-decoration: none; }\n".
+	      "a.hefo:active { color: $style[col_he_fo_font]; text-decoration: underline; }\n".
+	      "body { background-color: $style[colorbg]; color: $style[color1]; }\n".
+	      ".border-col { background-color: $style[border_col]; }\n".
+	      ".cella { background-color: $style[CellA]; }\n".
+	      ".cellb { background-color: $style[CellB]; }\n".
+	      ".color4 { background-color: $style[color4]; }\n".
+	      ".tbbutton { font-family: Verdana; font-size: 8pt; }\n".
+	      ".tbinput { background-color: #EEEEEE; font-family: Verdana; font-size: 8pt; }\n".
+	      ".tbselect { background-color: #EEEEEE; font-family: Verdana; font-size: 8pt; }\n".
+	      ".tbtextarea { background-color: #EEEEEE; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt; }\n".
+	      ".smallfont { font-family: $style[font]; font-size:10px; }\n".
+	      ".stdfont { font-family:$style[font]; font-size:12px; }\n".
+	      ".header { color: $style[col_he_fo_font]; font-size: 12pt; }";
+	    
+	    $f = fopen("../templates/css/$id.css", "w");
+	    
+	    fwrite($f, $str);
+	    
+	    fclose($f);
+	  }
+
+	function updateboard($boardid)
+	  {
+	    $r_thread = thwb_query("SELECT threadid, threadtopic, threadtime, threadlastreplyby FROM ".$this->Prefix."thread WHERE threadlink='0' AND boardid='".intval($boardid)."'  GROUP BY threadid ORDER BY threadtime DESC LIMIT 1");
+	    
+	    if( mysql_num_rows($r_thread) < 1 )
+	      {
+		thwb_query("UPDATE ".$this->Prefix."board SET
+			boardlastpost='0',
+			boardthreadid='0',
+			boardthreadtopic='',
+			boardlastpostby='',
+                        boardposts='0',
+                        boardthreads='0'
+		WHERE boardid='".intval($boardid)."'");
+	      }
+	    else
+	      {
+		$thread = mysql_fetch_array($r_thread);
+		
+		$r_thread = thwb_query("SELECT COUNT(threadid) AS threadcount, SUM(threadreplies) AS postcount FROM ".$this->Prefix."thread WHERE boardid=$boardid");
+		$thread = array_merge($thread, mysql_fetch_array($r_thread));
+		
+		$thread['postcount'] += $thread['threadcount']; // threads without replies.
+		
+		thwb_query("UPDATE ".$this->Prefix."board SET
+			boardlastpost='$thread[threadtime]',
+			boardthreadid='$thread[threadid]',
+			boardthreadtopic='" . addslashes($thread['threadtopic']) . "',
+			boardlastpostby='" . addslashes($thread['threadlastreplyby']) . "',
+                        boardposts='".addslashes($thread['postcount'])."',
+                        boardthreads='".addslashes($thread['threadcount'])."'
+		WHERE boardid='".intval($boardid)."'");
+	      }
+	  }
+	
+	function CUpdate()
+	  {
+	    // this is a little hack so that we always get the correct date.
+
+	    $this->Date = preg_replace('/^\$'.'Date: ([0-9]{4})\/([0-9]{2})\/([0-9]{2}) [0-9]{2}:[0-9]{2}:[0-9]{2} \$$/', '\3.\2.\1', '$Date: 2004-11-07 01:19:15 +0100 (Sun, 07 Nov 2004) $');
+	  }
+
+	function AllowUpdate()
+	{
+		$r_registry = thwb_query("SELECT keyvalue FROM $this->Prefix"."registry WHERE keyname='version'");
+		$registry = mysql_fetch_array($r_registry);
+
+		return ($registry['keyvalue'] == $this->OldVersion);
+	}
+	
+	function SetError($errmsg)
+	{
+		$this->Error = $errmsg;
+	}
+	
+	function GetError()
+	{
+		return $this->Error;
+	}
+
+	/*
+	 * RETURN VALUE
+	 *	1 - update failed (set error with $this->SetError() )
+	 *	0 - update sucessfull
+	 */
+	function RunUpdate()
+	{
+
+	        /* no update if templates/css/ does not exist */
+
+	        if(!is_writable("../templates/css/") || !is_writable("../templates/css/1.css"))
+		  {
+		    $this->SetError("You must set templates/css/ and any css files inside to be writable by php scripts. Often this means setting permissions to 777.");
+		    return 1;
+		  }
+
+		/* board version */
+
+		thwb_query("UPDATE $this->Prefix"."registry SET keyvalue='".$this->NewVersion."' WHERE keyname='version'");
+	
+		/* ip check */
+
+
+		if(column_exists($this->Prefix."user", "usernoipcheck"))
+		{
+			thwb_query("ALTER TABLE $this->Prefix"."user DROP usernoipcheck");
+		}	
+
+		/* board_baseurl description */
+
+		thwb_query("UPDATE $this->Prefix"."registry SET keydescription = 'Used in eMails &amp; some board features<br>It is vital to set this correctly! ' WHERE keyname = 'board_baseurl'");
+
+	 	/* session_timeout */
+
+		if(!column_exists($this->Prefix."registry", "session_timeout"))
+		{
+			thwb_query("INSERT INTO $this->Prefix"."registry VALUES ('session_timeout', '1800', 'integer', 'Session Timeout', 'Time for Sessions to expire.', 3, 13)");
+		}
+
+		/* css cache */
+
+		$a_style = array();
+		$a_styles = array();
+
+		$r_styles = thwb_query("SELECT styleid FROM $this->Prefix"."style WHERE styleid != 1");
+		
+		while($a_style = mysql_fetch_array($r_styles))
+		  {
+		    $a_styles[] = $a_style['styleid'];
+		  }
+
+		foreach($a_styles as $k => $v)
+		  {
+		    $this->writestyle($v);
+		  }
+
+		/* correct threadcounts */
+
+		$a_board = array();
+		$a_boards = array();
+		
+		$r_board = thwb_query("SELECT boardid FROM $this->Prefix"."board");
+		
+		if(mysql_num_rows($r_board) >= 1)
+		  {
+		    while($a_board = mysql_fetch_array($r_board))
+		      {
+			$a_boards[] = $a_board['boardid'];
+		      }
+
+		    foreach($a_boards as $k => $v)
+		      {
+			$this->updateboard($v);
+		      }
+		  }
+		    
+		return 0;
+	}	
+}
+
+?>  

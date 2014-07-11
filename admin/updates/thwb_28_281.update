@@ -1,0 +1,51 @@
+<?php
+/* $Id: thwb_28_281.update 87 2004-11-07 00:19:15Z td $ */
+
+class CUpdate
+{
+	var		$UpdaterVer		= 1.1;
+	var		$OldVersion		= '2.8';
+	var		$NewVersion		= '2.81';
+	var		$Prefix			= '';
+	var		$Error			= '';
+	var		$Author			= 'ThWboard Development Team';
+	var		$Date			= '30.12.2002';
+	var		$Notes			= '';
+
+	function AllowUpdate()
+	{
+		$r_registry = thwb_query("SELECT keyvalue FROM $this->Prefix"."registry WHERE keyname='version'");
+		$registry = mysql_fetch_array($r_registry);
+		
+		if( $registry['keyvalue'] != $this->OldVersion )
+			return 0;
+		else
+			return 1;
+	}
+	
+	function SetError($errmsg)
+	{
+		$this->Error = $errmsg;
+	}
+	
+	function GetError()
+	{
+		return $this->Error;
+	}
+
+	/*
+	 * RETURN VALUE
+	 *	1 - update failed (set error with $this->SetError() )
+	 *	0 - update sucessfull
+	 */
+	function RunUpdate()
+	{
+		/* Board-Version */
+		thwb_query("UPDATE $this->Prefix"."registry SET keyvalue='".$this->NewVersion."' WHERE keyname='version'");
+		thwb_query("ALTER TABLE $this->Prefix"."calendar ADD userid INT(10) UNSIGNED NOT NULL");
+
+		return 0;
+	}	
+}
+
+?>
