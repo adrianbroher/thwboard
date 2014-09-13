@@ -1,5 +1,4 @@
 <?php
-/* $Id: mysql.php 89 2004-11-07 00:43:23Z td $ */
 /*
           ThWboard - PHP/MySQL Bulletin Board System
         ==============================================

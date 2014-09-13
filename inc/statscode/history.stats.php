@@ -1,5 +1,4 @@
 <?php
-/* $Id: history.stats.php,v 1.11 2003/10/12 01:08:25 dkreuer Exp $ */
 /*
           ThWboard - PHP/MySQL Bulletin Board System
         ==============================================

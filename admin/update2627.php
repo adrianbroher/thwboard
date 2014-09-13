@@ -8,7 +8,6 @@
 <h1>thwboard update</h1>
 2.6 -&gt; 2.7<br><br>
 <?php
-/* $Id: update2627.php 87 2004-11-07 00:19:15Z td $ */
 
 if( $action == '' )
 {

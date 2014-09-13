@@ -1,5 +1,4 @@
 <?php
-/* $Id: install_lang.php 87 2004-11-07 00:19:15Z td $ */
 /*
           phpInstaller - PHP Script Installer
         ==============================================

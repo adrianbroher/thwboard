@@ -1,4 +1,4 @@
-<?php /* $Id: rank.php 87 2004-11-07 00:19:15Z td $ */
+<?php
 /*
           ThWboard - PHP/MySQL Bulletin Board System
         ==============================================

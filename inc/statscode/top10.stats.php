@@ -1,5 +1,4 @@
 <?php
-/* $Id: top10.stats.php,v 1.5 2003/09/27 19:48:35 thed_o_n Exp $ */
 /*
           ThWboard - PHP/MySQL Bulletin Board System
         ==============================================

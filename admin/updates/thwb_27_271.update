@@ -1,5 +1,4 @@
 <?php
-/* $Id: thwb_27_271.update 87 2004-11-07 00:19:15Z td $ */
 
 class CUpdate
 {

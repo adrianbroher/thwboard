@@ -1,4 +1,4 @@
-<?php /* $Id */
+<?php
 /*
           ThWboard - PHP/MySQL Bulletin Board System
         ==============================================
