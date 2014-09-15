@@ -25,7 +25,7 @@ define('THWB_NOSESSION_PAGE', true);
 include "./inc/header.inc.php";
 
 if( !$P->has_permission( P_CEVENT ) )
-	message('Fehlende Berechtigung', 'Fehler: Sie haben nicht die ben&ouml;tigte Berechtigung, um diese Seite zu ben&uuml;tzen.');
+    message('Fehlende Berechtigung', 'Fehler: Sie haben nicht die ben&ouml;tigte Berechtigung, um diese Seite zu ben&uuml;tzen.');
 
 $Tframe = new Template("templates/" . $style['styletemplate'] . "/frame.html");
 $Tnewevent = new Template("templates/" . $style['styletemplate'] . "/newcalendarentry.html");

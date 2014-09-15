@@ -2,49 +2,49 @@
 
 class CUpdate
 {
-	var		$UpdaterVer		= 1.0;
-	var		$OldVersion		= '2.7';
-	var		$NewVersion		= '2.71';
-	var		$Prefix			= '';
-	var		$Error			= '';
-	var		$Author			= 'ThWboard Development Team';
-	var		$Date			= '11.03.2002';
-	var		$Notes			= '';
-	
-	function AllowUpdate()
-	{
-		$r_registry = thwb_query("SELECT keyvalue FROM $this->Prefix"."registry WHERE keyname='version'");
-		$registry = mysql_fetch_array($r_registry);
-		
-		if( $registry['keyvalue'] != $this->OldVersion )
-			return 0;
-		else
-			return 1;
-	}
-	
-	function SetError($errmsg)
-	{
-		$this->Error = $errmsg;
-	}
-	
-	function GetError()
-	{
-		return $this->Error;
-	}
+    var        $UpdaterVer        = 1.0;
+    var        $OldVersion        = '2.7';
+    var        $NewVersion        = '2.71';
+    var        $Prefix            = '';
+    var        $Error            = '';
+    var        $Author            = 'ThWboard Development Team';
+    var        $Date            = '11.03.2002';
+    var        $Notes            = '';
+    
+    function AllowUpdate()
+    {
+        $r_registry = thwb_query("SELECT keyvalue FROM $this->Prefix"."registry WHERE keyname='version'");
+        $registry = mysql_fetch_array($r_registry);
+        
+        if( $registry['keyvalue'] != $this->OldVersion )
+            return 0;
+        else
+            return 1;
+    }
+    
+    function SetError($errmsg)
+    {
+        $this->Error = $errmsg;
+    }
+    
+    function GetError()
+    {
+        return $this->Error;
+    }
 
-	/* the actual update.
-	 *
-	 * RETURN VALUES
-	 *
-	 *	1 - update failed (set error with $this->SetError() )
-	 *	0 - update sucessfull
-	 */
-	function RunUpdate()
-	{
-		thwb_query("INSERT INTO $this->Prefix"."registry VALUES ('uselastthreads', '0', 'boolean', 'Enable last-threads-form?', 'Enables a select form on the index page to display threads within the last 3/5/7.. days.', '2', '13') ");
-		thwb_query("INSERT INTO $this->Prefix"."registry VALUES ('max_useronline','0|0','string','Do not modify or delete','Do not modify or delete','0','0');");
-		thwb_query("UPDATE $this->Prefix"."registry SET keyvalue='".$this->NewVersion."' WHERE keyname='version'");
+    /* the actual update.
+     *
+     * RETURN VALUES
+     *
+     *    1 - update failed (set error with $this->SetError() )
+     *    0 - update sucessfull
+     */
+    function RunUpdate()
+    {
+        thwb_query("INSERT INTO $this->Prefix"."registry VALUES ('uselastthreads', '0', 'boolean', 'Enable last-threads-form?', 'Enables a select form on the index page to display threads within the last 3/5/7.. days.', '2', '13') ");
+        thwb_query("INSERT INTO $this->Prefix"."registry VALUES ('max_useronline','0|0','string','Do not modify or delete','Do not modify or delete','0','0');");
+        thwb_query("UPDATE $this->Prefix"."registry SET keyvalue='".$this->NewVersion."' WHERE keyname='version'");
 
-		return 0;
-	}	
+        return 0;
+    }    
 }

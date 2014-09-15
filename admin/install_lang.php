@@ -17,8 +17,8 @@
 
 
 $a_lang = array(
-	'de' => array(),
-	'en' => array()
+    'de' => array(),
+    'en' => array()
 );
 
 
@@ -177,20 +177,20 @@ $a_lang['en']['infotxt'] = '
                     <b>Welcome!</b><br>
                       <br>
                       Welcome to the ThWboard Installation assistant. This install assistant will
-					  guide you through the installation process of your ThWboard. Before you start, make
-					  sure you have the following information:</p>
+                      guide you through the installation process of your ThWboard. Before you start, make
+                      sure you have the following information:</p>
                     <ul>
                       <li>MySQL Hostname/IP address</li>
                       <li>MySQL Username and Password</li>
                       <li>MySQL Database name (If you aren\'t allowed to create one)</li>
                     </ul>
-					That information will be provided by your ISP/Hosting service. If you
-					do not have that information, contact your ISP or administrator since we can\'t help
-					you in that case.
-					<br>
+                    That information will be provided by your ISP/Hosting service. If you
+                    do not have that information, contact your ISP or administrator since we can\'t help
+                    you in that case.
                     <br>
-					If you experience any problems during the installation process, feel free to visit our
-					<a href="http://www.thwboard.de/forum/">Support-Forums</a>.';
+                    <br>
+                    If you experience any problems during the installation process, feel free to visit our
+                    <a href="http://www.thwboard.de/forum/">Support-Forums</a>.';
 $a_lang['en']['finished'] = '
 <b>Installation completed!</b><br>
 <br>
@@ -211,15 +211,15 @@ Visit the <a href="http://www.thwboard.de/">ThWboard Homepage</a> in order to do
 
 function lng($str)
 {
-	global	$lang, $a_lang;
-	
-	if( $lang == '' )
-		$lng = 'en';
-	else
-		$lng = $lang;
-	
-	if( $a_lang[$lng][$str] )
-		return $a_lang[$lng][$str];
-	else
-		return '*** missing string `'.$str.'´';
+    global    $lang, $a_lang;
+    
+    if( $lang == '' )
+        $lng = 'en';
+    else
+        $lng = $lang;
+    
+    if( $a_lang[$lng][$str] )
+        return $a_lang[$lng][$str];
+    else
+        return '*** missing string `'.$str.'´';
 }

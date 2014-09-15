@@ -28,41 +28,41 @@ $mysql_h = ''; $mysql_u = ''; $mysql_p = ''; $mysql_db = '';
 
 if( !$mysql || !$db )
 {
-	print '<b>Sorry</b><br><br>Es gibt momentan leider ein kleines Datenbank-Problem, bitte versuche es sp&#xE4;ter noch einmal.';
-	exit;
+    print '<b>Sorry</b><br><br>Es gibt momentan leider ein kleines Datenbank-Problem, bitte versuche es sp&#xE4;ter noch einmal.';
+    exit;
 }
 
 $id = ((isset($_REQUEST['id'])) ? intval($_REQUEST['id']) : 0);
 
 if( $id ) {
-	$r_qlink = mysql_query( "SELECT
-			linkid,
-			linkhttp
-		FROM
-			$pref"."qlink
-		WHERE linkid = '$id'"
-	);
-	
-	if( mysql_num_rows( $r_qlink ) == 1 ) {
-		$a_qlink = mysql_fetch_array( $r_qlink );
-		
-		$r_qlink = mysql_query( "UPDATE
-				$pref"."qlink
-			SET
-				linkcounter = linkcounter+1
-			WHERE
-				linkid = '$id'"
-		);
-		header( 'Location: '. $a_qlink['linkhttp'] );
-		exit;
-	}
+    $r_qlink = mysql_query( "SELECT
+            linkid,
+            linkhttp
+        FROM
+            $pref"."qlink
+        WHERE linkid = '$id'"
+    );
+    
+    if( mysql_num_rows( $r_qlink ) == 1 ) {
+        $a_qlink = mysql_fetch_array( $r_qlink );
+        
+        $r_qlink = mysql_query( "UPDATE
+                $pref"."qlink
+            SET
+                linkcounter = linkcounter+1
+            WHERE
+                linkid = '$id'"
+        );
+        header( 'Location: '. $a_qlink['linkhttp'] );
+        exit;
+    }
 }
 
 ?>
 
 <html>
 <head>
-	<title>Quicklink nicht gefunden</title>
+    <title>Quicklink nicht gefunden</title>
 </head>
 
 <body>

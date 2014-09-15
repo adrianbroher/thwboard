@@ -30,87 +30,87 @@ if(!isset($action))
 
 if( $action == 'unsubscribe' )
 {
-	if( $g_user['userid'] == 0 )
-	{
-		message('Fehler', 'Bitte loggen Sie sich erst ein!');
-	}
-	else
-	{
-		if( !$thread['threadid'] )
-		{
-			message('Fehler', 'Ung&uuml;ltiger Thread!');
-		}
-		else
-		{
-			thwb_query("UPDATE ".$pref."post SET postemailnotify=0 WHERE threadid='$thread[threadid]' AND userid='$g_user[userid]'");
-			
-			message('Hinweis', 'Ihre Abbestellung wurde erfolgreich durchgef&uuml;hrt!');
-		}
-	}
+    if( $g_user['userid'] == 0 )
+    {
+        message('Fehler', 'Bitte loggen Sie sich erst ein!');
+    }
+    else
+    {
+        if( !$thread['threadid'] )
+        {
+            message('Fehler', 'Ung&uuml;ltiger Thread!');
+        }
+        else
+        {
+            thwb_query("UPDATE ".$pref."post SET postemailnotify=0 WHERE threadid='$thread[threadid]' AND userid='$g_user[userid]'");
+            
+            message('Hinweis', 'Ihre Abbestellung wurde erfolgreich durchgef&uuml;hrt!');
+        }
+    }
 }
 elseif( $action == 'getemail' )
 {
-	if( !$g_user['userisadmin'] )
-	{
-		message('Fehler', 'Sie haben keine Berechtigung diese Seite einzusehen.');
-	}
-	else
-	{
-		$r_user = thwb_query("SELECT useremail FROM ".$pref."user WHERE userid='".intval($userid)."'");
-		$user = mysql_fetch_array($r_user);
-		
-		message('Info', 'Die Email-Adresse dieses Benutzers ist: ' . $user['useremail']);
-	}
+    if( !$g_user['userisadmin'] )
+    {
+        message('Fehler', 'Sie haben keine Berechtigung diese Seite einzusehen.');
+    }
+    else
+    {
+        $r_user = thwb_query("SELECT useremail FROM ".$pref."user WHERE userid='".intval($userid)."'");
+        $user = mysql_fetch_array($r_user);
+        
+        message('Info', 'Die Email-Adresse dieses Benutzers ist: ' . $user['useremail']);
+    }
 }
 
 elseif( $action == 'getpostcount' )
 {
-	if( !$g_user['userisadmin'] )
-	{
-		message('Fehler', 'Sie haben keine Berechtigung diese Seite einzusehen.');
-	}
-	else
-	{
-		$r_user = thwb_query("SELECT userposts FROM ".$pref."user WHERE userid='".addslashes($userid)."'");
-		$user = mysql_fetch_array($r_user);
-		
-		message('Info', 'Dieser Benutzer hat ' . $user['userposts'] . ' Posts.');
-	}
+    if( !$g_user['userisadmin'] )
+    {
+        message('Fehler', 'Sie haben keine Berechtigung diese Seite einzusehen.');
+    }
+    else
+    {
+        $r_user = thwb_query("SELECT userposts FROM ".$pref."user WHERE userid='".addslashes($userid)."'");
+        $user = mysql_fetch_array($r_user);
+        
+        message('Info', 'Dieser Benutzer hat ' . $user['userposts'] . ' Posts.');
+    }
 }
 
 elseif( $action == 'getlastpost' )
 {
-	$r_post = thwb_query("SELECT threadid, postid FROM $pref"."post WHERE userid='".addslashes($userid)."' ORDER BY posttime DESC LIMIT 1");
-	if( mysql_num_rows($r_post) > 0 )
-	{
-		$post = mysql_fetch_array($r_post);
-		$postid = $post['postid'];
-		$threadid= $post['threadid'];
+    $r_post = thwb_query("SELECT threadid, postid FROM $pref"."post WHERE userid='".addslashes($userid)."' ORDER BY posttime DESC LIMIT 1");
+    if( mysql_num_rows($r_post) > 0 )
+    {
+        $post = mysql_fetch_array($r_post);
+        $postid = $post['postid'];
+        $threadid= $post['threadid'];
 
-		/* which page? */
-		$postnum = 0;
-	
-		$r_post = thwb_query("SELECT postid FROM $pref"."post WHERE threadid='$post[threadid]' ORDER BY posttime ASC");
-		while( $post = mysql_fetch_array($r_post) )
-		{
-			$postnum++;
-			if( $post['postid'] == $postid )
-				break;
-		}
+        /* which page? */
+        $postnum = 0;
+    
+        $r_post = thwb_query("SELECT postid FROM $pref"."post WHERE threadid='$post[threadid]' ORDER BY posttime ASC");
+        while( $post = mysql_fetch_array($r_post) )
+        {
+            $postnum++;
+            if( $post['postid'] == $postid )
+                break;
+        }
 
-		$pagenum = ceil($postnum / $config['vars_m_amount']);
-		header('Location: '.build_link('showtopic.php?threadid='.$threadid.'&amp;pagenum='.$pagenum.'#'.$postid, true));
-	}
-	else
-	{
-		message('Fehler', 'Dieser Benutzer hat noch keinen Beitrag verfasst.');
-	}
+        $pagenum = ceil($postnum / $config['vars_m_amount']);
+        header('Location: '.build_link('showtopic.php?threadid='.$threadid.'&amp;pagenum='.$pagenum.'#'.$postid, true));
+    }
+    else
+    {
+        message('Fehler', 'Dieser Benutzer hat noch keinen Beitrag verfasst.');
+    }
 }
 
 elseif( $action == 'clearboards' )
 {
-	thwb_query("UPDATE $pref"."lastvisited SET lastvisitedtime='".time()."' WHERE userid='$g_user[userid]'");
-	header('Location: '.build_link('index.php', true));
+    thwb_query("UPDATE $pref"."lastvisited SET lastvisitedtime='".time()."' WHERE userid='$g_user[userid]'");
+    header('Location: '.build_link('index.php', true));
 }
 elseif( $action == 'user_activate' )
 {

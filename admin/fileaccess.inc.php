@@ -22,14 +22,14 @@
 
 function WriteAccess($file)
 {
-	$fp = @fopen($file, "a");
-	if( !$fp )
-	{
-		return FALSE;
-	}
-	else
-	{
-		fclose($fp);
-		return TRUE;
-	}
+    $fp = @fopen($file, "a");
+    if( !$fp )
+    {
+        return FALSE;
+    }
+    else
+    {
+        fclose($fp);
+        return TRUE;
+    }
 }

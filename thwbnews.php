@@ -188,7 +188,7 @@ foreach($a_includes as $inc)
 }
 
 if( !$pref )
-	$pref = 'thwb_';
+    $pref = 'thwb_';
 
 $mysql = @mysql_connect($mysql_h, $mysql_u, $mysql_p);
 
@@ -198,9 +198,9 @@ $mysql_h = ''; $mysql_u = ''; $mysql_p = ''; $mysql_db = '';
 
 if(!$mysql || !$db )
 {
-	print '<b>Sorry</b><br><br>Es gibt momentan leider ein kleines Datenbank-Problem, bitte versuche es sp&#xE4;ter noch einmal.';
+    print '<b>Sorry</b><br><br>Es gibt momentan leider ein kleines Datenbank-Problem, bitte versuche es sp&#xE4;ter noch einmal.';
     ob_end_flush();
-	exit;
+    exit;
 }
 
 /**
@@ -378,9 +378,9 @@ else if(empty($_GET['type']) || $_GET['type'] == 'html')
     }
 
     $r_style = thwb_query("SELECT styleid, styletemplate, colorbg, color1, CellA, CellB, color4, colorbgfont, col_he_fo_font, color_err,
-		col_link, col_link_v, col_link_hover, stdfont,
-		boardimage, newtopicimage, border_col FROM
-		".$pref."style WHERE styleisdefault=1");
+        col_link, col_link_v, col_link_hover, stdfont,
+        boardimage, newtopicimage, border_col FROM
+        ".$pref."style WHERE styleisdefault=1");
 
     $style = mysql_fetch_assoc($r_style);
     $style['smallfont'] = '<span class="smallfont">';

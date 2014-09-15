@@ -32,12 +32,12 @@ $a_rank = array();
 $r_rank = thwb_query("SELECT rankid, ranktitle, rankposts, rankimage FROM $pref"."rank ORDER BY rankposts DESC");
 while( $rank = mysql_fetch_array($r_rank) )
 {
-	$a_rank[] = $rank;
+    $a_rank[] = $rank;
 }
 
 if( count($a_rank) < 1 || !$config['enable_ranks'] )
 {
-	message('Fehler', 'R&#xE4;nge wurden vom Administrator deaktiviert.');
+    message('Fehler', 'R&#xE4;nge wurden vom Administrator deaktiviert.');
 }
 
 $r_user = thwb_query("SELECT COUNT(userid) FROM $pref"."user");
@@ -47,42 +47,42 @@ $RANKROWS = '';
 
 while( list($i, $rank) = each($a_rank) )
 {
-	// users for this rank
-	if( isset($a_rank[($i - 1)]) )
-	{
-		$r_user = thwb_query("SELECT COUNT(userid) FROM $pref"."user WHERE
-			userposts >= ".$rank['rankposts']." AND userposts < ".$a_rank[($i - 1)]['rankposts']);
-		list($rankusers) = mysql_fetch_row($r_user);
-		
-		$r_user = thwb_query("SELECT userid, username FROM $pref"."user WHERE
-			userposts >= ".$rank['rankposts']." AND userposts < ".$a_rank[($i - 1)]['rankposts'].
-			" ORDER BY userposts DESC LIMIT 1");
-		$user = mysql_fetch_array($r_user);
-	}
-	else
-	{
-		$r_user = thwb_query("SELECT COUNT(userid) FROM $pref"."user WHERE
-			userposts >= ".$rank['rankposts']);
-		list($rankusers) = mysql_fetch_row($r_user);
+    // users for this rank
+    if( isset($a_rank[($i - 1)]) )
+    {
+        $r_user = thwb_query("SELECT COUNT(userid) FROM $pref"."user WHERE
+            userposts >= ".$rank['rankposts']." AND userposts < ".$a_rank[($i - 1)]['rankposts']);
+        list($rankusers) = mysql_fetch_row($r_user);
+        
+        $r_user = thwb_query("SELECT userid, username FROM $pref"."user WHERE
+            userposts >= ".$rank['rankposts']." AND userposts < ".$a_rank[($i - 1)]['rankposts'].
+            " ORDER BY userposts DESC LIMIT 1");
+        $user = mysql_fetch_array($r_user);
+    }
+    else
+    {
+        $r_user = thwb_query("SELECT COUNT(userid) FROM $pref"."user WHERE
+            userposts >= ".$rank['rankposts']);
+        list($rankusers) = mysql_fetch_row($r_user);
 
-		$r_user = thwb_query("SELECT userid, username FROM $pref"."user WHERE
-			userposts >= ".$rank['rankposts'].
-			" ORDER BY userposts DESC LIMIT 1");
-		$user = mysql_fetch_array($r_user);
-	}
+        $r_user = thwb_query("SELECT userid, username FROM $pref"."user WHERE
+            userposts >= ".$rank['rankposts'].
+            " ORDER BY userposts DESC LIMIT 1");
+        $user = mysql_fetch_array($r_user);
+    }
 
-	if( $rank['rankimage'] )
-		$rank['rankimage'] = '<img src="'.$rank['rankimage'].'">';
-	else
-		$rank['rankimage'] = '&nbsp;';
+    if( $rank['rankimage'] )
+        $rank['rankimage'] = '<img src="'.$rank['rankimage'].'">';
+    else
+        $rank['rankimage'] = '&nbsp;';
 
-	$prozent = intval($rankusers/$usercount * 100);
-	$width = intval($rankusers/$usercount * 120);
-	if( !$width )
-		$width = 1;
-	$invwidth = 120 - $width;
-	
-	eval($Trankrow->GetTemplate('RANKROWS'));
+    $prozent = intval($rankusers/$usercount * 100);
+    $width = intval($rankusers/$usercount * 120);
+    if( !$width )
+        $width = 1;
+    $invwidth = 120 - $width;
+    
+    eval($Trankrow->GetTemplate('RANKROWS'));
 }
 
 $navpath .= 'Rang&uuml;bersicht';

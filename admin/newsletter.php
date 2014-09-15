@@ -31,18 +31,18 @@ if(empty($type) || $type != 'list')
     
 if( !$sendnewsletter )
 {
-	echo '<form method="post" action="newsletter.php"><B>Send newsletter</B><BR>
+    echo '<form method="post" action="newsletter.php"><B>Send newsletter</B><BR>
   <hr width="100%" noshade>
   <table width="100%" border="0" cellspacing="1" cellpadding="3">
     <tr>
-  	  <td colspan="2" bgcolor="#999999">
+        <td colspan="2" bgcolor="#999999">
         <font size="2" color="white"><b>General</b></font>
       </td>
     </tr>
     <tr>
       <td width="100">
-	    Subject
-	  </td>
+        Subject
+      </td>
       <td>
       <input class="tbinput" type="text" size="40" name="subject" value="'.$config['board_name'].' - Newsletter">
       </td>
@@ -50,50 +50,50 @@ if( !$sendnewsletter )
     <tr>
       <td valign="top">Content</td>
       <td>
-		<textarea class="tbinput" name="content" rows="20" cols="40"></textarea>
-	  </td>
+        <textarea class="tbinput" name="content" rows="20" cols="40"></textarea>
+      </td>
     </tr>
     <tr>
       <td valign="top">Send to</td>
       <td>
         <select class="tbinput" name="a_group[]" size="6" multiple>
           <option value="-1" selected>- All groups -</option>';
-	// groups
-	$r_group = query("SELECT groupid, name FROM $pref"."group ORDER BY name ASC");
-	while( $group = mysql_fetch_array($r_group) )
-	{
-		print '<option value="'.$group['groupid'].'">'.$group['name'].'</option>';
-	}
-	
-	print '
+    // groups
+    $r_group = query("SELECT groupid, name FROM $pref"."group ORDER BY name ASC");
+    while( $group = mysql_fetch_array($r_group) )
+    {
+        print '<option value="'.$group['groupid'].'">'.$group['name'].'</option>';
+    }
+    
+    print '
         </select><font size="1"><br>(Use CTRL to select multiple)</font>
-	  </td>
+      </td>
     </tr>
     <tr>
- 	  <td colspan="2" bgcolor="#999999">
-  		<font size="2" color="white"><b>Send newsletter as</b></font>
-	  </td>
+       <td colspan="2" bgcolor="#999999">
+          <font size="2" color="white"><b>Send newsletter as</b></font>
+      </td>
     </tr>
     <tr>
-	  <td valign="top" colspan=2>
-	  <input type="radio" name="type" value="mail" checked>
-	  eMail (<strong>Attention: this does not work reliably for big boards. Use a mass mailing program (like <a href="http://www.group-mail.com">Group Mail</a>) and the email listing feature instead.</strong>)<br>
-	  <input type="radio" name="type" value="pm">
-	  Private Message <br>
+      <td valign="top" colspan=2>
+      <input type="radio" name="type" value="mail" checked>
+      eMail (<strong>Attention: this does not work reliably for big boards. Use a mass mailing program (like <a href="http://www.group-mail.com">Group Mail</a>) and the email listing feature instead.</strong>)<br>
+      <input type="radio" name="type" value="pm">
+      Private Message <br>
       <input type="radio" name="type" value="list">
         Generate mail address list
-	  </td>
-	</tr>
+      </td>
+    </tr>
     <tr>
     <td colspan="2">
-	  <input type="hidden" value="' . $session . '" name="session">
-	  <input type="submit" name="sendnewsletter" value="Send newsletter !">
+      <input type="hidden" value="' . $session . '" name="session">
+      <input type="submit" name="sendnewsletter" value="Send newsletter !">
     </td>
   </tr>
 </table>
 </form>';
-	tb_footer();
-	exit;
+    tb_footer();
+    exit;
 }
 
 if(isset($HTTP_POST_VARS['groups']))
@@ -116,13 +116,13 @@ if( count($a_group) > 0 )
   $content = str_replace("\n", "\r\n", $content);
 
   if($a_group[0] != -1 )
-	{
-	  while( list(, $groupid) = each($a_group) )
-	    {
-	      $where_sql .= " OR INSTR(groupids, ',$groupid,')>0";
-	    }
-		$where_sql = 'WHERE '.substr($where_sql, 4);
-	}
+    {
+      while( list(, $groupid) = each($a_group) )
+        {
+          $where_sql .= " OR INSTR(groupids, ',$groupid,')>0";
+        }
+        $where_sql = 'WHERE '.substr($where_sql, 4);
+    }
   
   $r_user = query("SELECT userid, useremail FROM $pref"."user $where_sql AND userid > $at");
 
@@ -154,8 +154,8 @@ if( count($a_group) > 0 )
               }
               else
               {
-		        query("INSERT INTO $pref"."pm (pmfromid, pmtoid, pmtopic, pmtext, pmtime, pmflags, pmfolder)
-        	        VALUES ($g_user[userid], $user[userid],'" . addslashes($subject) . "','" . addslashes($content) . 
+                query("INSERT INTO $pref"."pm (pmfromid, pmtoid, pmtopic, pmtext, pmtime, pmflags, pmfolder)
+                    VALUES ($g_user[userid], $user[userid],'" . addslashes($subject) . "','" . addslashes($content) . 
                       "',".time().", 1, 0);");
               }
           }

@@ -26,41 +26,41 @@ tb_header();
 
 function EditboxEncode($string)
 {
-	$string = str_replace('&', '&amp;', $string);
-	$string = str_replace('"', '&quot;', $string);
-	$string = str_replace('<', '&lt;', $string);
-	$string = str_replace('>', '&gt;', $string);
-	
-	return $string;
+    $string = str_replace('&', '&amp;', $string);
+    $string = str_replace('"', '&quot;', $string);
+    $string = str_replace('<', '&lt;', $string);
+    $string = str_replace('>', '&gt;', $string);
+    
+    return $string;
 }
 
 function EditboxDecode($string)
 {
-	$string = str_replace('&amp;', '&', $string);
-	$string = str_replace('&quot;', '"', $string);
-	$string = str_replace('&lt;', '<', $string);
-	$string = str_replace('&gt;', '>', $string);
+    $string = str_replace('&amp;', '&', $string);
+    $string = str_replace('&quot;', '"', $string);
+    $string = str_replace('&lt;', '<', $string);
+    $string = str_replace('&gt;', '>', $string);
 
-	return $string;
+    return $string;
 }
 
 function selectbox_board($boardids)
 {
-	global $pref;
-	global $config;
-	global $session;
-	$r_board = query("SELECT boardid, boardname FROM " . $pref . "board");
-	while ( $board = mysql_fetch_array($r_board) )
-	{
-	$selectbox .= "<option value=\"$board[boardid]\" " . ( stristr($boardids,";" . $board[boardid] . ";") != false ? "selected" : "" ) . ">$board[boardname]</option>";
-	}
-	return($selectbox);
+    global $pref;
+    global $config;
+    global $session;
+    $r_board = query("SELECT boardid, boardname FROM " . $pref . "board");
+    while ( $board = mysql_fetch_array($r_board) )
+    {
+    $selectbox .= "<option value=\"$board[boardid]\" " . ( stristr($boardids,";" . $board[boardid] . ";") != false ? "selected" : "" ) . ">$board[boardname]</option>";
+    }
+    return($selectbox);
 }
 
 function NewsForm($action, $news)
 {
-	global $session;
-	print '<form name="announcements" method="post" action="announcements.php">
+    global $session;
+    print '<form name="announcements" method="post" action="announcements.php">
   <table border="0" cellspacing="1" cellpadding="2">
     <tr>
       <td>Subject</td>
@@ -74,7 +74,7 @@ function NewsForm($action, $news)
         <textarea class="tbinput" name="news[newstext]" cols="60" rows="8">' . $news[newstext] . '</textarea>
       </td>
     </tr>
-	<tr>
+    <tr>
       <td valign="top">Boards</td>
       <td>
         <SELECT class="tbinput" name="boardids[]" size="8" multiple>' . selectbox_board($news[boardid]) . '</select>
@@ -99,14 +99,14 @@ function NewsForm($action, $news)
 // ===================================================
 if( $action == "ListNews" )
 {
-	print '<b>Current Announcements</b><br><a href="announcements.php?action=AddNews&session=' . $session . '">Add</a> an announcement<br><br>Note: You can use ThWboard Code in announcements.<br><br>';
-	
-	$r_news = query("SELECT newsid, newstopic, newstext, newstime FROM ".$pref."news ORDER BY newstime DESC");
-	echo mysql_error();
-	while( $news = mysql_fetch_array($r_news) )
-	{
-		print date('d.m.Y H:i: ', $news[newstime]) . "$news[newstopic] [ <a href=\"announcements.php?action=EditNews&session=$session&newsid=$news[newsid]\">edit</a> ] [ <a href=\"announcements.php?action=DeleteNews&session=$session&newsid=$news[newsid]\">delete</a> ]</a><br>";
-	}
+    print '<b>Current Announcements</b><br><a href="announcements.php?action=AddNews&session=' . $session . '">Add</a> an announcement<br><br>Note: You can use ThWboard Code in announcements.<br><br>';
+    
+    $r_news = query("SELECT newsid, newstopic, newstext, newstime FROM ".$pref."news ORDER BY newstime DESC");
+    echo mysql_error();
+    while( $news = mysql_fetch_array($r_news) )
+    {
+        print date('d.m.Y H:i: ', $news[newstime]) . "$news[newstopic] [ <a href=\"announcements.php?action=EditNews&session=$session&newsid=$news[newsid]\">edit</a> ] [ <a href=\"announcements.php?action=DeleteNews&session=$session&newsid=$news[newsid]\">delete</a> ]</a><br>";
+    }
 }
 
 
@@ -115,11 +115,11 @@ if( $action == "ListNews" )
 // ===================================================
 elseif( $action == "EditNews" )
 {
-	print '<b>Edit Announcement</b><br><br>';
-	
-	$r_news = query("SELECT newsid, boardid, newstopic, newstext, newstime FROM ".$pref."news WHERE newsid=$newsid");
-	$news = mysql_fetch_array($r_news);
-	NewsForm("UpdateNews", $news);
+    print '<b>Edit Announcement</b><br><br>';
+    
+    $r_news = query("SELECT newsid, boardid, newstopic, newstext, newstime FROM ".$pref."news WHERE newsid=$newsid");
+    $news = mysql_fetch_array($r_news);
+    NewsForm("UpdateNews", $news);
 }
 
 
@@ -128,14 +128,14 @@ elseif( $action == "EditNews" )
 // ===================================================
 elseif( $action == "UpdateNews" )
 {
-	$news[newstopic] = EditboxDecode($news[newstopic]);
-	
-	while( list(, $boardids2) = @each($boardids) )
-	{
-		$add_board = $add_board.$boardids2.";";
-	}
-	query("UPDATE ".$pref."news SET newstext='" . addslashes($news[newstext]) . "', newstopic='" . addslashes($news[newstopic]) . "', boardid=';$add_board' WHERE newsid=$newsid");
-	print 'Announcement has been updated!';
+    $news[newstopic] = EditboxDecode($news[newstopic]);
+    
+    while( list(, $boardids2) = @each($boardids) )
+    {
+        $add_board = $add_board.$boardids2.";";
+    }
+    query("UPDATE ".$pref."news SET newstext='" . addslashes($news[newstext]) . "', newstopic='" . addslashes($news[newstopic]) . "', boardid=';$add_board' WHERE newsid=$newsid");
+    print 'Announcement has been updated!';
 }
 
 
@@ -144,10 +144,10 @@ elseif( $action == "UpdateNews" )
 // ===================================================
 elseif( $action == "AddNews" )
 {
-	print '<b>Add Announcement</b><br><br>';
-	
-	NewsForm("InsertNews", array());
-	
+    print '<b>Add Announcement</b><br><br>';
+    
+    NewsForm("InsertNews", array());
+    
 }
 
 
@@ -155,14 +155,14 @@ elseif( $action == "AddNews" )
 // ===================================================
 // ===================================================
 elseif( $action == "InsertNews" )
-{	
-	while( list(, $boardids2) = @each($boardids) )
-	{
-		$add_board = $add_board.$boardids2.";";
-	}
-	
-	query("INSERT INTO ".$pref."news (newstopic,boardid, newstext, newstime) VALUES ('" . addslashes($news[newstopic]) . "', ';$add_board', '" . addslashes($news[newstext]) . "', " . time() . ")");
-	print 'Announcement has been added!';
+{    
+    while( list(, $boardids2) = @each($boardids) )
+    {
+        $add_board = $add_board.$boardids2.";";
+    }
+    
+    query("INSERT INTO ".$pref."news (newstopic,boardid, newstext, newstime) VALUES ('" . addslashes($news[newstopic]) . "', ';$add_board', '" . addslashes($news[newstext]) . "', " . time() . ")");
+    print 'Announcement has been added!';
 }
 
 
@@ -171,16 +171,16 @@ elseif( $action == "InsertNews" )
 // ===================================================
 elseif( $action == "DeleteNews" )
 {
-	if( $confirm == 1 )
-	{
-		query("DELETE FROM ".$pref."news WHERE newsid=$newsid");
-		
-		print 'Announcement has been deleted!';
-	}
-	else
-	{
-		print 'Are you sure?<br><a href="announcements.php?session=' . $session . '&newsid=' . $newsid . '&confirm=1&action=DeleteNews">yes</a>';
-	}
+    if( $confirm == 1 )
+    {
+        query("DELETE FROM ".$pref."news WHERE newsid=$newsid");
+        
+        print 'Announcement has been deleted!';
+    }
+    else
+    {
+        print 'Are you sure?<br><a href="announcements.php?session=' . $session . '&newsid=' . $newsid . '&confirm=1&action=DeleteNews">yes</a>';
+    }
 }
 
 tb_footer();

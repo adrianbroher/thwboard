@@ -2,49 +2,49 @@
 
 class CUpdate
 {
-	var		$UpdaterVer		= 1.0;
-	var		$OldVersion		= '2.6b';
-	var		$NewVersion		= '2.7';
-	var		$Prefix			= '';
-	var		$Error			= '';
-	var		$Author			= 'ThWboard Development Team';
-	var		$Date			= '09.03.2002';
-	var		$Notes			= '';
-	
-	function AllowUpdate()
-	{
-		// hack code for 2.6b, because we didnt store the version until 2.7
-		return 1;
-	}
-	
-	function SetError($errmsg)
-	{
-		$this->Error = $errmsg;
-	}
-	
-	function GetError()
-	{
-		return $this->Error;
-	}
+    var        $UpdaterVer        = 1.0;
+    var        $OldVersion        = '2.6b';
+    var        $NewVersion        = '2.7';
+    var        $Prefix            = '';
+    var        $Error            = '';
+    var        $Author            = 'ThWboard Development Team';
+    var        $Date            = '09.03.2002';
+    var        $Notes            = '';
+    
+    function AllowUpdate()
+    {
+        // hack code for 2.6b, because we didnt store the version until 2.7
+        return 1;
+    }
+    
+    function SetError($errmsg)
+    {
+        $this->Error = $errmsg;
+    }
+    
+    function GetError()
+    {
+        return $this->Error;
+    }
 
-	function MassExec($queries)
-	{
-		$a_query = explode(';', $queries);
-		while( list(, $query) = each($a_query) )
-		{
-			if( trim($query) )
-			{
-				thwb_query(trim($query));
-			}
-		}
-	}
-	
-	function UpdateConf()
-	{
-		include('../inc/config.inc.php');
-		
-		$fp = fopen('../inc/config.inc.php', 'w');
-		fwrite($fp, '<?php
+    function MassExec($queries)
+    {
+        $a_query = explode(';', $queries);
+        while( list(, $query) = each($a_query) )
+        {
+            if( trim($query) )
+            {
+                thwb_query(trim($query));
+            }
+        }
+    }
+    
+    function UpdateConf()
+    {
+        include('../inc/config.inc.php');
+        
+        $fp = fopen('../inc/config.inc.php', 'w');
+        fwrite($fp, '<?php
 $mysql_h    = \''.$mysql_h.'\';
 $mysql_u    = \''.$mysql_u.'\';
 $mysql_p    = \''.$mysql_p.'\';
@@ -52,16 +52,16 @@ $mysql_db   = \''.$mysql_db.'\';
 $pref       = \''.$this->Prefix.'\';
 $inst_lock  = 1;
 ');
-		fclose($fp);
-	}
-	
-	function RunUpdate()
-	{
-		// alte conf datei muss entfernt werden..
-		$this->UpdateConf();
-		
-		// update queries hier ..
-		thwb_query("CREATE TABLE $this->Prefix"."registry (
+        fclose($fp);
+    }
+    
+    function RunUpdate()
+    {
+        // alte conf datei muss entfernt werden..
+        $this->UpdateConf();
+        
+        // update queries hier ..
+        thwb_query("CREATE TABLE $this->Prefix"."registry (
   keyname varchar(255) NOT NULL default '',
   keyvalue mediumtext NOT NULL,
   keytype enum('string','integer','boolean','array') NOT NULL default 'string',
@@ -72,14 +72,14 @@ $inst_lock  = 1;
   PRIMARY KEY  (keyname)
 ) TYPE=MyISAM;");
 
-		thwb_query("CREATE TABLE $this->Prefix"."registrygroup (
+        thwb_query("CREATE TABLE $this->Prefix"."registrygroup (
   keygroupid int(10) unsigned NOT NULL auto_increment,
   keygroupname varchar(64) NOT NULL default '',
   keygroupdisplayorder int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (keygroupid)
 ) TYPE=MyISAM;");
 
-		thwb_query("CREATE TABLE $this->Prefix"."calendar (
+        thwb_query("CREATE TABLE $this->Prefix"."calendar (
   eventid int(11) NOT NULL auto_increment,
   eventtime date default NULL,
   eventsubject varchar(255) default NULL,
@@ -88,7 +88,7 @@ $inst_lock  = 1;
   PRIMARY KEY  (eventid)
 ) TYPE=MyISAM;");
 
-		thwb_query("CREATE TABLE $this->Prefix"."group (
+        thwb_query("CREATE TABLE $this->Prefix"."group (
   groupid int(10) unsigned NOT NULL auto_increment,
   name varchar(128) NOT NULL default '',
   accessmask int(10) unsigned NOT NULL default '0',
@@ -96,33 +96,33 @@ $inst_lock  = 1;
   PRIMARY KEY  (groupid)
 ) TYPE=MyISAM;");
 
-		thwb_query("CREATE TABLE $this->Prefix"."groupboard (
+        thwb_query("CREATE TABLE $this->Prefix"."groupboard (
   boardid int(10) unsigned NOT NULL default '0',
   groupid int(10) unsigned NOT NULL default '0',
   accessmask int(10) unsigned NOT NULL default '0',
   KEY boardid (boardid,groupid)
 ) TYPE=MyISAM;");
 
-		thwb_query("DROP TABLE $this->Prefix"."moderator");
-		thwb_query("DROP TABLE $this->Prefix"."boardaccess");
+        thwb_query("DROP TABLE $this->Prefix"."moderator");
+        thwb_query("DROP TABLE $this->Prefix"."boardaccess");
 
-		thwb_query("ALTER TABLE $this->Prefix"."user ADD groupid INT UNSIGNED not null");
-		thwb_query("ALTER TABLE $this->Prefix"."board ADD boardnoguests TINYINT (1) UNSIGNED not null");
-		thwb_query("ALTER TABLE $this->Prefix"."board ADD boarddisabled TINYINT (1) UNSIGNED not null");
-		thwb_query("ALTER TABLE $this->Prefix"."news ADD boardid VARCHAR (255) not null");
-		thwb_query("ALTER TABLE $this->Prefix"."style ADD styletemplate VARCHAR (32) DEFAULT 'default' not null");
-		thwb_query("ALTER TABLE $this->Prefix"."user ADD usermsn VARCHAR (50) not null");
-		thwb_query("ALTER TABLE $this->Prefix"."user ADD useraim VARCHAR (50) not null");
-		thwb_query("ALTER TABLE $this->Prefix"."board DROP boardcanpostnew");
-		thwb_query("ALTER TABLE $this->Prefix"."board DROP boardcanreply");
-		thwb_query("ALTER TABLE $this->Prefix"."board DROP boardisprivate");
-		
-		thwb_query("UPDATE $this->Prefix"."style SET styletemplate='default'");
+        thwb_query("ALTER TABLE $this->Prefix"."user ADD groupid INT UNSIGNED not null");
+        thwb_query("ALTER TABLE $this->Prefix"."board ADD boardnoguests TINYINT (1) UNSIGNED not null");
+        thwb_query("ALTER TABLE $this->Prefix"."board ADD boarddisabled TINYINT (1) UNSIGNED not null");
+        thwb_query("ALTER TABLE $this->Prefix"."news ADD boardid VARCHAR (255) not null");
+        thwb_query("ALTER TABLE $this->Prefix"."style ADD styletemplate VARCHAR (32) DEFAULT 'default' not null");
+        thwb_query("ALTER TABLE $this->Prefix"."user ADD usermsn VARCHAR (50) not null");
+        thwb_query("ALTER TABLE $this->Prefix"."user ADD useraim VARCHAR (50) not null");
+        thwb_query("ALTER TABLE $this->Prefix"."board DROP boardcanpostnew");
+        thwb_query("ALTER TABLE $this->Prefix"."board DROP boardcanreply");
+        thwb_query("ALTER TABLE $this->Prefix"."board DROP boardisprivate");
+        
+        thwb_query("UPDATE $this->Prefix"."style SET styletemplate='default'");
 
-		thwb_query("INSERT INTO $this->Prefix"."group VALUES (0,'Default Group',135,1)");
-		thwb_query("UPDATE $this->Prefix"."group SET groupid='0' WHERE name='Default Group'");
+        thwb_query("INSERT INTO $this->Prefix"."group VALUES (0,'Default Group',135,1)");
+        thwb_query("UPDATE $this->Prefix"."group SET groupid='0' WHERE name='Default Group'");
 
-		$this->MassExec("
+        $this->MassExec("
 INSERT INTO $this->Prefix"."registrygroup VALUES (1,'General','');
 INSERT INTO $this->Prefix"."registrygroup VALUES (2,'Options',1);
 INSERT INTO $this->Prefix"."registrygroup VALUES (3,'General Vars',2);
@@ -130,7 +130,7 @@ INSERT INTO $this->Prefix"."registrygroup VALUES (4,'Post Options',3);
 INSERT INTO $this->Prefix"."registrygroup VALUES (5,'Misc',5);
 INSERT INTO $this->Prefix"."registrygroup VALUES (6,'Signature Control',4);");
 
-		$this->MassExec("
+        $this->MassExec("
 INSERT INTO $this->Prefix"."registry VALUES ('board_name','Forum-name','string','Board name','',1,'');
 INSERT INTO $this->Prefix"."registry VALUES ('board_baseurl','http://localhost/','string','Board URL','Used in eMails',1,1);
 INSERT INTO $this->Prefix"."registry VALUES ('board_admin','root@localhost','string','Board Admin/Tech eMail','',1,2);
@@ -173,6 +173,6 @@ INSERT INTO $this->Prefix"."registry VALUES ('sig_maxlen','600','integer','Max. 
 INSERT INTO $this->Prefix"."registry VALUES ('sig_maxlines','5','integer','Max. signature lines','The maximum number of lines allowed in a signature. Note that a line can be wrapped depending on the users browser size. Thus you should set an appropriate max length in chars as well. One average line has about 120 chars at a resolution of 1024*768.',6,2);
 INSERT INTO $this->Prefix"."registry VALUES ('sig_restrict','1','boolean','Enable signature restrictions?','Enable this to restrict the signature length using the options below.',6,0);");
 
-		return 0;
-	}	
+        return 0;
+    }    
 }

@@ -58,37 +58,37 @@ $TOPICROWS = '';
 
 if( !mysql_num_rows($r_usermarkedthreads) )
 {
-	$TTopicrow = new Template('./templates/'.$style['styletemplate'].'/board_nothreads.html');
-	eval($TTopicrow->GetTemplate("TOPICROWS"));
+    $TTopicrow = new Template('./templates/'.$style['styletemplate'].'/board_nothreads.html');
+    eval($TTopicrow->GetTemplate("TOPICROWS"));
 }
 else
 {
   while ($a_thread = mysql_fetch_assoc($r_usermarkedthreads)) 
     {
-		$i % 2 > 0 ? $thisrowbg = $style['CellB'] : $thisrowbg = $style['CellA'];
-		$i++;
-		$r_thread = mysql_query("SELECT threadid, threadauthor, threadtopic, threadviews, threadreplies, threadtime, boardid, threadlastreplyby FROM " . $pref . "thread WHERE threadid = '" . $a_thread['threadid'] . "'");
-		if ( mysql_num_rows( $r_thread ) != 0 )
-		{
-			$thread = mysql_fetch_array( $r_thread );
-			$r_board = mysql_query("SELECT boardname FROM " . $pref . "board WHERE boardid = '" . $thread['boardid'] . "'");
-			$board = mysql_fetch_array( $r_board );
-			
-			$thread['threadtopic'] .= "<BR><span style=\"color:" . $style['color1'] . "\">". $style['smallfont'] . "Forum: " . $board['boardname'] . $style['smallfontend'] . "</span>";
-			
-			$thread['threadtime'] = form_date($thread['threadtime']);		
-			eval($TTopicrow->GetTemplate("TOPICROWS"));
-		}
-		else
-		{
-			$usermarkedthreads = str_replace( ";" . $threadid . ";", ";", $g_user['usermarkedthreads'] );
-			if ( strlen( $usermarkedthreads ) == 1 )
-			{
-				$usermarkedthreads = "";
-			}
-			mysql_query("UPDATE " . $pref . "user SET usermarkedthreads = '" . $usermarkedthreads . "' WHERE userid = '" . $g_user['userid'] . "'");
-		}
-	}
+        $i % 2 > 0 ? $thisrowbg = $style['CellB'] : $thisrowbg = $style['CellA'];
+        $i++;
+        $r_thread = mysql_query("SELECT threadid, threadauthor, threadtopic, threadviews, threadreplies, threadtime, boardid, threadlastreplyby FROM " . $pref . "thread WHERE threadid = '" . $a_thread['threadid'] . "'");
+        if ( mysql_num_rows( $r_thread ) != 0 )
+        {
+            $thread = mysql_fetch_array( $r_thread );
+            $r_board = mysql_query("SELECT boardname FROM " . $pref . "board WHERE boardid = '" . $thread['boardid'] . "'");
+            $board = mysql_fetch_array( $r_board );
+            
+            $thread['threadtopic'] .= "<BR><span style=\"color:" . $style['color1'] . "\">". $style['smallfont'] . "Forum: " . $board['boardname'] . $style['smallfontend'] . "</span>";
+            
+            $thread['threadtime'] = form_date($thread['threadtime']);        
+            eval($TTopicrow->GetTemplate("TOPICROWS"));
+        }
+        else
+        {
+            $usermarkedthreads = str_replace( ";" . $threadid . ";", ";", $g_user['usermarkedthreads'] );
+            if ( strlen( $usermarkedthreads ) == 1 )
+            {
+                $usermarkedthreads = "";
+            }
+            mysql_query("UPDATE " . $pref . "user SET usermarkedthreads = '" . $usermarkedthreads . "' WHERE userid = '" . $g_user['userid'] . "'");
+        }
+    }
 }
 
 eval($TTopics->GetTemplate("CONTENT"));

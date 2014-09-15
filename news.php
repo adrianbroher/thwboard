@@ -38,14 +38,14 @@ $NEWSROWS = '';
 $i = 0;
 while( $news = mysql_fetch_array($r_news) )
 {
-	$i++;
-	
-	$news['newstopic'] = parse_code($news['newstopic'], 0, 0, 1, 1);
-	$news['newstext'] = parse_code($news['newstext'], 1, 1, 1, 1);
-	$news['newstime'] = form_date($news['newstime']);
-	
-	$bgcolor = $i % 2 == 0 ? $style['CellA'] : $style['CellB'];
-	eval($TNewsrow->GetTemplate("NEWSROWS"));
+    $i++;
+    
+    $news['newstopic'] = parse_code($news['newstopic'], 0, 0, 1, 1);
+    $news['newstext'] = parse_code($news['newstext'], 1, 1, 1, 1);
+    $news['newstime'] = form_date($news['newstime']);
+    
+    $bgcolor = $i % 2 == 0 ? $style['CellA'] : $style['CellB'];
+    eval($TNewsrow->GetTemplate("NEWSROWS"));
 }
 
 $navpath .= 'Announcements';

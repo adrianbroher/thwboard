@@ -31,36 +31,36 @@ if(!isset($user) || !isset($user['userid']))
 
 // age calculation taken from http://www.mysql.com/doc/en/Date_calculations.html
 $r_user = thwb_query( "SELECT
-		userid,
-		username,
-		useremail,
-		userhomepage,
-		userlocation,
-		usericq,
-		useraim,
-		usermsn,
-		userbday,
-		useroccupation,
-		userinterests,
-		usersignature,
-		userposts,
-		userjoin,
-		userlastpost,
-		userrating,
-		uservotes,
-		userhideemail,
-		userbday,
-		usertitle,
-		(YEAR(CURRENT_DATE)-YEAR(userbday)) - (RIGHT(CURRENT_DATE,5)<RIGHT(userbday,5)) AS userage
-	FROM
-		$pref"."user
-	WHERE
-		userid=".intval($user['userid'])
+        userid,
+        username,
+        useremail,
+        userhomepage,
+        userlocation,
+        usericq,
+        useraim,
+        usermsn,
+        userbday,
+        useroccupation,
+        userinterests,
+        usersignature,
+        userposts,
+        userjoin,
+        userlastpost,
+        userrating,
+        uservotes,
+        userhideemail,
+        userbday,
+        usertitle,
+        (YEAR(CURRENT_DATE)-YEAR(userbday)) - (RIGHT(CURRENT_DATE,5)<RIGHT(userbday,5)) AS userage
+    FROM
+        $pref"."user
+    WHERE
+        userid=".intval($user['userid'])
 );
-	
+    
 if( mysql_num_rows($r_user) < 1 )
 {
-	message("Fehler","Benutzer existiert nicht");
+    message("Fehler","Benutzer existiert nicht");
 }
 
 $user = mysql_fetch_array($r_user);
@@ -72,9 +72,9 @@ $Tprofile = new Template("templates/" . $style['styletemplate'] . "/viewprofile.
 $user['userhomepage'] = str_replace('"', '', $user['userhomepage']);
 
 if( trim($user['userhomepage']) == "http://" )
-	$user['userhomepage'] = '';
+    $user['userhomepage'] = '';
 else
-	$user['userhomepage'] = '<a href="http://'. substr($user['userhomepage'], 7) .'" target="_blank">'. parse_code($user['userhomepage']) .'</a>';
+    $user['userhomepage'] = '<a href="http://'. substr($user['userhomepage'], 7) .'" target="_blank">'. parse_code($user['userhomepage']) .'</a>';
 $user['userjoin'] = form_date($user['userjoin']);
 $user['userlastpost'] = form_date($user['userlastpost']);
 $user['userinterests'] = parse_code($user['userinterests'], 1, !$config['imageslevel'], 1, $config['smilies']);
@@ -86,32 +86,32 @@ $user['userrating'] = "- (Vom Administrator deaktiviert)";
 
 if( $user['userbday'] == '0000-00-00' )
 {
-	$user['userage'] = '';
+    $user['userage'] = '';
 }
 else
 {
-	$user['userage'] = (int)($user['userage']);
+    $user['userage'] = (int)($user['userage']);
 }
 
 if( $user['usericq'] == 0 )
 {
-	$user['usericq'] = "";
+    $user['usericq'] = "";
 }
 
 if( $config['showpostslevel'] == 0 )
 {
-	$user['userposts'] = "- (Vom Administrator deaktiviert)";
+    $user['userposts'] = "- (Vom Administrator deaktiviert)";
 }
 elseif( $config['showpostslevel'] == 1 && ($g_user['userid'] != $user['userid']) )
 {
-	if( $g_user['userisadmin'] )
-	{
-		$user['userposts'] = '- (Versteckt)'.$style['smallfont'].' [Admin: Postcount = '.$user['userposts'].' ]'.$style['smallfontend'];
-	}
-	else
-	{
-		$user['userposts'] = '- (Versteckt)';
-	}
+    if( $g_user['userisadmin'] )
+    {
+        $user['userposts'] = '- (Versteckt)'.$style['smallfont'].' [Admin: Postcount = '.$user['userposts'].' ]'.$style['smallfontend'];
+    }
+    else
+    {
+        $user['userposts'] = '- (Versteckt)';
+    }
 }
 
 $user['useremail'] = get_email($user);
@@ -122,12 +122,12 @@ $user['userip'] = '';
 
 if( $g_user['userisadmin'] )
 {
-	$r_online = thwb_query("SELECT onlineip FROM $pref"."online WHERE userid='$user[userid]' AND onlinetime > ".(time() - $config['session_timeout']) );
-	if( mysql_num_rows($r_online) > 0 )
-	{
-		$online = mysql_fetch_array($r_online);
-		$user['userip'] = $style['smallfont'].' [Admin: IP = '.$online['onlineip'].', Hostname = '.gethostbyaddr($online['onlineip']).' ]'.$style['smallfontend'];
-	}
+    $r_online = thwb_query("SELECT onlineip FROM $pref"."online WHERE userid='$user[userid]' AND onlinetime > ".(time() - $config['session_timeout']) );
+    if( mysql_num_rows($r_online) > 0 )
+    {
+        $online = mysql_fetch_array($r_online);
+        $user['userip'] = $style['smallfont'].' [Admin: IP = '.$online['onlineip'].', Hostname = '.gethostbyaddr($online['onlineip']).' ]'.$style['smallfontend'];
+    }
 }
 
 $user['useraim'] = parse_code($user['useraim']);

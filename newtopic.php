@@ -42,76 +42,76 @@ if(!isset($post['postemailnotify']))
 
 if( $g_user['userid'] == 0 && !$P->has_permission( P_POSTNEW ) )
 {
-	message("Hinweis", "Sie m&uuml;ssen registriert sein, um Beitr&auml;ge erstellen zu k&ouml;nnen");
+    message("Hinweis", "Sie m&uuml;ssen registriert sein, um Beitr&auml;ge erstellen zu k&ouml;nnen");
 }
 
 requires_permission( P_POSTNEW );
 
 if( !isset($Submit) )
 {
-	$newtopicicons = '';
-	$j = 1;
-	while( list($iconid, $img) = each($topicicon) )
-	{
-		$newtopicicons .= "<INPUT type=\"radio\" name=\"thread[threadiconid]\" value=\"$iconid\" >
-			<img src=\"templates/".$style['styletemplate']."/images/icon/".$img."_new.png\">&nbsp;&nbsp;&nbsp;";
-		if( $j % 6 == 0 )
-		{
-			$newtopicicons .= "<br>";
-		}
-	
-		$j++;
-	}
-	
-	if( $config['smilies'] )
-	{
-		$smilies_on_off = "AN";
-	}
-	else
-	{
-		$smilies_on_off = "AUS";
-	}
+    $newtopicicons = '';
+    $j = 1;
+    while( list($iconid, $img) = each($topicicon) )
+    {
+        $newtopicicons .= "<INPUT type=\"radio\" name=\"thread[threadiconid]\" value=\"$iconid\" >
+            <img src=\"templates/".$style['styletemplate']."/images/icon/".$img."_new.png\">&nbsp;&nbsp;&nbsp;";
+        if( $j % 6 == 0 )
+        {
+            $newtopicicons .= "<br>";
+        }
+    
+        $j++;
+    }
+    
+    if( $config['smilies'] )
+    {
+        $smilies_on_off = "AN";
+    }
+    else
+    {
+        $smilies_on_off = "AUS";
+    }
 
-	if( $config['use_email'] )
-	{
-		$notifyavailable = '';
-	}
-	else
-	{
-		$notifyavailable = ' (Derzeit nicht verf&uuml;gbar)';
-	}
+    if( $config['use_email'] )
+    {
+        $notifyavailable = '';
+    }
+    else
+    {
+        $notifyavailable = ' (Derzeit nicht verf&uuml;gbar)';
+    }
 //               <input class="tbinput" type="text" name="thread[postguestname]">
-	if( $g_user['userid'] )
-	{
-		$replyusername = "$style[stdfont]$g_user[userhtmlname]$style[stdfontend]$style[smallfont] [ <a href=\"".build_link('logout.php?uid='.$g_user['userid'])."\">Logout</a> ]$style[smallfontend]";
-	}
-	else
-	{
-		if( $g_user['userid'] == 0 && $P->has_permission( P_POSTNEW ) )
-		{
-			$replyusername = '<input class="tbinput" name="post[postguestname]" type="text">' . $style['smallfont'] .
-			' (Minimal ' . $config['min_usernamelength'] . ', maximal ' . $config['max_usernamelength'] .
-			' Zeichen, keine Sonderzeichen) <b>Das Forum speichert ihre IP-Addresse!</b>' . $style['smallfontend'];
-		}
-		else
-		{
-			$replyusername = '';
-		}
-	}
-	
-	$Tframe= new Template("templates/" . $style['styletemplate'] . "/frame.html");
-	$Tform= new Template("templates/" . $style['styletemplate'] . "/newtopic.html");
+    if( $g_user['userid'] )
+    {
+        $replyusername = "$style[stdfont]$g_user[userhtmlname]$style[stdfontend]$style[smallfont] [ <a href=\"".build_link('logout.php?uid='.$g_user['userid'])."\">Logout</a> ]$style[smallfontend]";
+    }
+    else
+    {
+        if( $g_user['userid'] == 0 && $P->has_permission( P_POSTNEW ) )
+        {
+            $replyusername = '<input class="tbinput" name="post[postguestname]" type="text">' . $style['smallfont'] .
+            ' (Minimal ' . $config['min_usernamelength'] . ', maximal ' . $config['max_usernamelength'] .
+            ' Zeichen, keine Sonderzeichen) <b>Das Forum speichert ihre IP-Addresse!</b>' . $style['smallfontend'];
+        }
+        else
+        {
+            $replyusername = '';
+        }
+    }
+    
+    $Tframe= new Template("templates/" . $style['styletemplate'] . "/frame.html");
+    $Tform= new Template("templates/" . $style['styletemplate'] . "/newtopic.html");
 
-	$navpath .= 'Neues Thema erstellen';
-	
-	eval($Tform->GetTemplate("CONTENT"));
-	eval($Tframe->GetTemplate());
+    $navpath .= 'Neues Thema erstellen';
+    
+    eval($Tform->GetTemplate("CONTENT"));
+    eval($Tframe->GetTemplate());
 }
 else
 {
   $msg = '';
 
-	$post['posttext'] = strip_session($post['posttext']);
+    $post['posttext'] = strip_session($post['posttext']);
 
   
   // Bannedwords-Protection
@@ -121,7 +121,7 @@ else
     }
   if( $config["usebwordprot"] >= BWORD_POST )
     {
-		$post["posttext"] = check_banned($post["posttext"]);
+        $post["posttext"] = check_banned($post["posttext"]);
     }
   if( strlen($thread['threadtopic']) > $config['subject_maxlength'] )
     {
@@ -156,7 +156,7 @@ else
   // ANTI Guest Spamm
   if( $g_user['userid'] == 0 && $P->has_permission( P_REPLY ) )
   {
-	  prevent_guestspam();
+      prevent_guestspam();
   }
   
   $time = time();
@@ -200,39 +200,39 @@ else
     }
   // die neue nachricht abspeichern in dem topics table
   thwb_query("INSERT INTO ".$pref."thread (threadtime, threadtopic, threadauthor, boardid,
-		threadlastreplyby, threadiconid, threadcreationtime)
-		VALUES('$time',
-		'".addslashes(preparse_code($thread['threadtopic']))."',
-		'".addslashes($g_user['username'])."',
-		'$board[boardid]',
-		'".addslashes($g_user['username'])."',
-		'".intval($thread['threadiconid'])."',
-		'$time')");
+        threadlastreplyby, threadiconid, threadcreationtime)
+        VALUES('$time',
+        '".addslashes(preparse_code($thread['threadtopic']))."',
+        '".addslashes($g_user['username'])."',
+        '$board[boardid]',
+        '".addslashes($g_user['username'])."',
+        '".intval($thread['threadiconid'])."',
+        '$time')");
   
   $thread['threadid'] = mysql_insert_id();
   
   // die neue nachricht abspeichern in dem messages table
   thwb_query("INSERT INTO ".$pref."post (posttime, posttext, userid, threadid, postemailnotify, postip, postsmilies,
-		postcode, postguestname)
-		VALUES('$time',
-		'" . addslashes(preparse_code($post['posttext'])) . "',
-		'$g_user[userid]',
-		'$thread[threadid]',
-		'$post[postemailnotify]',
-		'".addslashes($REMOTE_ADDR)."',
-		'" . ($post['postsmilies'] ? 1 : 0) . "',
-		'" . ($post['postcode'] ? 1 : 0) . "',
-		'" . addslashes($post['postguestname']) . "')");
+        postcode, postguestname)
+        VALUES('$time',
+        '" . addslashes(preparse_code($post['posttext'])) . "',
+        '$g_user[userid]',
+        '$thread[threadid]',
+        '$post[postemailnotify]',
+        '".addslashes($REMOTE_ADDR)."',
+        '" . ($post['postsmilies'] ? 1 : 0) . "',
+        '" . ($post['postcode'] ? 1 : 0) . "',
+        '" . addslashes($post['postguestname']) . "')");
 
   // Den topics-count-wert des board erh&ouml;hen
   thwb_query("UPDATE ".$pref."board SET
-	boardthreads=boardthreads+1,
-	boardlastpost='$time',
-	boardposts=boardposts+1,
-	boardlastpostby='" . addslashes($g_user['username']) . "',
-	boardthreadtopic='" . addslashes(preparse_code($thread['threadtopic'])) . "',
-	boardthreadid=$thread[threadid]
-		WHERE boardid='$board[boardid]'");
+    boardthreads=boardthreads+1,
+    boardlastpost='$time',
+    boardposts=boardposts+1,
+    boardlastpostby='" . addslashes($g_user['username']) . "',
+    boardthreadtopic='" . addslashes(preparse_code($thread['threadtopic'])) . "',
+    boardthreadid=$thread[threadid]
+        WHERE boardid='$board[boardid]'");
   
   if( $g_user['userid'] )
     {

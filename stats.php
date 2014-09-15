@@ -36,10 +36,10 @@ $stats = '';
 
 while (($subdir = readdir($dir)) !== false)
 {
-	if(!preg_match('/\.stats\.php$/i', $subdir))
-		continue;
-	
-	include('./inc/statscode/' . $subdir);
+    if(!preg_match('/\.stats\.php$/i', $subdir))
+        continue;
+    
+    include('./inc/statscode/' . $subdir);
 }
 closedir($dir);
 $get_part = 'body';
@@ -52,35 +52,35 @@ $stats_config = array();
 /*$stats_config['gdversion'] = CheckGDVersion();
 if( $config['gdstats'] && $stats_config['gdversion'][0] )
 {
-	$stats_config['gd_enabled'] = true;
-	switch( $stats_config['gdversion'][0] )
-	{
-		case 1:
-			$stats_config['gd2'] = false;
-			$stats_config['gd_ttf'] = true;
-			break;
-		case 2:
-			$stats_config['gd2'] = true;
-			$stats_config['gd_ttf'] = false;
-			break;
-	}
+    $stats_config['gd_enabled'] = true;
+    switch( $stats_config['gdversion'][0] )
+    {
+        case 1:
+            $stats_config['gd2'] = false;
+            $stats_config['gd_ttf'] = true;
+            break;
+        case 2:
+            $stats_config['gd2'] = true;
+            $stats_config['gd_ttf'] = false;
+            break;
+    }
 }
 else
 {
-	$stats_config['gd_enabled'] = false;
+    $stats_config['gd_enabled'] = false;
 }
 if( !$config['gdstatsttf'] )
 {
-	$stats_config['gd_ttf'] = false;
+    $stats_config['gd_ttf'] = false;
 }
 */
 if( !isset($detail) || !isset($selectionpoints[$detail]) )
 {
-	$stats_config['detailpage'] = 'default';
+    $stats_config['detailpage'] = 'default';
 }
 else
 {
-	$stats_config['detailpage'] = $detail;
+    $stats_config['detailpage'] = $detail;
 }
 
 unset($detail);
@@ -98,16 +98,16 @@ $titleprepend = 'Statistik (' . $selectionpoints[$stats_config['detailpage']]['t
 
 if( count($selectionpoints) < 1 )
 {
-	$selform = $style['stdfont'] . '<font color="' . $style['colorbgfont'] . '"><b>Keine Statistiken installiert!</b></font>' . $style['stdfontend'];
+    $selform = $style['stdfont'] . '<font color="' . $style['colorbgfont'] . '"><b>Keine Statistiken installiert!</b></font>' . $style['stdfontend'];
 }
 else
 {
-	$selform = '<form action="'.build_link("stats.php").'" method="post" name="statsselform"><select name="detail" size="1" class="tbselect" onChange="statsselform.submit()">';
-	foreach( $selectionpoints as $singlepoint )
-	{
-		$selform .= '<option ' . ( $stats_config['detailpage'] == $singlepoint['base'] ? 'selected="selected"' : '' ) . ' value="' . $singlepoint['base'] . '">' . $singlepoint['title'] . '</option>';
-	}
-	$selform .= '</select> <input type="submit" value="Go" class="tbbutton">';
+    $selform = '<form action="'.build_link("stats.php").'" method="post" name="statsselform"><select name="detail" size="1" class="tbselect" onChange="statsselform.submit()">';
+    foreach( $selectionpoints as $singlepoint )
+    {
+        $selform .= '<option ' . ( $stats_config['detailpage'] == $singlepoint['base'] ? 'selected="selected"' : '' ) . ' value="' . $singlepoint['base'] . '">' . $singlepoint['title'] . '</option>';
+    }
+    $selform .= '</select> <input type="submit" value="Go" class="tbbutton">';
 }
 
 // ******************************************************
@@ -120,7 +120,7 @@ $t_stats_main = new Template('./templates/' . $style['styletemplate'] . '/stats_
 $stats = '';
 if( count($selectionpoints) >= 1 )
 {
-	include('./inc/statscode/' . $stats_config['detailpage'] . '.stats.php');
+    include('./inc/statscode/' . $stats_config['detailpage'] . '.stats.php');
 }
 
 // ******************************************************

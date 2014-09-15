@@ -26,32 +26,32 @@ $style_file_version = '1.0';
 
 if( $action == 'ExportStyle' )
 {
-	$r_style = query("SELECT * FROM ".$pref."style WHERE styleid=$styleid");
-	$style = mysql_fetch_array($r_style);
+    $r_style = query("SELECT * FROM ".$pref."style WHERE styleid=$styleid");
+    $style = mysql_fetch_array($r_style);
 
-	$filename = strtolower($style['stylename']);
-	for( $i = 0; $i < strlen($filename); $i++ )
-	{
-		if( !ereg('([a-z0-9])', $filename[$i]) )
-		{
-			$filename[$i] = '_';
-		} 		
-	}	
-	
-	header('Content-Type: application/octetstream');
-	header('Content-Disposition: filename="'.$filename.'.style"');
-	header('Pragma: no-cache');
-	header('Expires: 0');
+    $filename = strtolower($style['stylename']);
+    for( $i = 0; $i < strlen($filename); $i++ )
+    {
+        if( !ereg('([a-z0-9])', $filename[$i]) )
+        {
+            $filename[$i] = '_';
+        }         
+    }    
+    
+    header('Content-Type: application/octetstream');
+    header('Content-Disposition: filename="'.$filename.'.style"');
+    header('Pragma: no-cache');
+    header('Expires: 0');
 
-	echo 'styleversion='.$style_file_version."\n";
-	while( list($k, $v) = each($style) )
-	{
-		if( $k != 'styleid' && $k != 'styleispublic' && $k != 'styleisdefault' && gettype($k) != 'integer')
-		{
-			echo $k.'='.$v."\n";
-		}
-	}
-	exit;
+    echo 'styleversion='.$style_file_version."\n";
+    while( list($k, $v) = each($style) )
+    {
+        if( $k != 'styleid' && $k != 'styleispublic' && $k != 'styleisdefault' && gettype($k) != 'integer')
+        {
+            echo $k.'='.$v."\n";
+        }
+    }
+    exit;
 }
 
 
@@ -59,34 +59,34 @@ tb_header();
 
 /*
  * =======================================
- *				<functions>
+ *                <functions>
  * =======================================
  */
 function EditboxEncode($string)
 {
-	$string = str_replace('&', '&amp;', $string);
-	$string = str_replace('"', '&quot;', $string);
-	$string = str_replace('<', '&lt;', $string);
-	$string = str_replace('>', '&gt;', $string);
-	
-	return $string;
+    $string = str_replace('&', '&amp;', $string);
+    $string = str_replace('"', '&quot;', $string);
+    $string = str_replace('<', '&lt;', $string);
+    $string = str_replace('>', '&gt;', $string);
+    
+    return $string;
 }
 
 function EditboxDecode($string)
 {
-	$string = str_replace('&amp;', '&', $string);
-	$string = str_replace('&quot;', '"', $string);
-	$string = str_replace('&lt;', '<', $string);
-	$string = str_replace('&gt;', '>', $string);
+    $string = str_replace('&amp;', '&', $string);
+    $string = str_replace('&quot;', '"', $string);
+    $string = str_replace('&lt;', '<', $string);
+    $string = str_replace('&gt;', '>', $string);
 
-	return $string;
+    return $string;
 }
 
 function StyleForm($action, $style)
 {
-	global $session;
-	
-	print '<form method="post" action="style.php">
+    global $session;
+    
+    print '<form method="post" action="style.php">
   <table width="100%" border="0" cellspacing="1" cellpadding="3">
     <tr> 
       <td>Stylename</td>
@@ -105,18 +105,18 @@ function StyleForm($action, $style)
     <tr> 
       <td>Template set</td>
       <td width="1">
-	    &nbsp; 
+        &nbsp; 
       </td>
       <td> 
         <select class="tbinput" name="style[styletemplate]" size="1">';
-		
-		$a_templateset = get_templatesetarray();
-		while( list(, $file) = each($a_templateset) )
-		{
-			print '<option value="'.$file.'"'.($file == $style['styletemplate'] ? ' selected' : '').'>'.$file.'</option>';
-		}
-	
-	print'
+        
+        $a_templateset = get_templatesetarray();
+        while( list(, $file) = each($a_templateset) )
+        {
+            print '<option value="'.$file.'"'.($file == $style['styletemplate'] ? ' selected' : '').'>'.$file.'</option>';
+        }
+    
+    print'
         </select>
       </td>
     </tr>
@@ -390,38 +390,38 @@ function writestyle($id)
 
 /*
  * =======================================
- *				ListStyles
+ *                ListStyles
  * =======================================
  */
 if( $action == "ListStyles" )
 {
-	print '<b>Styles</b><br><br>';
+    print '<b>Styles</b><br><br>';
 
-	$r_style = query("SELECT styleid, stylename, styleispublic, styleisdefault FROM ".$pref."style");
-	
-	print '<table border="0" cellspacing="1" cellpadding="5">';
+    $r_style = query("SELECT styleid, stylename, styleispublic, styleisdefault FROM ".$pref."style");
+    
+    print '<table border="0" cellspacing="1" cellpadding="5">';
 
-	while( $style = mysql_fetch_array($r_style) )
-	{
-		if( $style['styleispublic'] )
-		{
-			$ispublic = '<font color="darkblue">*</font>';
-		}
-		else
-		{
-			$ispublic = '';
-		}
+    while( $style = mysql_fetch_array($r_style) )
+    {
+        if( $style['styleispublic'] )
+        {
+            $ispublic = '<font color="darkblue">*</font>';
+        }
+        else
+        {
+            $ispublic = '';
+        }
 
-		if( $style['styleisdefault'] )
-		{
-			$isdefault = '<font color="red">*</font>';
-		}
-		else
-		{
-			$isdefault = '';
-		}
+        if( $style['styleisdefault'] )
+        {
+            $isdefault = '<font color="red">*</font>';
+        }
+        else
+        {
+            $isdefault = '';
+        }
 
-		print '  <tr> 
+        print '  <tr> 
     <td><font size="2">' . $style[stylename] . '</font></td>
     <td><font size="2" width="1">' . $isdefault . '</font></td>
     <td><font size="2" width="1">' . $ispublic . '</font></td>
@@ -430,14 +430,14 @@ if( $action == "ListStyles" )
     <td><font size="2"><a href="style.php?action=SetDefault&styleid=' . $style[styleid] . '&session=' . $session . '">set as default</a></font></td>
     <td><font size="2"><a href="style.php?action=ExportStyle&styleid=' . $style[styleid] . '&session=' . $session . '">export</a></font></td>
   </tr>';
-	}
+    }
 
-	print '</table>';
-	
-	echo '<br><br><font color="red">*</font> = Global default style: This style will be used in every board unless the board has its own style.<br>
-	<font color="darkblue">*</font> = Public style: Users can select this style in their profile.<br><br>';
+    print '</table>';
+    
+    echo '<br><br><font color="red">*</font> = Global default style: This style will be used in every board unless the board has its own style.<br>
+    <font color="darkblue">*</font> = Public style: Users can select this style in their profile.<br><br>';
 
-	echo '<b><font color="red">New!</font> Get more styles:</b> <a href="dynx.php" target="_blank">Download</a><br><br>';
+    echo '<b><font color="red">New!</font> Get more styles:</b> <a href="dynx.php" target="_blank">Download</a><br><br>';
 }
 
 
@@ -446,61 +446,61 @@ if( $action == "ListStyles" )
 
 /*
  * =======================================
- *				EditStyle
+ *                EditStyle
  * =======================================
  */
 elseif( $action == "EditStyle" )
 {
-	print '<b>Edit styleset</b><br><br>';
+    print '<b>Edit styleset</b><br><br>';
 
-	$r_style = query("SELECT * FROM ".$pref."style WHERE styleid=$styleid");
-	$style = mysql_fetch_array($r_style);
+    $r_style = query("SELECT * FROM ".$pref."style WHERE styleid=$styleid");
+    $style = mysql_fetch_array($r_style);
 
-	StyleForm("UpdateStyle", $style);
+    StyleForm("UpdateStyle", $style);
 }
 
 
 
 /*
  * =======================================
- *				UpdateStyle
+ *                UpdateStyle
  * =======================================
  */
 elseif( $action == "UpdateStyle" )
 {
-	$style['stdfont'] = EditboxDecode($style['stdfont']);
+    $style['stdfont'] = EditboxDecode($style['stdfont']);
 
-	if( $style['styleispublic'] != 1 )	
-	{
-		// the admin has decided that this style is not public.
-		// in case it *was* public, make sure no one can use this style any longer
-		query("UPDATE ".$pref."user SET styleid=0 WHERE styleid=$style[styleid]");
-	}
+    if( $style['styleispublic'] != 1 )    
+    {
+        // the admin has decided that this style is not public.
+        // in case it *was* public, make sure no one can use this style any longer
+        query("UPDATE ".$pref."user SET styleid=0 WHERE styleid=$style[styleid]");
+    }
 
-	query("UPDATE ".$pref."style SET
-		stylename='".addslashes($style['stylename'])."',
-		colorbg='$style[colorbg]',
-		colorbgfont='$style[colorbgfont]',
-		color1='$style[color1]',
-		CellA='$style[CellA]',
-		CellB='$style[CellB]',
-		color4='$style[color4]',
-		col_he_fo_font='$style[col_he_fo_font]',
-		border_col='$style[border_col]',
-		color_err='$style[color_err]',
-		col_link='$style[col_link]',
-		col_link_v='$style[col_link_v]',
-		col_link_hover='$style[col_link_hover]',
-		stdfont='" . addslashes($style['stdfont']) . "',
-		boardimage='$style[boardimage]',
-		newtopicimage='$style[newtopicimage]',
-		styleispublic='$style[styleispublic]',
-		styletemplate='$style[styletemplate]'
-		WHERE styleid=$style[styleid]");
+    query("UPDATE ".$pref."style SET
+        stylename='".addslashes($style['stylename'])."',
+        colorbg='$style[colorbg]',
+        colorbgfont='$style[colorbgfont]',
+        color1='$style[color1]',
+        CellA='$style[CellA]',
+        CellB='$style[CellB]',
+        color4='$style[color4]',
+        col_he_fo_font='$style[col_he_fo_font]',
+        border_col='$style[border_col]',
+        color_err='$style[color_err]',
+        col_link='$style[col_link]',
+        col_link_v='$style[col_link_v]',
+        col_link_hover='$style[col_link_hover]',
+        stdfont='" . addslashes($style['stdfont']) . "',
+        boardimage='$style[boardimage]',
+        newtopicimage='$style[newtopicimage]',
+        styleispublic='$style[styleispublic]',
+        styletemplate='$style[styletemplate]'
+        WHERE styleid=$style[styleid]");
 
-	writestyle($style['styleid']);
-		
-	print 'Style has been updated!<br>click <a href="style.php?action=EditStyle&styleid=' . $style['styleid'] . '&session=' . $session . '">here</a> to edit this style once again.';
+    writestyle($style['styleid']);
+        
+    print 'Style has been updated!<br>click <a href="style.php?action=EditStyle&styleid=' . $style['styleid'] . '&session=' . $session . '">here</a> to edit this style once again.';
 }
  
  
@@ -508,14 +508,14 @@ elseif( $action == "UpdateStyle" )
 
 /*
  * =======================================
- *				NewStyle
+ *                NewStyle
  * =======================================
  */
 elseif( $action == "NewStyle" )
 {
-	print '<b>Create new style</b><br><br>';
+    print '<b>Create new style</b><br><br>';
 
-	StyleForm("InsertStyle", array());
+    StyleForm("InsertStyle", array());
 }
 
 
@@ -523,162 +523,162 @@ elseif( $action == "NewStyle" )
 
 /*
  * =======================================
- *				InsertStyle
+ *                InsertStyle
  * =======================================
  */
 elseif( $action == "InsertStyle" )
 {
-	$style['stdfont'] = EditboxDecode($style['stdfont']);
-	$style['stdfontend'] = EditboxDecode($style['stdfontend']);
-	$style['smallfont'] = EditboxDecode($style['smallfont']);
-	$style['smallfontend'] = EditboxDecode($style['smallfontend']);
-	
-	query("INSERT INTO ".$pref."style (
-			stylename,
-			colorbg,
-			colorbgfont,
-			color1,
-			CellA,
-			CellB,
-			col_he_fo_font,
-			color4,
-			border_col,
-			color_err,
-			col_link,
-			col_link_v,
-			col_link_hover,
-			stdfont,
-			boardimage,
-			newtopicimage,
-			styleispublic,
-			styletemplate
-		) VALUES (
-			'".addslashes($style['stylename'])."',
-			'$style[colorbg]',
-			'$style[colorbgfont]',
-			'$style[color1]',
-			'$style[CellA]',
-			'$style[CellB]',
-			'$style[col_he_fo_font]',
-			'$style[color4]',
-			'$style[border_col]',
-			'$style[color_err]',
-			'$style[col_link]',
-			'$style[col_link_v]',
-			'$style[col_link_hover]',
-			'" . addslashes($style['stdfont']) . "',
-			'$style[boardimage]',
-			'$style[newtopicimage]',
-			'$style[styleispublic]',
-			'$style[styletemplate]'
-		)");
-		
-	print 'Style has been added!';
+    $style['stdfont'] = EditboxDecode($style['stdfont']);
+    $style['stdfontend'] = EditboxDecode($style['stdfontend']);
+    $style['smallfont'] = EditboxDecode($style['smallfont']);
+    $style['smallfontend'] = EditboxDecode($style['smallfontend']);
+    
+    query("INSERT INTO ".$pref."style (
+            stylename,
+            colorbg,
+            colorbgfont,
+            color1,
+            CellA,
+            CellB,
+            col_he_fo_font,
+            color4,
+            border_col,
+            color_err,
+            col_link,
+            col_link_v,
+            col_link_hover,
+            stdfont,
+            boardimage,
+            newtopicimage,
+            styleispublic,
+            styletemplate
+        ) VALUES (
+            '".addslashes($style['stylename'])."',
+            '$style[colorbg]',
+            '$style[colorbgfont]',
+            '$style[color1]',
+            '$style[CellA]',
+            '$style[CellB]',
+            '$style[col_he_fo_font]',
+            '$style[color4]',
+            '$style[border_col]',
+            '$style[color_err]',
+            '$style[col_link]',
+            '$style[col_link_v]',
+            '$style[col_link_hover]',
+            '" . addslashes($style['stdfont']) . "',
+            '$style[boardimage]',
+            '$style[newtopicimage]',
+            '$style[styleispublic]',
+            '$style[styletemplate]'
+        )");
+        
+    print 'Style has been added!';
 }
 
 
 
 /*
  * =======================================
- *				DeleteStyle
+ *                DeleteStyle
  * =======================================
  */
 elseif( $action == "DeleteStyle" )
 {
-	$r_board = query("SELECT boardname FROM ".$pref."board WHERE styleid=$styleid");
-	$r_style = query("SELECT styleisdefault FROM ".$pref."style WHERE styleid=$styleid");
-	$style = mysql_fetch_array($r_style);
-	
-	if( mysql_num_rows($r_board) > 0 )
-	{
-		print 'Unable to delete style: this style is currently being used by the following board(s):<br><br><ul>';
-		while( $board = mysql_fetch_array($r_board) )
-		{
-			print "<li><b>$board[boardname]</b></li>";
-		}
-		print '</ul>';
-	}
-	elseif( $style['styleisdefault'] == 1 )
-	{
-		print 'Unable to delete style: you cannot delete the default style!';
-	}
-	else
-	{
-		// admin wants to delete this style.
-		// make sure no user is using this style any more ..
-		query("UPDATE ".$pref."user SET styleid=0 WHERE styleid=$styleid");
+    $r_board = query("SELECT boardname FROM ".$pref."board WHERE styleid=$styleid");
+    $r_style = query("SELECT styleisdefault FROM ".$pref."style WHERE styleid=$styleid");
+    $style = mysql_fetch_array($r_style);
+    
+    if( mysql_num_rows($r_board) > 0 )
+    {
+        print 'Unable to delete style: this style is currently being used by the following board(s):<br><br><ul>';
+        while( $board = mysql_fetch_array($r_board) )
+        {
+            print "<li><b>$board[boardname]</b></li>";
+        }
+        print '</ul>';
+    }
+    elseif( $style['styleisdefault'] == 1 )
+    {
+        print 'Unable to delete style: you cannot delete the default style!';
+    }
+    else
+    {
+        // admin wants to delete this style.
+        // make sure no user is using this style any more ..
+        query("UPDATE ".$pref."user SET styleid=0 WHERE styleid=$styleid");
 
-		query("DELETE FROM ".$pref."style WHERE styleid=$styleid");
-		print 'Style has been deleted.';
+        query("DELETE FROM ".$pref."style WHERE styleid=$styleid");
+        print 'Style has been deleted.';
 
-		if(file_exists('../templates/css/'.$styleid.'.css'))
-		  {
-		    unlink('../templates/css/'.$styleid.'.css');
-		  }
-	}
+        if(file_exists('../templates/css/'.$styleid.'.css'))
+          {
+            unlink('../templates/css/'.$styleid.'.css');
+          }
+    }
 }
 
 
 /*
  * =======================================
- *				SetDefault
+ *                SetDefault
  * =======================================
  */
 elseif( $action == 'SetDefault' )
 {
-	$r_style = query("UPDATE ".$pref."style SET styleisdefault=0");
-	$r_style = query("UPDATE ".$pref."style SET styleisdefault=1 WHERE styleid=$styleid");
+    $r_style = query("UPDATE ".$pref."style SET styleisdefault=0");
+    $r_style = query("UPDATE ".$pref."style SET styleisdefault=1 WHERE styleid=$styleid");
 
-	writestyle($styleid);
+    writestyle($styleid);
 
-	print 'Style has been set to default.';
+    print 'Style has been set to default.';
 }
 
 
 
 /*
  * =======================================
- *				ExportStyle
+ *                ExportStyle
  * =======================================
  */
 elseif( $action == 'ExportStyle' )
 {
-	$r_style = query("SELECT * FROM ".$pref."style WHERE styleid=$styleid");
-	$style = mysql_fetch_array($r_style);
+    $r_style = query("SELECT * FROM ".$pref."style WHERE styleid=$styleid");
+    $style = mysql_fetch_array($r_style);
 
-	$glue = '~~~';
+    $glue = '~~~';
 
-	$styledata = array();
-	$styledata[] = 'thwb_2.7';
-	while( list($k, $v) = each($style) )
-	{
-		if( $k != 'styleid' && $k != 'styleispublic' && $k != 'styleisdefault' && gettype($k) != 'integer')
-		{
-			$styledata[] = htmlspecialchars($v);
-		}
-	}
+    $styledata = array();
+    $styledata[] = 'thwb_2.7';
+    while( list($k, $v) = each($style) )
+    {
+        if( $k != 'styleid' && $k != 'styleispublic' && $k != 'styleisdefault' && gettype($k) != 'integer')
+        {
+            $styledata[] = htmlspecialchars($v);
+        }
+    }
 
-	$stylestring = implode($glue, $styledata);
+    $stylestring = implode($glue, $styledata);
 
-	print '<b>Export style</b><br><br>';
-	print 'The style has been exported:<br><br>';
-	print '<textarea name="styledata" cols="60" rows="14">' . $stylestring . '</textarea>';
+    print '<b>Export style</b><br><br>';
+    print 'The style has been exported:<br><br>';
+    print '<textarea name="styledata" cols="60" rows="14">' . $stylestring . '</textarea>';
 }
 
 
 
 /*
  * =======================================
- *				ImportStyle'
+ *                ImportStyle'
  * =======================================
  */
 elseif( $action == 'ImportStyle' )
 {
-	print '<b>Import style</b><br><br>';
+    print '<b>Import style</b><br><br>';
 
-	if( !$insert )
-	{
-		print '
+    if( !$insert )
+    {
+        print '
 Upload .style file:
 <form ENCTYPE="multipart/form-data" name="theform" method="post" action="style.php">
   <input class="tbinput" type="file" name="style_file">
@@ -694,29 +694,29 @@ OR choose a local file (templates/):
 <br>
 <form name="form1" method="post" action="style.php">
   <select class="tbinput" name="style_file" size="6">';
-	$a_stylefile = array();
-	
-	$dp = opendir('../templates/');
-	
-	$files = 0;
-	while( $filename = readdir($dp) )
-	{
-		if( substr($filename, -6) == '.style' )
-		{
-			print '<option value="'.$filename.'">'.$filename.'</option>';
-			$files++;
-		}
-	}
-	
-	if( !$files )
-	{
-		print'
+    $a_stylefile = array();
+    
+    $dp = opendir('../templates/');
+    
+    $files = 0;
+    while( $filename = readdir($dp) )
+    {
+        if( substr($filename, -6) == '.style' )
+        {
+            print '<option value="'.$filename.'">'.$filename.'</option>';
+            $files++;
+        }
+    }
+    
+    if( !$files )
+    {
+        print'
     <option value="_nofile">( No styles available. You need to</option>
     <option value="_nofile"> upload .style files into your
     <option value="_nofile"> templates/ directory. )</option>';
-	}
+    }
 
-	print'
+    print'
   </select>
   <br><br>
   <input type="hidden" name="session" value="'.$session.'">
@@ -725,58 +725,58 @@ OR choose a local file (templates/):
   <input type="hidden" name="insert" value="1">
   <input type="submit" name="import" value="Import &gt;&gt;">
 </form>';
-	}
-	else
-	{
-		if( $local )
-			$styledata = file('../templates/'. basename($style_file));
-		else
-			$styledata = file($HTTP_POST_FILES['style_file']['tmp_name']);
-		
-		if(empty($styledata))
-			print 'Style file is empty, please check.';
-		else {
-			$a_name = array();
-			$a_value = array();
+    }
+    else
+    {
+        if( $local )
+            $styledata = file('../templates/'. basename($style_file));
+        else
+            $styledata = file($HTTP_POST_FILES['style_file']['tmp_name']);
+        
+        if(empty($styledata))
+            print 'Style file is empty, please check.';
+        else {
+            $a_name = array();
+            $a_value = array();
 
-			while( list($nline, $line) = each($styledata) )
-			{
-				if( trim($line) )
-				{
-					$pos = strpos($line, '=');
-					
-					$name = substr($line, 0, $pos);
-					$value = substr($line, $pos + 1);
-			
-					if( $name == 'styleversion' )
-					{
-						$ver = trim($value);
-					}
-					else
-					{
-						$a_name[] = $name;
-						$a_value[] = "'".addslashes(trim($value))."'";
-					}
-				}
-			}
-			
-			if( $ver != $style_file_version )
-				print 'Invalid style file version.';
-			else
-			{
-				$query = "INSERT INTO $pref"."style
-					(".implode(',', $a_name).")
-					VALUES
-					(".implode(',', $a_value).")";
-					
-				query($query);
+            while( list($nline, $line) = each($styledata) )
+            {
+                if( trim($line) )
+                {
+                    $pos = strpos($line, '=');
+                    
+                    $name = substr($line, 0, $pos);
+                    $value = substr($line, $pos + 1);
+            
+                    if( $name == 'styleversion' )
+                    {
+                        $ver = trim($value);
+                    }
+                    else
+                    {
+                        $a_name[] = $name;
+                        $a_value[] = "'".addslashes(trim($value))."'";
+                    }
+                }
+            }
+            
+            if( $ver != $style_file_version )
+                print 'Invalid style file version.';
+            else
+            {
+                $query = "INSERT INTO $pref"."style
+                    (".implode(',', $a_name).")
+                    VALUES
+                    (".implode(',', $a_value).")";
+                    
+                query($query);
 
-				writestyle(mysql_insert_id());
-				
-				print 'Style has been imported.';
-			}
-		}
-	}
+                writestyle(mysql_insert_id());
+                
+                print 'Style has been imported.';
+            }
+        }
+    }
 }
 
 

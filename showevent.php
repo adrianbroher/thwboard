@@ -49,7 +49,7 @@ $calendar = mysql_fetch_array($r_calendar);
 
 if( $calendar['userid'] > 0 )
 {
-	$calendar['user'] = "	$style[smallfont]Von <a href=\"".build_link("v_profile.php?user[userid]=$calendar[userid]")."\" target=\"_blank\">" . parse_code( $calendar['username'] ) . "</a>$style[smallfontend]";
+    $calendar['user'] = "    $style[smallfont]Von <a href=\"".build_link("v_profile.php?user[userid]=$calendar[userid]")."\" target=\"_blank\">" . parse_code( $calendar['username'] ) . "</a>$style[smallfontend]";
 }
 $calendar['eventtime'] = format_db_date($calendar['eventtime']);
 $calendar['eventsubject'] = parse_code($calendar['eventsubject']);

@@ -25,41 +25,41 @@ tb_header();
 
 if( $config['enable_ranks'] )
 {
-	print '<b>Ranks</b><br><br>';
+    print '<b>Ranks</b><br><br>';
 
-	if( $action == 'UpdateRanks' && is_array($rankid) )
-	{
-		while( list(, $rank['rankid']) = @each($rankid) )
-		{
-			if( $rankdelete[$rank['rankid']] == 'yes' )
-			{
-			query("DELETE FROM ".$pref."rank WHERE rankid=$rank[rankid]");
-			}
-			else
-			{
-				query("UPDATE ".$pref."rank SET
-					rankposts='" . $rankposts[$rank['rankid']] . "',
-					ranktitle='" . addslashes($ranktitle[$rank['rankid']]) . "',
-					rankimage='" . addslashes($rankimage[$rank['rankid']]) . "'
-				WHERE rankid=$rank[rankid]");
-			}
-		}
-		
-		print 'Ranks have been updated.<br><br>';
-	}
-	elseif( $action == 'InsertRank' )
-	{
-		if( $ranktitle && $rankposts )
-		{
-			query("INSERT INTO ".$pref."rank (ranktitle, rankimage, rankposts)
-				VALUES ('" . addslashes($ranktitle) . "', '" . addslashes($rankimage) . "', '$rankposts');");
-		}
-		
-		print 'Rank has been added.<br><br>';
-	}
+    if( $action == 'UpdateRanks' && is_array($rankid) )
+    {
+        while( list(, $rank['rankid']) = @each($rankid) )
+        {
+            if( $rankdelete[$rank['rankid']] == 'yes' )
+            {
+            query("DELETE FROM ".$pref."rank WHERE rankid=$rank[rankid]");
+            }
+            else
+            {
+                query("UPDATE ".$pref."rank SET
+                    rankposts='" . $rankposts[$rank['rankid']] . "',
+                    ranktitle='" . addslashes($ranktitle[$rank['rankid']]) . "',
+                    rankimage='" . addslashes($rankimage[$rank['rankid']]) . "'
+                WHERE rankid=$rank[rankid]");
+            }
+        }
+        
+        print 'Ranks have been updated.<br><br>';
+    }
+    elseif( $action == 'InsertRank' )
+    {
+        if( $ranktitle && $rankposts )
+        {
+            query("INSERT INTO ".$pref."rank (ranktitle, rankimage, rankposts)
+                VALUES ('" . addslashes($ranktitle) . "', '" . addslashes($rankimage) . "', '$rankposts');");
+        }
+        
+        print 'Rank has been added.<br><br>';
+    }
 
 
-	print '<form name="theform" method="post" action="rank.php">
+    print '<form name="theform" method="post" action="rank.php">
   <table border="0" cellspacing="1" cellpadding="8">
     <tr> 
       <td>Title</td>
@@ -71,7 +71,7 @@ if( $config['enable_ranks'] )
     $r_rank = query("SELECT rankid, ranktitle, rankimage, rankposts FROM ".$pref."rank ORDER BY rankposts DESC");
     while( $rank = mysql_fetch_array($r_rank) )
     {
-    	print '    <tr> 
+        print '    <tr> 
       <td> 
         <input class="tbinput" type="hidden" name="rankid[' . $rank['rankid'] . ']" value="' . $rank['rankid'] . '">
         <input class="tbinput" type="text" name="ranktitle[' . $rank['rankid'] . ']" value="' . htmlspecialchars($rank['ranktitle']) . '">
@@ -96,9 +96,9 @@ if( $config['enable_ranks'] )
   </p>
 </form>
 ';
-	print '<br><hr><br><b>Add rank</b><br><br>';
-	
-	print '
+    print '<br><hr><br><b>Add rank</b><br><br>';
+    
+    print '
 <form name="theform" method="post" action="rank.php">  
   <table border="0" cellspacing="1" cellpadding="8">
     <tr>
@@ -130,7 +130,7 @@ if( $config['enable_ranks'] )
 }
 else
 {
-	print 'Ranks are currently disabled. You can enable them <a href="index.php?session=' . $session . '&action=EditSettings">here</a>.';
+    print 'Ranks are currently disabled. You can enable them <a href="index.php?session=' . $session . '&action=EditSettings">here</a>.';
 }
 
 tb_footer();

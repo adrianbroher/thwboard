@@ -32,23 +32,23 @@ $TMemberlist = new Template("./templates/".$style['styletemplate']."/memberlist.
 $TMemberrow = new Template("./templates/".$style['styletemplate']."/memberrow.html");
 
 $orderbyoptions = array(
-	'username' => 'Name',
-	'useremail' => 'Email',
-	'usericq' => 'ICQ Nummer',
-	'userhomepage' => 'Homepage',
-	'userlocation' => 'Wohnort',
-	'userjoin' => 'Registrierdatum',
-	'userlastpost' => 'Letzter Post'
+    'username' => 'Name',
+    'useremail' => 'Email',
+    'usericq' => 'ICQ Nummer',
+    'userhomepage' => 'Homepage',
+    'userlocation' => 'Wohnort',
+    'userjoin' => 'Registrierdatum',
+    'userlastpost' => 'Letzter Post'
 );
 
 if( $config['showpostslevel'] == 2 )
 {
-	$orderbyoptions['userposts'] = 'Postings';
+    $orderbyoptions['userposts'] = 'Postings';
 }
 
 if( !isset($orderby) )
 {
-	$orderby = 'username';
+    $orderby = 'username';
 }
 
 if(!isset($ordertype))
@@ -87,7 +87,7 @@ else
 
 if( $orderby == 'userposts' && $config['showpostslevel'] != 2 )
 {
-	message('Fehler', 'Das erw&uuml;nschte Sortierkriterium ist nicht verf&uuml;gbar.');
+    message('Fehler', 'Das erw&uuml;nschte Sortierkriterium ist nicht verf&uuml;gbar.');
 }
 
 $charselect = '';
@@ -111,32 +111,32 @@ $t_orderbyoptions = '';
 $found = 0; // HAXHAX
 while( list($field, $description) = each($orderbyoptions) )
 {
-	$t_orderbyoptions .= '<option value="' . $field . '"' . ($field == $orderby ? ' selected' : '') . '>' . $description . '</option>';
-	if( $field == $orderby )
-		$found = 1;
+    $t_orderbyoptions .= '<option value="' . $field . '"' . ($field == $orderby ? ' selected' : '') . '>' . $description . '</option>';
+    if( $field == $orderby )
+        $found = 1;
 }
 
 if( !$found )
 {
-	message('Fehler', 'Ung&uuml;ltige Sortieroption');
+    message('Fehler', 'Ung&uuml;ltige Sortieroption');
 }
 
 if( $ordertype == "desc" )
 {
-	$descselected = ' selected';
-	$ascselected = '';
+    $descselected = ' selected';
+    $ascselected = '';
 }
 else
 {
-	$descselected = '';
-	$ascselected = ' selected';
-	
-	$ordertype = 'asc';
+    $descselected = '';
+    $ascselected = ' selected';
+    
+    $ordertype = 'asc';
 }
 
 if( $config['showpostslevel'] != 2 && $orderby == "userposts" )
 {
-	$orderby = "username";
+    $orderby = "username";
 }
 
 $r_user = thwb_query("SELECT count(userid) AS usercount FROM ".$pref."user ".$where);
@@ -148,40 +148,40 @@ $pagesstring = '';
 define('PADDING', 6);
 
 if( !isset($page) )
-	$page = 1;
+    $page = 1;
 
 // erste seite
 if( $page - PADDING > 1 )
 {
-	$pagesstring = '[<a class="hefo" href="'.build_link('memberlist.php?orderby='.$orderby.'&amp;char='.$char.'&amp;ordertype='.$ordertype.'&amp;search='.urlencode($search).'&amp;page=1').'">Erste Seite</a>] ... ';
+    $pagesstring = '[<a class="hefo" href="'.build_link('memberlist.php?orderby='.$orderby.'&amp;char='.$char.'&amp;ordertype='.$ordertype.'&amp;search='.urlencode($search).'&amp;page=1').'">Erste Seite</a>] ... ';
 }
 
 $i = $page - PADDING;
 if( $i < 1 )
-	$i = 1;
+    $i = 1;
 $imax = $page + PADDING;
 if( $imax > $pages )
-	$imax = $pages; 	
+    $imax = $pages;     
 
 for( $i; $i <= $imax; $i++ )
 {
-	if( $i == $page )
-		$pagesstring .= "&gt;" . ($i) . "&lt; ";
-	else
-		$pagesstring .= "[<a class=\"hefo\" href=\"".build_link("memberlist.php?orderby=$orderby&amp;ordertype=$ordertype&amp;search=".urlencode($search)."&amp;char=$char&amp;page=$i")."\">" . ($i) . "</a>] ";
+    if( $i == $page )
+        $pagesstring .= "&gt;" . ($i) . "&lt; ";
+    else
+        $pagesstring .= "[<a class=\"hefo\" href=\"".build_link("memberlist.php?orderby=$orderby&amp;ordertype=$ordertype&amp;search=".urlencode($search)."&amp;char=$char&amp;page=$i")."\">" . ($i) . "</a>] ";
 }
 
 // letzte seite
 if( $page + PADDING < $pages )
 {
-	$pagesstring .= '... [<a class="hefo" href="'.build_link('memberlist.php?orderby='.$orderby.'&amp;char='.$char.'&amp;ordertype='.$ordertype.'&amp;search='.urlencode($search).'&amp;page='.$pages).'">Letzte Seite</a>]';
+    $pagesstring .= '... [<a class="hefo" href="'.build_link('memberlist.php?orderby='.$orderby.'&amp;char='.$char.'&amp;ordertype='.$ordertype.'&amp;search='.urlencode($search).'&amp;page='.$pages).'">Letzte Seite</a>]';
 }
 
 
 $MEMBER_ROWS = '';
 
 $r_user = thwb_query("SELECT userid, username, useremail, usericq, userhomepage, userjoin, userposts, userlocation,
-	userhideemail, userlastpost FROM ".$pref."user ".$where." ORDER BY $orderby $ordertype LIMIT " . intval($page - 1) * $config['userperpage'] . ", " . $config['userperpage']);
+    userhideemail, userlastpost FROM ".$pref."user ".$where." ORDER BY $orderby $ordertype LIMIT " . intval($page - 1) * $config['userperpage'] . ", " . $config['userperpage']);
 
 
 if(!mysql_num_rows($r_user))
@@ -203,41 +203,41 @@ else
       $user['userlocation'] = chopstring(parse_code($user['userlocation']), 50);
 
       if( $user['userhomepage'] == "http://" )
-	{
-	  $user['userhomepage'] = '';
-	}
+    {
+      $user['userhomepage'] = '';
+    }
 
       $user['userhomepage'] = parse_code($user['userhomepage']);
       $user['username'] = parse_code($user['username']);
       
       if( $config['showpostslevel'] != 2)
-	  {
-	    if(!$g_user['userisadmin'])
-	      {
-		$user['userposts'] = 'n/a';
-	      }
-	  }
+      {
+        if(!$g_user['userisadmin'])
+          {
+        $user['userposts'] = 'n/a';
+          }
+      }
       
       $user['useremail'] = get_email( $user, true );
 
       if( $user['userhomepage'] )
-	{
-	  $user['userhomepage'] = '<a href="'. str_replace('"', '', $user['userhomepage']) .'" target="_blank">' . chopstring($user['userhomepage'], 35) . "</a>";
-	}
+    {
+      $user['userhomepage'] = '<a href="'. str_replace('"', '', $user['userhomepage']) .'" target="_blank">' . chopstring($user['userhomepage'], 35) . "</a>";
+    }
       else
-	{
-	  $user['userhomepage'] = "&nbsp;";
-	}
+    {
+      $user['userhomepage'] = "&nbsp;";
+    }
       
       if( !$user['usericq'] )
-	{
-	  $user['usericq'] = "&nbsp;";
-	}
+    {
+      $user['usericq'] = "&nbsp;";
+    }
       
       if( !$user['userlocation'] )
-	{
-	  $user['userlocation'] = "&nbsp;";
-	}
+    {
+      $user['userlocation'] = "&nbsp;";
+    }
       
       
       eval($TMemberrow->GetTemplate("MEMBER_ROWS"));

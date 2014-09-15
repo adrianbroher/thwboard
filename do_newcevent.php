@@ -22,20 +22,20 @@
 include "./inc/header.inc.php";
 
 if( !$P->has_permission( P_CEVENT ) )
-	message( 'Fehlende Berechtigung', 'Fehler: Sie haben nicht die ben&ouml;tigte Berechtigung, um diese Seite zu benützen.' );
+    message( 'Fehlende Berechtigung', 'Fehler: Sie haben nicht die ben&ouml;tigte Berechtigung, um diese Seite zu benützen.' );
 
 $a_errmsg = array();
 if( !strlen(trim($event['subject'])) )
-	$a_errmsg[] = 'Sie haben kein Subject angegeben.';
+    $a_errmsg[] = 'Sie haben kein Subject angegeben.';
 
 if( !strlen(trim($event['text'])) )
-	$a_errmsg[] = 'Sie haben keinen Text definiert.';
+    $a_errmsg[] = 'Sie haben keinen Text definiert.';
 
 if( !checkdate($event['month'], $event['day'], $event['year']) )
-	$a_errmsg[] = 'Sie haben ein ungültiges Datum angegeben.';
+    $a_errmsg[] = 'Sie haben ein ungültiges Datum angegeben.';
 
 if( array_count_values($a_errmsg) )
-	message( 'Fehler bei der Eingabe', $style['stdfont'].'Folgende Fehler sind bei der Eingabe aufgetreten:<br>'.implode( $a_errmsg, '<br>' ).'<br>Gehen Sie mit dem Zur&uuml;ck-Button Ihres Browsers zur vorherigen Seite, um die Angaben zu korrigieren.'.$style['stdfontend'] );
+    message( 'Fehler bei der Eingabe', $style['stdfont'].'Folgende Fehler sind bei der Eingabe aufgetreten:<br>'.implode( $a_errmsg, '<br>' ).'<br>Gehen Sie mit dem Zur&uuml;ck-Button Ihres Browsers zur vorherigen Seite, um die Angaben zu korrigieren.'.$style['stdfontend'] );
 
 thwb_query("INSERT INTO " . $pref . "calendar (eventtime,eventsubject,eventtext,eventactive,userid) VALUES ('$event[year]-$event[month]-$event[day]','".addslashes($event['subject'])."','".addslashes($event['text'])."','1',$g_user[userid]);");
 

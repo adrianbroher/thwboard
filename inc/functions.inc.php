@@ -39,13 +39,13 @@ function flag_or($str1, $str2)
   for($i = 0; $i < max(strlen($str1), strlen($str2)); $i++)
     {
       if(($i < strlen($str1) && $str1[$i]) || ($i < strlen($str2) && $str2[$i]))
-	{
-	  $str .= "1";
-	}
+    {
+      $str .= "1";
+    }
       else
-	{
-	  $str .= "0";
-	}
+    {
+      $str .= "0";
+    }
     }
 
   return $str;
@@ -86,31 +86,31 @@ class Template
     function Template($szTemplateName)
     {
         if( !file_exists($szTemplateName) )
-		{
-			$this->Halt("unable to load template file: '" . $szTemplateName . "' does not exist.");
-		}
-		$this->szTemplateData = @implode('', (@file($szTemplateName)));
-		$this->szTemplateData = str_replace('"', '\"', $this->szTemplateData);
-		$this->szTemplateData = preg_replace("/_\('([^']+)'\)/", '".build_link("$1")."', $this->szTemplateData);
-	}
+        {
+            $this->Halt("unable to load template file: '" . $szTemplateName . "' does not exist.");
+        }
+        $this->szTemplateData = @implode('', (@file($szTemplateName)));
+        $this->szTemplateData = str_replace('"', '\"', $this->szTemplateData);
+        $this->szTemplateData = preg_replace("/_\('([^']+)'\)/", '".build_link("$1")."', $this->szTemplateData);
+    }
 
-	function GetTemplate($szVarname = "")
-	{
-	  if( $szVarname )
-		{
-			return ('$' . $szVarname . ' .= "' . $this->szTemplateData . '";');
-		}
-		else
-		{
-			return ('end_page("' . $this->szTemplateData . '");');
-		}
-	}
+    function GetTemplate($szVarname = "")
+    {
+      if( $szVarname )
+        {
+            return ('$' . $szVarname . ' .= "' . $this->szTemplateData . '";');
+        }
+        else
+        {
+            return ('end_page("' . $this->szTemplateData . '");');
+        }
+    }
 
-	function Halt($szErrorMsg)
-	{
-		echo "<pre>Template error:\n " . $szErrorMsg . "</pre>";
-		exit;
-	}
+    function Halt($szErrorMsg)
+    {
+        echo "<pre>Template error:\n " . $szErrorMsg . "</pre>";
+        exit;
+    }
 }
 
 /*
@@ -118,151 +118,151 @@ permission class
 */
 class Permission
 {
-	var		$a_group;
-	var		$a_groupboard;
-	var		$boardid;
+    var        $a_group;
+    var        $a_groupboard;
+    var        $boardid;
 
     function Permission($groupids, $boardid = -1)
-	{
-		global		$pref;
+    {
+        global        $pref;
 
-		if( $groupids === '' )
-			$groupids = '-1';
-	
-		$this->a_group = array();
-		$r_group = thwb_query("SELECT groupid, accessmask FROM $pref"."group WHERE groupid IN(".$groupids.")");
-		while( $group = mysql_fetch_array($r_group) )
-		{
-			$this->a_group[$group['groupid']] = $group['accessmask'];
-		}
-		mysql_free_result($r_group);
+        if( $groupids === '' )
+            $groupids = '-1';
+    
+        $this->a_group = array();
+        $r_group = thwb_query("SELECT groupid, accessmask FROM $pref"."group WHERE groupid IN(".$groupids.")");
+        while( $group = mysql_fetch_array($r_group) )
+        {
+            $this->a_group[$group['groupid']] = $group['accessmask'];
+        }
+        mysql_free_result($r_group);
 
         $this->a_groupboard = array();
-		if( $boardid == -1 )
-			$r_groupboard = thwb_query("SELECT groupid, boardid, accessmask FROM $pref"."groupboard WHERE groupid IN (".$groupids.")");
-		else
-			$r_groupboard = thwb_query("SELECT groupid, boardid, accessmask FROM $pref"."groupboard WHERE boardid='$boardid' AND groupid IN (".$groupids.")");
-		
-		while( $groupboard = mysql_fetch_array($r_groupboard) )
-		{
-			$this->a_groupboard[ $groupboard['boardid'] ][ $groupboard['groupid'] ] = $groupboard['accessmask'];
-		}
-		mysql_free_result($r_groupboard);
-		
-		$this->set_boardid($boardid);
-	}
+        if( $boardid == -1 )
+            $r_groupboard = thwb_query("SELECT groupid, boardid, accessmask FROM $pref"."groupboard WHERE groupid IN (".$groupids.")");
+        else
+            $r_groupboard = thwb_query("SELECT groupid, boardid, accessmask FROM $pref"."groupboard WHERE boardid='$boardid' AND groupid IN (".$groupids.")");
+        
+        while( $groupboard = mysql_fetch_array($r_groupboard) )
+        {
+            $this->a_groupboard[ $groupboard['boardid'] ][ $groupboard['groupid'] ] = $groupboard['accessmask'];
+        }
+        mysql_free_result($r_groupboard);
+        
+        $this->set_boardid($boardid);
+    }
 
-	function set_boardid($boardid)
-	{
-		$this->boardid = $boardid;
-	}
-	
-	function has_permission($perm)
-	{
-		$mask = "";
-		
-		reset($this->a_group);
-		reset($this->a_groupboard);
+    function set_boardid($boardid)
+    {
+        $this->boardid = $boardid;
+    }
+    
+    function has_permission($perm)
+    {
+        $mask = "";
+        
+        reset($this->a_group);
+        reset($this->a_groupboard);
 
- 		while( list($groupid, $accessmask) = each($this->a_group) )
- 		{
- 			if( isset($this->a_groupboard[$this->boardid][$groupid]) )
-			  {
-			    $mask = flag_or($mask, $this->a_groupboard[$this->boardid][$groupid]);
-			  }
- 			else
-			  {
-			    $mask = flag_or($mask, $accessmask);
-			  }
- 		}
+         while( list($groupid, $accessmask) = each($this->a_group) )
+         {
+             if( isset($this->a_groupboard[$this->boardid][$groupid]) )
+              {
+                $mask = flag_or($mask, $this->a_groupboard[$this->boardid][$groupid]);
+              }
+             else
+              {
+                $mask = flag_or($mask, $accessmask);
+              }
+         }
 
-		if(strlen($mask) < $perm)
-		  {
-		    return false;
-		  }
+        if(strlen($mask) < $perm)
+          {
+            return false;
+          }
 
-		$access = flag_make_array($mask);
+        $access = flag_make_array($mask);
         
         return (bool) ($access[$perm]);
-	}
+    }
 }
 
 function requires_permission($perm)
 {
-	global $g_user, $pref, $style, $config, $options, $P, $HTTP_SERVER_VARS, $t_quicklinks, $DEBUG, $debug, $titleprepend, $CONTENT;
+    global $g_user, $pref, $style, $config, $options, $P, $HTTP_SERVER_VARS, $t_quicklinks, $DEBUG, $debug, $titleprepend, $CONTENT;
 
-	if( $P->has_permission($perm) )
-		return;
+    if( $P->has_permission($perm) )
+        return;
 
-	global $board;
+    global $board;
 
-	if( !empty($g_user['styleid']) )
-	{
-		$board['styleid'] = $g_user['styleid'];
-	}
+    if( !empty($g_user['styleid']) )
+    {
+        $board['styleid'] = $g_user['styleid'];
+    }
 
-	if( $board['styleid'] == 0 )
-	{
-		$r_style = thwb_query("SELECT styleid, styletemplate, colorbg, color1, CellA, CellB, color4, colorbgfont, col_he_fo_font, color_err,
-			col_link, col_link_v, col_link_hover, stdfont,
-			boardimage, newtopicimage, border_col FROM
-			".$pref."style WHERE styleisdefault=1");
-	}
-	else
-	{
-		$r_style = thwb_query("SELECT styleid, styletemplate, colorbg, color1, CellA, CellB, color4, colorbgfont, col_he_fo_font, color_err,
-			col_link, col_link_v, col_link_hover, stdfont,
-			boardimage, newtopicimage, border_col FROM
-			".$pref."style WHERE styleid='".intval($board['styleid'])."'");
-	}
-	$style = mysql_fetch_array($r_style);
+    if( $board['styleid'] == 0 )
+    {
+        $r_style = thwb_query("SELECT styleid, styletemplate, colorbg, color1, CellA, CellB, color4, colorbgfont, col_he_fo_font, color_err,
+            col_link, col_link_v, col_link_hover, stdfont,
+            boardimage, newtopicimage, border_col FROM
+            ".$pref."style WHERE styleisdefault=1");
+    }
+    else
+    {
+        $r_style = thwb_query("SELECT styleid, styletemplate, colorbg, color1, CellA, CellB, color4, colorbgfont, col_he_fo_font, color_err,
+            col_link, col_link_v, col_link_hover, stdfont,
+            boardimage, newtopicimage, border_col FROM
+            ".$pref."style WHERE styleid='".intval($board['styleid'])."'");
+    }
+    $style = mysql_fetch_array($r_style);
 
-	$style['smallfont'] = '<font face="' . $style['stdfont'] . '" size="1">';
-	$style['smallfontend'] = '</font>';
-	$style['stdfont'] = '<font face="' . $style['stdfont'] . '" size="2">';
-	$style['stdfontend'] = '</font>';
+    $style['smallfont'] = '<font face="' . $style['stdfont'] . '" size="1">';
+    $style['smallfontend'] = '</font>';
+    $style['stdfont'] = '<font face="' . $style['stdfont'] . '" size="2">';
+    $style['stdfontend'] = '</font>';
 
-	if( !isset($navpath) || !$navpath )
-	{
-		$navpath = '<a class="bglink" href="'.build_link("index.php").'">'.$config['board_name'].'</a> &raquo; Zugriff verweigert';
-	}
-	elseif(substr($navpath, strlen($navpath) - 8) != "&raquo; ")
-	  {
-	    $navpath .= " &raquo; Zugriff verweigert";
-	  }
+    if( !isset($navpath) || !$navpath )
+    {
+        $navpath = '<a class="bglink" href="'.build_link("index.php").'">'.$config['board_name'].'</a> &raquo; Zugriff verweigert';
+    }
+    elseif(substr($navpath, strlen($navpath) - 8) != "&raquo; ")
+      {
+        $navpath .= " &raquo; Zugriff verweigert";
+      }
 
-	$Tframe = new Template("templates/" . $style['styletemplate'] . "/frame.html");
-	$Tnopermission = new Template("templates/" . $style['styletemplate'] . "/nopermission.html");
+    $Tframe = new Template("templates/" . $style['styletemplate'] . "/frame.html");
+    $Tnopermission = new Template("templates/" . $style['styletemplate'] . "/nopermission.html");
 
-	$t_loginform = '';
-	
-	if( !$g_user['userid'] )
-	{
-		$Tnoperm_login = new Template("templates/" . $style['styletemplate'] . "/noperm_login.html");
-		
-		$source = urlencode(basename($HTTP_SERVER_VARS['REQUEST_URI']));
-		eval($Tnoperm_login->GetTemplate('t_loginform'));
-	}
+    $t_loginform = '';
+    
+    if( !$g_user['userid'] )
+    {
+        $Tnoperm_login = new Template("templates/" . $style['styletemplate'] . "/noperm_login.html");
+        
+        $source = urlencode(basename($HTTP_SERVER_VARS['REQUEST_URI']));
+        eval($Tnoperm_login->GetTemplate('t_loginform'));
+    }
 
-	eval($Tnopermission->GetTemplate("CONTENT"));
-	eval($Tframe->GetTemplate());
+    eval($Tnopermission->GetTemplate("CONTENT"));
+    eval($Tframe->GetTemplate());
 
-	exit;
+    exit;
 }
 
 // fix by tendor --theDon
 // fixed again --theDon
 function highlight_words($text, $a_word)
 {
-	$a_color = array('#ffff66', '#A0FFFF', '#99ff99', '#ff9999', '#ff66ff');
-	$i = 0;
+    $a_color = array('#ffff66', '#A0FFFF', '#99ff99', '#ff9999', '#ff66ff');
+    $i = 0;
 
-	while( list(, $word) = each($a_word) )
-	{
+    while( list(, $word) = each($a_word) )
+    {
         if( strlen($word) >= 3 )
-		{
-		  $text = preg_replace('/('.preg_quote($word, '/').')(?=([^>]*(\<|$)))/i', '<strong style="color:black; background-color:'.$a_color[$i++ % count($a_color)].'">$1</strong>', $text);
-		}
+        {
+          $text = preg_replace('/('.preg_quote($word, '/').')(?=([^>]*(\<|$)))/i', '<strong style="color:black; background-color:'.$a_color[$i++ % count($a_color)].'">$1</strong>', $text);
+        }
     }
 
     return $text;
@@ -276,7 +276,7 @@ define('NAME_BANNED', 5);
 
 function verify_username($username)
 {
-	global $config, $pref;
+    global $config, $pref;
 
     /**
      * moved length check here because calling with empty $username will fsck the `tags' check
@@ -289,173 +289,173 @@ function verify_username($username)
         return INVALID_LENGTH;
     }
 
-	$legalchars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 [|](){}.-_‰ˆ¸ƒ÷‹ﬂ";
+    $legalchars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 [|](){}.-_‰ˆ¸ƒ÷‹ﬂ";
 
-	for( $i = 0; $i < strlen($username); $i++ )
-	{
-		if( !strstr($legalchars, $username[$i]) )
-		{
-			return INVALID_CHAR;
-		}
-	}
+    for( $i = 0; $i < strlen($username); $i++ )
+    {
+        if( !strstr($legalchars, $username[$i]) )
+        {
+            return INVALID_CHAR;
+        }
+    }
 
-	$a_tags = array("php", "code", "mail", "url", "noparse", "color", "b", "i", "u", "-", "quote");
-	$a_illegal = array();
+    $a_tags = array("php", "code", "mail", "url", "noparse", "color", "b", "i", "u", "-", "quote");
+    $a_illegal = array();
 
-	preg_match_all("/\[.*\]/U", "[".join($a_tags, "][")."][/".join($a_tags, "][/")."]", $a_illegal);
+    preg_match_all("/\[.*\]/U", "[".join($a_tags, "][")."][/".join($a_tags, "][/")."]", $a_illegal);
 
-	foreach($a_illegal[0] as $k => $v)
-	  {
+    foreach($a_illegal[0] as $k => $v)
+      {
         if(strstr($v, $username))
-	      {
+          {
             return INVALID_TAG;
-	      }
-	  }
+          }
+      }
 
-	while(!empty($config['bannednames']) && list(, $bannedname) = @each($config['bannednames']) )
-	{
-		if( $bannedname && stristr($username, $bannedname) )
-		{
-			return NAME_BANNED;
-		}
-	}
+    while(!empty($config['bannednames']) && list(, $bannedname) = @each($config['bannednames']) )
+    {
+        if( $bannedname && stristr($username, $bannedname) )
+        {
+            return NAME_BANNED;
+        }
+    }
 
-	$r_user = thwb_query("SELECT userid FROM $pref"."user WHERE username='".addslashes($username)."'");
-	if( mysql_num_rows($r_user) )
-	{
-		return NAME_TAKEN;
-	}
-	
-	return 0;
+    $r_user = thwb_query("SELECT userid FROM $pref"."user WHERE username='".addslashes($username)."'");
+    if( mysql_num_rows($r_user) )
+    {
+        return NAME_TAKEN;
+    }
+    
+    return 0;
 }
 
 //called by register, reply, newtopic
 function check_username($username)
 {
-	switch( verify_username($username) )
-	{
-		case NAME_TAKEN:
-			message('Fehler', 'Der Benutzername existiert leider schon!');
-			break;
-		case INVALID_CHAR:
-			message('Fehler', 'Ihr gew&#xFC;nschter Benutzername enth&#xE4;lt ung&#xFC;ltige Zeichen!');
-			break;
-		case NAME_BANNED:
-			message('Fehler', 'Der ausgew&#xE4;hlte Benutzername kann leider nicht verwendet werden.');
-			break;
-		case INVALID_LENGTH:
-			message('Fehler', 'Die L&#xE4;nge des Benutzernamens ist ung&#xFC;ltig');
-			break;
-	        case INVALID_TAG:
-		        message('Fehler', 'Ihr gew&uuml;nschter Benutzername enth&auml;lt ThWB-Code-Tags und kann daher nicht verwendet werden.');
-		default:
-	}
-	
-	return;
+    switch( verify_username($username) )
+    {
+        case NAME_TAKEN:
+            message('Fehler', 'Der Benutzername existiert leider schon!');
+            break;
+        case INVALID_CHAR:
+            message('Fehler', 'Ihr gew&#xFC;nschter Benutzername enth&#xE4;lt ung&#xFC;ltige Zeichen!');
+            break;
+        case NAME_BANNED:
+            message('Fehler', 'Der ausgew&#xE4;hlte Benutzername kann leider nicht verwendet werden.');
+            break;
+        case INVALID_LENGTH:
+            message('Fehler', 'Die L&#xE4;nge des Benutzernamens ist ung&#xFC;ltig');
+            break;
+            case INVALID_TAG:
+                message('Fehler', 'Ihr gew&uuml;nschter Benutzername enth&auml;lt ThWB-Code-Tags und kann daher nicht verwendet werden.');
+        default:
+    }
+    
+    return;
 }
 
 //called by register, editprofile
 function check_email($email)
 {
-	return eregi("^[\_a-z0-9-]+(\.[\_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,6})$", $email);
+    return eregi("^[\_a-z0-9-]+(\.[\_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,6})$", $email);
 }
 
 //ttt: check whether user is allowed to get a member's email address
 function get_email( $user, $short = false )
 {
-	global $g_user, $style;
-	
-	if( $g_user['userid'] == 0 )
-		return '- (Versteckt)';
-		
-	$retstring = '<a href="mailto:'. $user['useremail'] .'">'
-		.($short ? chopstring($user['useremail'], 20) : $user['useremail'] ) .'</a>';
-	
-	if( !$user['userhideemail'])
-	{
-		return $retstring;
-	} 
-	else	
-	{
-	  if($user['userid'] == $g_user['userid'])
-	    {
-	      return $retstring . " - (Versteckt)";
-	    }
-	  else if( !$g_user['userisadmin'] )
-	    {
-	      return '- (Versteckt)';
-		}
-	  else
-		{
-		  if( $short )
-		    return $retstring;
-		  else
-		    return '- (Versteckt) '.$style['smallfont'].' [Admin: '. $retstring .' ]'.$style['smallfontend'];
-		}
-	}
+    global $g_user, $style;
+    
+    if( $g_user['userid'] == 0 )
+        return '- (Versteckt)';
+        
+    $retstring = '<a href="mailto:'. $user['useremail'] .'">'
+        .($short ? chopstring($user['useremail'], 20) : $user['useremail'] ) .'</a>';
+    
+    if( !$user['userhideemail'])
+    {
+        return $retstring;
+    } 
+    else    
+    {
+      if($user['userid'] == $g_user['userid'])
+        {
+          return $retstring . " - (Versteckt)";
+        }
+      else if( !$g_user['userisadmin'] )
+        {
+          return '- (Versteckt)';
+        }
+      else
+        {
+          if( $short )
+            return $retstring;
+          else
+            return '- (Versteckt) '.$style['smallfont'].' [Admin: '. $retstring .' ]'.$style['smallfontend'];
+        }
+    }
 }
 
 function message($title, $msg, $opt_back = 1, $opt_index = 1)
 {
-	global $rsslink, $style, $config, $g_user, $options, $JUMP_MENU, $navpath, $pref, $debug, $DEBUG;
+    global $rsslink, $style, $config, $g_user, $options, $JUMP_MENU, $navpath, $pref, $debug, $DEBUG;
 
-	$CONTENT = '';
-	$titleprepend = '';
-	$t_quicklinks = '';
+    $CONTENT = '';
+    $titleprepend = '';
+    $t_quicklinks = '';
 
-	if( !$style )
-	{
-		global $board;
+    if( !$style )
+    {
+        global $board;
 
-		if( !empty($g_user['styleid']) )
-		{
-			$board['styleid'] = $g_user['styleid'];
-		}
+        if( !empty($g_user['styleid']) )
+        {
+            $board['styleid'] = $g_user['styleid'];
+        }
 
-		if( empty($board['styleid']) || $board['styleid'] == 0 )
-		{
-			$r_style = thwb_query("SELECT styleid, styletemplate, colorbg, color1, CellA, CellB, color4, colorbgfont, col_he_fo_font, color_err,
-				col_link, col_link_v, col_link_hover, stdfont,
-				boardimage, newtopicimage, border_col FROM
-				".$pref."style WHERE styleisdefault=1");
-		}
-		else
-		{
-			$r_style = thwb_query("SELECT styleid, styletemplate, colorbg, color1, CellA, CellB, color4, colorbgfont, col_he_fo_font, color_err,
-				col_link, col_link_v, col_link_hover, stdfont,
-				boardimage, newtopicimage, border_col FROM
-				".$pref."style WHERE styleid='".intval($board['styleid'])."'");
-		}
-		$style = mysql_fetch_array($r_style);
+        if( empty($board['styleid']) || $board['styleid'] == 0 )
+        {
+            $r_style = thwb_query("SELECT styleid, styletemplate, colorbg, color1, CellA, CellB, color4, colorbgfont, col_he_fo_font, color_err,
+                col_link, col_link_v, col_link_hover, stdfont,
+                boardimage, newtopicimage, border_col FROM
+                ".$pref."style WHERE styleisdefault=1");
+        }
+        else
+        {
+            $r_style = thwb_query("SELECT styleid, styletemplate, colorbg, color1, CellA, CellB, color4, colorbgfont, col_he_fo_font, color_err,
+                col_link, col_link_v, col_link_hover, stdfont,
+                boardimage, newtopicimage, border_col FROM
+                ".$pref."style WHERE styleid='".intval($board['styleid'])."'");
+        }
+        $style = mysql_fetch_array($r_style);
 
-		$style['smallfont'] = '<font face="' . $style['stdfont'] . '" size="1">';
-		$style['smallfontend'] = '</font>';
-		$style['stdfont'] = '<font face="' . $style['stdfont'] . '" size="2">';
-		$style['stdfontend'] = '</font>';
-	}
+        $style['smallfont'] = '<font face="' . $style['stdfont'] . '" size="1">';
+        $style['smallfontend'] = '</font>';
+        $style['stdfont'] = '<font face="' . $style['stdfont'] . '" size="2">';
+        $style['stdfontend'] = '</font>';
+    }
 
-	if( !isset($navpath) || !$navpath )
-	{
-		$navpath = "<a class=\"bglink\" href=\"".build_link("index.php")."\">$config[board_name]</a> &raquo; ";
-	}
-	elseif(substr($navpath, strlen($navpath) - 8) != "&raquo; ")
-	  {
-	    $navpath .= " &raquo; ";
-	  }
+    if( !isset($navpath) || !$navpath )
+    {
+        $navpath = "<a class=\"bglink\" href=\"".build_link("index.php")."\">$config[board_name]</a> &raquo; ";
+    }
+    elseif(substr($navpath, strlen($navpath) - 8) != "&raquo; ")
+      {
+        $navpath .= " &raquo; ";
+      }
 
-	$navpath .= $title;
+    $navpath .= $title;
 
-	$messageoptions = "&nbsp;";
-	
-	$opt_back ? $messageoptions .= "[ <a class=\"hefo\" href=\"javascript:history.back()\">Zur&uuml;ck</a> ] " : "";
-	$opt_index ? $messageoptions .= "[ <a class=\"hefo\" href=\"".build_link("index.php")."\">Index</a> ]" : "";
-	
-	$Tframe = new Template("templates/" . $style['styletemplate'] . "/frame.html");
-	$Tmessage = new Template("templates/" . $style['styletemplate'] . "/message.html");
+    $messageoptions = "&nbsp;";
+    
+    $opt_back ? $messageoptions .= "[ <a class=\"hefo\" href=\"javascript:history.back()\">Zur&uuml;ck</a> ] " : "";
+    $opt_index ? $messageoptions .= "[ <a class=\"hefo\" href=\"".build_link("index.php")."\">Index</a> ]" : "";
+    
+    $Tframe = new Template("templates/" . $style['styletemplate'] . "/frame.html");
+    $Tmessage = new Template("templates/" . $style['styletemplate'] . "/message.html");
 
-	eval($Tmessage->GetTemplate("CONTENT"));
-	eval($Tframe->GetTemplate());
-	exit;
+    eval($Tmessage->GetTemplate("CONTENT"));
+    eval($Tframe->GetTemplate());
+    exit;
 }
 
 
@@ -463,131 +463,131 @@ function message($title, $msg, $opt_back = 1, $opt_index = 1)
 
 function message_redirect($msg, $url)
 {
-	global $style;
+    global $style;
 
-	$TRedirect = new Template('templates/' . $style['styletemplate'] . '/redirect.html');
-	eval($TRedirect->GetTemplate());
-	
-	exit;
+    $TRedirect = new Template('templates/' . $style['styletemplate'] . '/redirect.html');
+    eval($TRedirect->GetTemplate());
+    
+    exit;
 }
 
 function form_date($time, $verbose = 1)
 {
-	global $config;
-	
-	if( $time < (60 * 60 * 24) )
-	{
-		return "N/A";
-	}
+    global $config;
+    
+    if( $time < (60 * 60 * 24) )
+    {
+        return "N/A";
+    }
 
-	$time += $config['timeoffset'] * 3600;
+    $time += $config['timeoffset'] * 3600;
 
-	if( date("d.m.Y", (time() + $config['timeoffset'] * 3600) ) == date('d.m.Y', $time) && $verbose )
-	{
-		return "<b>Heute</b>, " . date("H:i", $time) . " Uhr";
-	}
-	else
-	{
-		return date("d.m.Y, H:i", $time) . " Uhr";
-	}
+    if( date("d.m.Y", (time() + $config['timeoffset'] * 3600) ) == date('d.m.Y', $time) && $verbose )
+    {
+        return "<b>Heute</b>, " . date("H:i", $time) . " Uhr";
+    }
+    else
+    {
+        return date("d.m.Y, H:i", $time) . " Uhr";
+    }
 }
 
 function r_stripslashes(&$array)
 {
-	while( list($k, $v) = each($array) )
-	{
-		if( $k != 'argc' && $k != 'argv' && (strtoupper($k) != $k || ''.intval($k) == "$k") )
-		{
-			if( is_string($v) )
-			{
-				$array[$k] = stripslashes($v);
-			}
-			if( is_array($v) )
-			{
-				$array[$k] = r_stripslashes($v);
-			}
-		}
-	}
-	return $array;
+    while( list($k, $v) = each($array) )
+    {
+        if( $k != 'argc' && $k != 'argv' && (strtoupper($k) != $k || ''.intval($k) == "$k") )
+        {
+            if( is_string($v) )
+            {
+                $array[$k] = stripslashes($v);
+            }
+            if( is_array($v) )
+            {
+                $array[$k] = r_stripslashes($v);
+            }
+        }
+    }
+    return $array;
 }
 
 function jumpmenu($currentboard = 1)
 {
-	global $pref, $g_user;
+    global $pref, $g_user;
 
-	$P = new Permission($g_user['groupids']);
+    $P = new Permission($g_user['groupids']);
 
-	// precache boards
-	$a_board = array();
-	$r_board = thwb_query("SELECT boardid, boardname, categoryid
-		FROM ".$pref."board
-		WHERE boarddisabled = 0
-		ORDER BY boardorder ASC");
-	while( $board = mysql_fetch_array($r_board) )
-	{
-		$P->set_boardid($board['boardid']);
-		if( $P->has_permission( P_VIEW ) )
-			$a_board[$board['categoryid']][] = $board;
-	}
-	
-	// category
-	$r_category = thwb_query("SELECT categoryid, categoryname FROM
-	".$pref."category ORDER BY categoryorder ASC");
-	
-	$JUMP_MENU = '<select class="tbselect" name="board[boardid]" onChange="Submit.click()">';
-	while( $category = mysql_fetch_array($r_category) )
-	{
-		if( !empty($a_board[$category['categoryid']]) && $a_board[$category['categoryid']] )
-		{
-			$JUMP_MENU .= '<option value="-'.$category['categoryid'].'">'.$category['categoryname'].'</option>';
-			while( list(, $board) = each($a_board[$category['categoryid']]) )
-			{
-				$JUMP_MENU .= '<option value="'.$board['boardid'].'"'.($board['boardid'] == $currentboard ? ' selected' : '') . '>- '.$board['boardname'].'</option>';
-			}
-		}
-	}
+    // precache boards
+    $a_board = array();
+    $r_board = thwb_query("SELECT boardid, boardname, categoryid
+        FROM ".$pref."board
+        WHERE boarddisabled = 0
+        ORDER BY boardorder ASC");
+    while( $board = mysql_fetch_array($r_board) )
+    {
+        $P->set_boardid($board['boardid']);
+        if( $P->has_permission( P_VIEW ) )
+            $a_board[$board['categoryid']][] = $board;
+    }
+    
+    // category
+    $r_category = thwb_query("SELECT categoryid, categoryname FROM
+    ".$pref."category ORDER BY categoryorder ASC");
+    
+    $JUMP_MENU = '<select class="tbselect" name="board[boardid]" onChange="Submit.click()">';
+    while( $category = mysql_fetch_array($r_category) )
+    {
+        if( !empty($a_board[$category['categoryid']]) && $a_board[$category['categoryid']] )
+        {
+            $JUMP_MENU .= '<option value="-'.$category['categoryid'].'">'.$category['categoryname'].'</option>';
+            while( list(, $board) = each($a_board[$category['categoryid']]) )
+            {
+                $JUMP_MENU .= '<option value="'.$board['boardid'].'"'.($board['boardid'] == $currentboard ? ' selected' : '') . '>- '.$board['boardname'].'</option>';
+            }
+        }
+    }
 
-	$JUMP_MENU .= '</select> <input class="tbbutton" type="submit" name="Submit" value="Jump">';
+    $JUMP_MENU .= '</select> <input class="tbbutton" type="submit" name="Submit" value="Jump">';
 
-	return $JUMP_MENU;
+    return $JUMP_MENU;
 }
 
 
 function thwb_array_reverse($array)
 {
-	if( function_exists('array_reverse') )
-	{
-		return array_reverse($array);
-	}
-	else
-	{
-		$a_new = array();
-		for( $i = count($array) - 1; $i >= 0; $i--)
-		{
-			$a_new[] = $array[$i];
-		}
-		return $a_new;
-	}
+    if( function_exists('array_reverse') )
+    {
+        return array_reverse($array);
+    }
+    else
+    {
+        $a_new = array();
+        for( $i = count($array) - 1; $i >= 0; $i--)
+        {
+            $a_new[] = $array[$i];
+        }
+        return $a_new;
+    }
 }
 //$DEBUG = "<pre>";
 
 
 function thwb_query($query)
 {
-	global $DEBUG, $g_user;
-	global $config;
-	global $all_t;
+    global $DEBUG, $g_user;
+    global $config;
+    global $all_t;
 
     global $_thwb_error_cfg;
-	
-	$start = microtime();
+    
+    $start = microtime();
 
-	$result = mysql_query($query);
+    $result = mysql_query($query);
 
-	$end = microtime();
-	
-	if( !$result )
-	{
+    $end = microtime();
+    
+    if( !$result )
+    {
         if(!empty($_thwb_error_cfg['sql']))
         {
             thwb_sql_error_handler($query, ((function_exists('debug_backtrace')) ? debug_backtrace() : array()));
@@ -601,125 +601,125 @@ function thwb_query($query)
         {
             print '<pre><b>ThWboard Error</b><br>MySQL reported an error. Query is hidden for security resons.</pre>';
         }
-		
-		exit;
-	}
-	if ( isset($g_user['userisadmin']) && $g_user['userisadmin'] && $config['debugmode'] ) 
-	{
-		// Extended DEBUG Mody By Andy
-		$start_t = explode(" ", $start);
-		$end_t = explode(" ", $end);
+        
+        exit;
+    }
+    if ( isset($g_user['userisadmin']) && $g_user['userisadmin'] && $config['debugmode'] ) 
+    {
+        // Extended DEBUG Mody By Andy
+        $start_t = explode(" ", $start);
+        $end_t = explode(" ", $end);
 
-		$start_t = $start_t[0] + $start_t[1];
-		$end_t = $end_t[0] + $end_t[1];
-		$full_t = $end_t - $start_t;
-		$all_t = $all_t + $full_t;
-		if( !$all_t )
-		{
-			$all_t = 0;
-		}
+        $start_t = $start_t[0] + $start_t[1];
+        $end_t = $end_t[0] + $end_t[1];
+        $full_t = $end_t - $start_t;
+        $all_t = $all_t + $full_t;
+        if( !$all_t )
+        {
+            $all_t = 0;
+        }
 
-		$DEBUG .= "</center><pre><font color=\"black\">$query\n\n<b>Zeit vor der Abfrage: $start_t\n Zeit nach der Abfrage: $end_t\n Abfragezeit: $full_t\n</b>";
-		$DEBUG .= "<pre><b>Bisherige gesamte Abfragedauer: <font color=\"red\">$all_t</font>, in Sekunden: <font color=\"red\">";
-		$DEBUG .= substr($all_t, 0, 4);
-		$DEBUG .= "</b></PRE><BR><BR>";
-	}
+        $DEBUG .= "</center><pre><font color=\"black\">$query\n\n<b>Zeit vor der Abfrage: $start_t\n Zeit nach der Abfrage: $end_t\n Abfragezeit: $full_t\n</b>";
+        $DEBUG .= "<pre><b>Bisherige gesamte Abfragedauer: <font color=\"red\">$all_t</font>, in Sekunden: <font color=\"red\">";
+        $DEBUG .= substr($all_t, 0, 4);
+        $DEBUG .= "</b></PRE><BR><BR>";
+    }
 
-	return $result;
+    return $result;
 }
 
 function chopstring($string, $maxchars)
 {
-	if( strlen($string) > $maxchars )
-		$string = substr($string, 0, ($maxchars - 3)) . '...';
-	
-	return $string;
+    if( strlen($string) > $maxchars )
+        $string = substr($string, 0, ($maxchars - 3)) . '...';
+    
+    return $string;
 }
 
 function killshout($string)
 {
-	// ignore pretty short topics
-	if( strlen( $string ) > 3 )
-	{
-		$caps = 0;
-		for( $i = 0; $i < strlen($string); $i++ )
-		{
-			if( $string[$i] > 'A' && $string[$i] < 'Z' )
-				$caps++;
-		}
-		
-		$ratio = $caps / strlen($string);
-		if( $ratio > 0.3 )
-		{
-			$words = @explode(' ', $string);
-			while( list(, $word) = each($words) )
-			{
-				if( strlen($word) > 1 )
-					$new_words[] = substr($word, 0, 1) . strtolower( substr( $word, 1 ) );
-				else
-					$new_words[] = $word;
-			}
-			return @implode(' ', $new_words);
-		}
-	}
-	return $string;
+    // ignore pretty short topics
+    if( strlen( $string ) > 3 )
+    {
+        $caps = 0;
+        for( $i = 0; $i < strlen($string); $i++ )
+        {
+            if( $string[$i] > 'A' && $string[$i] < 'Z' )
+                $caps++;
+        }
+        
+        $ratio = $caps / strlen($string);
+        if( $ratio > 0.3 )
+        {
+            $words = @explode(' ', $string);
+            while( list(, $word) = each($words) )
+            {
+                if( strlen($word) > 1 )
+                    $new_words[] = substr($word, 0, 1) . strtolower( substr( $word, 1 ) );
+                else
+                    $new_words[] = $word;
+            }
+            return @implode(' ', $new_words);
+        }
+    }
+    return $string;
 }
 
 function updateboard($boardid)
 {
-	global $pref;
-	// updates last posttime/thread/author of a board ..
-	$r_thread = thwb_query("SELECT threadid, threadtopic, threadtime, threadlastreplyby FROM ".$pref."thread WHERE threadlink='0' AND boardid='".intval($boardid)."'  GROUP BY threadid ORDER BY threadtime DESC LIMIT 1");
+    global $pref;
+    // updates last posttime/thread/author of a board ..
+    $r_thread = thwb_query("SELECT threadid, threadtopic, threadtime, threadlastreplyby FROM ".$pref."thread WHERE threadlink='0' AND boardid='".intval($boardid)."'  GROUP BY threadid ORDER BY threadtime DESC LIMIT 1");
 
-	if( mysql_num_rows($r_thread) < 1 )
-	{
-		thwb_query("UPDATE ".$pref."board SET
-			boardlastpost='0',
-			boardthreadid='0',
-			boardthreadtopic='',
-			boardlastpostby='',
+    if( mysql_num_rows($r_thread) < 1 )
+    {
+        thwb_query("UPDATE ".$pref."board SET
+            boardlastpost='0',
+            boardthreadid='0',
+            boardthreadtopic='',
+            boardlastpostby='',
                         boardposts='0',
                         boardthreads='0'
-		WHERE boardid='".intval($boardid)."'");
-	}
-	else
-	{
-		$thread = mysql_fetch_array($r_thread);
+        WHERE boardid='".intval($boardid)."'");
+    }
+    else
+    {
+        $thread = mysql_fetch_array($r_thread);
 
-		$r_thread = thwb_query("SELECT COUNT(threadid) AS threadcount, SUM(threadreplies) AS postcount FROM ".$pref."thread WHERE boardid=$boardid");
-		$thread = array_merge($thread, mysql_fetch_array($r_thread));
+        $r_thread = thwb_query("SELECT COUNT(threadid) AS threadcount, SUM(threadreplies) AS postcount FROM ".$pref."thread WHERE boardid=$boardid");
+        $thread = array_merge($thread, mysql_fetch_array($r_thread));
 
-		$thread['postcount'] += $thread['threadcount']; // threads without replies.
-				
-		thwb_query("UPDATE ".$pref."board SET
-			boardlastpost='$thread[threadtime]',
-			boardthreadid='$thread[threadid]',
-			boardthreadtopic='" . addslashes($thread['threadtopic']) . "',
-			boardlastpostby='" . addslashes($thread['threadlastreplyby']) . "',
+        $thread['postcount'] += $thread['threadcount']; // threads without replies.
+                
+        thwb_query("UPDATE ".$pref."board SET
+            boardlastpost='$thread[threadtime]',
+            boardthreadid='$thread[threadid]',
+            boardthreadtopic='" . addslashes($thread['threadtopic']) . "',
+            boardlastpostby='" . addslashes($thread['threadlastreplyby']) . "',
                         boardposts='".addslashes($thread['postcount'])."',
                         boardthreads='".addslashes($thread['threadcount'])."'
-		WHERE boardid='".intval($boardid)."'");
-	}
+        WHERE boardid='".intval($boardid)."'");
+    }
 }
 
 function updatethread($threadid)
 {
-	global $pref;
-	// update thread stuff when deleting posts
-	$r_post = thwb_query("SELECT posttime, userid, postguestname FROM ".$pref."post WHERE threadid='".intval($threadid)."' ORDER BY posttime DESC LIMIT 1");
-	$post = mysql_fetch_array($r_post);
+    global $pref;
+    // update thread stuff when deleting posts
+    $r_post = thwb_query("SELECT posttime, userid, postguestname FROM ".$pref."post WHERE threadid='".intval($threadid)."' ORDER BY posttime DESC LIMIT 1");
+    $post = mysql_fetch_array($r_post);
 
-	if( $post['userid'] != 0 )
-	{
-		$r_user = thwb_query("SELECT username FROM ".$pref."user WHERE userid=$post[userid]");
-		$user = mysql_fetch_array($r_user);
-		
-		$author = $user['username'];
-	}
-	else
-	{
-		$author = $post['postguestname'];
-	}
+    if( $post['userid'] != 0 )
+    {
+        $r_user = thwb_query("SELECT username FROM ".$pref."user WHERE userid=$post[userid]");
+        $user = mysql_fetch_array($r_user);
+        
+        $author = $user['username'];
+    }
+    else
+    {
+        $author = $post['postguestname'];
+    }
 
     $r_startpost = thwb_query("SELECT userid, postguestname FROM ".$pref."post WHERE threadid='".intval($threadid)."' ORDER BY posttime ASC LIMIT 1");
     $a_startpost = mysql_fetch_array($r_startpost);
@@ -746,69 +746,69 @@ function checksize($ic_avatar)
       return;
     }
 
-	global $err_msg, $config;
-	if ( $ic_avatarsize = @getimagesize($ic_avatar) ) 
-	{
-		if ( $ic_avatarsize[0] > $config['avatarwidth'] )
-		{ 
-			$err_msg .= 'Das Avatar-Bild ist zu breit.<br>';
-		}
-		if ( $ic_avatarsize[1] > $config['avatarheight'] )
-		{ 
-			$err_msg .= 'Das Avatar-Bild ist zu hoch.<br>';
-		}
-		if ( $ic_avatarsize[2] > 3 )
-		{
-			$err_msg .= 'Das Avatar-Bild hat ein ung&uuml;ltiges Format.<br>';
-		}
-	}
-	else
-	{
-		$err_msg .= 'Das Avatar-Bild konnte nicht geladen werden.<br>'; 
-	}
+    global $err_msg, $config;
+    if ( $ic_avatarsize = @getimagesize($ic_avatar) ) 
+    {
+        if ( $ic_avatarsize[0] > $config['avatarwidth'] )
+        { 
+            $err_msg .= 'Das Avatar-Bild ist zu breit.<br>';
+        }
+        if ( $ic_avatarsize[1] > $config['avatarheight'] )
+        { 
+            $err_msg .= 'Das Avatar-Bild ist zu hoch.<br>';
+        }
+        if ( $ic_avatarsize[2] > 3 )
+        {
+            $err_msg .= 'Das Avatar-Bild hat ein ung&uuml;ltiges Format.<br>';
+        }
+    }
+    else
+    {
+        $err_msg .= 'Das Avatar-Bild konnte nicht geladen werden.<br>'; 
+    }
 }
 
 // Funktion zur Ersetzung von gebannten Wˆrtern (groﬂ/klein egal)
 function check_banned($text)
 {
-	global $pref;
-	
-	$r_bwords = thwb_query("SELECT banword, modword FROM $pref"."bannedwords");
-	if( mysql_num_rows($r_bwords) != 0 )
-	{
-		$bwords = array();
-		$mwords = array();
-		while( list($bword, $mword) = mysql_fetch_row($r_bwords) )
-		{
-			$bwords[] = "/([a-z])*(" . $bword . ")([a-z])*/i";
-			$mwords[] = $mword;
-		}
-		mysql_free_result($r_bwords);
-		$text = preg_replace($bwords, $mwords, $text);
-	}
+    global $pref;
+    
+    $r_bwords = thwb_query("SELECT banword, modword FROM $pref"."bannedwords");
+    if( mysql_num_rows($r_bwords) != 0 )
+    {
+        $bwords = array();
+        $mwords = array();
+        while( list($bword, $mword) = mysql_fetch_row($r_bwords) )
+        {
+            $bwords[] = "/([a-z])*(" . $bword . ")([a-z])*/i";
+            $mwords[] = $mword;
+        }
+        mysql_free_result($r_bwords);
+        $text = preg_replace($bwords, $mwords, $text);
+    }
 
-	return $text;
+    return $text;
 }
 
 function end_page($output)
 {
-	global $config;
+    global $config;
 
-	print $output;
+    print $output;
 
-	$config['compression'] && ob_end_flush();
+    $config['compression'] && ob_end_flush();
 }
 
 /* removes sessions from links (edit, newtopic, reply .php) */
 function strip_session($text)
 {
-	global $config;
+    global $config;
 
-	$board_url = preg_quote($config['board_baseurl'], '/');
-	$text = preg_replace("/(".$board_url."[^ ]+\.php[^ ]*)([\?&]s=[a-f0-9]{32})/", '$1', $text);
-	$text = preg_replace("/(".$board_url."[^ ]+\.php[^ ]*)([\?&]time=[0-9]+)/", '$1', $text);
+    $board_url = preg_quote($config['board_baseurl'], '/');
+    $text = preg_replace("/(".$board_url."[^ ]+\.php[^ ]*)([\?&]s=[a-f0-9]{32})/", '$1', $text);
+    $text = preg_replace("/(".$board_url."[^ ]+\.php[^ ]*)([\?&]time=[0-9]+)/", '$1', $text);
 
-	return $text;
+    return $text;
 }
 
 /**
@@ -817,13 +817,13 @@ function strip_session($text)
 
 function prevent_guestspam()
 {
-	global $config, $pref, $REMOTE_ADDR;
+    global $config, $pref, $REMOTE_ADDR;
                                                                                 
-	$r_post = thwb_query("SELECT posttime FROM ".$pref."post WHERE postip = '".$REMOTE_ADDR."' ORDER BY posttime DESC");
-	$post = mysql_fetch_array($r_post);
-	if((time() - $config['postdelay']) < $post['posttime'])
-	{
-		message("Fehler", "Sie k&ouml;nnen nur alle $config[postdelay] Sekunden einen neuen Beitrag erstellen.");
+    $r_post = thwb_query("SELECT posttime FROM ".$pref."post WHERE postip = '".$REMOTE_ADDR."' ORDER BY posttime DESC");
+    $post = mysql_fetch_array($r_post);
+    if((time() - $config['postdelay']) < $post['posttime'])
+    {
+        message("Fehler", "Sie k&ouml;nnen nur alle $config[postdelay] Sekunden einen neuen Beitrag erstellen.");
     }
 }
 
@@ -839,18 +839,18 @@ function update_online()
   
   $a_count = array();
   $a_count =  mysql_fetch_array(thwb_query("SELECT COUNT(userid) AS count FROM ".$pref."online WHERE userid=".$g_user['userid']
-					   .(($g_user['userid']) ? "" : " AND onlineip = '".$HTTP_SERVER_VARS['REMOTE_ADDR']."'")));
+                       .(($g_user['userid']) ? "" : " AND onlineip = '".$HTTP_SERVER_VARS['REMOTE_ADDR']."'")));
 
   if($a_count['count'])
     {
       $query = "UPDATE ".$pref."online SET onlineip = '".$HTTP_SERVER_VARS['REMOTE_ADDR']."', onlinetime = '".time()."'"
-	.(($have_sid) ? ", sessionid = '".$s."'" : "")." WHERE userid = '".$g_user['userid']."'" 
-	.(($g_user['userid']) ? "" : " AND onlineip = '".$HTTP_SERVER_VARS['REMOTE_ADDR']."'");
+    .(($have_sid) ? ", sessionid = '".$s."'" : "")." WHERE userid = '".$g_user['userid']."'" 
+    .(($g_user['userid']) ? "" : " AND onlineip = '".$HTTP_SERVER_VARS['REMOTE_ADDR']."'");
     }
   else
     {
       $query = "INSERT INTO ".$pref."online (onlineip, onlinetime, userid".(($have_sid) ? ", sessionid" : "").") VALUES "
-	."('".$HTTP_SERVER_VARS['REMOTE_ADDR']."', '".time()."', '".$g_user['userid'].(($have_sid) ? "', '".$s."'" : "'").")";
+    ."('".$HTTP_SERVER_VARS['REMOTE_ADDR']."', '".time()."', '".$g_user['userid'].(($have_sid) ? "', '".$s."'" : "'").")";
     }
 
   thwb_query($query);
@@ -923,21 +923,21 @@ function verify_session()
       return $HTTP_COOKIE_VARS['thwb_cookie'];
     }
   else if($have_session || $have_sid_cookie)
-	{
+    {
       if($have_sid_cookie)
       {
           $s = $HTTP_COOKIE_VARS['thwb_session'];
       }
 
-	  $r_session = thwb_query("SELECT o.userid, o.onlineip, o.onlinetime, u.userpassword FROM ".$pref."online AS o LEFT OUTER JOIN ".$pref
-				  ."user AS u ON o.userid = u.userid WHERE o.sessionid='".addslashes($s)."' ORDER BY o.onlinetime DESC LIMIT 1");
+      $r_session = thwb_query("SELECT o.userid, o.onlineip, o.onlinetime, u.userpassword FROM ".$pref."online AS o LEFT OUTER JOIN ".$pref
+                  ."user AS u ON o.userid = u.userid WHERE o.sessionid='".addslashes($s)."' ORDER BY o.onlinetime DESC LIMIT 1");
 
       if(!mysql_num_rows($r_session))
-	    {
+        {
           // mismatching session id
 
-	      return "guest";
-	    }
+          return "guest";
+        }
 
       $a_session = mysql_fetch_array($r_session);
 
@@ -1009,7 +1009,7 @@ function new_session()
     }
 
     thwb_query("INSERT INTO ".$pref."online (onlineip, onlinetime, userid, sessionid)
-	VALUES ('" . $HTTP_SERVER_VARS['REMOTE_ADDR'] . "', '" . time() . "', '" . $g_user['userid'] . "', '" . addslashes($s) ."')");
+    VALUES ('" . $HTTP_SERVER_VARS['REMOTE_ADDR'] . "', '" . time() . "', '" . $g_user['userid'] . "', '" . addslashes($s) ."')");
 
     return $s;
 }

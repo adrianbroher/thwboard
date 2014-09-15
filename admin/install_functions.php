@@ -53,35 +53,35 @@ error_reporting(7); // E_ERROR | E_WARNING | E_PARSE
 set_magic_quotes_runtime(0);
 
 if( isset($HTTP_GET_VARS) )
-	extract($HTTP_GET_VARS, EXTR_SKIP);
+    extract($HTTP_GET_VARS, EXTR_SKIP);
 if( isset($HTTP_PUT_VARS) )
-	extract($HTTP_PUT_VARS, EXTR_SKIP);
+    extract($HTTP_PUT_VARS, EXTR_SKIP);
 if( isset($HTTP_POST_VARS) )
-	extract($HTTP_POST_VARS, EXTR_SKIP);
+    extract($HTTP_POST_VARS, EXTR_SKIP);
 
 // choose default language if none selected
 if( !isset($HTTP_POST_VARS['lang']) )
-	$HTTP_POST_VARS['lang'] = '';
+    $HTTP_POST_VARS['lang'] = '';
 
 function create_tables($delete_existing)
 {
-	global $prefix;
-	$pref = $prefix;
-	
+    global $prefix;
+    $pref = $prefix;
+    
 /*
-	These are the initial databases and values.
-	If you add new queries, watch out for semicolons:
-	NEVER EVER use them inside a query, only at the end.
-	This huge chunk is split up at the semicolons into
-	individual queries, so if you've got a semicolon somewhere
-	in between, you'll end up with an invalid query!
+    These are the initial databases and values.
+    If you add new queries, watch out for semicolons:
+    NEVER EVER use them inside a query, only at the end.
+    This huge chunk is split up at the semicolons into
+    individual queries, so if you've got a semicolon somewhere
+    in between, you'll end up with an invalid query!
 
-	Semicolon usage is allowed in queries, as long as
-	you dont put a \r\n or \n after them. --dp
+    Semicolon usage is allowed in queries, as long as
+    you dont put a \r\n or \n after them. --dp
 
 */
 
-	$mysql_data = "
+    $mysql_data = "
 
 CREATE TABLE $pref"."adminlog (
   logid int(10) unsigned NOT NULL auto_increment,
@@ -499,97 +499,97 @@ CREATE TABLE $pref"."user (
 ) TYPE=MyISAM;
 ";
 
-	// split at ;\r\n or ;\n
-	$a_query = preg_split('/;[ \t]*\r?\n/m', $mysql_data);
+    // split at ;\r\n or ;\n
+    $a_query = preg_split('/;[ \t]*\r?\n/m', $mysql_data);
 
-	while( list(, $query) = each($a_query) )
-	{
-		$query = trim($query);
-		if( $query )
-		{
-			if( strstr($query, 'CREATE TABLE') && $delete_existing )
-			{
-				ereg('CREATE TABLE ([^ ]*)', $query, $regs);
-				thwb_query("DROP TABLE IF EXISTS $regs[1]");
-			}
-			thwb_query($query);
-		}
-	}
+    while( list(, $query) = each($a_query) )
+    {
+        $query = trim($query);
+        if( $query )
+        {
+            if( strstr($query, 'CREATE TABLE') && $delete_existing )
+            {
+                ereg('CREATE TABLE ([^ ]*)', $query, $regs);
+                thwb_query("DROP TABLE IF EXISTS $regs[1]");
+            }
+            thwb_query($query);
+        }
+    }
 }
 
 function WriteAccess($file)
 {
-	$fp = @fopen($file, 'w');
-	if( !$fp )
-	{
-		return FALSE;
-	}
-	else
-	{
-		fclose($fp);
-		return TRUE;
-	}
+    $fp = @fopen($file, 'w');
+    if( !$fp )
+    {
+        return FALSE;
+    }
+    else
+    {
+        fclose($fp);
+        return TRUE;
+    }
 }
 
 function db_exists($dbname)
 {
-	$r_database = mysql_listdbs();
-		
-	$i = 0;
-	while( $i < mysql_num_rows($r_database) )
-	{
-		if( strtolower($dbname) == strtolower(mysql_tablename($r_database, $i)) )
-		{
-			return 1;
-		}
-		$i++;
-	}
-	return 0;
+    $r_database = mysql_listdbs();
+        
+    $i = 0;
+    while( $i < mysql_num_rows($r_database) )
+    {
+        if( strtolower($dbname) == strtolower(mysql_tablename($r_database, $i)) )
+        {
+            return 1;
+        }
+        $i++;
+    }
+    return 0;
 }
 
 function column_exists($table, $column)
 {
-	$r_query = thwb_query("DESCRIBE $table");
-	while( $query = mysql_fetch_array($r_query) )
-	{
-		if( $query['Field']== $column )
-			return 1;
-	}
-	
-	return 0;
+    $r_query = thwb_query("DESCRIBE $table");
+    while( $query = mysql_fetch_array($r_query) )
+    {
+        if( $query['Field']== $column )
+            return 1;
+    }
+    
+    return 0;
 }
 
 function thwb_query($query)
 {
-	$result = mysql_query($query);
-	if( mysql_error() )
-	{
-		p_errormsg(lng('error'), sprintf( lng('queryerror'), $query, mysql_error() )   );
-	}
-	return $result;
+    $result = mysql_query($query);
+    if( mysql_error() )
+    {
+        p_errormsg(lng('error'), sprintf( lng('queryerror'), $query, mysql_error() )   );
+    }
+    return $result;
 }
 
 function install_allowed()
 {
-	if( file_exists('../inc/config.inc.php') )
-	{
-		return 0;
-	}
-	else
-	{
-		return 1;
-	}
-/*	include '../inc/config.inc.php';
+    if( file_exists('../inc/config.inc.php') )
+    {
+        return 0;
+    }
+    else
+    {
+        return 1;
+    }
+/*    include '../inc/config.inc.php';
 
-	if( $inst_lock )
-		return 0;
-	else
-		return 1;*/
+    if( $inst_lock )
+        return 0;
+    else
+        return 1;*/
 }
 
 function p_deny_install()
 {
-	print '
+    print '
 <b>'.lng('denied').'</b><br>
 <br>
 '.lng('deniedtxt');
@@ -599,7 +599,7 @@ function p_header()
 {
   global $PHP_SELF, $cfg;
 
-	print '
+    print '
 <html>
 <head>
 <title>'.$cfg['appname'].' - phpInstaller v1.0</title>
@@ -638,7 +638,7 @@ td {  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 8pt
               <table width="100%" border="0" cellspacing="0" cellpadding="6">
                 <tr>
                   <td><b>'.$cfg['appname'].' '.lng('installation').'</b><br>
-				    <a href="install.php?action=about&lang='.$lang.'">phpInstaller</a> v'.$cfg['installer_ver'].'</td>
+                    <a href="install.php?action=about&lang='.$lang.'">phpInstaller</a> v'.$cfg['installer_ver'].'</td>
                   <td align="right"><img src="./images/thwboard_logo.gif"></td>
                 </tr>
               </table>
@@ -664,9 +664,9 @@ function p_footer($action = '', $vars = 0)
 {
   global $lang;
 
-	if( $vars == 0 )
-		$vars = array();
-	print '
+    if( $vars == 0 )
+        $vars = array();
+    print '
                   </td>
                 </tr>
               </table>
@@ -686,16 +686,16 @@ function p_footer($action = '', $vars = 0)
               <table width="100%" border="0" cellspacing="0" cellpadding="16">
                 <tr> 
                   <td align="right">
-				    <input type="hidden" name="action" value="'.$action.'"> 
+                    <input type="hidden" name="action" value="'.$action.'"> 
                     '.( $action != '' ? '<input type="submit" name="next" value="'.lng('next').' &gt;" class="inst_button">' : '&nbsp;');
 
 while( list($k, $v) = each($vars) )
 {
-	print '<input type="hidden" name="'.$k.'" value="'.$v.'">';
+    print '<input type="hidden" name="'.$k.'" value="'.$v.'">';
 }
 
 if( $lang )
-	print '<input type="hidden" name="lang" value="'.$lang.'">';
+    print '<input type="hidden" name="lang" value="'.$lang.'">';
 
 print '
                     
@@ -732,30 +732,30 @@ print '
 
 function p_errormsg($title, $message)
 {
-	p_header();
-	print '
+    p_header();
+    print '
 <b>'.$title.'</b><br>
 <br>
 '.$message.'<br>
 <br>
 <a href="JavaScript:history.back(0)">'.lng('back').'</a>
 ';
-	p_footer();
-	exit;
+    p_footer();
+    exit;
 }
 
 function p_welcome()
 {
-	print lng('infotxt');
+    print lng('infotxt');
 }
 
 function p_license()
 {
-	$license = implode('', file('../doc/license'));
-/*	$license = nl2br($license);
-	$license = str_replace("\t", '    ', $license);
-	$license = str_replace('  ', '&nbsp;&nbsp;', $license);*/
-	print '
+    $license = implode('', file('../doc/license'));
+/*    $license = nl2br($license);
+    $license = str_replace("\t", '    ', $license);
+    $license = str_replace('  ', '&nbsp;&nbsp;', $license);*/
+    print '
                       <b>'.lng('licagreement').'</b><br>
                       <br>
                       <textarea cols="67" wrap="OFF" rows="12" readonly>'.$license.'</textarea>
@@ -767,7 +767,7 @@ function p_license()
 
 function p_mysqldata()
 {
-	print '
+    print '
                     <b>'.lng('mysqldata').'</b><br>
                     <br>
                     '.lng('entermysqldata').'<br>
@@ -799,15 +799,15 @@ function p_mysqldata()
 
 function p_selectdb($databases)
 {
-	print '
+    print '
                     <b>'.lng('selectdb').'</b><br>
                     <br>
                     '.lng('choosedb').'<br>
                     <br>
                     <br>
                     <select name="selected_db" size="6" class="inst_button">
-					  <option value="_usefield" selected>( '.lng('usefield').' )</option>
-					  '.$databases.';
+                      <option value="_usefield" selected>( '.lng('usefield').' )</option>
+                      '.$databases.';
                     </select>
                     <br>
                     <br>
@@ -817,18 +817,18 @@ function p_selectdb($databases)
 
 function p_chooseprefix($dbname, $tables)
 {
-	print '
+    print '
 <b>'.lng('chooseprefix').'</b><br>
 <br>
 '.sprintf(lng('tablelist'), $dbname).'
 <ul>';
-	while( list(, $v) = @each($tables) )
-	{
-		print '<li>'.$v.'</li>';
-	}
-	print '</ul>';
-	
-	print '
+    while( list(, $v) = @each($tables) )
+    {
+        print '<li>'.$v.'</li>';
+    }
+    print '</ul>';
+    
+    print '
   '.lng('enterprefix').'<br>
 <input type="text" name="prefix" value="tb_" class="inst_button"> ('.lng('dontchange').')<br>
 <br>
@@ -838,7 +838,7 @@ function p_chooseprefix($dbname, $tables)
 
 function p_adminprofile()
 {
-	print '
+    print '
 <b>'.lng('createadmin').'</b><br>
 <br>
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
@@ -868,9 +868,9 @@ function p_adminprofile()
 
 function p_prewrite($hostname, $user, $pass, $db, $prefix)
 {
-	$text = sprintf(lng('completingtxt'), $hostname, $user, $pass, $db, $prefix);
+    $text = sprintf(lng('completingtxt'), $hostname, $user, $pass, $db, $prefix);
 
-	print '
+    print '
 <b>'.lng('completing').'</b><br>
 <br>
 '.$text.'';
@@ -879,13 +879,13 @@ function p_prewrite($hostname, $user, $pass, $db, $prefix)
 
 function p_done()
 {
-	global $PHP_SELF;
-	print lng('finished');
+    global $PHP_SELF;
+    print lng('finished');
 }
 
 function p_about()
 {
-	print '
+    print '
 <b>About phpInstaller</b><br>
 <br>
 <b>phpInstaller</b> ist ein Script zum installieren von PHP-Basierenden Anwendungen, 
@@ -912,32 +912,32 @@ bleiben. Ansonsten gilt die GNU General Public License (GPL).<br>
 
 function p_updatewelcome($update)
 {
-	if( $update )
-	{
-		print '
+    if( $update )
+    {
+        print '
 <b>Updates</b><br>
 <br>
 '.lng('selectupdate').'<br>
 <br>
   <select class="inst_button" name="scriptname" size="6">';
-	
-	while( list(, $scriptname) = each($update) )
-	{
-		print '<option value="'.$scriptname.'">'.$scriptname.'</option>';
-	}
-	
-	print '
+    
+    while( list(, $scriptname) = each($update) )
+    {
+        print '<option value="'.$scriptname.'">'.$scriptname.'</option>';
+    }
+    
+    print '
   </select>';
-	}
-	else
-	{
-		print lng('noupdates');
-	}
+    }
+    else
+    {
+        print lng('noupdates');
+    }
 }
 
 function p_updateinfo($update)
 {
-	print'
+    print'
 <b>'.lng('updateinfo').'</b><br>
 <br>
 <table width="100%" border="0" cellspacing="0" cellpadding="3">
@@ -970,31 +970,31 @@ function p_updateinfo($update)
 
 function p_loginform()
 {
-	global $a_lang;
-	print '
+    global $a_lang;
+    print '
 <b>'.lng('login').'</b><br>
 <br>
 <table cellspacing="0" cellpadding="2" border="0">
   <tr>
     <td>'.lng('username').'</td>
-	<td width="10">&nbsp;</td>
-	<td><input type="text" name="l_username" class="inst_button"></td>
+    <td width="10">&nbsp;</td>
+    <td><input type="text" name="l_username" class="inst_button"></td>
   </tr>
   <tr>
     <td>'.lng('password').'</td>
-	<td width="10">&nbsp;</td>
-	<td><input type="password" name="l_userpassword" class="inst_button"></td>
+    <td width="10">&nbsp;</td>
+    <td><input type="password" name="l_userpassword" class="inst_button"></td>
   </tr>
   <tr>
     <td>Language</td>
-	<td width="10">&nbsp;</td>
-	<td><select name="lang" class="inst_button">';
+    <td width="10">&nbsp;</td>
+    <td><select name="lang" class="inst_button">';
 
-	while( list($k, $v) = each($a_lang) )
-	{
-		print '<option value="'.$k.'">'.$a_lang[$k]['desc'].' </option>';
-	}
-	
+    while( list($k, $v) = each($a_lang) )
+    {
+        print '<option value="'.$k.'">'.$a_lang[$k]['desc'].' </option>';
+    }
+    
 print '</select></td>
   </tr>
 </table>';
@@ -1002,18 +1002,18 @@ print '</select></td>
 
 function p_selectlang()
 {
-	global	$a_lang;
+    global    $a_lang;
 
-	print '
+    print '
 <b>Welcome to phpInstaller!</b><br>
 <br>
 Please choose your language:<br><br>
 <select name="lang" class="inst_button">';
 
-	while( list($k, $v) = each($a_lang) )
-	{
-		print '<option value="'.$k.'">'.$a_lang[$k]['desc'].' </option>';
-	}
+    while( list($k, $v) = each($a_lang) )
+    {
+        print '<option value="'.$k.'">'.$a_lang[$k]['desc'].' </option>';
+    }
 
 print '</select>';
 }

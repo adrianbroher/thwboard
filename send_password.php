@@ -26,15 +26,15 @@ $navpath .= "Passwort vergessen";
 
 if( $config['use_email'] )
 {
-	$Tframe=new Template("templates/" . $style['styletemplate'] . "/frame.html");
-	$Tsendform=new Template("templates/" . $style['styletemplate'] . "/send_password.html");
+    $Tframe=new Template("templates/" . $style['styletemplate'] . "/frame.html");
+    $Tsendform=new Template("templates/" . $style['styletemplate'] . "/send_password.html");
 
-	eval($Tsendform->GetTemplate("CONTENT"));
-	eval($Tframe->GetTemplate());
+    eval($Tsendform->GetTemplate("CONTENT"));
+    eval($Tframe->GetTemplate());
 }
 else
 {
-	message('Sorry',
-		'Der Forumadministrator hat diese Funktion leider deaktiviert. Wenn Sie Ihr Passwort vergessen haben, wenden
-		Sie sich bitte an den <a href="mailto:' . $config['board_admin'] . '">Forumadministrator</a>.');
+    message('Sorry',
+        'Der Forumadministrator hat diese Funktion leider deaktiviert. Wenn Sie Ihr Passwort vergessen haben, wenden
+        Sie sich bitte an den <a href="mailto:' . $config['board_admin'] . '">Forumadministrator</a>.');
 }

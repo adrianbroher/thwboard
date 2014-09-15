@@ -2,68 +2,68 @@
 
 class CUpdate
 {
-	var		$UpdaterVer		= 1.0;
-	var		$OldVersion		= '2.72';
-	var		$NewVersion		= '2.73';
-	var		$Prefix			= '';
-	var		$Error			= '';
-	var		$Author			= 'ThWboard Development Team';
-	var		$Date			= '24.03.2002';
-	var		$Notes			= '';
-	
-	function AllowUpdate()
-	{
-		$r_registry = thwb_query("SELECT keyvalue FROM $this->Prefix"."registry WHERE keyname='version'");
-		$registry = mysql_fetch_array($r_registry);
-		
-		if( $registry['keyvalue'] != $this->OldVersion && $registry['keyvalue'] != '2.71' )
-			return 0;
-		else
-			return 1;
-	}
-	
-	function SetError($errmsg)
-	{
-		$this->Error = $errmsg;
-	}
-	
-	function GetError()
-	{
-		return $this->Error;
-	}
+    var        $UpdaterVer        = 1.0;
+    var        $OldVersion        = '2.72';
+    var        $NewVersion        = '2.73';
+    var        $Prefix            = '';
+    var        $Error            = '';
+    var        $Author            = 'ThWboard Development Team';
+    var        $Date            = '24.03.2002';
+    var        $Notes            = '';
+    
+    function AllowUpdate()
+    {
+        $r_registry = thwb_query("SELECT keyvalue FROM $this->Prefix"."registry WHERE keyname='version'");
+        $registry = mysql_fetch_array($r_registry);
+        
+        if( $registry['keyvalue'] != $this->OldVersion && $registry['keyvalue'] != '2.71' )
+            return 0;
+        else
+            return 1;
+    }
+    
+    function SetError($errmsg)
+    {
+        $this->Error = $errmsg;
+    }
+    
+    function GetError()
+    {
+        return $this->Error;
+    }
 
-	/* the actual update.
-	 *
-	 * RETURN VALUES
-	 *
-	 *	1 - update failed (set error with $this->SetError() )
-	 *	0 - update sucessfull
-	 */
-	function RunUpdate()
-	{
-		// determine current default group
-		$r_group = thwb_query("SELECT groupid FROM $this->Prefix"."group WHERE nodelete=1");
-		if( mysql_num_rows($r_group) != 1 )
-		{
-			$this->SetError('Cant detemine default group!');
-			return 1;
-		}
-		list($groupid) = mysql_fetch_row($r_group);
-		
-		// make sure all users belong to a group
-		$a_group = array();
-		$r_group = thwb_query("SELECT groupid FROM $this->Prefix"."group");
-		while( $group = mysql_fetch_array($r_group) )
-		{
-			$a_group[] = $group['groupid'];
-		}
-		thwb_query("UPDATE $this->Prefix"."user SET groupid='$groupid' WHERE groupid NOT IN(".implode(',', $a_group).")");
-		
-		
-		thwb_query("INSERT INTO $this->Prefix"."registry (keyname, keyvalue, keytype, keydescription, keydetails, keygroupid, keydisplayorder) VALUES ('default_groupid', '$groupid', 'integer', 'Dont modify!', 'Dont modify!', '0', '0');");
-		thwb_query("UPDATE $this->Prefix"."registry SET keydetails='Show posts:<br>0 - Never, dont show any post counts.<br>1 - Show own postcount only.<br>2 - No restriction' WHERE keyname='showpostslevel'");
-		thwb_query("UPDATE $this->Prefix"."registry SET keyvalue='".$this->NewVersion."' WHERE keyname='version'");
+    /* the actual update.
+     *
+     * RETURN VALUES
+     *
+     *    1 - update failed (set error with $this->SetError() )
+     *    0 - update sucessfull
+     */
+    function RunUpdate()
+    {
+        // determine current default group
+        $r_group = thwb_query("SELECT groupid FROM $this->Prefix"."group WHERE nodelete=1");
+        if( mysql_num_rows($r_group) != 1 )
+        {
+            $this->SetError('Cant detemine default group!');
+            return 1;
+        }
+        list($groupid) = mysql_fetch_row($r_group);
+        
+        // make sure all users belong to a group
+        $a_group = array();
+        $r_group = thwb_query("SELECT groupid FROM $this->Prefix"."group");
+        while( $group = mysql_fetch_array($r_group) )
+        {
+            $a_group[] = $group['groupid'];
+        }
+        thwb_query("UPDATE $this->Prefix"."user SET groupid='$groupid' WHERE groupid NOT IN(".implode(',', $a_group).")");
+        
+        
+        thwb_query("INSERT INTO $this->Prefix"."registry (keyname, keyvalue, keytype, keydescription, keydetails, keygroupid, keydisplayorder) VALUES ('default_groupid', '$groupid', 'integer', 'Dont modify!', 'Dont modify!', '0', '0');");
+        thwb_query("UPDATE $this->Prefix"."registry SET keydetails='Show posts:<br>0 - Never, dont show any post counts.<br>1 - Show own postcount only.<br>2 - No restriction' WHERE keyname='showpostslevel'");
+        thwb_query("UPDATE $this->Prefix"."registry SET keyvalue='".$this->NewVersion."' WHERE keyname='version'");
 
-		return 0;
-	}	
+        return 0;
+    }    
 }

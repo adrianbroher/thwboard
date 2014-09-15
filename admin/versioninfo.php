@@ -33,7 +33,7 @@ MySQL-version: <font color="darkblue">'.mysql_get_server_info().'</font><br>';
 $ver = @file('/proc/version');
 if( $ver )
 {
-	print 'OS-version: <font color="darkblue">'.$ver[0].'</font><br>';
+    print 'OS-version: <font color="darkblue">'.$ver[0].'</font><br>';
 }
 
 tb_footer();

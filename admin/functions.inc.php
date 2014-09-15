@@ -22,63 +22,63 @@
 
 function r_stripslashes(&$array)
 {
-	while( list($k, $v) = each($array) )
-	{
-		if( $k != 'argc' && $k != 'argv' && (strtoupper($k) != $k || ''.intval($k) == "$k") )
-		{
-			if( is_string($v) )
-			{
-				$array[$k] = stripslashes($v);
-			}
-			if( is_array($v) )
-			{
-				$array[$k] = r_stripslashes($v);
-			}
-		}
-	}
-	return $array;
+    while( list($k, $v) = each($array) )
+    {
+        if( $k != 'argc' && $k != 'argv' && (strtoupper($k) != $k || ''.intval($k) == "$k") )
+        {
+            if( is_string($v) )
+            {
+                $array[$k] = stripslashes($v);
+            }
+            if( is_array($v) )
+            {
+                $array[$k] = r_stripslashes($v);
+            }
+        }
+    }
+    return $array;
 }
 
 function query($query)
 {
-	$result = mysql_query($query);
-	$rows = mysql_affected_rows();
-	$error = mysql_error();
-	
-	if( $error )
-	{
-		print "\n<font color=red><b>MySQL: $error</b></font><br>";
-		print "<pre><b>query:</b> $query\n\nAffected Rows: $rows</pre>";
-		exit;
+    $result = mysql_query($query);
+    $rows = mysql_affected_rows();
+    $error = mysql_error();
+    
+    if( $error )
+    {
+        print "\n<font color=red><b>MySQL: $error</b></font><br>";
+        print "<pre><b>query:</b> $query\n\nAffected Rows: $rows</pre>";
+        exit;
 
-	}
-	
-	return $result;
+    }
+    
+    return $result;
 }
 
 
 function get_templatesetarray()
 {
-	$a_templateset = array();
-	
-	$dp = opendir('../templates/');
-	while( $file = readdir($dp) )
-	{
-		if( $file != '.' && $file != '..' && $file != 'mail' && $file != 'CVS' && $file != 'css')
-		{
-			if( is_dir('../templates/'.$file) )
-			{
-				$a_templateset[] = $file;
-			}
-		}
-	}
+    $a_templateset = array();
+    
+    $dp = opendir('../templates/');
+    while( $file = readdir($dp) )
+    {
+        if( $file != '.' && $file != '..' && $file != 'mail' && $file != 'CVS' && $file != 'css')
+        {
+            if( is_dir('../templates/'.$file) )
+            {
+                $a_templateset[] = $file;
+            }
+        }
+    }
 
-	return $a_templateset;
+    return $a_templateset;
 }
 
 function yesnoradio($name, $yesno = 0)
 {
-	return '<input type="radio" name="' . $name . '" value="1"' . ($yesno == 1 ? ' checked' : '') . '>
+    return '<input type="radio" name="' . $name . '" value="1"' . ($yesno == 1 ? ' checked' : '') . '>
 Yes
 <input type="radio" name="' . $name . '" value="0"' . ($yesno == 0 ? ' checked' : '') . '>
 No 
@@ -87,9 +87,9 @@ No
 
 function datebox($name, $timestamp)
 {
-	$date = getdate($timestamp);
-	
-	echo "<input type=\"text\" name=\"" . $name . "[mday]\" size=\"2\" maxlength=\"2\" value=\"$date[mday]\">
+    $date = getdate($timestamp);
+    
+    echo "<input type=\"text\" name=\"" . $name . "[mday]\" size=\"2\" maxlength=\"2\" value=\"$date[mday]\">
 .
 <input type=\"text\" name=\"" . $name . "[mon]\" size=\"2\" maxlength=\"2\" value=\"$date[mon]\">
 .
@@ -159,7 +159,7 @@ function listbox($name, $key, $value, $table, $initial_select = -1, $additional 
 
 function navgroupbox_open($caption, $noline = 0)
 {
-	print '
+    print '
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td height="1" bgcolor="#FFFFFF"><img src="images/space.gif" width="1" height="1"></td>
@@ -172,31 +172,31 @@ function navgroupbox_open($caption, $noline = 0)
   </tr>
 </table>
 <table width="100%" border="0" cellspacing="1" cellpadding="2">';
-/*	if( $noline ) 
-	{
-		print '
-	  <font size="1" color="#3366CC">
-	  <b>'.$caption.'</b></font>
+/*    if( $noline ) 
+    {
+        print '
+      <font size="1" color="#3366CC">
+      <b>'.$caption.'</b></font>
       <table width="100%" border="0" cellspacing="1" cellpadding="2">';
-	}
-	else
-	{
-		print '
-	  <font size="1" color="#000000">------------------------------<br></font><font size="1" color="#3366CC">
-	  <b>'.$caption.'</b></font>
+    }
+    else
+    {
+        print '
+      <font size="1" color="#000000">------------------------------<br></font><font size="1" color="#3366CC">
+      <b>'.$caption.'</b></font>
       <table width="100%" border="0" cellspacing="1" cellpadding="2">';
-	}*/
+    }*/
 }
 
 function navgroupbox_close()
 {
-	print '
+    print '
       </table>';
 }
 
 function navbox_element($link, $caption)
 {
-	print '
+    print '
         <tr>
           <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="'.$link.'">'.$caption.'</a></font></td>
         </tr>';
@@ -204,20 +204,20 @@ function navbox_element($link, $caption)
 
 function getusercount()
 {
-	global $pref;
-	$r_user = query("SELECT count(userid) AS usercount FROM ".$pref."user");
-	$user = mysql_fetch_array($r_user);
-	
-	return $user['usercount'];
+    global $pref;
+    $r_user = query("SELECT count(userid) AS usercount FROM ".$pref."user");
+    $user = mysql_fetch_array($r_user);
+    
+    return $user['usercount'];
 }
 
 function getactiveusers()
-{						
-	global $pref;
-	$r_user = query("SELECT count(userid) AS usercount FROM ".$pref."user WHERE userlastpost > " . (time() - 60 * 60 * 24 * 31));
-	$user = mysql_fetch_array($r_user);
-	
-	return $user['usercount'];
+{                        
+    global $pref;
+    $r_user = query("SELECT count(userid) AS usercount FROM ".$pref."user WHERE userlastpost > " . (time() - 60 * 60 * 24 * 31));
+    $user = mysql_fetch_array($r_user);
+    
+    return $user['usercount'];
 }
 
 function getboardcount()
@@ -231,19 +231,19 @@ function getboardcount()
 
 function tb_header($redir_url = '')
 {
-	global $session, $config, $HTTP_SERVER_VARS;
-	print '
+    global $session, $config, $HTTP_SERVER_VARS;
+    print '
 <html>
 <head>
 <title>ThWboard Admin Center</title>';
-	
-	if( $redir_url )
-	{
-		print '
+    
+    if( $redir_url )
+    {
+        print '
 <meta http-equiv="Refresh" content="1; URL='.$redir_url.'">';
-	}
-	
-	print '
+    }
+    
+    print '
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <style type="text/css">
   a:link            { color:#3366CC; text-decoration: underline}
@@ -264,13 +264,13 @@ function tb_header($redir_url = '')
   textarea          { font-family: Verdana, Arial, Helvetica; font-size: 8pt }
   input             { font-family: Verdana, Arial, Helvetica; font-size: 8pt }
   .htmlsource       { font-family: "Verdana, Helvetica", Courier, mono; font-size: 8pt; color: #2255BB }';
-	if( !preg_match('/opera/Ui', $HTTP_SERVER_VARS['HTTP_USER_AGENT']) )
-	{
-		print '
+    if( !preg_match('/opera/Ui', $HTTP_SERVER_VARS['HTTP_USER_AGENT']) )
+    {
+        print '
   .tbinput {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 8pt; border: #999999; border-style: solid; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; background-color: #F9F9F9}';
-	}
+    }
 
-	print '
+    print '
 </style>
 </head>
 <body bgcolor="#FCFCFC" text="#575757" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
@@ -300,71 +300,71 @@ function tb_header($redir_url = '')
   </tr>
   <tr> 
     <td bgcolor="#E0E8F1" width="160" valign="top">
-	<!-- 
+    <!-- 
       <table width="100%" border="0" cellspacing="3" cellpadding="0">
         <tr> 
           <td> -->';
-		
-	navgroupbox_open('General', 1);
-		navbox_element('index.php?session='.$session, 'Home');
-		navbox_element('documents.php?session=' . $session . '&action=ListDocs', 'Documentation');
-		navbox_element('index.php?session=' . $session . '&action=EditSettings', 'Basic settings');
-		navbox_element('rank.php?session=' . $session . '&action=ViewRanks', 'Ranks');
-		navbox_element('announcements.php?session=' . $session . '&action=ListNews', 'Announcements');
-		navbox_element('links.php?session=' . $session . '&action=ListLinks', 'Quicklinks');
-	navgroupbox_close();
+        
+    navgroupbox_open('General', 1);
+        navbox_element('index.php?session='.$session, 'Home');
+        navbox_element('documents.php?session=' . $session . '&action=ListDocs', 'Documentation');
+        navbox_element('index.php?session=' . $session . '&action=EditSettings', 'Basic settings');
+        navbox_element('rank.php?session=' . $session . '&action=ViewRanks', 'Ranks');
+        navbox_element('announcements.php?session=' . $session . '&action=ListNews', 'Announcements');
+        navbox_element('links.php?session=' . $session . '&action=ListLinks', 'Quicklinks');
+    navgroupbox_close();
 
-	navgroupbox_open('Boards and categories');
-		navbox_element('boards.php?session=' . $session, 'Edit boards/categories');
-		navbox_element('boards.php?session=' . $session . '&action=newboard', 'Add board');
-		navbox_element('boards.php?session=' . $session . '&action=addcat', 'Add category');
-	navgroupbox_close();
+    navgroupbox_open('Boards and categories');
+        navbox_element('boards.php?session=' . $session, 'Edit boards/categories');
+        navbox_element('boards.php?session=' . $session . '&action=newboard', 'Add board');
+        navbox_element('boards.php?session=' . $session . '&action=addcat', 'Add category');
+    navgroupbox_close();
 
-	navgroupbox_open('Extensions');
-		navbox_element('calendar.php?session=' . $session, 'Calendar');
-		navbox_element('newsletter.php?session=' . $session, 'Newsletter');
-		navbox_element('bwords.php?session=' . $session, 'Badwords protection');
-		navbox_element('avatar.php?session=' . $session . '&action=ListAvatars', 'List avatars');
+    navgroupbox_open('Extensions');
+        navbox_element('calendar.php?session=' . $session, 'Calendar');
+        navbox_element('newsletter.php?session=' . $session, 'Newsletter');
+        navbox_element('bwords.php?session=' . $session, 'Badwords protection');
+        navbox_element('avatar.php?session=' . $session . '&action=ListAvatars', 'List avatars');
         navbox_element('avatar.php?session=' . $session . '&action=ListImportAvatars', 'Import avatars');
-		navbox_element('index.php?session=' . $session . '&action=EditSettings#avatar', 'Avatar settings');
-	navgroupbox_close();
+        navbox_element('index.php?session=' . $session . '&action=EditSettings#avatar', 'Avatar settings');
+    navgroupbox_close();
 
-	navgroupbox_open('Group management');
-		navbox_element('groups.php?session=' . $session . '&action=list', 'View / edit groups');
-		navbox_element('groups.php?session=' . $session . '&action=create', 'Create group');
-	navgroupbox_close();
+    navgroupbox_open('Group management');
+        navbox_element('groups.php?session=' . $session . '&action=list', 'View / edit groups');
+        navbox_element('groups.php?session=' . $session . '&action=create', 'Create group');
+    navgroupbox_close();
 
-	navgroupbox_open('User management');
-		navbox_element('users.php?session=' . $session . '&action=bans', 'User bans');
-		navbox_element('useredit.php?session=' . $session . '&action=Filter', 'Search / edit users');
-		navbox_element('useredit.php?session=' . $session . '&action=AddUser', 'Add user');
-		navbox_element('useredit.php?session=' . $session . '&action=DeleteUser', 'Delete user');
-	navgroupbox_close();
+    navgroupbox_open('User management');
+        navbox_element('users.php?session=' . $session . '&action=bans', 'User bans');
+        navbox_element('useredit.php?session=' . $session . '&action=Filter', 'Search / edit users');
+        navbox_element('useredit.php?session=' . $session . '&action=AddUser', 'Add user');
+        navbox_element('useredit.php?session=' . $session . '&action=DeleteUser', 'Delete user');
+    navgroupbox_close();
 
-	navgroupbox_open('Appearance');
-		navbox_element('style.php?session=' . $session . '&action=ListStyles', 'View / edit styles');
-		navbox_element('style.php?session=' . $session . '&action=NewStyle', 'Create style');
-		navbox_element('style.php?session=' . $session . '&action=ImportStyle', 'Import style');
-		navbox_element('dynx.php', 'Download styles');
-	navgroupbox_close();
+    navgroupbox_open('Appearance');
+        navbox_element('style.php?session=' . $session . '&action=ListStyles', 'View / edit styles');
+        navbox_element('style.php?session=' . $session . '&action=NewStyle', 'Create style');
+        navbox_element('style.php?session=' . $session . '&action=ImportStyle', 'Import style');
+        navbox_element('dynx.php', 'Download styles');
+    navgroupbox_close();
 
-	navgroupbox_open('Templates');
-		navbox_element('t-editor.php?session=' . $session . '&action=ListTemplateSets', 'Template editor');
-		navbox_element('mails.php?session=' . $session . '&action=ListMails', 'Email editor');
-	navgroupbox_close();
-	
-	navgroupbox_open('Misc');
-		navbox_element('versioninfo.php?session=' . $session, 'Version info');
-		navbox_element('query.php?session=' . $session, 'thwbMyAdmin');
-		navbox_element('mysql.php?session=' . $session, 'Mysql-Clean');
-	navgroupbox_close();
+    navgroupbox_open('Templates');
+        navbox_element('t-editor.php?session=' . $session . '&action=ListTemplateSets', 'Template editor');
+        navbox_element('mails.php?session=' . $session . '&action=ListMails', 'Email editor');
+    navgroupbox_close();
+    
+    navgroupbox_open('Misc');
+        navbox_element('versioninfo.php?session=' . $session, 'Version info');
+        navbox_element('query.php?session=' . $session, 'thwbMyAdmin');
+        navbox_element('mysql.php?session=' . $session, 'Mysql-Clean');
+    navgroupbox_close();
 
     navgroupbox_open('Logout');
         navbox_element('index.php?action=logout&session='.$session, 'Logout');
     navgroupbox_close();
-	
+    
 
-	print '
+    print '
 <!--          </td>
         </tr>
       </table> -->
@@ -378,8 +378,8 @@ function tb_header($redir_url = '')
 
 function tb_footer()
 {
-	print '
-		  </td>
+    print '
+          </td>
         </tr>
       </table>
     </td>
@@ -418,73 +418,73 @@ returns a string for use in <select> containing all categories and boards, order
 */
 function get_ordered_board_list()
 {
-	global $pref;
-	$s = '';
+    global $pref;
+    $s = '';
 
-	$a_board = array();
-	$r_board = query("SELECT boardid, boardname, categoryid FROM $pref"."board ORDER BY boardorder ASC");
-	while( $board = mysql_fetch_array($r_board) )
-	{
-		$a_board[$board['categoryid']][] = $board;
-	}
-	
-	$r_category = query("SELECT categoryid, categoryname FROM $pref"."category ORDER BY categoryorder ASC");
-	while( $category = mysql_fetch_array($r_category) )
-	{
-		if( $a_board[$category['categoryid']] )
-		{
-			$s .= '<option value="0">'.$category['categoryname'].'</option>';
-			while( list(, $board) = each($a_board[$category['categoryid']]) )
-			{
-				$s .= '<option value="'.$board['boardid'].'"> -- '.$board['boardname'].'</option>';
-			}
-		}
-	}
+    $a_board = array();
+    $r_board = query("SELECT boardid, boardname, categoryid FROM $pref"."board ORDER BY boardorder ASC");
+    while( $board = mysql_fetch_array($r_board) )
+    {
+        $a_board[$board['categoryid']][] = $board;
+    }
+    
+    $r_category = query("SELECT categoryid, categoryname FROM $pref"."category ORDER BY categoryorder ASC");
+    while( $category = mysql_fetch_array($r_category) )
+    {
+        if( $a_board[$category['categoryid']] )
+        {
+            $s .= '<option value="0">'.$category['categoryname'].'</option>';
+            while( list(, $board) = each($a_board[$category['categoryid']]) )
+            {
+                $s .= '<option value="'.$board['boardid'].'"> -- '.$board['boardname'].'</option>';
+            }
+        }
+    }
 
-	return $s;
+    return $s;
 }
 
 function updateboard($boardid)
 {
-	global $pref;
-	// updates last posttime/thread/author of a board ..
-	$r_thread = query("SELECT threadid, threadtopic, threadtime, threadlastreplyby FROM ".$pref."thread WHERE threadlink='0' AND boardid='".intval($boardid)."'  GROUP BY threadid ORDER BY threadtime DESC LIMIT 1");
+    global $pref;
+    // updates last posttime/thread/author of a board ..
+    $r_thread = query("SELECT threadid, threadtopic, threadtime, threadlastreplyby FROM ".$pref."thread WHERE threadlink='0' AND boardid='".intval($boardid)."'  GROUP BY threadid ORDER BY threadtime DESC LIMIT 1");
 
-	if( mysql_num_rows($r_thread) < 1 )
-	{
-		query("UPDATE ".$pref."board SET
-			boardlastpost='0',
-			boardthreadid='0',
-			boardthreadtopic='',
-			boardlastpostby='',
+    if( mysql_num_rows($r_thread) < 1 )
+    {
+        query("UPDATE ".$pref."board SET
+            boardlastpost='0',
+            boardthreadid='0',
+            boardthreadtopic='',
+            boardlastpostby='',
                         boardposts='0',
                         boardthreads='0'
-		WHERE boardid='".intval($boardid)."'");
-	}
-	else
-	{
-		$thread = mysql_fetch_array($r_thread);
+        WHERE boardid='".intval($boardid)."'");
+    }
+    else
+    {
+        $thread = mysql_fetch_array($r_thread);
 
-		$r_thread = query("SELECT COUNT(threadid) AS threadcount, SUM(threadreplies) AS postcount FROM ".$pref."thread WHERE boardid=$boardid");
-		$thread = array_merge($thread, mysql_fetch_array($r_thread));
+        $r_thread = query("SELECT COUNT(threadid) AS threadcount, SUM(threadreplies) AS postcount FROM ".$pref."thread WHERE boardid=$boardid");
+        $thread = array_merge($thread, mysql_fetch_array($r_thread));
 
-		$thread['postcount'] += $thread['threadcount']; // threads without replies.
-				
-		query("UPDATE ".$pref."board SET
-			boardlastpost='$thread[threadtime]',
-			boardthreadid='$thread[threadid]',
-			boardthreadtopic='" . addslashes($thread['threadtopic']) . "',
-			boardlastpostby='" . addslashes($thread['threadlastreplyby']) . "',
+        $thread['postcount'] += $thread['threadcount']; // threads without replies.
+                
+        query("UPDATE ".$pref."board SET
+            boardlastpost='$thread[threadtime]',
+            boardthreadid='$thread[threadid]',
+            boardthreadtopic='" . addslashes($thread['threadtopic']) . "',
+            boardlastpostby='" . addslashes($thread['threadlastreplyby']) . "',
                         boardposts='".addslashes($thread['postcount'])."',
                         boardthreads='".addslashes($thread['threadcount'])."'
-		WHERE boardid='".intval($boardid)."'");
-	}
+        WHERE boardid='".intval($boardid)."'");
+    }
 }
 
 function loginform()
 {
-	global $HTTP_SERVER_VARS;
-	print '
+    global $HTTP_SERVER_VARS;
+    print '
 <html>
 <head>
 <title>ThWboard Admin Center</title>

@@ -30,16 +30,16 @@ $r = query("SELECT VERSION() as version");
 list( $mysql_version ) = mysql_fetch_row($r);
 
 $a_info = array(
-	'PHP version' => phpversion(),
-	'MySQL version' => $mysql_version,
-	'Board version' => $config['version'],
-	'Magic quotes GPC' => get_magic_quotes_gpc()
+    'PHP version' => phpversion(),
+    'MySQL version' => $mysql_version,
+    'Board version' => $config['version'],
+    'Magic quotes GPC' => get_magic_quotes_gpc()
 );
 
 print '<pre>[code]'."\n";
 while( list($k, $v) = each($a_info) )
 {
-	printf('%-20s [b]<b>%s</b>[/b]'."\n", $k, $v);
+    printf('%-20s [b]<b>%s</b>[/b]'."\n", $k, $v);
 }
 print '[/code]</pre>';
 
@@ -47,17 +47,17 @@ print '[/code]</pre>';
 
 while( list(, $dir) = each($a_dir) )
 {
-	$dp = opendir($dir);
-	$a_file[$dir] = array();
-	while( $file = readdir($dp) )
-	{
-		if( !is_dir($dir.$file) && $file[0] != '.' )
-		{
-			$a_file[$dir][] = $file;
-		}
-	}
-	closedir($dp);
-	sort($a_file[$dir]);
+    $dp = opendir($dir);
+    $a_file[$dir] = array();
+    while( $file = readdir($dp) )
+    {
+        if( !is_dir($dir.$file) && $file[0] != '.' )
+        {
+            $a_file[$dir][] = $file;
+        }
+    }
+    closedir($dp);
+    sort($a_file[$dir]);
 }*/
 
 tb_footer();

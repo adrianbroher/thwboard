@@ -35,66 +35,66 @@ define('FLD_PASSWD', 8);
 define('FLD_TEXT', 16);
 
 $a_searchfield = array(
-	array('userid', 'User ID', FLD_INT), 
-	array('username', 'Username', FLD_STR), 
-	array('useremail', 'Email address', FLD_STR), 
-	array('usersignature', 'Signature', FLD_STR), 
-	array('userposts', 'Postcount', FLD_INT), 
-	array('userjoin', 'Registration date', FLD_DATE), 
-	array('userlastpost', 'Last post', FLD_DATE),
+    array('userid', 'User ID', FLD_INT), 
+    array('username', 'Username', FLD_STR), 
+    array('useremail', 'Email address', FLD_STR), 
+    array('usersignature', 'Signature', FLD_STR), 
+    array('userposts', 'Postcount', FLD_INT), 
+    array('userjoin', 'Registration date', FLD_DATE), 
+    array('userlastpost', 'Last post', FLD_DATE),
     array('useractivate', 'Not activated?', FLD_BOOL)
 );
 
 $a_editfield = array(
-	'username' => array('Username', '', FLD_STR),
-	'userpassword' => array('Password', '(Current password is hidden. Do not specify<br> a password unless you want to change it.)', FLD_PASSWD),
-	'useremail' => array('User email address', '', FLD_STR),
-	'userposts' => array('Postcount', '', FLD_INT),
-	'usertitle' => array('Custom title', 'Overrides any ranks', FLD_STR),
-	'userhomepage' => array('Homepage', '', FLD_STR),
-	'userlocation' => array('Location', '', FLD_STR),
-	'usericq' => array('ICQ #', '', FLD_INT),
-	'useraim' => array('AIM Name', '', FLD_STR),
-	'usermsn' => array('MSN Name', '', FLD_STR),
-	'useroccupation' => array('Occupation', '', FLD_STR),
-	'useravatar' => array('Avatar', 'Type in "<b>notallowed</b>" to forbid this user to use avatars.', FLD_STR),
-	'userinterests' => array('Interests', '', FLD_TEXT),
-	'usersignature' => array('Signature', '', FLD_TEXT),
-	/* opts */
-	'userinvisible' => array('Invisible?', '', FLD_BOOL),
-	'userhidesig' => array('Hide signatures?', '', FLD_BOOL),
-	'userhideemail' => array('Hide own email?', '', FLD_BOOL),
-	'usernoding' => array('Disable "new PM" popup?', '', FLD_BOOL),
+    'username' => array('Username', '', FLD_STR),
+    'userpassword' => array('Password', '(Current password is hidden. Do not specify<br> a password unless you want to change it.)', FLD_PASSWD),
+    'useremail' => array('User email address', '', FLD_STR),
+    'userposts' => array('Postcount', '', FLD_INT),
+    'usertitle' => array('Custom title', 'Overrides any ranks', FLD_STR),
+    'userhomepage' => array('Homepage', '', FLD_STR),
+    'userlocation' => array('Location', '', FLD_STR),
+    'usericq' => array('ICQ #', '', FLD_INT),
+    'useraim' => array('AIM Name', '', FLD_STR),
+    'usermsn' => array('MSN Name', '', FLD_STR),
+    'useroccupation' => array('Occupation', '', FLD_STR),
+    'useravatar' => array('Avatar', 'Type in "<b>notallowed</b>" to forbid this user to use avatars.', FLD_STR),
+    'userinterests' => array('Interests', '', FLD_TEXT),
+    'usersignature' => array('Signature', '', FLD_TEXT),
+    /* opts */
+    'userinvisible' => array('Invisible?', '', FLD_BOOL),
+    'userhidesig' => array('Hide signatures?', '', FLD_BOOL),
+    'userhideemail' => array('Hide own email?', '', FLD_BOOL),
+    'usernoding' => array('Disable "new PM" popup?', '', FLD_BOOL),
     'useractivate' => array('Needs activation?', '', FLD_BOOL)
 );
-	
+    
 
 
 function delete_user($userid, $username)
 {
-	global $pref, $config;
+    global $pref, $config;
 
-	query("DELETE FROM ".$pref."ban WHERE userid=$userid");
-	query("DELETE FROM ".$pref."online WHERE userid=$userid");
-	query("DELETE FROM ".$pref."pm WHERE pmtoid=$userid OR pmfromid=$userid");
-	query("DELETE FROM ".$pref."session WHERE userid=$userid");
-	query("DELETE FROM ".$pref."user WHERE userid=$userid");
-	query("DELETE FROM $pref"."lastvisited WHERE userid=$userid");
-	query("UPDATE ".$pref."post SET postguestname='$config[guestprefix]" . addslashes($username) . "', userid=0 WHERE userid=$userid");
+    query("DELETE FROM ".$pref."ban WHERE userid=$userid");
+    query("DELETE FROM ".$pref."online WHERE userid=$userid");
+    query("DELETE FROM ".$pref."pm WHERE pmtoid=$userid OR pmfromid=$userid");
+    query("DELETE FROM ".$pref."session WHERE userid=$userid");
+    query("DELETE FROM ".$pref."user WHERE userid=$userid");
+    query("DELETE FROM $pref"."lastvisited WHERE userid=$userid");
+    query("UPDATE ".$pref."post SET postguestname='$config[guestprefix]" . addslashes($username) . "', userid=0 WHERE userid=$userid");
 }
 
 
 
 function in_group($groupids, $groupid)
 {
-	$groupids = substr($groupids, 1, strlen($groupids) - 2);
-	$a_groupid = explode(',', $groupids);
-	while( list(, $gid) = each($a_groupid) )
-	{
-		if( $gid == $groupid )
-			return 1;
-	}
-	return 0;
+    $groupids = substr($groupids, 1, strlen($groupids) - 2);
+    $a_groupid = explode(',', $groupids);
+    while( list(, $gid) = each($a_groupid) )
+    {
+        if( $gid == $groupid )
+            return 1;
+    }
+    return 0;
 }
 
 
@@ -102,44 +102,44 @@ function in_group($groupids, $groupid)
  * ==========================================================
  *              AddUser
  * ==========================================================
- */	
+ */    
 if( $action == 'AddUser' )
 {
-	if( $username )
-	{
-		if( !$useremail || !$userpassword )
-		{
-			print 'Please specify username, email and password.';
-		}
-		else
-		{
-			$r_user = query("SELECT userid FROM ".$pref."user WHERE username='" . addslashes($username) . "'");
-			if( mysql_num_rows($r_user) > 0 )
-			{
-				print 'Sorry, this username already exists.';
-			}
-			else
-			{
-				if( $userpassword != $userpassword2 )
-				{
-					print 'Sorry, the passwords do not match.';
-				}
-				else
-				{
-					query("INSERT INTO ".$pref."user (username, useremail, userpassword, userjoin, groupids) VALUES
-						('" . addslashes($username) . "',
-						'" . addslashes($useremail) . "',
-						'" . addslashes(md5($userpassword)) . "',
-						" . time() . ",
-						',".$config['default_groupid'].",')");
-					print 'User added to database.';
-				}
-			}
-		}
-	}
-	else
-	{
-		print '<b>Add user</b><br>
+    if( $username )
+    {
+        if( !$useremail || !$userpassword )
+        {
+            print 'Please specify username, email and password.';
+        }
+        else
+        {
+            $r_user = query("SELECT userid FROM ".$pref."user WHERE username='" . addslashes($username) . "'");
+            if( mysql_num_rows($r_user) > 0 )
+            {
+                print 'Sorry, this username already exists.';
+            }
+            else
+            {
+                if( $userpassword != $userpassword2 )
+                {
+                    print 'Sorry, the passwords do not match.';
+                }
+                else
+                {
+                    query("INSERT INTO ".$pref."user (username, useremail, userpassword, userjoin, groupids) VALUES
+                        ('" . addslashes($username) . "',
+                        '" . addslashes($useremail) . "',
+                        '" . addslashes(md5($userpassword)) . "',
+                        " . time() . ",
+                        ',".$config['default_groupid'].",')");
+                    print 'User added to database.';
+                }
+            }
+        }
+    }
+    else
+    {
+        print '<b>Add user</b><br>
 <br>
 <form name="theform" method="post" action="./useredit.php">
   <table width="100%" border="0" cellspacing="0" cellpadding="3">
@@ -177,7 +177,7 @@ if( $action == 'AddUser' )
     </tr>
   </table>
 </form>';
-	}
+    }
 }
 
 
@@ -187,35 +187,35 @@ if( $action == 'AddUser' )
  * ==========================================================
  *              DeleteUser
  * ==========================================================
- */	
+ */    
 elseif( $action == "DeleteUser" )
 {
-	if( $username )
-	{
-		$r_user = query("SELECT userid, usernodelete FROM ".$pref."user WHERE username='" . addslashes($username) . "'");
-		if( mysql_num_rows($r_user) < 1 )
-		{
-			print 'Sorry, user not found.';
-		}
-		else
-		{
-			$user = mysql_fetch_array($r_user);
+    if( $username )
+    {
+        $r_user = query("SELECT userid, usernodelete FROM ".$pref."user WHERE username='" . addslashes($username) . "'");
+        if( mysql_num_rows($r_user) < 1 )
+        {
+            print 'Sorry, user not found.';
+        }
+        else
+        {
+            $user = mysql_fetch_array($r_user);
 
-			if( $user['usernodelete'] == 1 )
-			{
-				print 'Sorry, you cannot delete this user (this user is a god admin).';
-			}
-			else
-			{
-				delete_user($user['userid'], $username);
-			
-				print 'User deleted.';
-			}
-		}
-	}
-	else
-	{
-		print '<b>Delete user</b><br>
+            if( $user['usernodelete'] == 1 )
+            {
+                print 'Sorry, you cannot delete this user (this user is a god admin).';
+            }
+            else
+            {
+                delete_user($user['userid'], $username);
+            
+                print 'User deleted.';
+            }
+        }
+    }
+    else
+    {
+        print '<b>Delete user</b><br>
 <br>
 <form name="theform" method="post" action="./useredit.php">
   <table width="100%" border="0" cellspacing="0" cellpadding="3">
@@ -235,7 +235,7 @@ elseif( $action == "DeleteUser" )
     </tr>
   </table>
 </form>';
-	}
+    }
 }
 
 
@@ -244,10 +244,10 @@ elseif( $action == "DeleteUser" )
  * ==========================================================
  *              Filter
  * ==========================================================
- */	
+ */    
 elseif( $action == "Filter" )
 {
-	print '
+    print '
 <form name="form1" method="post" action="useredit.php">
   <b>Advanced usersearch</b><br><br>
   Note: Leave all fields blank to list all users (not recommended)<br>
@@ -259,82 +259,82 @@ elseif( $action == "Filter" )
       <td><i>Value</i></td>
     </tr>';
 
-	while( list(, $field) = each($a_searchfield) )
-	{
-		print '
+    while( list(, $field) = each($a_searchfield) )
+    {
+        print '
     <tr>
       <td><b>'.$field[1].'</b></td>
       <td>';
-	  
-	  	if( $field[2] == FLD_INT )
-		{
-			print '
+      
+          if( $field[2] == FLD_INT )
+        {
+            print '
         <select class="tbinput" name="searchtype['.$field[0].']">
           <option value="below">below</option>
           <option value="equal">equal</option>
           <option value="above">above</option>
         </select>';
-		}
-		elseif( $field[2] == FLD_STR )
-		{
-			print '
+        }
+        elseif( $field[2] == FLD_STR )
+        {
+            print '
         <select class="tbinput" name="searchtype['.$field[0].']">
           <option value="contains">contains</option>
           <option value="exactly">exactly</option>
         </select>';
-		}
+        }
         elseif( $field[2] == FLD_BOOL )
-		{
-		  print '<input class="tbinput" name="searchtype['.$field[0].']" type="hidden" value="1">';  
-		}
-		else
-		{
-			print '
+        {
+          print '<input class="tbinput" name="searchtype['.$field[0].']" type="hidden" value="1">';  
+        }
+        else
+        {
+            print '
         <select class="tbinput" name="searchtype['.$field[0].']">
           <option value="before">before</option>
           <option value="after">after</option>
         </select>';
-		}
-	  
-		print '
+        }
+      
+        print '
       </td>
       <td>';
-		
-		if( $field[2] == FLD_INT )
-		{
-			print '
+        
+        if( $field[2] == FLD_INT )
+        {
+            print '
         <input class="tbinput" type="text" name="searchvalue['.$field[0].']" size="8" maxlength="8">';
-		}
-		elseif( $field[2] == FLD_STR )
-		{
-			print '
+        }
+        elseif( $field[2] == FLD_STR )
+        {
+            print '
         <input class="tbinput" type="text" name="searchvalue['.$field[0].']">';
-		}
+        }
         elseif( $field[2] == FLD_BOOL )
         {
             print '<input class="tbinput" name="searchvalue['.$field[0].']" type="checkbox" value="exactly">';
         }
-		else
-		{
-			print '
+        else
+        {
+            print '
         <input class="tbinput" type="text" name="searchvalue['.$field[0].']"> <i>(dd.mm.yyyy)</i>';
-		}
-		
-		print '
+        }
+        
+        print '
       </td>
-	</tr>
+    </tr>
 ';
-	}
-	
+    }
+    
 print '
     <tr> 
       <td colspan="3">
-	    &nbsp; 
+        &nbsp; 
       </td>
     </tr>
     <tr> 
       <td>
-	    <b>Action</b> 
+        <b>Action</b> 
       </td>
       <td colspan="2">
         <select class="tbinput" name="subaction">
@@ -363,63 +363,63 @@ print '
  * ==========================================================
  *              ListUsers
  * ==========================================================
- */	
+ */    
 elseif( $action == "ListUsers" )
 {
-	$where = 'WHERE 1';
-		
-	while( list($field, $value) = each($searchvalue) )
-	{
-		if( !empty($value) )
-		{
-			$where .= ' AND '.$field;
-			$value = addslashes($value);
-			switch($searchtype[$field])
-			{
-				case 'below':
-					$where .= " < '$value'";
-					break;
-				case 'equal':
-				case 'exactly':
-					$where .= " = '$value'";
-					break;
-				case 'above':
-					$where .= " > '$value'";
-					break;
-				case 'contains':
-					$where .= " LIKE '%$value%'";
-					break;
-				case 'before':
-				case 'after':
-					if( strlen($value) != 10 )
-					{
-						print '<font color="red">Warning: bad date string "'.$value.'" (use dd.mm.yyyy!)</font><br><br>';
-					}
-					$day = (int)(substr($value, 0, 2));
-					$mon = (int)(substr($value, 3, 2));
-					$year = (int)(substr($value, 6, 4));
-					
-					$timestamp = mktime(0, 0, 0, $mon, $day, $year);
-					if( $searchtype[$field] == 'before' )
-						$where .= " < $timestamp";
-					else
-						$where .= " > $timestamp";
-			} // switch
-		} // if 
-	} // while
+    $where = 'WHERE 1';
+        
+    while( list($field, $value) = each($searchvalue) )
+    {
+        if( !empty($value) )
+        {
+            $where .= ' AND '.$field;
+            $value = addslashes($value);
+            switch($searchtype[$field])
+            {
+                case 'below':
+                    $where .= " < '$value'";
+                    break;
+                case 'equal':
+                case 'exactly':
+                    $where .= " = '$value'";
+                    break;
+                case 'above':
+                    $where .= " > '$value'";
+                    break;
+                case 'contains':
+                    $where .= " LIKE '%$value%'";
+                    break;
+                case 'before':
+                case 'after':
+                    if( strlen($value) != 10 )
+                    {
+                        print '<font color="red">Warning: bad date string "'.$value.'" (use dd.mm.yyyy!)</font><br><br>';
+                    }
+                    $day = (int)(substr($value, 0, 2));
+                    $mon = (int)(substr($value, 3, 2));
+                    $year = (int)(substr($value, 6, 4));
+                    
+                    $timestamp = mktime(0, 0, 0, $mon, $day, $year);
+                    if( $searchtype[$field] == 'before' )
+                        $where .= " < $timestamp";
+                    else
+                        $where .= " > $timestamp";
+            } // switch
+        } // if 
+    } // while
 
-	if( $subaction == 'list' )
-	{
-		$r_user = query("SELECT username, userid, useremail FROM ".$pref."user $where");
-	
-		print "<b>Search result</b><br><br>";
-		if( mysql_num_rows($r_user) < 1 )
-		{
-			print 'Sorry, no user(s) found.';
-		}
-		else
-		{
-			print '
+    if( $subaction == 'list' )
+    {
+        $r_user = query("SELECT username, userid, useremail FROM ".$pref."user $where");
+    
+        print "<b>Search result</b><br><br>";
+        if( mysql_num_rows($r_user) < 1 )
+        {
+            print 'Sorry, no user(s) found.';
+        }
+        else
+        {
+            print '
 <form name="form1" method="post" action="useredit.php">
   <table width="600" border="0" cellspacing="1" cellpadding="3">
     <tr> 
@@ -430,10 +430,10 @@ elseif( $action == "ListUsers" )
       <td><i>Options</i></td>
     </tr>';
 
-			$i = 0;
-			while( $user = mysql_fetch_array($r_user) )
-			{
-				print '
+            $i = 0;
+            while( $user = mysql_fetch_array($r_user) )
+            {
+                print '
     <tr bgcolor="'.($i % 2 == 0 ? '#E5E5E5' : '#F2F2F2').'">
       <td> 
         <input type="checkbox" name="a_userid[]" value="'.$user['userid'].'">
@@ -444,10 +444,10 @@ elseif( $action == "ListUsers" )
       <td><a href="useredit.php?action=EditUser&userid='.$user['userid'].'&session='.$session.'">Edit</a> | 
           <a href="useredit.php?action=DeleteUser&username='.$user['username'].'&session='.$session.'">Delete</a></td>
     </tr>';
-				$i++;
-			}
-		
-			print '
+                $i++;
+            }
+        
+            print '
   </table><br><br>
   <input type="hidden" name="session" value="'.$session.'">
 <!--
@@ -483,13 +483,13 @@ elseif( $action == "ListUsers" )
     </td>
     <td> 
       <select name="groupid">';
-			$r_group = query("SELECT name, groupid FROM $pref"."group ORDER BY groupid ASC");
-			while( $group = mysql_fetch_array($r_group) )
-			{// net hier!
-				print '<option value="'.$group['groupid'].'">'.$group['name'].'</option>';
-			}
+            $r_group = query("SELECT name, groupid FROM $pref"."group ORDER BY groupid ASC");
+            while( $group = mysql_fetch_array($r_group) )
+            {// net hier!
+                print '<option value="'.$group['groupid'].'">'.$group['name'].'</option>';
+            }
 
-			print '
+            print '
       </select>
     </td>
   </tr>
@@ -526,15 +526,15 @@ elseif( $action == "ListUsers" )
     </td>
   </tr>
 </table></form>';
-		}
-	}
-	elseif( $subaction == 'count' )
-	{
-		$r_user = query("SELECT COUNT(userid) AS usercount FROM ".$pref."user $where");
-		$user = mysql_fetch_array($r_user);
-		
-		print '<b>Search result</b><br><br>'.$user['usercount'].' user(s)';
-	}
+        }
+    }
+    elseif( $subaction == 'count' )
+    {
+        $r_user = query("SELECT COUNT(userid) AS usercount FROM ".$pref."user $where");
+        $user = mysql_fetch_array($r_user);
+        
+        print '<b>Search result</b><br><br>'.$user['usercount'].' user(s)';
+    }
 }
 
 
@@ -543,39 +543,39 @@ elseif( $action == "ListUsers" )
  * ==========================================================
  *              mass_delete
  * ==========================================================
- */	
+ */    
 elseif( isset($mass_delete) )
 {
-	if( !isset($sure) )
-	{
-		print '<b>Error</b><br><br>Please check the "sure" box';
-	}
-	else
-	{
-		if( !empty($a_userid) )
-		{
-			$deleted = 0;
-			print '<b>Delete user</b><br><br>';
-			$r_user = query("SELECT username, userid, usernodelete FROM $pref"."user WHERE userid IN(".implode(',', $a_userid).")");
-			while( $user = mysql_fetch_array($r_user) )
-			{
-			  if($user['usernodelete'])
-			    {
-			      print $user['username']. '(id #'.$user['userid'].') is a god admin, skipping...<br>';
-			      continue;
-			    }
-				print 'Deleting '.$user['username'].' (id #'.$user['userid'].')<br>';
-				delete_user($user['userid'], $user['username']);
-				$deleted++;
-			}
-			
-			print '<br>Deleted <b>'.$deleted.'</b> users.';
-		}
-		else
-		{
-			print '<b>Error</b><br><br>No users selected';
-		}
-	}
+    if( !isset($sure) )
+    {
+        print '<b>Error</b><br><br>Please check the "sure" box';
+    }
+    else
+    {
+        if( !empty($a_userid) )
+        {
+            $deleted = 0;
+            print '<b>Delete user</b><br><br>';
+            $r_user = query("SELECT username, userid, usernodelete FROM $pref"."user WHERE userid IN(".implode(',', $a_userid).")");
+            while( $user = mysql_fetch_array($r_user) )
+            {
+              if($user['usernodelete'])
+                {
+                  print $user['username']. '(id #'.$user['userid'].') is a god admin, skipping...<br>';
+                  continue;
+                }
+                print 'Deleting '.$user['username'].' (id #'.$user['userid'].')<br>';
+                delete_user($user['userid'], $user['username']);
+                $deleted++;
+            }
+            
+            print '<br>Deleted <b>'.$deleted.'</b> users.';
+        }
+        else
+        {
+            print '<b>Error</b><br><br>No users selected';
+        }
+    }
 }
 
 
@@ -586,32 +586,32 @@ elseif( isset($mass_delete) )
  * ==========================================================
  *              mass_pm
  * ==========================================================
- */	
+ */    
 elseif( isset($mass_pm) )
 {
-	if( !empty($a_userid) )
-	{
-		if( !$pmtopic || !$pmtext )
-		{
-			print '<b>Error</b><br><br>Both fields (subject, text) are required';
-		}
-		else
-		{
-			$sent = 0;
-			while( list(, $userid) = each($a_userid) )
-			{
-				query("INSERT INTO $pref"."pm (pmfromid, pmtoid, pmtopic, pmtext, pmtime, pmflags, pmfolder)
+    if( !empty($a_userid) )
+    {
+        if( !$pmtopic || !$pmtext )
+        {
+            print '<b>Error</b><br><br>Both fields (subject, text) are required';
+        }
+        else
+        {
+            $sent = 0;
+            while( list(, $userid) = each($a_userid) )
+            {
+                query("INSERT INTO $pref"."pm (pmfromid, pmtoid, pmtopic, pmtext, pmtime, pmflags, pmfolder)
 VALUES
 ($g_user[userid], $userid,'" . addslashes($pmtopic) . "','" . addslashes($pmtext) . "',".time().", 1, 0);");
-				$sent++;
-			}
-			print '<b>Message sent</b><br><br>Private message has been sent to <b>'.$sent.'</b> users';
-		}
-	}
-	else
-	{
-		print '<b>Error</b><br><br>No users selected';
-	}
+                $sent++;
+            }
+            print '<b>Message sent</b><br><br>Private message has been sent to <b>'.$sent.'</b> users';
+        }
+    }
+    else
+    {
+        print '<b>Error</b><br><br>No users selected';
+    }
 }
 
  
@@ -621,18 +621,18 @@ VALUES
  * ==========================================================
  *              move_into_group
  * ==========================================================
- */	
+ */    
 elseif( isset($move_into_group) )
 {
-	if( !empty($a_userid) )
-	{
-		/* select users */
-		
-	}
-	else
-	{
-		print '<b>Error</b><br><br>No users selected';
-	}
+    if( !empty($a_userid) )
+    {
+        /* select users */
+        
+    }
+    else
+    {
+        print '<b>Error</b><br><br>No users selected';
+    }
 }
 
 
@@ -642,57 +642,57 @@ elseif( isset($move_into_group) )
  * ==========================================================
  *              UpdateUser
  * ==========================================================
- */	
+ */    
 elseif( $action == "UpdateUser" )
 {
-	$r_user = query("SELECT username FROM ".$pref."user WHERE userid=$userid");
-	$tuser = mysql_fetch_array($r_user);
-	
-	if( substr($user['userhomepage'], 0, 7) != "http://" )
-	{
-		$user['userhomepage'] = "http://" . $user['userhomepage'];
-	}
-	
-	$query = '';
-	while( list($k, $v) = each($user) )
-	{
-		if( $a_editfield[$k][2] != FLD_PASSWD )
-		{
-			$v = addslashes($v);
-			$query .= ", $k='$v'";
-		}
-		else
-		{
-			if( $v )
-			{
-				$v = md5($v);
-				$query .= ", $k='$v'";
-			}
-		}
-	}
-	$query = substr($query, 1);
-	
-	if( $user['username'] != $tuser['username'] )
-	{
-		$user['username'] = addslashes($user['username']);
-		$tuser['username'] = addslashes($tuser['username']);
-	
-		query("UPDATE ".$pref."thread SET threadlastreplyby='$user[username]' WHERE threadlastreplyby='$tuser[username]'");
-		query("UPDATE ".$pref."board SET boardlastpostby='$user[username]' WHERE boardlastpostby='$tuser[username]'");
-		
-		query("UPDATE $pref"."thread SET threadauthor='$user[username]' WHERE threadauthor='$tuser[username]'");
-	}
+    $r_user = query("SELECT username FROM ".$pref."user WHERE userid=$userid");
+    $tuser = mysql_fetch_array($r_user);
+    
+    if( substr($user['userhomepage'], 0, 7) != "http://" )
+    {
+        $user['userhomepage'] = "http://" . $user['userhomepage'];
+    }
+    
+    $query = '';
+    while( list($k, $v) = each($user) )
+    {
+        if( $a_editfield[$k][2] != FLD_PASSWD )
+        {
+            $v = addslashes($v);
+            $query .= ", $k='$v'";
+        }
+        else
+        {
+            if( $v )
+            {
+                $v = md5($v);
+                $query .= ", $k='$v'";
+            }
+        }
+    }
+    $query = substr($query, 1);
+    
+    if( $user['username'] != $tuser['username'] )
+    {
+        $user['username'] = addslashes($user['username']);
+        $tuser['username'] = addslashes($tuser['username']);
+    
+        query("UPDATE ".$pref."thread SET threadlastreplyby='$user[username]' WHERE threadlastreplyby='$tuser[username]'");
+        query("UPDATE ".$pref."board SET boardlastpostby='$user[username]' WHERE boardlastpostby='$tuser[username]'");
+        
+        query("UPDATE $pref"."thread SET threadauthor='$user[username]' WHERE threadauthor='$tuser[username]'");
+    }
 
-	if( !empty($groupids) )
-		$groupids = ','.implode(',', $groupids).',';
-	else
-		$groupids = ',,';
-	
-	$query .= ", groupids='$groupids'";
+    if( !empty($groupids) )
+        $groupids = ','.implode(',', $groupids).',';
+    else
+        $groupids = ',,';
+    
+    $query .= ", groupids='$groupids'";
 
-	query("UPDATE ".$pref."user SET $query WHERE userid=$userid");
-		
-	print 'User has been updated!';
+    query("UPDATE ".$pref."user SET $query WHERE userid=$userid");
+        
+    print 'User has been updated!';
 }
 
 
@@ -702,23 +702,23 @@ elseif( $action == "UpdateUser" )
  * ==========================================================
  *              EditUser
  * ==========================================================
- */	
+ */    
 elseif( $action == "EditUser" )
 {
-	$r_user = query("SELECT * FROM ".$pref."user WHERE userid=$userid");
-	$user = mysql_fetch_array($r_user);
+    $r_user = query("SELECT * FROM ".$pref."user WHERE userid=$userid");
+    $user = mysql_fetch_array($r_user);
 
 
-	print '
+    print '
 <form name="form1" method="post" action="useredit.php">
   <b>Edit user</b><br>
   <br>
   <table border="0" cellspacing="1" cellpadding="3">';
 
-	/* static */
-	if( $user['usernodelete'] == 0 || $user['userisadmin'] == 0 )
-	{
-		print '
+    /* static */
+    if( $user['usernodelete'] == 0 || $user['userisadmin'] == 0 )
+    {
+        print '
     <tr> 
       <td><b>User status</b></td>
       <td>
@@ -728,10 +728,10 @@ elseif( $action == "EditUser" )
         </select>
       </td>
     </tr>';
-	}
-	else
-	{
-		print '
+    }
+    else
+    {
+        print '
     <tr> 
       <td><b>User status</b></td>
       <td>
@@ -739,58 +739,58 @@ elseif( $action == "EditUser" )
         <input type="hidden" name="user[userisadmin]" value="1">
       </td>
     </tr>';
-	}
-	
-	print '
+    }
+    
+    print '
     <tr>
       <td valign="top"><b>User group</b><br><font size="1">Use CTRL to select multiple</font></td>
       <td>
         <select class="tbinput" name="groupids[]" size="5" multiple>';
-		
-		$r_group = query("SELECT name, groupid FROM $pref"."group ORDER BY groupid ASC");
-		while( $group = mysql_fetch_array($r_group) )
-		{
-			print '<option value="'.$group['groupid'].'"'.(in_group($user['groupids'], $group['groupid']) ? ' selected' : '').'>'.$group['name'].'</option>';
-		}
-	print '
+        
+        $r_group = query("SELECT name, groupid FROM $pref"."group ORDER BY groupid ASC");
+        while( $group = mysql_fetch_array($r_group) )
+        {
+            print '<option value="'.$group['groupid'].'"'.(in_group($user['groupids'], $group['groupid']) ? ' selected' : '').'>'.$group['name'].'</option>';
+        }
+    print '
         </select>';
 
-	/* dyn */
-	while( list($k, $field) = each($a_editfield) )
-	{
-		print '
+    /* dyn */
+    while( list($k, $field) = each($a_editfield) )
+    {
+        print '
     <tr> 
       <td valign="top"><b>'.$field[0].'</b>'.($field[1] != '' ? '<br><font size="1">'.$field[1].'</font>' : '').'</td>
       <td valign="middle">';
-		switch( $field[2] )
-		{
-			case FLD_TEXT:
-				print '<textarea name="user['.$k.']" rows="5" cols="50">'.htmlspecialchars($user[$k]).'</textarea>';
-				break;
-			case FLD_STR:
-				print '<input class="tbinput" type="text" name="user['.$k.']" value="'.htmlspecialchars($user[$k]).'">';
-				break;
-			case FLD_PASSWD:
-				print '<input class="tbinput" type="password" name="user['.$k.']" value="">';
-				break;
-			case FLD_INT:
-				print '<input class="tbinput" type="text" name="user['.$k.']" value="'.htmlspecialchars($user[$k]).'" size="8" maxlen="8">';
-				break;
-			case FLD_BOOL:
-				print '<input type="radio" name="user['.$k.']" value="1"'.($user[$k] ? ' checked' : '').'>Yes&nbsp;&nbsp;&nbsp;<input type="radio" name="user['.$k.']" value="0"'.(!$user[$k] ? ' checked' : '').'>No';
-				break;
-		}	
-		print ' 
+        switch( $field[2] )
+        {
+            case FLD_TEXT:
+                print '<textarea name="user['.$k.']" rows="5" cols="50">'.htmlspecialchars($user[$k]).'</textarea>';
+                break;
+            case FLD_STR:
+                print '<input class="tbinput" type="text" name="user['.$k.']" value="'.htmlspecialchars($user[$k]).'">';
+                break;
+            case FLD_PASSWD:
+                print '<input class="tbinput" type="password" name="user['.$k.']" value="">';
+                break;
+            case FLD_INT:
+                print '<input class="tbinput" type="text" name="user['.$k.']" value="'.htmlspecialchars($user[$k]).'" size="8" maxlen="8">';
+                break;
+            case FLD_BOOL:
+                print '<input type="radio" name="user['.$k.']" value="1"'.($user[$k] ? ' checked' : '').'>Yes&nbsp;&nbsp;&nbsp;<input type="radio" name="user['.$k.']" value="0"'.(!$user[$k] ? ' checked' : '').'>No';
+                break;
+        }    
+        print ' 
       </td>
     </tr>';
-	}
+    }
 /*
 */
 
-	print '
+    print '
     <tr> 
       <td colspan="2" align="center">
-	    &nbsp;
+        &nbsp;
       </td>
     </tr>
     <tr> 

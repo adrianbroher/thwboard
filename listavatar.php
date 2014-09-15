@@ -39,13 +39,13 @@ $Tavatar=new Template("templates/" . $style['styletemplate'] . "/listavatar.html
 
 if( isset($sortbyname) && $sortbyname )
 {
-	$avatar_sort = "$style[stdfont]<a href=\"".build_link("listavatar.php")."\">Nach Avatar-Nummer sortieren</a>$style[stdfontend]";
-	$orderby = "avatarname";
+    $avatar_sort = "$style[stdfont]<a href=\"".build_link("listavatar.php")."\">Nach Avatar-Nummer sortieren</a>$style[stdfontend]";
+    $orderby = "avatarname";
 } 
 else 
 {
-	$avatar_sort = "$style[stdfont]<a href=\"".build_link("listavatar.php?sortbyname=1")."\">Nach Namen sortieren</a>$style[stdfontend]";
-	$orderby = "avatarid";
+    $avatar_sort = "$style[stdfont]<a href=\"".build_link("listavatar.php?sortbyname=1")."\">Nach Namen sortieren</a>$style[stdfontend]";
+    $orderby = "avatarid";
 }
 
 $start = $e = 0;
@@ -53,15 +53,15 @@ $r_avatar = thwb_query("SELECT avatarid, avatarname, avatarurl FROM ".$pref."ava
 $avatar_rows = '';
 while( $avatar_data = mysql_fetch_array($r_avatar) ) 
 {
-	$start++;
+    $start++;
 
-	$avatar_rows .= "<td".($e % 2 == 0 ? ' bgcolor="'.$style['CellA'].'"' : ' bgcolor="'.$style['CellB'].'"')."><img src=\"$avatar_data[avatarurl]\" border=\"0\"><br><b>".$style['smallfont']."$avatar_data[avatarid]. $avatar_data[avatarname]</font></b></td>\n";
-	if ( $start == $maxpics )
-	{
-		$avatar_rows .= "</tr><tr>";
-		$start = 0;
-		$e++;
-	}
+    $avatar_rows .= "<td".($e % 2 == 0 ? ' bgcolor="'.$style['CellA'].'"' : ' bgcolor="'.$style['CellB'].'"')."><img src=\"$avatar_data[avatarurl]\" border=\"0\"><br><b>".$style['smallfont']."$avatar_data[avatarid]. $avatar_data[avatarname]</font></b></td>\n";
+    if ( $start == $maxpics )
+    {
+        $avatar_rows .= "</tr><tr>";
+        $start = 0;
+        $e++;
+    }
 }
 
 eval($Tavatar->GetTemplate("CONTENT"));

@@ -22,7 +22,7 @@
 
 if( $get_part == 'head' )
 {
-	$selectionpoints['top10']   = array('base'=>'top10',   'title'=>'Top 10 - Listen');
+    $selectionpoints['top10']   = array('base'=>'top10',   'title'=>'Top 10 - Listen');
 }
 else
 {
@@ -84,9 +84,9 @@ else
       $P->set_boardid($a_boards['boardid']);
 
       if(!$P->has_permission(P_VIEW))
-	{
-	  continue;
-	}
+    {
+      continue;
+    }
 
       $name[$i] = '<a href="'.build_link('board.php?boardid='.$a_boards['boardid']).'">'.$a_boards['boardname'].'</a>'.' (Kategorie: '.$a_boards['categoryname'].')';
       $value[$i] = $a_boards['boardposts'];
@@ -122,9 +122,9 @@ else
       $P->set_boardid($a_postthreads['boardid']);
 
       if(!$P->has_permission(P_VIEW))
-	{
-	  continue;
-	}
+    {
+      continue;
+    }
 
       $name[$i] = '<a href="'.build_link('showtopic.php?threadid='.$a_postthreads['threadid']).'">'.parse_code($a_postthreads['threadtopic']).'</a> (Board: <a href="'.build_link('board.php?boardid='.$a_postthreads['boardid']).'">'.$a_postthreads['boardname'].'</a>)';
       $value[$i] = $a_postthreads['threadreplies'] + 1;
@@ -159,9 +159,9 @@ else
       $P->set_boardid($a_viewthreads['boardid']);
 
       if(!$P->has_permission(P_VIEW))
-	{
-	  continue;
-	}
+    {
+      continue;
+    }
 
       $name[$i] = '<a href="'.build_link('showtopic.php?threadid='.$a_viewthreads['threadid']).'">'.parse_code($a_viewthreads['threadtopic']).'</a> (Board: <a href="'.build_link('board.php?boardid='.$a_viewthreads['boardid']).'">'.$a_viewthreads['boardname'].'</a>)';
       $value[$i] = $a_viewthreads['threadviews'];

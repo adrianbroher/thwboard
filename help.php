@@ -25,16 +25,16 @@ define('THWB_NOSESSION_PAGE', true);
 require('./inc/header.inc.php');
 
 $a_pages = array(
-		 'index' => 'H&auml;ufig gestellte Fragen',
-		 'format' => 'Formatierung und Smilies',
- 		 'page1' => 'Benutzerfunktionen',
-		 'page2' => 'Generelle Boardbenutzung',
-		 'page3' => 'Lesen und Schreiben von Nachrichten',
-		 );
+         'index' => 'H&auml;ufig gestellte Fragen',
+         'format' => 'Formatierung und Smilies',
+          'page1' => 'Benutzerfunktionen',
+         'page2' => 'Generelle Boardbenutzung',
+         'page3' => 'Lesen und Schreiben von Nachrichten',
+         );
 
 if ( !isset($page) || !file_exists('./templates/'.$style['styletemplate'].'/faq_'.$page.'.html') || !isset($a_pages[$page]))
 {
-	$page = "index";
+    $page = "index";
 }
 
 $Tframe = new Template('./templates/'.$style['styletemplate'].'/frame.html');

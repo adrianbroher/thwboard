@@ -45,23 +45,23 @@ if(!isset($login_password))
 $navpath .= "Login";
 if( !$login_name )
 {
-	$msg .= "Sie haben vergessen einen Usernamen anzugeben.<br>";
+    $msg .= "Sie haben vergessen einen Usernamen anzugeben.<br>";
 }
 if( !$login_password )
 {
-	$msg .= "Sie haben vergessen ein Passwort anzugeben.<br>";
+    $msg .= "Sie haben vergessen ein Passwort anzugeben.<br>";
 }
 
 $r_user = thwb_query("SELECT userid, userpassword, useractivate FROM ".$pref."user WHERE username='" . addslashes($login_name) . "'");
 if( mysql_num_rows($r_user) < 1 )
 {
-	$msg .= "Der Angegebene Benutzername existiert nicht.<br>";
+    $msg .= "Der Angegebene Benutzername existiert nicht.<br>";
 }
 
 $user = mysql_fetch_array($r_user);
 if( $user['userpassword'] != md5($login_password) )
 {
-	$msg .= "Das Passwort ist leider falsch.<br>";
+    $msg .= "Das Passwort ist leider falsch.<br>";
 
     possible_flood(FLOOD_LOGIN, $user['userid']);
 }
@@ -73,7 +73,7 @@ if( $user['useractivate'] )
 
 if( isset($msg) && strlen($msg) > 0 )
 {
-	message("Fehler", "Es sind leider Fehler aufgetreten:<font color='$style[color_err]'><br><br>$msg</font>");
+    message("Fehler", "Es sind leider Fehler aufgetreten:<font color='$style[color_err]'><br><br>$msg</font>");
 }
 
 global $g_user, $s;

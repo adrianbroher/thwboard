@@ -24,8 +24,8 @@ include "./inc/header.inc.php";
 
 if( !$config['allowregister'] )
 {
-	$navpath .= "User Registrierung &raquo; Fehler";
-	message('Registrierung nicht m&ouml;lich!', 'Eine Registrierung ist derzeit leider nicht m&ouml;lich.<br>Bitte versuchen Sie es zu einem sp&auml;teren Zeitpunkt erneut.');
+    $navpath .= "User Registrierung &raquo; Fehler";
+    message('Registrierung nicht m&ouml;lich!', 'Eine Registrierung ist derzeit leider nicht m&ouml;lich.<br>Bitte versuchen Sie es zu einem sp&auml;teren Zeitpunkt erneut.');
 }
 
 if($g_user['userid'])
@@ -45,21 +45,21 @@ if( !isset($accept) || !$accept )
   $rules = '';
   $TRules = new Template('templates/'.$style['styletemplate'].'/forumrules.html');
   eval($TRules->GetTemplate("rules"));
-	$navpath .= "User Registrierung";
-	message("Forumregeln", $rules, 0, 0);
+    $navpath .= "User Registrierung";
+    message("Forumregeln", $rules, 0, 0);
 }
 else
 {
-	$Tframe = new Template("templates/" . $style['styletemplate'] . "/frame.html");
-	$Tregform = new Template("templates/" . $style['styletemplate'] . "/register.html");
+    $Tframe = new Template("templates/" . $style['styletemplate'] . "/frame.html");
+    $Tregform = new Template("templates/" . $style['styletemplate'] . "/register.html");
 
-	$passwordfield = '';
-	
-	$navpath .= "User Registrierung &raquo; Dateneingabe";
+    $passwordfield = '';
+    
+    $navpath .= "User Registrierung &raquo; Dateneingabe";
 
-	$TPasswordfield = new Template('./templates/'.$style['styletemplate'].'/register_pwdfield.html');
-	eval($TPasswordfield->GetTemplate('passwordfield'));
+    $TPasswordfield = new Template('./templates/'.$style['styletemplate'].'/register_pwdfield.html');
+    eval($TPasswordfield->GetTemplate('passwordfield'));
 
-	eval($Tregform->GetTemplate("CONTENT"));
-	eval($Tframe->GetTemplate());
+    eval($Tregform->GetTemplate("CONTENT"));
+    eval($Tframe->GetTemplate());
 }
