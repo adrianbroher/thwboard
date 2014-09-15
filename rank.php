@@ -88,5 +88,3 @@ while( list($i, $rank) = each($a_rank) )
 $navpath .= 'Rang&uuml;bersicht';
 eval($Trank->GetTemplate('CONTENT'));
 eval($Tframe->GetTemplate());
-
-?>

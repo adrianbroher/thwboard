@@ -40,4 +40,3 @@ if( array_count_values($a_errmsg) )
 thwb_query("INSERT INTO " . $pref . "calendar (eventtime,eventsubject,eventtext,eventactive,userid) VALUES ('$event[year]-$event[month]-$event[day]','".addslashes($event['subject'])."','".addslashes($event['text'])."','1',$g_user[userid]);");
 
 message_redirect("Eintrag erfolgreich", "calendar.php?month=$event[month]&amp;year=$event[year]");
-?>

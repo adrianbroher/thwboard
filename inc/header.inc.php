@@ -571,6 +571,3 @@ if( file_exists('./templates/' . $style['styletemplate'] . '/dynamic.inc.php') )
 
 $CONTENT = '';
 $titleprepend = '';
-
-
-?>

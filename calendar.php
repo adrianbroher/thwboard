@@ -219,4 +219,3 @@ for ( $i = 1; $i <= $boxcount; $i++ )
 
 eval( $Tcalframe->GetTemplate( 'CONTENT' ) );
 eval( $Tframe->GetTemplate() );
-?>

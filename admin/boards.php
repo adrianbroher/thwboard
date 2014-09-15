@@ -466,4 +466,3 @@ elseif( $action == 'AddUserToBoard' )
 
 
 tb_footer();
-?>

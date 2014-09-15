@@ -39,4 +39,3 @@ $g_user['have_cookie'] = false;
 
 header("Location: index.php");
 //message_redirect('Sie wurden erfolgreich ausgeloggt, bitte warten ...', 'index.php');
-?>

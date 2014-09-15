@@ -223,5 +223,3 @@ function lng($str)
 	else
 		return '*** missing string `'.$str.'´';
 }
-
-?>

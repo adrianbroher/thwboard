@@ -180,5 +180,3 @@ else
 
   eval($TStats->GetTemplate("stats"));
 }
-
-?>

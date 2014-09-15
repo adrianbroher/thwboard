@@ -55,5 +55,4 @@ elseif( $action == "ReadDoc" )
 	print '<a href="documents.php?session=' . $session . '&action=ListDocs">return</a> to the document index';
 }
 
-tb_footer();	
-?>
+tb_footer();

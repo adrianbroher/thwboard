@@ -238,4 +238,3 @@ elseif( $action == "WriteSettings" )
 
 
 tb_footer();
-?>

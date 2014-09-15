@@ -126,4 +126,3 @@ elseif( $action == "delete" )
 		message("Fehler", "Sie haben keine Erlaubnis diesen Post zu l&ouml;schen");
 	}
 }
-?>

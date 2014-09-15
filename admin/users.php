@@ -212,4 +212,3 @@ elseif( $action == 'show_reasons' )
 }
 
 tb_footer();
-?>

@@ -708,4 +708,3 @@ elseif( $action == 'set_default_groups' )
 
 
 tb_footer();
-?>

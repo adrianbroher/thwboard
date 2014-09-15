@@ -528,5 +528,3 @@ elseif($action == "optimize")
   print('done<br><a href="mysql.php?session=' . $session . '">back to mysql-clean</a>');
 }
 tb_footer();
-?>
-

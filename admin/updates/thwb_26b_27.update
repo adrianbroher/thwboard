@@ -51,7 +51,7 @@ $mysql_p    = \''.$mysql_p.'\';
 $mysql_db   = \''.$mysql_db.'\';
 $pref       = \''.$this->Prefix.'\';
 $inst_lock  = 1;
-?>');
+');
 		fclose($fp);
 	}
 	
@@ -176,5 +176,3 @@ INSERT INTO $this->Prefix"."registry VALUES ('sig_restrict','1','boolean','Enabl
 		return 0;
 	}	
 }
-
-?>

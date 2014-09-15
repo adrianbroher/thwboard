@@ -155,4 +155,3 @@ available inserts:
 
 
 tb_footer();
-?>

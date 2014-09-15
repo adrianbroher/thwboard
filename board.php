@@ -215,6 +215,3 @@ $titleprepend = $board['boardname'] . ' - ';
 
 eval($TTopics->GetTemplate("CONTENT"));
 eval($TMain->GetTemplate());
-
-
-?>

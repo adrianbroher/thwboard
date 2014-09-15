@@ -376,7 +376,3 @@ else
 	eval($Tsearchform->GetTemplate("CONTENT"));
 	eval($Tframe->GetTemplate());
 }
-
-
-?>
-

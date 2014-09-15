@@ -1088,5 +1088,3 @@ function is_flooding($type, $userid = 0)
 
     return ($a_flood['floodcount'] >= $count);
 }
-
-?>

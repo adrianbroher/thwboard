@@ -48,4 +48,3 @@ if(!isset($event['text']))
 
 eval($Tnewevent->GetTemplate('CONTENT'));
 eval($Tframe->GetTemplate());
-?>

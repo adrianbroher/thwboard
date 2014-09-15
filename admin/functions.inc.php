@@ -566,4 +566,3 @@ if (document.login) document.login.l_username.focus();
 </body>
 </html>';
 }
-?>

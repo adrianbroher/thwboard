@@ -178,5 +178,3 @@ else
 	
 	eval($t_stats->GetTemplate('stats'));
 }
-
-?>

@@ -415,4 +415,3 @@ class server
 		return $bytes;
 	}
 }
-?>

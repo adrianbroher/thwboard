@@ -135,5 +135,3 @@ while ( $registry = mysql_fetch_array($r_registry) )
 			$config[$registry['keyname']] = $registry['keyvalue'];
 	}
 }
-
-?>

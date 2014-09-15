@@ -141,4 +141,3 @@ Query: <i>'.$query.'</i><br>
 
 
 tb_footer();
-?>

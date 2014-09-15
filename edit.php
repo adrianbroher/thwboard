@@ -222,5 +222,3 @@ else
 {
 	message("Fehler", "Sie k&ouml;nnen diesen Post nicht editieren");
 }
-
-?>

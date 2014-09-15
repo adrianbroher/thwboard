@@ -806,5 +806,4 @@ elseif( $action == "EditUser" )
 }
 
 
-tb_footer();	
-?>
+tb_footer();

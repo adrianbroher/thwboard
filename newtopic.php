@@ -242,5 +242,3 @@ else
   
   header("Location: ".build_link("showtopic.php?threadid=$thread[threadid]", true));
 }
-
-?>

@@ -114,4 +114,3 @@ elseif ( ( $action == "" ) || ( $action == "ListLinks" ) )
 }
 
 tb_footer();
-?>

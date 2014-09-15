@@ -105,5 +105,3 @@ else
 $source = str_replace(array('"', '<', '>'), array('%22', '%3c', '%3e'), $source);
 
 message_redirect('Sie wurden erfolgreich eingeloggt, bitte warten ...', $source);
-
-?>

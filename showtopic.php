@@ -374,4 +374,3 @@ $titleprepend = htmlspecialchars($thread['threadtopic']) . ' - ';
 
 eval($Tpostings->GetTemplate("CONTENT"));
 eval($Tframe->GetTemplate());
-?>

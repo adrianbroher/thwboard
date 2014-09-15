@@ -251,5 +251,3 @@ if( $user['usernewpassword'] || $user['usernewpassword2'] )
 }
 
 message("Update erfolgreich!","Das Update war erfolgreich!");
-
-?>

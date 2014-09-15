@@ -56,4 +56,3 @@ $calendar['eventsubject'] = parse_code($calendar['eventsubject']);
 $calendar['eventtext'] = parse_code($calendar['eventtext'], 1, 1, 1);
 
 eval($Tshowevent->GetTemplate());
-?>

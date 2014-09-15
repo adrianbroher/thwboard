@@ -63,4 +63,3 @@ else
 	eval($Tregform->GetTemplate("CONTENT"));
 	eval($Tframe->GetTemplate());
 }
-?>

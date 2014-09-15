@@ -1017,4 +1017,3 @@ Please choose your language:<br><br>
 
 print '</select>';
 }
-?>

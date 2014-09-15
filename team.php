@@ -104,5 +104,3 @@ $navpath .= 'Forumstaff';
 
 eval($TTeam->GetTemplate("CONTENT"));
 eval($TFrame->GetTemplate());
-
-?>

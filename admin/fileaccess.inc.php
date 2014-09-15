@@ -33,4 +33,3 @@ function WriteAccess($file)
 		return TRUE;
 	}
 }
-?>

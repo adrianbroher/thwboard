@@ -130,4 +130,3 @@ if( count($selectionpoints) >= 1 )
 $CONTENT = '';
 eval($t_stats_main->GetTemplate("CONTENT"));
 eval($t_frame->GetTemplate());
-?>

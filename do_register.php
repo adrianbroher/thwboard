@@ -117,5 +117,3 @@ else
 	message('Registrierung erfolgreich!',
 		'Sie wurden soeben erfolgreich registriert und eingeloggt. Viel Spa&szlig;!');
 }
-
-?>

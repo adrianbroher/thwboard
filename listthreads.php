@@ -93,4 +93,3 @@ else
 
 eval($TTopics->GetTemplate("CONTENT"));
 eval($Tframe->GetTemplate());
-?>

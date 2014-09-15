@@ -307,5 +307,3 @@ else
 
 eval($Tindex->GetTemplate("CONTENT"));
 eval($Tframe->GetTemplate());
-
-?>

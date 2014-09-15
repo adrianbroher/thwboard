@@ -230,4 +230,3 @@ if (!$avatarindex)
 } 
 
 tb_footer();
-?>

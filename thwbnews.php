@@ -445,5 +445,3 @@ else
           Keine Boards gefunden.</pre>');
     exit;
 }
-
-?>

@@ -75,7 +75,7 @@ $mysql_p	= "'.$HTTP_POST_VARS['pass'].'";
 $mysql_db	= "'.$HTTP_POST_VARS['db'].'";
 $pref		= "'.$HTTP_POST_VARS['prefix'].'";
 $inst_lock	= TRUE;
-?>';
+';
 		break;
 
 	case 'createadmin':
@@ -254,4 +254,3 @@ $inst_lock	= TRUE;
 		p_footer('welcome');
 
 }
-?>

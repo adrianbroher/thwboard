@@ -195,4 +195,3 @@ switch($action)
 		style_bottom('liststyles', 'Weiter &raquo;', 1);
 	break;
 }
-?>

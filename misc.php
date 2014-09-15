@@ -167,4 +167,3 @@ else if( $action == 'change_email' )
 
     message("A&uml;nderung abgeschlossen!", "Ihre Email-Adresse wurde erfolgreich ge&auml;ndert.");
 }
-?>

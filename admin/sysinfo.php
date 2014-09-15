@@ -61,5 +61,3 @@ while( list(, $dir) = each($a_dir) )
 }*/
 
 tb_footer();
-
-?>

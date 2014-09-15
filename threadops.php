@@ -476,4 +476,3 @@ if($action == 'do_merge')
 		message('Fehler', 'Als Gast können Sie keine Threads markieren.');
 	}
 }*/
-?>

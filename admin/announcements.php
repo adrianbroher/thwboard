@@ -184,4 +184,3 @@ elseif( $action == "DeleteNews" )
 }
 
 tb_footer();
-?>

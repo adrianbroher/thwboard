@@ -177,5 +177,3 @@ if( $config['use_email'] )
 }
 
 header("Location: ".build_link("showtopic.php?threadid=$thread[threadid]&time=$time&pagenum=lastpage#bottom", true));
-
-?>

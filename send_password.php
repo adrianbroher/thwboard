@@ -38,5 +38,3 @@ else
 		'Der Forumadministrator hat diese Funktion leider deaktiviert. Wenn Sie Ihr Passwort vergessen haben, wenden
 		Sie sich bitte an den <a href="mailto:' . $config['board_admin'] . '">Forumadministrator</a>.');
 }
-
-?>

@@ -57,5 +57,3 @@ class CUpdate
 		return 0;
 	}	
 }
-
-?>  

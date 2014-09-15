@@ -221,5 +221,3 @@ elseif( $action == "ListTemplates" )
 
 
 tb_footer();
-
-?>

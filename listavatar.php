@@ -66,4 +66,3 @@ while( $avatar_data = mysql_fetch_array($r_avatar) )
 
 eval($Tavatar->GetTemplate("CONTENT"));
 eval($Tframe->GetTemplate());
-?>

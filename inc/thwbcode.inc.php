@@ -404,4 +404,3 @@ function parse_code($string, $do_br = 0, $do_img = 0, $do_code = 0, $do_smilies 
 
 	return $string;
 }
-?>

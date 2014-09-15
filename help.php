@@ -44,4 +44,3 @@ $navpath .= '<a class="bglink" href="'.build_link("help.php").'">FAQ</a> &raquo;
 
 eval($Tfaq->GetTemplate("CONTENT"));
 eval($Tframe->GetTemplate());
-?>

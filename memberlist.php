@@ -252,4 +252,3 @@ $navpath .= 'Mitgliederliste';
 
 eval($TMemberlist->GetTemplate("CONTENT"));
 eval($TFrame->GetTemplate());
-?>

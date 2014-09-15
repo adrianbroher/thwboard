@@ -181,5 +181,3 @@ function thwb_setup_error_handling($what, $mail, $log)
         set_error_handler('thwb_php_error_handler');
     }
 }
-
-?>

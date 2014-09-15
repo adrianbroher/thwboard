@@ -52,5 +52,3 @@ $navpath .= 'Announcements';
 
 eval($TNews->GetTemplate("CONTENT"));
 eval($TFrame->GetTemplate());
-	
-?>

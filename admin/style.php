@@ -781,5 +781,3 @@ OR choose a local file (templates/):
 
 
 tb_footer();
-
-?>

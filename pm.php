@@ -530,5 +530,3 @@ else
 	eval($Tpm->GetTemplate("CONTENT"));
 	eval($TFrame->GetTemplate());
 }
-
-?>

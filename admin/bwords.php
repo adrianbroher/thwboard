@@ -282,4 +282,3 @@ else
 }
 
 tb_footer();
-?>

@@ -254,5 +254,3 @@ $navpath .= 'Profil modifizieren';
 
 eval($Tprofile->GetTemplate("CONTENT"));
 eval($Tframe->GetTemplate());
-
-?>

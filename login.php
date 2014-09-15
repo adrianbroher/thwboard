@@ -47,4 +47,3 @@ $source = urlencode($source);
 
 eval($Tloginform->GetTemplate("CONTENT"));
 eval($Tframe->GetTemplate());
-?>
