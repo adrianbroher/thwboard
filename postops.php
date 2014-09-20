@@ -62,18 +62,18 @@ elseif( $action == "delete" )
     $navpath .= "Post/Thread l&ouml;schen";
     $r_post = thwb_query("SELECT postid, userid, posttime FROM ".$pref."post WHERE postid=". $post['postid'] );
     $post = mysql_fetch_array($r_post);
-    
-    if( ($g_user['userid'] == $post['userid'] && $P->has_permission( P_DELPOST )) || $P->has_permission( P_ODELPOST )) 
+
+    if( ($g_user['userid'] == $post['userid'] && $P->has_permission( P_DELPOST )) || $P->has_permission( P_ODELPOST ))
     {
         //ttt: edit time limit now also applies to post delete
         if( $config['editlimit'] && !$P->has_permission( P_ODELPOST ) && !$P->has_permission( P_NOEDITLIMIT ) && ($post['posttime'] + $config['editlimit']) < time() )
             message('Fehler', 'Sie k&ouml;nnen diesen Post nicht mehr l&ouml;schen, da das Zeitlimit &uuml;berschritten wurde.');
-        
+
         if( !isset($do_delete) || !$do_delete )
         {
             $r_thread = thwb_query("SELECT threadid, threadreplies FROM ".$pref."thread WHERE threadid=$thread[threadid]");
             $thread = mysql_fetch_array($r_thread);
-    
+
             if( $thread['threadreplies'] < 1 )
             {
                 message("&nbsp;", 'Soll dieser Thread wirklich GEL&Ouml;SCHT werden?<br>
@@ -99,16 +99,16 @@ elseif( $action == "delete" )
         {
             // re-get $post
             $post = $HTTP_POST_VARS['post'];
-            
+
             if( !($post['postid'] = intval($post['postid'])) )
                 exit( 'nix da' );
-            
+
             // decrease thread reply count
             thwb_query("UPDATE ".$pref."thread SET threadreplies=threadreplies-1 WHERE threadid=$thread[threadid]");
-        
+
             // decrease board post count
             thwb_query("UPDATE ".$pref."board SET boardposts=boardposts-1 WHERE boardid=$board[boardid]");
-        
+
             // remove post
             thwb_query("DELETE FROM ".$pref."post WHERE postid=$post[postid]");
 

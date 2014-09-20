@@ -43,7 +43,7 @@ if( $action == 'unsubscribe' )
         else
         {
             thwb_query("UPDATE ".$pref."post SET postemailnotify=0 WHERE threadid='$thread[threadid]' AND userid='$g_user[userid]'");
-            
+
             message('Hinweis', 'Ihre Abbestellung wurde erfolgreich durchgef&uuml;hrt!');
         }
     }
@@ -58,7 +58,7 @@ elseif( $action == 'getemail' )
     {
         $r_user = thwb_query("SELECT useremail FROM ".$pref."user WHERE userid='".intval($userid)."'");
         $user = mysql_fetch_array($r_user);
-        
+
         message('Info', 'Die Email-Adresse dieses Benutzers ist: ' . $user['useremail']);
     }
 }
@@ -73,7 +73,7 @@ elseif( $action == 'getpostcount' )
     {
         $r_user = thwb_query("SELECT userposts FROM ".$pref."user WHERE userid='".addslashes($userid)."'");
         $user = mysql_fetch_array($r_user);
-        
+
         message('Info', 'Dieser Benutzer hat ' . $user['userposts'] . ' Posts.');
     }
 }
@@ -89,7 +89,7 @@ elseif( $action == 'getlastpost' )
 
         /* which page? */
         $postnum = 0;
-    
+
         $r_post = thwb_query("SELECT postid FROM $pref"."post WHERE threadid='$post[threadid]' ORDER BY posttime ASC");
         while( $post = mysql_fetch_array($r_post) )
         {
@@ -120,7 +120,7 @@ elseif( $action == 'user_activate' )
     }
 
   $r_user = thwb_query("SELECT userjoin, useractivate FROM ".$pref."user WHERE userid='".intval($userid)."'");
-  
+
   if(!mysql_num_rows($r_user))
     {
       message("Fehler", "Der angegebene Benutzer existiert nicht.");
@@ -137,7 +137,7 @@ elseif( $action == 'user_activate' )
     {
       message("Fehler", "Die angegebene Aktivierungs-ID stimmt nicht.");
     }
-  
+
   thwb_query("UPDATE ".$pref."user SET useractivate='0' WHERE userid='".intval($userid)."'");
 
   message("Registrierung erfolgreich!", "Ihre Registrierung ist nun abgeschlossen. Sie k&ouml;nnen sich <a href=\"login.php\">hier</a> einloggen. Viel Spa&szlig;!");

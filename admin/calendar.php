@@ -21,17 +21,17 @@
 */
 include "common.inc.php";
 
-if ( $action == "add" ) 
+if ( $action == "add" )
 {
-  if ( $newsubject == '') 
+  if ( $newsubject == '')
   {
     $newsubject = "&laquo; N/A &raquo;";
   }
-  if ( $newtext == '') 
+  if ( $newtext == '')
   {
     $newtext = "&laquo; N/A &raquo;";
   }
-  if ( $newstatus == '') 
+  if ( $newstatus == '')
   {
     $newstaus = "1";
   }
@@ -69,7 +69,7 @@ if ( $action == "edit" )
   <TR><TD><B>Text :</B></TD></TR>
   <TR><TD><textarea class="tbinput" name="newtext" cols=30 rows=10>' . $calendar['eventtext'] . '</textarea></TR></TD>
   <TR><TD><B>Status :</B></TD></TR>
-  <TR><TD><input type=radio name=newstatus value="1" ' . ( $calendar['eventactive'] == "1" ? " checked" : "" ) . '> - Active 
+  <TR><TD><input type=radio name=newstatus value="1" ' . ( $calendar['eventactive'] == "1" ? " checked" : "" ) . '> - Active
   <BR><input type=radio name=newstatus value="0" ' . ( $calendar['eventactive'] == "0" ? " checked" : "" ) . '> - Deactivated</TD></TR>
   <TR><td colspan="2" bgcolor="#999999" align="center"><font size="2" color="white"><input type="hidden" name="event" value="' . $event . '"><input type=submit value="Save Event"> </font></td></TR>
   </TABLE>

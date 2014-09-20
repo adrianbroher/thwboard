@@ -18,7 +18,7 @@ function check_php_version ($version)
 {
     $testSplit = explode ('.', $version);
     $currentSplit = explode ('.', phpversion ());
-    
+
     if( $testSplit[0] < $currentSplit[0] )
     {
         return true;
@@ -37,7 +37,7 @@ function check_php_version ($version)
             }
         }
     }
-    
+
     return false;
 }
 
@@ -83,13 +83,13 @@ $inst_lock    = TRUE;
         {
             p_errormsg(lng('error'), lng('adminpwtooshort'));
         }
-    
+
         mysql_connect($HTTP_POST_VARS['hostname'], $HTTP_POST_VARS['user'], $HTTP_POST_VARS['pass']);
         mysql_select_db($HTTP_POST_VARS['db']);
 
         thwb_query("INSERT INTO $HTTP_POST_VARS[prefix]"."user (username, useremail, userpassword, userisadmin, userjoin, groupids, usernodelete) VALUES
             ('$admin_user', '$admin_email', '".md5($HTTP_POST_VARS['admin_pass'])."', '1', ".time().", ',3,', '1')");
-        
+
         p_header();
         p_prewrite($HTTP_POST_VARS['hostname'], $HTTP_POST_VARS['user'], $HTTP_POST_VARS['pass'], $HTTP_POST_VARS['db'], $HTTP_POST_VARS['prefix']);
         p_footer('writeconfig', array(
@@ -104,9 +104,9 @@ $inst_lock    = TRUE;
     case 'createtables':
         mysql_connect($HTTP_POST_VARS['hostname'], $HTTP_POST_VARS['user'], $HTTP_POST_VARS['pass']);
         mysql_select_db($HTTP_POST_VARS['db']);
-        
+
         create_tables($delete_existing);
-        
+
         p_header();
         p_adminprofile();
         p_footer('createadmin', array(
@@ -117,7 +117,7 @@ $inst_lock    = TRUE;
             'prefix' => $HTTP_POST_VARS['prefix']
         ));
         break;
-        
+
     case 'writeconfig':
         if( !WriteAccess('../inc/config.inc.php') )
         {
@@ -135,7 +135,7 @@ $pref        = "'.$HTTP_POST_VARS['prefix'].'";
 $inst_lock    = TRUE;
 ?>');
             fclose($fp);
-            
+
             p_header();
             p_done();
             p_footer();
@@ -163,9 +163,9 @@ $inst_lock    = TRUE;
               p_errormsg(lng('error'), sprintf(lng('mysqlerror'), $db, mysql_error()));
             }
         }
-        
+
         mysql_select_db($db);
-        
+
         $r_table = mysql_list_tables($db);
         $a_tables = array();
         $i = 0;
@@ -174,7 +174,7 @@ $inst_lock    = TRUE;
             $tables[] = mysql_tablename($r_table, $i);
             $i++;
         }
-        
+
         p_header();
         p_chooseprefix($db, $tables);
         p_footer('createtables', array(
@@ -191,9 +191,9 @@ $inst_lock    = TRUE;
         {
             p_errormsg(lng('error'), sprintf(lng('connecterror'), mysql_error()));
         }
-        
+
         $r_database = mysql_listdbs();
-        
+
         $databases = '';
         $i = 0;
         while( $i < mysql_num_rows($r_database) )
@@ -242,7 +242,7 @@ $inst_lock    = TRUE;
         p_footer();
         break;
 
-    case 'welcome':        
+    case 'welcome':
         p_header();
         p_welcome();
         p_footer('license');

@@ -22,15 +22,15 @@ class CUpdate
     {
         $r_registry = thwb_query("SELECT keyvalue FROM $this->Prefix"."registry WHERE keyname='version'");
         $registry = mysql_fetch_array($r_registry);
-        
+
         return ($registry['keyvalue'] == $this->OldVersion);
     }
-    
+
     function SetError($errmsg)
     {
         $this->Error = $errmsg;
     }
-    
+
     function GetError()
     {
         return $this->Error;
@@ -45,15 +45,15 @@ class CUpdate
     {
         /* board version */
         thwb_query("UPDATE $this->Prefix"."registry SET keyvalue='".$this->NewVersion."' WHERE keyname='version'");
-    
+
         /* ip check */
 
-        thwb_query("ALTER TABLE $this->Prefix"."user ADD usernoipcheck tinyint(1) unsigned NOT NULL default '0'");    
+        thwb_query("ALTER TABLE $this->Prefix"."user ADD usernoipcheck tinyint(1) unsigned NOT NULL default '0'");
 
          /* style / boardimage fix */
 
-        thwb_query("UPDATE $this->Prefix"."style SET boardimage='./templates/default/images/space.png' WHERE boardimage='./templates/default/images/space.gif'");    
-        
+        thwb_query("UPDATE $this->Prefix"."style SET boardimage='./templates/default/images/space.png' WHERE boardimage='./templates/default/images/space.gif'");
+
         return 0;
-    }    
+    }
 }

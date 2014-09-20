@@ -69,7 +69,7 @@ switch($action)
             p_errormsg(lng('error'),
                 lng('cantexec'));
         }
-        
+
         if( $update->RunUpdate() )
         {
             p_errormsg(lng('error'),
@@ -80,7 +80,7 @@ switch($action)
             p_errormsg(lng('updatesuccess'),
                 lng('updatesuccesstxt'));
         }
-        
+
         break;
 
     case 'update':
@@ -92,9 +92,9 @@ switch($action)
         else
         {
             include $scriptname;
-            
+
             $update = new CUpdate;
-            
+
             $update->Prefix = $pref;
             if( $update->UpdaterVer > $cfg['updater_ver'] )
             {
@@ -116,7 +116,7 @@ switch($action)
     case 'welcome':
     default:
         $a_file = array();
-        $dp = opendir('updates/'); 
+        $dp = opendir('updates/');
         while( $file = readdir($dp) )
         {
             if( substr($file, -7, 7) == '.update' )

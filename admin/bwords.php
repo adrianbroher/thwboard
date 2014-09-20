@@ -237,7 +237,7 @@ else if( !isset($action) || $action == "ListBWords" )
     print '<tr>';
     print '<td> </td><td><font face="Arial"><i>badword</i></font></td><td><font face="Arial"><i>spare word</i></font></td><td> </td>';
     print '</tr>';
-    
+
     $r_bwords = query("SELECT wordid, banword, modword FROM ".$pref."bannedwords ORDER BY wordid");
     if( mysql_num_rows($r_bwords) < 1 )
     {

@@ -29,7 +29,7 @@ if ( $action == '' )
     $post = mysql_fetch_array($r_post);
     $r_thread = query("SELECT count(threadid) AS threadcount FROM ".$pref."thread");
     $thread = mysql_fetch_array($r_thread);
-    
+
     list($mysqlmajor,$mysqlminor,)=explode('.', mysql_get_server_info());
     if ( intval( $mysqlmajor ) > 3 || (intval($mysqlmajor) == 3 && intval($mysqlminor) >= 23) )
     {
@@ -64,7 +64,7 @@ if ( $action == '' )
                 if ( substr($table_details['Name'], 0, strlen( $pref ) ) == $pref )
                 {
                     $db_detail['size_content'] += $table_details['Data_length'];
-                    $db_detail['size_index'] += $table_details['Index_length'];            
+                    $db_detail['size_index'] += $table_details['Index_length'];
                 }
                 $db_box = '
               <TABLE border="0" cellspacing="1" cellpadding="1" bgcolor="black" width="300">
@@ -105,7 +105,7 @@ if ( $action == '' )
     {
         $db_box = '<strong>You have to update your MySQL Version in order to see table stats</strong>';
     }
-    
+
     print("<strong>MySQL-Statistics</strong>");
     print('<BR><BR>
         <TABLE border="0" cellspacing="0" cellpadding="0">
@@ -169,7 +169,7 @@ if ( $action == '' )
         ' . $db_box . '
             </TD>
             <TD width="20">
-            </TD>            
+            </TD>
             <TD valign="top">
               <TABLE border="0" cellspacing="1" cellpadding="1" bgcolor="black" width="300">
                 <TR>
@@ -180,7 +180,7 @@ if ( $action == '' )
                     <Table border="0" cellspacing="0" cellpadding="0" width="100%">
                       <TR>
                         <TD valign="top">
-                            <form action="mysql.php?session=' . $session . '&action=postcount" method="post" target="_self">    
+                            <form action="mysql.php?session=' . $session . '&action=postcount" method="post" target="_self">
                         <input type="submit" value="Recount posts">
                         </form>
                         </TD>
@@ -196,7 +196,7 @@ if ( $action == '' )
                     <Table border="0" cellspacing="0" cellpadding="0" width="100%">
                       <TR>
                         <TD valign="top">
-                            <form action="mysql.php?session=' . $session . '&action=threadcount" method="post" target="_self">    
+                            <form action="mysql.php?session=' . $session . '&action=threadcount" method="post" target="_self">
                         <input type="submit" value="Recount threads">
                         </form>
                         </TD>
@@ -341,7 +341,7 @@ elseif ( $action == "delusers" )
             );
             @mysql_query( "OPTIMIZE TABLE $pref"."pm" );
         }
-        
+
         print("Users successfully deleted.");
     }
 }
@@ -358,7 +358,7 @@ elseif ( $action == "delthreads" )
             AND threadlink = 0" // don't pick any threadlinks
                . ((isset($boardid) && $boardid != "") ? " AND boardid IN (".addslashes($boardid).")" : "")
     );
-    
+
     if ( $save != 0 )
     {
         print('Are you sure you want to delete the following thread(s) ? (' . mysql_num_rows( $r_threads ) . ')<BR>
@@ -438,7 +438,7 @@ elseif ( $action == "delthreads" )
                 updateboard($b);
               }
         }
-        print("Deleting ... successful");     
+        print("Deleting ... successful");
     }
 }
 elseif ( $action == "postcount" )
@@ -513,7 +513,7 @@ elseif($action == "threadcount")
           updateboard($v);
         }
     }
-    
+
     print('Threadcount of <strong>' . $boards . '</strong> boards has been checked and corrected.<br>
                <br><a href="mysql.php?session=' . $session . '">back to mysql-clean</a>');
 }

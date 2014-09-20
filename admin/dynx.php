@@ -43,7 +43,7 @@ if( !isset( $pref ) || empty( $pref ) )
 
 if( !isset( $action ) || empty( $action ) )
     $action = 'login';
-    
+
 if( !isset( $l_username ) || !isset( $l_userpassword ) || !check_login( $l_username, $l_userpassword ))
 {
   $action = "login";
@@ -61,15 +61,15 @@ switch($action)
     case 'addstyles':
         style_top("Styles werden installiert...");
         print "<p>Script Status</p>";
-        
+
         if( !isset($addstyle_sql) && !isset($addstyle_dat) )
         {
             ERROR_Handler(5);
         }
-        
+
         // ===================================================
         // Bei SQL-Eintraegen
-        
+
         if( isset($addstyle_sql) )
         {
             while( list($styleid, $value) = each($addstyle_sql) )
@@ -91,10 +91,10 @@ switch($action)
                 }
             }
         }
-        
+
         // ===================================================
         // Bei .style-Eintraegen
-        
+
         if( isset($addstyle_dat) )
         {
             while( list($styleid, $value) = each($addstyle_dat) )
@@ -122,11 +122,11 @@ switch($action)
         print '<b>Alle Styles wurden erfolgreich eingef&uuml;gt, vielen Dank das Sie Dyn<i>X</i> benutzt haben!';
         style_bottom('login', 'Ausloggen');
     break;
-    
+
     // ===================================================
     // ===================================================
     // ===================================================
-    
+
     case 'liststyles':
         style_top("Styleauswahl");
         print '<p>Folgende Styles stehen zur Verf&uuml;gung:</p><img src="./images/dynx_desc2.gif" border="0">';
@@ -141,7 +141,7 @@ switch($action)
             {
                 list($styleid, $stylename, $styleautor, $styledesc) = explode("|", $stylearray[$i]);
                 $q_avatar = $DB_Stream->query('SELECT styletemplate FROM '.$pref.'style WHERE stylename =\''. addslashes($stylename) .'\'');
-                
+
                 if( mysql_fetch_array($q_avatar) )
                 {
                     $checkformsql = '<input type="checkbox" name="disable" readonly="readonly" disabled>';
@@ -150,7 +150,7 @@ switch($action)
                 {
                     $checkformsql = "<input type=\"checkbox\" name=\"addstyle_sql[$styleid]\" value=\"1\">";
                 }
-                
+
                 if( file_exists("../templates/".$stylename.".style") )
                 {
                     $checkformdat = '<input type="checkbox" name="disable" readonly="readonly" disabled>';
@@ -159,7 +159,7 @@ switch($action)
                 {
                     $checkformdat = "<input type=\"checkbox\" name=\"addstyle_dat[$styleid]\" value=\"1\">";
                 }
-                
+
                 print "<tr bgcolor=\"".($i % 2 == 0 ? '#EFEFEF' : '#DADADA')."\"><td>$checkformdat</td><td>$checkformsql</td><td>$stylename</td><td>$styleautor</td><td>$styledesc</td></tr>\n";
             }
         }
@@ -167,11 +167,11 @@ switch($action)
         print '<input type="checkbox" name="disable" readonly="readonly" disabled> = Style wurde bereits installiert.';
         style_bottom('addstyles', 'Weiter &raquo;');
     break;
-    
+
     // ===================================================
     // ===================================================
     // ===================================================
-    
+
     case 'login':
     default:
         style_top("Anmeldung");
@@ -179,7 +179,7 @@ switch($action)
         print '<p>Mit Dyn<i>X</i> haben Sie die M&ouml;glichkeit, einfach und schnell neue Styles (Farb-Pakete) herunterzuladen und zu installieren.</p>';
         print '<p><b>Bitte stellen Sie vor der Anwendung des Scripts sicher, dass Schreibrechte (chmod 777) auf folgenden Verzeichnissen bestehen:</b></p>';
         print '<ul><li><i>&lt;ThWb-Verzeichnis&gt;</i>/templates</li></ul>';
-        print '<b>Bitte geben Sie hier ihre Zugangsdaten ein um fortzufahren:</b><br> 
+        print '<b>Bitte geben Sie hier ihre Zugangsdaten ein um fortzufahren:</b><br>
 <table cellspacing="0" cellpadding="2" border="0">
   <tr>
     <td>Benutzername</td>

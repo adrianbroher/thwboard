@@ -28,7 +28,7 @@ if(empty($type) || $type != 'list')
 {
     tb_header();
 }
-    
+
 if( !$sendnewsletter )
 {
     echo '<form method="post" action="newsletter.php"><B>Send newsletter</B><BR>
@@ -64,7 +64,7 @@ if( !$sendnewsletter )
     {
         print '<option value="'.$group['groupid'].'">'.$group['name'].'</option>';
     }
-    
+
     print '
         </select><font size="1"><br>(Use CTRL to select multiple)</font>
       </td>
@@ -123,7 +123,7 @@ if( count($a_group) > 0 )
         }
         $where_sql = 'WHERE '.substr($where_sql, 4);
     }
-  
+
   $r_user = query("SELECT userid, useremail FROM $pref"."user $where_sql AND userid > $at");
 
   $usercount = $at + mysql_num_rows($r_user);
@@ -141,11 +141,11 @@ if( count($a_group) > 0 )
 
       exit;
   }
-  
+
   while( $user = mysql_fetch_array($r_user) )
     {
       if(time() + substr(microtime(), 0, 10) < ($end_time - 0.25))
-      {   
+      {
           if($i % 100)
           {
               if( $type == "mail" )
@@ -155,7 +155,7 @@ if( count($a_group) > 0 )
               else
               {
                 query("INSERT INTO $pref"."pm (pmfromid, pmtoid, pmtopic, pmtext, pmtime, pmflags, pmfolder)
-                    VALUES ($g_user[userid], $user[userid],'" . addslashes($subject) . "','" . addslashes($content) . 
+                    VALUES ($g_user[userid], $user[userid],'" . addslashes($subject) . "','" . addslashes($content) .
                       "',".time().", 1, 0);");
               }
           }
@@ -168,8 +168,8 @@ if( count($a_group) > 0 )
               else
               {
                   print('The script execution time limit has been exceeded.<br><form method="post"><input type="hidden" name="session" value="'.$session.'"><input type="hidden" name="sendnewsletter" value="'.$sendnewsletter.'"><input type="hidden" name="subject" value="'.$subject.'"><input type="hidden" name="content" value="'.$content.'"><input type="hidden" name="type" value="'.$type.'"><input type="hidden" name="at" value="'.$user['userid'].'"><input type="hidden" name="groups" value="'.$where_sql.'"><input type="submit" name="submit" value="resume &gt;&gt;"></form>');
-                  tb_footer();  
-                  exit(); 
+                  tb_footer();
+                  exit();
               }
           }
       }
@@ -179,7 +179,7 @@ if( count($a_group) > 0 )
           tb_footer();
           exit();
       }
-        
+
       ++$i;
     }
 

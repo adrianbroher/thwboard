@@ -25,15 +25,15 @@ error_reporting(0);
 /**
  * as of php5, $HTTP_*_VARS are disabled
  * so we have to recreate them here
- * 
+ *
  * this is actually pretty evil, but it does work.
  **/
 
 if(substr(phpversion(), 0, 1) > 4)
 {
     $a_globals = array(
-        'HTTP_SERVER_VARS' => '_SERVER', 
-        'HTTP_COOKIE_VARS' => '_COOKIE', 
+        'HTTP_SERVER_VARS' => '_SERVER',
+        'HTTP_COOKIE_VARS' => '_COOKIE',
         'HTTP_POST_VARS' => '_POST',
         'HTTP_GET_VARS' => '_GET',
         'HTTP_ENV_VARS' => '_ENV'
@@ -170,7 +170,7 @@ while ( $registry = mysql_fetch_array($r_registry) )
         case 'boolean':
             $config[$registry['keyname']] = intval($registry['keyvalue']);
             break;
-            
+
         case 'array':
             if( $registry['keyvalue'] )
             {
@@ -180,7 +180,7 @@ while ( $registry = mysql_fetch_array($r_registry) )
                 eval("\$config[\$registry['keyname']] = array(".implode(',', $array).");");
             }
             break;
-                
+
         default:
             $config[$registry['keyname']] = $registry['keyvalue'];
     }
@@ -239,12 +239,12 @@ if($thwb_cookie != "guest")
     {
       $g_user['userpassword'] = '';
     }
-  
+
   if($g_user['userisadmin'])
     {
       error_reporting(E_ALL);
     }
-  
+
   $is_guest = false;
 }
 else
@@ -259,7 +259,7 @@ if($is_guest || $thwb_cookie_userid && $thwb_cookie_userpassword != $g_user['use
 
     $g_user['have_cookie'] = $_have_sid_cookie;
     unset($_have_sid_cookie);
-    
+
     $g_user['userid'] = 0;
     $g_user['groupids'] = $config['guest_groupid'];
     $g_user['username'] = "Gast";
@@ -275,7 +275,7 @@ else
 {
     $g_user['have_cookie'] = $_have_sid_cookie;
     unset($_have_sid_cookie);
-    
+
     $config['use_email'] &&  $option[] = '<a href="'.build_link("listthreads.php").'">Abonnierte Themen</a>';
     $option[] = '<a href="'.build_link("pm.php").'">Private Messages</a>';
     $option[] = '<a href="'.build_link("editprofile.php").'">Profil</a>';
@@ -329,16 +329,16 @@ if( $g_user['userbanned'] == 1 )
 {
     $r_ban = thwb_query("SELECT banpubreason, banexpire FROM ".$pref."ban WHERE userid=$g_user[userid]");
     $ban = mysql_fetch_array($r_ban);
-    
+
     if( $ban['banexpire'] > time() || $ban['banexpire'] == 0 )
     {
-        $message = "Sie sind gebannt<br><br>Grund: <i>" 
+        $message = "Sie sind gebannt<br><br>Grund: <i>"
             . ($ban['banpubreason'] ? $ban['banpubreason'] : "(Keine Angabe)") . "</i><br><br>Dieser Ban"
             . ($ban['banexpire'] ? (" ist g&uuml;ltig bis: " . form_date($ban['banexpire']) . ".") : " ist permanent." )
             . "<br><br><br>Hinweis: Die Forumadministration beh&auml;lt sich das Recht vor,
 Benutzer gegebenenfalls ohne Angabe eines Grundes
 permanent vom Posten abzuhalten.$style[smallfontend]";
-        
+
         message("Fehler", $message);
     }
     else
@@ -375,7 +375,7 @@ if( ereg("board.php", $HTTP_SERVER_VARS['PHP_SELF']) && isset( $boardid ) )
     {
         $r_lastvisited = thwb_query("SELECT lastvisitedtime FROM ".$pref."lastvisited WHERE userid=$g_user[userid] AND boardid='".intval($board['boardid'])."'");
             $lastvisited = mysql_fetch_array($r_lastvisited);
-            
+
         if( !$lastvisited['lastvisitedtime'] )
         {
             // new user
@@ -423,7 +423,7 @@ if( isset($thread['threadid']) )
         message("Fehler", "Thread existiert nicht");
     }
     $thread = mysql_fetch_array($r_thread);
-    
+
     $navigation[] = "<a class=\"bglink\" href=\"".build_link("showtopic.php?threadid=$thread[threadid]".((!empty($time)) ? "&time=$time" : ""))."\">" . parse_code($thread['threadtopic']) . "</a>";
     $board['boardid'] = $thread['boardid'];
 }
@@ -437,7 +437,7 @@ if( isset($board['boardid']) )
         message("Fehler", "Board existiert nicht");
     }
     $board = mysql_fetch_array($r_board);
-    
+
     $navigation[] = "<a class=\"bglink\" href=\"".build_link("board.php?boardid=$board[boardid]".((!empty($time)) ? "&time=$time" : ""))."\">$board[boardname]</a>";
 }
 
@@ -457,7 +457,7 @@ if(empty($board['styleid']))
     {
       $board['styleid'] = $g_user['styleid'];
     }
-  else 
+  else
     {
       $board['styleid'] = STYLE_DEFAULT;
     }
@@ -502,7 +502,7 @@ if( $config['enable_quicklinks'] )
     {
         $quicklinks .= "<A HREF=\"qlinks.php?id=$qlink[linkid]\" title=\"$qlink[linkalt]\" target=_blank>[ $qlink[linkcaption] ]</a> ";
     }
-    
+
     eval($TQuicklinks->GetTemplate("t_quicklinks"));
 }
 
@@ -520,7 +520,7 @@ if( isset($board['boardid']) )
 {
     $P = new Permission($g_user['groupids'], $board['boardid']);
     requires_permission( P_VIEW );
-    
+
 }
 else
 {

@@ -150,7 +150,7 @@ while( $post = mysql_fetch_array($r_post) )
     if( $config['enable_ranks'] )
     {
         reset($a_rank);
-            
+
         while( list($posts, $rank) = each($a_rank) )
         {
             if( $post['userposts'] >= $posts )
@@ -159,7 +159,7 @@ while( $post = mysql_fetch_array($r_post) )
                 break;
             }
         }
-        
+
         if(empty($post['userrank']))
           {
             $post['userrank'] = '';
@@ -182,32 +182,32 @@ while( $post = mysql_fetch_array($r_post) )
         $postingoptions = '';
         eval($Tpostingoptions->GetTemplate('postingoptions'));
     }
-    
+
 
     $post['avatar'] = "";
 
     if ( ( $config['useravatar'] >= 1 ) && ( $post['useravatar'] != "" ) && ( $post['useravatar'] != "notallowed" ) )
     {
-        if ( $post['userhomepage'] ) 
+        if ( $post['userhomepage'] )
         {
             $post['avatar'] .= "<a href=\"$post[userhomepage]\" target=\"_blank\">";
         }
-        
+
         $post['avatar'] .= "<img src=\"$post[useravatar]\" alt=\"Avatar von $post[username]\" title=\"Avatar von $post[username]\" border=\"0\">";
-        
-        if ( $post['userhomepage'] ) 
+
+        if ( $post['userhomepage'] )
         {
             $post['avatar'] .= "</a>";
         }
 
          $post['avatar'] .="\n";
     }
-    
+
     if( $post['username'] == '' )
     {
         $post['username'] == '(N/A)';
     }
-    
+
     if( defined('ENABLE_VOTING') )
     {
         if( $post['userrating'] != 0 )
@@ -303,13 +303,13 @@ if ( $pagenum == $post_pages && $P->has_permission( P_REPLY ) && !$thread['threa
         $r_post = thwb_query("SELECT post.posttext, post.threadid, post.postguestname, user.username FROM ".$pref."post AS post
             LEFT JOIN ".$pref."user AS user ON post.userid=user.userid WHERE postid='".intval($replyto)."'");
         $post = mysql_fetch_array($r_post);
-        
+
         // verify postid to prevent quotes from restricted forums
         if( $post['threadid'] != $thread['threadid'] )
         {
             message("Error", "Invalid postid!");
         }
-        
+
         $post['posttext'] = htmlspecialchars($post['posttext']);
 
         if( !$post['username'] )
@@ -341,7 +341,7 @@ if ( $pagenum == $post_pages && $P->has_permission( P_REPLY ) && !$thread['threa
     {
         $notifyavailable = ' (Derzeit nicht verf&uuml;gbar)';
     }
-    
+
     if( $g_user['userid'] )
     {
         $replyusername = "$style[stdfont]$g_user[userhtmlname]$style[stdfontend]$style[smallfont] [ <a href=\"".build_link('logout.php?uid='.$g_user['userid'])."\">Logout</a> ]$style[smallfontend]";

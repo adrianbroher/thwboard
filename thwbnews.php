@@ -27,19 +27,19 @@
  *      denote the output type (either html or rss)
  *      and might limit the boards for which the content
  *      is generated.
- * 
+ *
  *  (b) the script is included by another script.
  *      in this case, a fixed boardid is used and output
  *      is restricted to html.
  *      to use this feature, the including script must
- *      define 
+ *      define
  *          THWB_NEWS_INCLUDED  to  1
  *          THWB_NEWS_PATH      to  `.' if the including
  *              is located in the same directory as this
- *              script (which must be the board directory) 
+ *              script (which must be the board directory)
  *              or to the path (relative from the including
  *              script) to the board directory.
- *      the script's output (which is, in this case, only 
+ *      the script's output (which is, in this case, only
  *      the gathered data) is contained in a global variable
  *      denoted by $THWB_NEWS_OUTPUT_VAR, which defaults to
  *      $THWB_NEWS_OUTPUT.
@@ -52,7 +52,7 @@ define('CFG_NEWS_LENGTH', 120);     //!< newstext is shortened to this amount of
 
 /**
  * strips thwb code tags out of the argument
- * 
+ *
  * @param str   string to strip
  **/
 
@@ -103,7 +103,7 @@ function cut_str($str)
     if(strlen($str) <= CFG_NEWS_LENGTH)
     {
         return;
-    }  
+    }
 
     $um = first_cut('url', $str);
     $im = first_cut('img', $str);
@@ -125,7 +125,7 @@ function first_cut($tag, $str)
     if(strlen($str) <= CFG_NEWS_LENGTH)
     {
         return;
-    }  
+    }
 
     $sstr = substr($str, 0, CFG_NEWS_LENGTH);
 
@@ -142,14 +142,14 @@ function first_cut($tag, $str)
     else
     {
         preg_match_all('/\['.$tag.'\]/', $sstr, $qs);
-        
+
         $qs2 = array();
 
         preg_match_all('/\[url="(.*)"\]/', $sstr, $qs);
 
         $qs = array_merge($qs, $qs2);
     }
-    
+
     preg_match_all('/\[\/'.$tag.'\]/', $sstr, $eqs);
 
     if(($qd = (count($qs) - count($eqs))) > 0)
@@ -163,13 +163,13 @@ function first_cut($tag, $str)
             $i = strstr($i, '[/'.$tag.']');
 
             --$qd;
-            
+
             $i = substr($i, (1 + strlen('[/'.$tag.']')));
         }
 
         $found = true;
     }
-    
+
     return ((($found) ? (strlen($str) - strlen($i)) : 0));
 }
 
@@ -251,7 +251,7 @@ else
 
 $r_boards = thwb_query("SELECT boardid FROM ${pref}board ".
                        "WHERE boarddisabled = 0".
-                       ((count($a_boardids) ? 
+                       ((count($a_boardids) ?
                        " AND boardid IN (".join(',', $a_boardids).")": '')));
 
 $a_boards = array();
@@ -295,11 +295,11 @@ if(!empty($_GET['lastchanged']))
  * now fetch the threads
  **/
 
-$r_threads = thwb_query("SELECT threadtopic, threadid  
-                        FROM ${pref}thread 
+$r_threads = thwb_query("SELECT threadtopic, threadid
+                        FROM ${pref}thread
                         WHERE boardid IN (".join(',', $a_boards).")
                         AND threadlink = 0
-                        ORDER BY $orderby DESC 
+                        ORDER BY $orderby DESC
                         LIMIT ".CFG_NEWS_ITEMS);
 
 $a_threads = array();
@@ -310,7 +310,7 @@ while($a_thread = mysql_fetch_assoc($r_threads))
      * ok, we got the threads, now get the posts
      **/
 
-    $r_post = thwb_query("SELECT p.postid, p.posttext, p.userid, u.username, p.posttime 
+    $r_post = thwb_query("SELECT p.postid, p.posttext, p.userid, u.username, p.posttime
                          FROM ${pref}post AS p, ${pref}user AS u
                          WHERE p.threadid = $a_thread[threadid]
                          AND p.userid = u.userid
@@ -318,7 +318,7 @@ while($a_thread = mysql_fetch_assoc($r_threads))
                          LIMIT 1");
 
     $a_post = mysql_fetch_assoc($r_post);
-    
+
     strip_code(&$a_post['posttext'], (!empty($_GET['type']) && $_GET['type'] == 'rss'));
 
     cut_str(&$a_post['posttext']);
@@ -328,9 +328,9 @@ while($a_thread = mysql_fetch_assoc($r_threads))
      **/
 
     if(defined(THWB_NEWS_INCLUDED) || empty($_GET['type']) || $_GET['type'] == 'html')
-    {     
+    {
         $r_comments = thwb_query("SELECT COUNT(postid) AS commentcount
-                                 FROM ${pref}post 
+                                 FROM ${pref}post
                                  WHERE threadid = $a_thread[threadid]");
 
         $a_comments = mysql_fetch_assoc($r_comments);
@@ -366,7 +366,7 @@ else if(empty($_GET['type']) || $_GET['type'] == 'html')
 {
     /**
      * html output
-     * 
+     *
      * ... and for that, we need $style set.
      **/
 
@@ -419,9 +419,9 @@ else if($_GET['type'] == 'rss')
     echo '<?xml version="1.0" encoding="ISO-8859-1" ?>
 <rss version="2.0">
     <channel>
-        <title>'.$config[board_name].'</title> 
-        <link>'.$config[board_baseurl].'</link> 
-        <description>ThWboard generated RSS feed for '.$config[board_name].'</description> 
+        <title>'.$config[board_name].'</title>
+        <link>'.$config[board_baseurl].'</link>
+        <description>ThWboard generated RSS feed for '.$config[board_name].'</description>
         <language>de</language>';
 
     foreach($a_threads as $thread)

@@ -42,10 +42,10 @@ if( $id ) {
             $pref"."qlink
         WHERE linkid = '$id'"
     );
-    
+
     if( mysql_num_rows( $r_qlink ) == 1 ) {
         $a_qlink = mysql_fetch_array( $r_qlink );
-        
+
         $r_qlink = mysql_query( "UPDATE
                 $pref"."qlink
             SET

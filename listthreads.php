@@ -63,7 +63,7 @@ if( !mysql_num_rows($r_usermarkedthreads) )
 }
 else
 {
-  while ($a_thread = mysql_fetch_assoc($r_usermarkedthreads)) 
+  while ($a_thread = mysql_fetch_assoc($r_usermarkedthreads))
     {
         $i % 2 > 0 ? $thisrowbg = $style['CellB'] : $thisrowbg = $style['CellA'];
         $i++;
@@ -73,10 +73,10 @@ else
             $thread = mysql_fetch_array( $r_thread );
             $r_board = mysql_query("SELECT boardname FROM " . $pref . "board WHERE boardid = '" . $thread['boardid'] . "'");
             $board = mysql_fetch_array( $r_board );
-            
+
             $thread['threadtopic'] .= "<BR><span style=\"color:" . $style['color1'] . "\">". $style['smallfont'] . "Forum: " . $board['boardname'] . $style['smallfontend'] . "</span>";
-            
-            $thread['threadtime'] = form_date($thread['threadtime']);        
+
+            $thread['threadtime'] = form_date($thread['threadtime']);
             eval($TTopicrow->GetTemplate("TOPICROWS"));
         }
         else

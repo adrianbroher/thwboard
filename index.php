@@ -29,16 +29,16 @@ function getusercount()
     global $pref;
     $r_user = thwb_query("SELECT count(userid) AS usercount FROM ".$pref."user");
     $user = mysql_fetch_array($r_user);
-    
+
     return $user['usercount'];
 }
 
 function getactiveusers()
-{                        
+{
     global $pref;
     $r_user = thwb_query("SELECT count(userid) AS usercount FROM ".$pref."user WHERE userlastpost > " . (time() - 60 * 60 * 24 * 31));
     $user = mysql_fetch_array($r_user);
-    
+
     return $user['usercount'];
 }
 
@@ -77,11 +77,11 @@ if( $g_user['userid'] )
 
 // precache boards
 $a_board = array();
-$r_board = thwb_query("SELECT b.boardid, b.boardname, b.boardthreads, b.boardposts, 
+$r_board = thwb_query("SELECT b.boardid, b.boardname, b.boardthreads, b.boardposts,
     b.boardlastpost, b.boarddescription, b.boardlastpostby, b.boardthreadtopic,
     b.boardthreadid, b.categoryid
     FROM ".$pref."board AS b
-    WHERE boarddisabled = 0 
+    WHERE boarddisabled = 0
     ORDER BY b.boardorder ASC");
 
 while( $board = mysql_fetch_array($r_board) )
@@ -193,7 +193,7 @@ elseif( $pms > 1 )
 {
     $privmsgs = "<b>Sie haben $pms neue <a href=\"".build_link("pm.php")."\">Nachrichten</a>!".
         ((!empty($pmquotawarning)) ? ' '.$pmquotawarning : '')."</b>";
-    
+
     if( $g_user['usernoding'] != 1 )
     {
         $javascript = "<script type=\"text/javascript\">alert(\"Sie haben $pms neue Nachrichten!".
@@ -203,14 +203,14 @@ elseif( $pms > 1 )
 else
 {
     $privmsgs = "Sie haben keine neuen Nachrichten.".((!empty($pmquotawarning)) ? ' <b>'.$pmquotawarning.'</b>' : '');
-    $javascript = ((!$g_user['usernoding'] && (!empty($pmquotawarning))) ? 
+    $javascript = ((!$g_user['usernoding'] && (!empty($pmquotawarning))) ?
                    "<script type=\"text/javascript\">alert(\"".$pmquotawarning."\")</script>" : '');
 }
 
 $javascript = str_replace('&uuml;', 'ü', $javascript);
 
 // online
-$r_online = thwb_query("SELECT     DISTINCT 
+$r_online = thwb_query("SELECT     DISTINCT
         online.onlineip,
         online.userid,
         user.username,

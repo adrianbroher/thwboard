@@ -10,18 +10,18 @@ class CUpdate
     var        $Author            = 'ThWboard Development Team';
     var        $Date            = '09.03.2002';
     var        $Notes            = 'Dieses Update bitte nur durchf&#xFC;hren, falls die Tabelle `lastvisited` fehlt!';
-    
+
     function AllowUpdate()
     {
         // sollte immer ausfuehrbar sein!
         return 1;
     }
-    
+
     function SetError($errmsg)
     {
         $this->Error = $errmsg;
     }
-    
+
     function GetError()
     {
         return $this->Error;
@@ -37,5 +37,5 @@ class CUpdate
 ) TYPE=MyISAM;");
 
         return 0;
-    }    
+    }
 }

@@ -15,18 +15,18 @@ class CUpdate
     {
         $r_registry = thwb_query("SELECT keyvalue FROM $this->Prefix"."registry WHERE keyname='version'");
         $registry = mysql_fetch_array($r_registry);
-        
+
         if( $registry['keyvalue'] != $this->OldVersion )
             return 0;
         else
             return 1;
     }
-    
+
     function SetError($errmsg)
     {
         $this->Error = $errmsg;
     }
-    
+
     function GetError()
     {
         return $this->Error;
@@ -44,5 +44,5 @@ class CUpdate
         thwb_query("ALTER TABLE $this->Prefix"."calendar ADD userid INT(10) UNSIGNED NOT NULL");
 
         return 0;
-    }    
+    }
 }

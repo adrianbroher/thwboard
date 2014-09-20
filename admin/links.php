@@ -29,18 +29,18 @@ if( $config['enable_quicklinks'] != 1 )
 }
 else
 {
-if ($action=="EditLink") 
+if ($action=="EditLink")
 {
     $quicklinks_search = mysql_query("SELECT * FROM ".$pref."qlink WHERE linkid = $id");
     $data_link = mysql_fetch_array($quicklinks_search);
-    if ($data_link[linkactive]==1) 
+    if ($data_link[linkactive]==1)
     {
         $radio_active=" selected";
         $caption_active="Activated";
         $radio_deactive="";
         $caption_deactive="Deactivate";
-    } 
-    else 
+    }
+    else
     {
         $radio_active="";
         $caption_active="Activate";
@@ -62,10 +62,10 @@ if ($action=="EditLink")
     <TR><TD>&nbsp;<TD><input type=submit value="Save Settings"></TR>
     </table>');
 }
-elseif ($action=="savelinks") 
+elseif ($action=="savelinks")
 {
-    $update_link = mysql_query('UPDATE ' . $pref . 'qlink SET 
-    linkhttp = "'.((preg_match("/^([a-zA-Z0-9]+:\/\/)/", $new_http)) ? $new_http : 'http://'.$new_http).'", 
+    $update_link = mysql_query('UPDATE ' . $pref . 'qlink SET
+    linkhttp = "'.((preg_match("/^([a-zA-Z0-9]+:\/\/)/", $new_http)) ? $new_http : 'http://'.$new_http).'",
     linkcaption = "'.$new_caption.'",
     linkalt = "'.$new_title.'",
     linkcounter = "'.$new_counter.'",
@@ -76,12 +76,12 @@ elseif ($action=="savelinks")
     click <A HREF="links.php?action=EditLink&id='.$id.'&session='.$session.'">here</a> to edit this Quicklink once again.
     ');
 }
-elseif ($action=="deletelink") 
+elseif ($action=="deletelink")
 {
     $delete_link = mysql_query('DELETE FROM ' . $pref . 'qlink WHERE linkid = '.$id.'');
     print('The Quicklink has been deleted!');
 }
-elseif ($action=="NewLink") 
+elseif ($action=="NewLink")
 {
     print('<b>Quicklinks / Add a new Quicklink</b><br><br>');
     print('<form action="links.php" method=post>
@@ -96,16 +96,16 @@ elseif ($action=="NewLink")
     <TR><TD>&nbsp;<TD><input type=submit value="Save Settings"></TR>
     </table> ');
 }
-elseif ( ( $action == "" ) || ( $action == "Addlinks") ) 
+elseif ( ( $action == "" ) || ( $action == "Addlinks") )
 {
     $insert_qlink = mysql_query('INSERT INTO ' . $pref . 'qlink (linkhttp,linkcaption,linkalt,linkcounter,linkactive) VALUES ("'.((preg_match("/^([a-zA-Z0-9]+:\/\/)/", $new_http)) ? $new_http : 'http://'.$new_http).'","'.$new_caption.'","'.$new_title.'","'.$new_counter.'","'.$new_status.'") ');
     print('Quicklink has been added!');
 }
-elseif ( ( $action == "" ) || ( $action == "ListLinks" ) ) 
+elseif ( ( $action == "" ) || ( $action == "ListLinks" ) )
 {
     print('<b>Quicklinks</b><br><br>');
     $quicklinks_search = mysql_query("SELECT * FROM ".$pref."qlink");
-    while ( $data_links = mysql_fetch_array($quicklinks_search) ) 
+    while ( $data_links = mysql_fetch_array($quicklinks_search) )
     {
     echo "<A HREF=\"$data_links[linkhttp]\" target=_blank>$data_links[linkhttp]</a> - $data_links[linkcaption]&nbsp;&nbsp;&nbsp;[ <a href=\"links.php?session=$session&action=EditLink&id=$data_links[linkid]\">Edit</a> ] [ <a href=\"links.php?session=$session&action=deletelink&id=$data_links[linkid]\">Delete</a> ]<BR>";
     }

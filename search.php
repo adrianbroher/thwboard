@@ -43,7 +43,7 @@ if( isset($startsearch) && $startsearch )
         // search all available boards, id = 0 - all boards
 
         $is_global_search = true;
-        
+
         $a_board = array();
         $r_board = thwb_query("SELECT boardid FROM $pref"."board WHERE boarddisabled='0'");
 
@@ -51,7 +51,7 @@ if( isset($startsearch) && $startsearch )
         {
             $selectedboards[] = $board['boardid'];
         }
-    }                  
+    }
 
     // check permissions
 
@@ -73,7 +73,7 @@ if( isset($startsearch) && $startsearch )
                 {
                     if (!in_array($a_cat['boardid'], $a_boardlist))
                     {
-                        $a_boardlist[] = $a_cat['boardid'];    
+                        $a_boardlist[] = $a_cat['boardid'];
                     }
                 }
             }
@@ -93,7 +93,7 @@ if( isset($startsearch) && $startsearch )
     {
         message('Fehler', 'Sie k&#xF6;nnen keine Boards/Kategorien durchsuchen.');
     }
-    
+
     if( !isset($page) )
     {
         $page = 0;
@@ -103,7 +103,7 @@ if( isset($startsearch) && $startsearch )
     $where[] = "(post.threadid=thread.threadid)";
     $where[] = "(thread.boardid IN (".addslashes($boards)."))";
     $where[] = "(thread.threadlink = 0)";
-    
+
     $altquery = '';
 
     if( isset($repliesonly) && $repliesonly == "yes" )
@@ -172,12 +172,12 @@ if( isset($startsearch) && $startsearch )
         {
             message("Fehler", "Sie m&uuml;ssen angemeldet sein, um diese Funktion nutzen zu k&ouml;nnen.");
         }
-      
+
         $altquery = "
-                    FROM ${pref}lastvisited AS l  
-                    LEFT OUTER JOIN ${pref}thread AS thread 
-                    ON l.boardid = thread.boardid 
-                    WHERE userid = $g_user[userid] 
+                    FROM ${pref}lastvisited AS l
+                    LEFT OUTER JOIN ${pref}thread AS thread
+                    ON l.boardid = thread.boardid
+                    WHERE userid = $g_user[userid]
                     AND thread.threadtime > l.lastvisitedtime
                     AND thread.threadlink = 0";
     }
@@ -230,7 +230,7 @@ if( isset($startsearch) && $startsearch )
                 thread.threadauthor,
                 thread.threadreplies" .
             (((!empty($altquery)) && ($searchfor == 'lastvisit')) ? $altquery : "
-            
+
             FROM
                 ".$pref."thread AS thread,
                 ".$pref."post AS post
@@ -278,7 +278,7 @@ if( isset($startsearch) && $startsearch )
             $pagesstring .= "&gt;" . ($i + 1)  . "&lt; ";
         }
         else
-        { 
+        {
             $pagesstring .= '[<a href="'.build_link('search.php?page='.$i.
                 '&amp;searchfor='.$searchfor.
                 ((!empty($words)) ? '&amp;words='.$words : '').
@@ -302,7 +302,7 @@ if( isset($startsearch) && $startsearch )
 
             $pagesstring .= '&amp;startsearch=1">'.($i + 1).'</a>] ';
         }
-    }             
+    }
 
     $RESULT_ROWS = '';
 
@@ -322,9 +322,9 @@ if( isset($startsearch) && $startsearch )
         $search['threadlastreplyby'] = parse_code($search['threadlastreplyby']);
         $search['threadtime'] = form_date($search['threadtime']);
         $search['threadpath'] = $boardpath[$search['boardid']];
-        
+
         $highlight = (((!empty($a_words)) && (count($a_words))) ? '&amp;highlight=' . implode(' ', $a_words) : '');
-    
+
         eval($searchresultrow->GetTemplate("RESULT_ROWS"));
     }
 
@@ -332,7 +332,7 @@ if( isset($startsearch) && $startsearch )
 
     if( $resultcount == 100 )
         $resultcount = '</b>Es wurden sehr viele Suchergebnisse gefunden, bitte versuchen Sie, die Suche weiter einzuschr&auml;nken.<br><b>'. $resultcount;
-        
+
     eval($searchresult->GetTemplate("CONTENT"));
     eval($frame->GetTemplate());
 }
@@ -349,7 +349,7 @@ else
             $a_board[$board['categoryid']][] = $board;
         }
     }
-    
+
     $boards = '';
     $r_category = thwb_query("SELECT categoryname, categoryid FROM ".$pref."category ORDER BY categoryorder ASC");
     while( $category = mysql_fetch_array($r_category) )

@@ -56,7 +56,7 @@ else
 $r_thread = thwb_query("SELECT threadid, threadtopic, threadtime, threadauthor,
     threadreplies, threadclosed, threadtop, threadlastreplyby, threadiconid, threadlink,
     threadviews FROM ".$pref."thread WHERE
-    boardid='".intval($board['boardid'])."' 
+    boardid='".intval($board['boardid'])."'
     ORDER BY threadtop DESC, threadtime DESC LIMIT
     ".intval(($pagenum - 1) * $config['vars_t_amount']).", $config[vars_t_amount]");
 
@@ -85,7 +85,7 @@ if( mysql_num_rows($r_thread) < 1 )
 while( $thread = mysql_fetch_array($r_thread) )
 {
     $i % 2 > 0 ? $thisrowbg = $style['CellB'] : $thisrowbg = $style['CellA'];
-    
+
     $thread['threadauthor'] = parse_code($thread['threadauthor']);
     $thread['threadlastreplyby'] = parse_code($thread['threadlastreplyby']);
 
@@ -109,7 +109,7 @@ while( $thread = mysql_fetch_array($r_thread) )
     {
         $prepend = '';
     }
-    
+
     if( $thread['threadtime'] > $lastvisited && $lastvisited != 0 )
     {
         $imagepath = 'templates/'.$style['styletemplate'].'/images/icon/'.$topicicon[($thread['threadiconid'])].'_new.png';
@@ -127,7 +127,7 @@ while( $thread = mysql_fetch_array($r_thread) )
     }*/
 
     $npages = ceil(($thread['threadreplies'] + 1) / $config['vars_m_amount']);
-    
+
     $pages = '';
     if( $npages > 1 )
     {
@@ -153,7 +153,7 @@ while( $thread = mysql_fetch_array($r_thread) )
 $topic_pages = ceil($board['boardthreads'] / $config['vars_t_amount']);
 
 
-// max. number of pages visible at a time / 2 ([1] [2] ... 
+// max. number of pages visible at a time / 2 ([1] [2] ...
 define('PADDING', 3);
 $pages_nav = '';
 
@@ -176,7 +176,7 @@ for( $i; $i <= $imax; $i++ )
         $pages_nav .= '<b>-'.$i.'-</b> ';
     else
         $pages_nav .= '[<a class="bglink" href="'.build_link('board.php?boardid='.$board['boardid'].'&amp;pagenum='.$i).'">'.$i.'</a>] ';
-        
+
 }
 // > >>
 if( $pagenum + PADDING < $topic_pages )

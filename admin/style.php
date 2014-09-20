@@ -35,9 +35,9 @@ if( $action == 'ExportStyle' )
         if( !ereg('([a-z0-9])', $filename[$i]) )
         {
             $filename[$i] = '_';
-        }         
-    }    
-    
+        }
+    }
+
     header('Content-Type: application/octetstream');
     header('Content-Disposition: filename="'.$filename.'.style"');
     header('Pragma: no-cache');
@@ -68,7 +68,7 @@ function EditboxEncode($string)
     $string = str_replace('"', '&quot;', $string);
     $string = str_replace('<', '&lt;', $string);
     $string = str_replace('>', '&gt;', $string);
-    
+
     return $string;
 }
 
@@ -85,13 +85,13 @@ function EditboxDecode($string)
 function StyleForm($action, $style)
 {
     global $session;
-    
+
     print '<form method="post" action="style.php">
   <table width="100%" border="0" cellspacing="1" cellpadding="3">
-    <tr> 
+    <tr>
       <td>Stylename</td>
       <td width="1">&nbsp; </td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="style[stylename]" value="' . htmlspecialchars($style[stylename]) . '">
       </td>
     </tr>
@@ -102,20 +102,20 @@ function StyleForm($action, $style)
       <td colspan="3"><b>Layout</b><br>
         <font size="1">The general layout of this style.</font></td>
     </tr>
-    <tr> 
+    <tr>
       <td>Template set</td>
       <td width="1">
-        &nbsp; 
+        &nbsp;
       </td>
-      <td> 
+      <td>
         <select class="tbinput" name="style[styletemplate]" size="1">';
-        
+
         $a_templateset = get_templatesetarray();
         while( list(, $file) = each($a_templateset) )
         {
             print '<option value="'.$file.'"'.($file == $style['styletemplate'] ? ' selected' : '').'>'.$file.'</option>';
         }
-    
+
     print'
         </select>
       </td>
@@ -127,29 +127,29 @@ function StyleForm($action, $style)
       <td colspan="3"><b>Main (Background)</b><br>
         <font size="1">This applies to the background of your forum, i.e. the copyright notice and some notes above and under tables.</font></td>
     </tr>
-    <tr> 
+    <tr>
       <td>Background color</td>
-      <td width="1"> 
+      <td width="1">
         <table width="64" border="0" cellspacing="1" cellpadding="1" bgcolor="#000000">
-          <tr> 
+          <tr>
             <td bgcolor="' . $style[colorbg] . '">&nbsp;</td>
           </tr>
         </table>
       </td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="style[colorbg]" size="9" maxlength="7" value="' . $style[colorbg] . '">
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td>Background text color</td>
-      <td width="1"> 
+      <td width="1">
         <table width="64" border="0" cellspacing="1" cellpadding="1" bgcolor="#000000">
-          <tr> 
+          <tr>
             <td bgcolor="' . $style[colorbgfont] . '">&nbsp;</td>
           </tr>
         </table>
       </td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="style[colorbgfont]" size="9" maxlength="7" value="' . $style[colorbgfont] . '">
       </td>
     </tr>
@@ -164,7 +164,7 @@ function StyleForm($action, $style)
       <td>Background color</td>
       <td width="1">
         <table width="64" border="0" cellspacing="1" cellpadding="1" bgcolor="#000000">
-          <tr> 
+          <tr>
             <td bgcolor="' . $style[color4] . '">&nbsp;</td>
           </tr>
         </table>
@@ -177,7 +177,7 @@ function StyleForm($action, $style)
       <td>Text color</td>
       <td width="1">
         <table width="64" border="0" cellspacing="1" cellpadding="1" bgcolor="#000000">
-          <tr> 
+          <tr>
             <td bgcolor="' . $style[col_he_fo_font] . '">&nbsp;</td>
           </tr>
         </table>
@@ -193,137 +193,137 @@ function StyleForm($action, $style)
       <td colspan="3"><b>Tables</b><br>
         <font size="1">The main part of your forum, all tables. i.e. threads, posts, private messages, ...</font></td>
     </tr>
-    <tr> 
+    <tr>
       <td>Text color</td>
-      <td width="1"> 
+      <td width="1">
         <table width="64" border="0" cellspacing="1" cellpadding="1" bgcolor="#000000">
-          <tr> 
+          <tr>
             <td bgcolor="' . $style[color1] . '">&nbsp;</td>
           </tr>
         </table>
       </td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="style[color1]" size="9" maxlength="7" value="' . $style[color1] . '">
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td>Cell background color</td>
-      <td width="1"> 
+      <td width="1">
         <table width="64" border="0" cellspacing="1" cellpadding="1" bgcolor="#000000">
-          <tr> 
+          <tr>
             <td bgcolor="' . $style[CellA] . '">&nbsp;</td>
           </tr>
         </table>
       </td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="style[CellA]" size="9" maxlength="7" value="' . $style[CellA] . '">
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td>Alternative cell background color</td>
-      <td width="1"> 
+      <td width="1">
         <table width="64" border="0" cellspacing="1" cellpadding="1" bgcolor="#000000">
-          <tr> 
+          <tr>
             <td bgcolor="' . $style[CellB] . '">&nbsp;</td>
           </tr>
         </table>
       </td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="style[CellB]" size="9" maxlength="7" value="' . $style[CellB] . '">
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td>Table bordercolor<br>
         <font size="1">The color between the cells</font></td>
-      <td width="1"> 
+      <td width="1">
         <table width="64" border="0" cellspacing="1" cellpadding="1" bgcolor="#000000">
-          <tr> 
+          <tr>
             <td bgcolor="' . $style[border_col] . '">&nbsp;</td>
           </tr>
         </table>
       </td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="style[border_col]" size="9" maxlength="7" value="' . $style[border_col] . '">
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td>Error color<br>
         <font size="1">Used for error messages and important notes
 </font>      </td>
-      <td width="1"> 
+      <td width="1">
         <table width="64" border="0" cellspacing="1" cellpadding="1" bgcolor="#000000">
-          <tr> 
+          <tr>
             <td bgcolor="' . $style[color_err] . '">&nbsp;</td>
           </tr>
         </table>
       </td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="style[color_err]" size="9" maxlength="7" value="' . $style[color_err] . '">
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td>Link</td>
-      <td width="1"> 
+      <td width="1">
         <table width="64" border="0" cellspacing="1" cellpadding="1" bgcolor="#000000">
-          <tr> 
+          <tr>
             <td bgcolor="' . $style[col_link] . '">&nbsp;</td>
           </tr>
         </table>
       </td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="style[col_link]" size="9" maxlength="7" value="' . $style[col_link] . '">
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td>Link (visited)</td>
-      <td width="1"> 
+      <td width="1">
         <table width="64" border="0" cellspacing="1" cellpadding="1" bgcolor="#000000">
-          <tr> 
+          <tr>
             <td bgcolor="' . $style[col_link_v] . '">&nbsp;</td>
           </tr>
         </table>
       </td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="style[col_link_v]" size="9" maxlength="7" value="' . $style[col_link_v] . '">
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td>Link hover</td>
-      <td width="1"> 
+      <td width="1">
         <table width="64" border="0" cellspacing="1" cellpadding="1" bgcolor="#000000">
-          <tr> 
+          <tr>
             <td bgcolor="' . $style[col_link_hover] . '">&nbsp;</td>
           </tr>
         </table>
       </td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="style[col_link_hover]" size="9" maxlength="7" value="' . $style[col_link_hover] . '">
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td>Default font</td>
       <td width="1">&nbsp;</td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="style[stdfont]" value="' . EditboxEncode($style[stdfont]) . '">
       </td>
     </tr>
     <tr>
       <td>Board image-path</td>
       <td width="1">&nbsp;</td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="style[boardimage]" value="' . $style[boardimage] . '">
       </td>
     </tr>
 <!--
-    <tr> 
+    <tr>
       <td>"New Topic"-image-path</td>
       <td width="1">&nbsp;</td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="style[newtopicimage]" value="' . $style[newtopicimage] . '">
       </td>
     </tr>
 -->
-    <tr> 
+    <tr>
       <td>Public style?<br>
         <font size="1">Allow Users to select this style in their profile?</font></td>
       <td width="1">&nbsp;</td>
@@ -331,13 +331,13 @@ function StyleForm($action, $style)
         <input type="radio" name="style[styleispublic]" value="1"' . ($style['styleispublic'] == 1 ? ' checked' : '') . '>
         Yes
         <input type="radio" name="style[styleispublic]" value="0"' . ($style['styleispublic'] == 0 ? ' checked' : '') . '>
-        No 
+        No
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td>&nbsp;</td>
       <td width="1">&nbsp;</td>
-      <td> 
+      <td>
         <input type="hidden" name="style[styleid]" value="' . $style[styleid] . '">
         <input type="hidden" name="action" value="' . $action . '">
         <input type="hidden" name="session" value="' . $session . '">
@@ -382,7 +382,7 @@ function writestyle($id)
          ".stdfont { font-family: $style[font]; font-size:12px; }";
 
   $f = fopen("../templates/css/$id.css", "w");
-  
+
   fwrite($f, $str);
 
   fclose($f);
@@ -398,7 +398,7 @@ if( $action == "ListStyles" )
     print '<b>Styles</b><br><br>';
 
     $r_style = query("SELECT styleid, stylename, styleispublic, styleisdefault FROM ".$pref."style");
-    
+
     print '<table border="0" cellspacing="1" cellpadding="5">';
 
     while( $style = mysql_fetch_array($r_style) )
@@ -421,7 +421,7 @@ if( $action == "ListStyles" )
             $isdefault = '';
         }
 
-        print '  <tr> 
+        print '  <tr>
     <td><font size="2">' . $style[stylename] . '</font></td>
     <td><font size="2" width="1">' . $isdefault . '</font></td>
     <td><font size="2" width="1">' . $ispublic . '</font></td>
@@ -433,7 +433,7 @@ if( $action == "ListStyles" )
     }
 
     print '</table>';
-    
+
     echo '<br><br><font color="red">*</font> = Global default style: This style will be used in every board unless the board has its own style.<br>
     <font color="darkblue">*</font> = Public style: Users can select this style in their profile.<br><br>';
 
@@ -470,7 +470,7 @@ elseif( $action == "UpdateStyle" )
 {
     $style['stdfont'] = EditboxDecode($style['stdfont']);
 
-    if( $style['styleispublic'] != 1 )    
+    if( $style['styleispublic'] != 1 )
     {
         // the admin has decided that this style is not public.
         // in case it *was* public, make sure no one can use this style any longer
@@ -499,11 +499,11 @@ elseif( $action == "UpdateStyle" )
         WHERE styleid=$style[styleid]");
 
     writestyle($style['styleid']);
-        
+
     print 'Style has been updated!<br>click <a href="style.php?action=EditStyle&styleid=' . $style['styleid'] . '&session=' . $session . '">here</a> to edit this style once again.';
 }
- 
- 
+
+
 
 
 /*
@@ -532,7 +532,7 @@ elseif( $action == "InsertStyle" )
     $style['stdfontend'] = EditboxDecode($style['stdfontend']);
     $style['smallfont'] = EditboxDecode($style['smallfont']);
     $style['smallfontend'] = EditboxDecode($style['smallfontend']);
-    
+
     query("INSERT INTO ".$pref."style (
             stylename,
             colorbg,
@@ -572,7 +572,7 @@ elseif( $action == "InsertStyle" )
             '$style[styleispublic]',
             '$style[styletemplate]'
         )");
-        
+
     print 'Style has been added!';
 }
 
@@ -588,7 +588,7 @@ elseif( $action == "DeleteStyle" )
     $r_board = query("SELECT boardname FROM ".$pref."board WHERE styleid=$styleid");
     $r_style = query("SELECT styleisdefault FROM ".$pref."style WHERE styleid=$styleid");
     $style = mysql_fetch_array($r_style);
-    
+
     if( mysql_num_rows($r_board) > 0 )
     {
         print 'Unable to delete style: this style is currently being used by the following board(s):<br><br><ul>';
@@ -695,9 +695,9 @@ OR choose a local file (templates/):
 <form name="form1" method="post" action="style.php">
   <select class="tbinput" name="style_file" size="6">';
     $a_stylefile = array();
-    
+
     $dp = opendir('../templates/');
-    
+
     $files = 0;
     while( $filename = readdir($dp) )
     {
@@ -707,7 +707,7 @@ OR choose a local file (templates/):
             $files++;
         }
     }
-    
+
     if( !$files )
     {
         print'
@@ -732,7 +732,7 @@ OR choose a local file (templates/):
             $styledata = file('../templates/'. basename($style_file));
         else
             $styledata = file($HTTP_POST_FILES['style_file']['tmp_name']);
-        
+
         if(empty($styledata))
             print 'Style file is empty, please check.';
         else {
@@ -744,10 +744,10 @@ OR choose a local file (templates/):
                 if( trim($line) )
                 {
                     $pos = strpos($line, '=');
-                    
+
                     $name = substr($line, 0, $pos);
                     $value = substr($line, $pos + 1);
-            
+
                     if( $name == 'styleversion' )
                     {
                         $ver = trim($value);
@@ -759,7 +759,7 @@ OR choose a local file (templates/):
                     }
                 }
             }
-            
+
             if( $ver != $style_file_version )
                 print 'Invalid style file version.';
             else
@@ -768,11 +768,11 @@ OR choose a local file (templates/):
                     (".implode(',', $a_name).")
                     VALUES
                     (".implode(',', $a_value).")";
-                    
+
                 query($query);
 
                 writestyle(mysql_insert_id());
-                
+
                 print 'Style has been imported.';
             }
         }

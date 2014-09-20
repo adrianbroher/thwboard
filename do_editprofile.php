@@ -61,12 +61,12 @@ function check_siglen($string)
             $length += strlen(ereg_replace('\[([^\[]*)\]', '', $line));
         }
     }
-    
+
     if( $length > $config['sig_maxlen'] )
     {
         return 0;
     }
-        
+
     return 1;
 }
 
@@ -82,7 +82,7 @@ if( $user['styleid'] != 0 )
     // verify that the user selected a public style ..
     $r_style = thwb_query("SELECT styleispublic FROM ".$pref."style WHERE styleid=$user[styleid]");
     $tstyle = mysql_fetch_array($r_style);
-    
+
     if( $tstyle['styleispublic'] != 1 )
     {
         message('Fehler', 'Der von Ihnen gew&auml;hlte Style ist leider nicht g&uuml;ltig.');
@@ -93,8 +93,8 @@ if( md5($user['userpassword']) != $g_user['userpassword'] )
 {
     $err_msg .= "Das angegebene (derzeitige) Passwort ist nicht korrekt!<br>";
 }
-  
- 
+
+
 if( $user['usernewpassword'] || $user['usernewpassword2'] )
 {
     if ( $user['usernewpassword'] != $user['usernewpassword2'] )
@@ -124,7 +124,7 @@ if(isset($intavatar) && strchr($intavatar, '"'))
   $intavatar = '';
 }
 
-if(isset($intavatar)) 
+if(isset($intavatar))
 {
      $check_r = thwb_query( "SELECT avatarid FROM " . $pref . "avatar WHERE avatarurl='" . addslashes( $intavatar ) . "'" );
      if( mysql_num_rows( $check_r ) == 0 )
@@ -151,25 +151,25 @@ if ( $g_user['useravatar'] == "notallowed" )
 {
     $user['useravatar'] = "notallowed";
 }
-elseif ( $config['useravatar'] == 1 ) 
+elseif ( $config['useravatar'] == 1 )
 {
-    if ( $intavatar == "avatar/noavatar.png" ) 
+    if ( $intavatar == "avatar/noavatar.png" )
     {
         $user['useravatar'] = "";
     }
     else
     {
-        $user['useravatar'] = $intavatar; 
+        $user['useravatar'] = $intavatar;
     }
 }
-elseif ( $config['useravatar'] == 2 ) 
+elseif ( $config['useravatar'] == 2 )
 {
-    if ( $user['useravatar'] ) 
+    if ( $user['useravatar'] )
     {
       checksize($user['useravatar']);
     }
 }
-elseif ( $config['useravatar'] == 3 ) 
+elseif ( $config['useravatar'] == 3 )
 {
     if( ( $intavatar != "avatar/noavatar.png" ) && ( !$user['useravatar'] ) )
     {
@@ -231,7 +231,7 @@ else
         usermsn='".addslashes($user['usermsn'])."',
         userbday='".addslashes($user['userbday'])."',
         useroccupation='".addslashes($user['useroccupation'])."',
-        useravatar='" .addslashes($user['useravatar']). "', 
+        useravatar='" .addslashes($user['useravatar']). "',
         userinterests='".addslashes($user['userinterests'])."',
         usersignature='".addslashes(preparse_code($user['usersignature']))."',
         userhideemail='".intval($user['userhideemail'])."',

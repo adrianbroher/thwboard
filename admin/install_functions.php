@@ -20,15 +20,15 @@ require('./install_lang.php');
 /**
  * as of php5, $HTTP_*_VARS are disabled
  * so we have to recreate them here
- * 
+ *
  * this is actually pretty evil, but it does work.
  **/
 
 if(substr(phpversion(), 0, 1) > 4)
 {
     $a_globals = array(
-        'HTTP_SERVER_VARS' => '_SERVER', 
-        'HTTP_COOKIE_VARS' => '_COOKIE', 
+        'HTTP_SERVER_VARS' => '_SERVER',
+        'HTTP_COOKIE_VARS' => '_COOKIE',
         'HTTP_POST_VARS' => '_POST',
         'HTTP_GET_VARS' => '_GET',
         'HTTP_ENV_VARS' => '_ENV'
@@ -67,7 +67,7 @@ function create_tables($delete_existing)
 {
     global $prefix;
     $pref = $prefix;
-    
+
 /*
     These are the initial databases and values.
     If you add new queries, watch out for semicolons:
@@ -145,7 +145,7 @@ CREATE TABLE $pref"."board (
   KEY boardid (boardid)
 ) TYPE=MyISAM;
 
-INSERT INTO $pref"."board (boardid, boardname, boardlastpost, boardthreads, boardposts, boarddescription, categoryid, boardorder, styleid, boardlastpostby, boardthreadtopic, boardthreadid, boarddisabled) 
+INSERT INTO $pref"."board (boardid, boardname, boardlastpost, boardthreads, boardposts, boarddescription, categoryid, boardorder, styleid, boardlastpostby, boardthreadtopic, boardthreadid, boarddisabled)
 VALUES (
 '', 'Board #1', '0', '0', '0', 'Beschreibung von Board #1', '1', '1', '0', '', '', '0', '0'
 );
@@ -358,7 +358,7 @@ INSERT INTO $pref"."registry VALUES ('pmalive','','integer','PM max life','Set t
 INSERT INTO $pref"."registry VALUES ('sig_maxlines','5','integer','Max. signature lines','The maximum number of lines allowed in a signature. Note that a line can be wrapped depending on the users browser size. Thus you should set an appropriate max length in chars as well. One average line has about 120 chars at a resolution of 1024*768.',6,2);
 INSERT INTO $pref"."registry VALUES ('sig_restrict','1','boolean','Enable signature restrictions?','Enable this to restrict the signature length using the options below.',6,'');
 INSERT INTO $pref"."registry VALUES ('uselastthreads', '0', 'boolean', 'Enable last-threads-form?', 'Enables a select form on the index page to display threads within the last 3/5/7.. days.', '2', '13');
-INSERT INTO $pref"."registry VALUES ('max_useronline','0|0','string','Do not modify or delete','Do not modify or delete','0','0'); 
+INSERT INTO $pref"."registry VALUES ('max_useronline','0|0','string','Do not modify or delete','Do not modify or delete','0','0');
 INSERT INTO $pref"."registry VALUES ('default_groupid', '1', 'integer', 'Dont modify!', 'Dont modify!', 0, 0);
 INSERT INTO $pref"."registry VALUES ('guest_groupid', '2', 'integer', 'Dont modify!', 'Dont modify!', 0, 0);
 INSERT INTO $pref"."registry VALUES ('avatarheight', '64', 'integer', 'Avatar maximum height', 'The maximum height of the user-defined Avatars.', 7, 2);
@@ -534,7 +534,7 @@ function WriteAccess($file)
 function db_exists($dbname)
 {
     $r_database = mysql_listdbs();
-        
+
     $i = 0;
     while( $i < mysql_num_rows($r_database) )
     {
@@ -555,7 +555,7 @@ function column_exists($table, $column)
         if( $query['Field']== $column )
             return 1;
     }
-    
+
     return 0;
 }
 
@@ -614,27 +614,27 @@ td {  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 8pt
 <body bgcolor="#3A6EA5" text="#000000" link="#0000FF" vlink="#0033FF" alink="#0000FF">
 <form name="theform" method="post" action="'.basename($PHP_SELF).'">
   <table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
-    <tr> 
+    <tr>
       <td bgcolor="#D4D0C8" height="1" width="1"><img src="./images/space.gif" width="1" height="1"></td>
       <td bgcolor="#D4D0C8" height="1" width="1"></td>
       <td bgcolor="#D4D0C8" height="1"></td>
       <td bgcolor="#D4D0C8" height="1" width="1"></td>
       <td bgcolor="#000000" height="1" width="1"></td>
     </tr>
-    <tr> 
+    <tr>
       <td bgcolor="#D4D0C8" height="1" width="1"></td>
       <td bgcolor="#FFFFFF" height="1" width="1"><img src="./images/space.gif" width="1" height="1"></td>
       <td bgcolor="#FFFFFF" height="1"></td>
       <td bgcolor="#FFFFFF" height="1" width="1"></td>
       <td bgcolor="#000000" height="1" width="1"></td>
     </tr>
-    <tr> 
+    <tr>
       <td bgcolor="#D4D0C8" width="1"></td>
       <td bgcolor="#FFFFFF" width="1"></td>
-      <td bgcolor="#D4D0C8"> 
+      <td bgcolor="#D4D0C8">
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr> 
-            <td> 
+          <tr>
+            <td>
               <table width="100%" border="0" cellspacing="0" cellpadding="6">
                 <tr>
                   <td><b>'.$cfg['appname'].' '.lng('installation').'</b><br>
@@ -642,21 +642,21 @@ td {  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 8pt
                   <td align="right"><img src="./images/thwboard_logo.gif"></td>
                 </tr>
               </table>
-              
+
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr> 
+                <tr>
                   <td bgcolor="#808080" height="1"><img src="./images/space.gif" width="1" height="1"></td>
                 </tr>
-                <tr> 
+                <tr>
                   <td bgcolor="#FFFFFF" height="1"><img src="./images/space.gif" width="1" height="1"></td>
                 </tr>
               </table>
             </td>
           </tr>
-          <tr> 
+          <tr>
             <td>
               <table width="100%" border="0" cellspacing="0" cellpadding="16">
-                <tr> 
+                <tr>
                   <td>';
 }
 
@@ -672,21 +672,21 @@ function p_footer($action = '', $vars = 0)
               </table>
             </td>
           </tr>
-          <tr> 
-            <td> 
+          <tr>
+            <td>
               <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr> 
+                <tr>
                   <td bgcolor="#808080" height="1"><img src="./images/space.gif" width="1" height="1"></td>
                 </tr>
-                <tr> 
+                <tr>
                   <td bgcolor="#FFFFFF" height="1"><img src="./images/space.gif" width="1" height="1"></td>
                 </tr>
               </table>
               <br>
               <table width="100%" border="0" cellspacing="0" cellpadding="16">
-                <tr> 
+                <tr>
                   <td align="right">
-                    <input type="hidden" name="action" value="'.$action.'"> 
+                    <input type="hidden" name="action" value="'.$action.'">
                     '.( $action != '' ? '<input type="submit" name="next" value="'.lng('next').' &gt;" class="inst_button">' : '&nbsp;');
 
 while( list($k, $v) = each($vars) )
@@ -698,7 +698,7 @@ if( $lang )
     print '<input type="hidden" name="lang" value="'.$lang.'">';
 
 print '
-                    
+
                   </td>
                 </tr>
               </table>
@@ -709,14 +709,14 @@ print '
       <td bgcolor="#808080" width="1"></td>
       <td bgcolor="#000000" width="1"></td>
     </tr>
-    <tr> 
+    <tr>
       <td bgcolor="#D4D0C8" height="1" width="1"></td>
       <td bgcolor="#FFFFFF" height="1" width="1"></td>
       <td bgcolor="#808080" height="1"></td>
       <td bgcolor="#808080" height="1" width="1"><img src="./images/space.gif" width="1" height="1"></td>
       <td bgcolor="#000000" height="1" width="1"></td>
     </tr>
-    <tr bgcolor="#000000"> 
+    <tr bgcolor="#000000">
       <td height="1" width="1"></td>
       <td height="1" width="1"></td>
       <td height="1"></td>
@@ -773,24 +773,24 @@ function p_mysqldata()
                     '.lng('entermysqldata').'<br>
                     <br>
                     <table border="0" cellspacing="0" cellpadding="2">
-                      <tr> 
+                      <tr>
                         <td>'.lng('mysqlhost').'</td>
                         <td width="10">&nbsp;</td>
-                        <td> 
+                        <td>
                           <input type="text" name="hostname" class="inst_button" value="localhost">
                         </td>
                       </tr>
-                      <tr> 
+                      <tr>
                         <td>'.lng('mysqluser').'</td>
                         <td width="10">&nbsp;</td>
-                        <td> 
+                        <td>
                           <input type="text" name="user" class="inst_button">
                         </td>
                       </tr>
-                      <tr> 
+                      <tr>
                         <td>'.lng('mysqlpass').'</td>
                         <td width="10">&nbsp;</td>
-                        <td> 
+                        <td>
                           <input type="password" name="pass" class="inst_button">
                         </td>
                       </tr>
@@ -827,7 +827,7 @@ function p_chooseprefix($dbname, $tables)
         print '<li>'.$v.'</li>';
     }
     print '</ul>';
-    
+
     print '
   '.lng('enterprefix').'<br>
 <input type="text" name="prefix" value="tb_" class="inst_button"> ('.lng('dontchange').')<br>
@@ -842,24 +842,24 @@ function p_adminprofile()
 <b>'.lng('createadmin').'</b><br>
 <br>
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
-  <tr> 
+  <tr>
     <td>'.lng('username').'</td>
     <td width="10">&nbsp;</td>
-    <td> 
+    <td>
       <input type="text" name="admin_user" value="root" class="inst_button">
     </td>
   </tr>
-  <tr> 
+  <tr>
     <td>'.lng('email').'</td>
     <td width="10">&nbsp;</td>
-    <td> 
+    <td>
       <input type="text" name="admin_email" class="inst_button">
     </td>
   </tr>
-  <tr> 
+  <tr>
     <td>'.lng('password').'</td>
     <td width="10">&nbsp;</td>
-    <td> 
+    <td>
       <input type="password" name="admin_pass" class="inst_button">
     </td>
   </tr>
@@ -888,20 +888,20 @@ function p_about()
     print '
 <b>About phpInstaller</b><br>
 <br>
-<b>phpInstaller</b> ist ein Script zum installieren von PHP-Basierenden Anwendungen, 
+<b>phpInstaller</b> ist ein Script zum installieren von PHP-Basierenden Anwendungen,
 die MySQL Daten erstellen m&uuml;ssen und/oder Dateien schreiben m&uuml;ssen.<br>
 <br>
-<b>phpInstaller</b> besteht aus vier Skripten, install.php, install_lang.php, update.php sowie install_functions.php. 
+<b>phpInstaller</b> besteht aus vier Skripten, install.php, install_lang.php, update.php sowie install_functions.php.
 Der Installer darf zu nichtkommerziellen Zwecken weitergegeben und f&#xFC;r eigene Projekte
-eingesetzt werden, solange das Copyright und der Programmname im Titel und dieser Seite unver&auml;ndert erhalten 
+eingesetzt werden, solange das Copyright und der Programmname im Titel und dieser Seite unver&auml;ndert erhalten
 bleiben. Ansonsten gilt die GNU General Public License (GPL).<br>
 <br>
 <b>Credits</b><br>
 <table width="100%" border="0" cellspacing="0" cellpadding="3">
-  <tr> 
+  <tr>
     <td colspan="2">Core Development</td>
   </tr>
-  <tr> 
+  <tr>
     <td>Paul Baecher</td>
     <td align="right">&lt;<a href="paul@thewall.de">paul@thewall.de</a>&gt;</td>
   </tr>
@@ -920,12 +920,12 @@ function p_updatewelcome($update)
 '.lng('selectupdate').'<br>
 <br>
   <select class="inst_button" name="scriptname" size="6">';
-    
+
     while( list(, $scriptname) = each($update) )
     {
         print '<option value="'.$scriptname.'">'.$scriptname.'</option>';
     }
-    
+
     print '
   </select>';
     }
@@ -941,23 +941,23 @@ function p_updateinfo($update)
 <b>'.lng('updateinfo').'</b><br>
 <br>
 <table width="100%" border="0" cellspacing="0" cellpadding="3">
-  <tr> 
+  <tr>
     <td>'.lng('reqver').'</td>
     <td><b>'.$update->OldVersion.'</b></td>
   </tr>
-  <tr> 
+  <tr>
     <td>'.lng('newver').'</td>
     <td><b>'.$update->NewVersion.'</b></td>
   </tr>
-  <tr> 
+  <tr>
     <td>'.lng('author').'</td>
     <td><b>'.$update->Author.'</b></td>
   </tr>
-  <tr> 
+  <tr>
     <td>'.lng('date').'</td>
     <td><b>'.$update->Date.'</b></td>
   </tr>
-  <tr> 
+  <tr>
     <td>'.lng('executable').'</td>
     <td><b>'.($update->AllowUpdate() ? lng('yes') : lng('no') ).'</b></td>
   </tr>
@@ -994,7 +994,7 @@ function p_loginform()
     {
         print '<option value="'.$k.'">'.$a_lang[$k]['desc'].' </option>';
     }
-    
+
 print '</select></td>
   </tr>
 </table>';

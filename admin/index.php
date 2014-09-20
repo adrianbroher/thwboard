@@ -42,7 +42,7 @@ if( $action == "" )
 {
     // try to determine version
     $current_version = '';
-    
+
     // don't check if cvs or svn tree
     if( !file_exists('CVS') && !file_exists('.svn') && ($fp = @fopen('http://www.thwboard.de/current_version.php')) )
     {
@@ -127,8 +127,8 @@ Last 15 minutes: <b>'.$load[2].'</b><br>
  */
 elseif( $action == "EditSettings" )
 {
-    
-    
+
+
     print '<b>Forum Settings</b><br><br>';
     print '
 <form method="post" action="index.php">
@@ -158,12 +158,12 @@ elseif( $action == "EditSettings" )
         <font size="2" color="white"><b>'.$registrygroup['keygroupname'].'</b></font>
       </td>
     </tr>';
-            
+
         while( list(, $registry) = @each($a_registry[$registrygroup['keygroupid']]) )
         {
             if( $registry['keygroupid'] == 0 ) // 0 -> hide
                 continue;
-            
+
             print '
     <tr>
       <td'.($i % 2 == 0 ? ' bgcolor="#eeeeee"' : '').' valign="top" width="50%"><b>'.$registry['keydescription'].'</b>';
@@ -172,7 +172,7 @@ elseif( $action == "EditSettings" )
                 print '<font size="1"><br>'.$registry['keydetails'].'</font>';
             }
             print '</td>';
-      
+
             print'
       <td'.($i % 2 == 0 ? ' bgcolor="#eeeeee"' : '').' valign="top" width="50%">';
 
@@ -181,32 +181,32 @@ elseif( $action == "EditSettings" )
                 case 'boolean':
                     print '
 <input type="radio" name="Xconfig['.$registry['keyname'].']" value="1"' . ( $registry['keyvalue'] ? " checked" : "" ) . '>
-Yes 
+Yes
 <input type="radio" name="Xconfig['.$registry['keyname'].']" value="0"' . ( !$registry['keyvalue'] ? " checked" : "" ) . '>
-No';                        
+No';
                     break;
-                
+
                 case 'integer':
                     print '<input class="tbinput" type="text" size="6" name="Xconfig['.$registry['keyname'].']" value="'.intval($registry['keyvalue']).'">';
                     break;
-                    
+
                 case 'array':
                     print '<textarea class="tbinput" cols="60" rows="8" name="Xconfig['.$registry['keyname'].']">'.htmlspecialchars($registry['keyvalue']).'</textarea>';
                     break;
-                    
-                    
+
+
                 case 'string':
                     print '<input type="text" class="tbinput" name="Xconfig['.$registry['keyname'].']" value="'.htmlspecialchars($registry['keyvalue']).'">';
                     break;
             }
-      
+
             print '
       </td>
     </tr>';
             $i++;
-        }            
+        }
     }
-    
+
     print '</table>
     <br>
     <center>

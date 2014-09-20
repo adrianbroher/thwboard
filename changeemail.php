@@ -71,7 +71,7 @@ else
                 eval($TRegistermail->GetTemplate("email"));
 
                 @mail($user['usernewemail'], $config['board_name'] . " - Email-Adressenaenderung", $email, "From: $config[board_admin]");
-                
+
                 message("&Auml;nderung erfolgreich!",
                         "Sie erhalten in K&uuml;rze eine Email mit einem Best&auml;tigungslink zur &Auml;nderung ihrer Email-Adresse.");
             }
@@ -79,7 +79,7 @@ else
             {
                 thwb_query("UPDATE ".$pref."user SET useremail='$user[usernewemail]'
                     WHERE userid=$g_user[userid]");
-                
+
                 message('Hinweis',
                     'Ihre Email-Adresse wurde erfolgreich ge&auml;ndert.');
             }

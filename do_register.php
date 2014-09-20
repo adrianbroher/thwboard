@@ -113,7 +113,7 @@ else
   $g_user['have_cookie'] = false;
 
     setcookie("thwb_cookie", md5($register['userpassword']) . $register['userid'], (time() + 60 * 60 * 24 * 365));
-    
+
     message('Registrierung erfolgreich!',
         'Sie wurden soeben erfolgreich registriert und eingeloggt. Viel Spa&szlig;!');
 }

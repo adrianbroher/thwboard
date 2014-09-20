@@ -66,7 +66,7 @@ $a_lang['de']['completing'] = 'Fertigstellen der Installation';
 $a_lang['de']['completingtxt'] = 'Bevor die Installation fertiggestellt werden kann, m&#xFC;ssen die MySQL Daten dauerhaft gespeichert werden. Daf&#xFC;r wird CHMOD 755, CHMOD 775 oder CHMOD 777 f&#xFC;r das Verzeichnis <b>../inc/</b> ben&#xF6;tigt, damit die Konfigurationsdatei erstellt werden kann. Setzen Sie diesen CHMOD mit Ihrem FTP-Client und klicken Sie auf Weiter.<br><br><font color="darkred"><b>Hinweis:</b></font> Alternativ k&ouml;nnen Sie eine automatisch erstellte config.inc.php-Datei herunterladen und diese in das inc/ Verzeichnis des Forums uploaden. Bitte beachten Sie, dass das Forum anschlieﬂend vollst&auml;ndig installiert ist, und die Installation an dieser Stelle beendet wird. Der Installationsassistent ist nach dem Upload nicht mehr verf&uuml;gbar.<br><br><a href="install.php?action=generate_config&hostname=%s&user=%s&pass=%s&db=%s&prefix=%s">Konfigurationsdatei herunterladen</a>';
 $a_lang['de']['denied'] = 'Installation verweigert';
 $a_lang['de']['deniedtxt'] = 'Das Forum ist bereits installiert! Wenn Sie das Forum neu installieren wollen, l&#xF6;schen bitte die Datei <b>../inc/config.inc.php</b>.';
-$a_lang['de']['selectupdate'] = 'Bitte w&#xE4;hlen Sie ein Update aus der Liste aus.'; 
+$a_lang['de']['selectupdate'] = 'Bitte w&#xE4;hlen Sie ein Update aus der Liste aus.';
 $a_lang['de']['updateinfo'] = 'Update Informationen';
 $a_lang['de']['reqver'] = 'Ben&#xF6;tigte Version';
 $a_lang['de']['newver'] = 'Version nach Update';
@@ -80,22 +80,22 @@ $a_lang['de']['na'] = '(keine)';
 $a_lang['de']['infotxt'] = '
                     <b>Willkommen!</b><br>
                       <br>
-                      Willkommen zum ThWboard Installationsassistent. Dieser Assistent 
-                      wird Ihnen dabei helfen, Ihr ThWboard zu installieren. Bevor 
-                      Sie mit der Installation starten, legen Sie bitte folgende 
+                      Willkommen zum ThWboard Installationsassistent. Dieser Assistent
+                      wird Ihnen dabei helfen, Ihr ThWboard zu installieren. Bevor
+                      Sie mit der Installation starten, legen Sie bitte folgende
                       Informationen bereit:</p>
                     <ul>
                       <li>MySQL Hostname/IP Adresse</li>
                       <li>MySQL Benutzername und Passwort</li>
-                      <li>MySQL Datenbankname (Falls Sie nicht das Recht haben, 
+                      <li>MySQL Datenbankname (Falls Sie nicht das Recht haben,
                         eine zu erstellen)</li>
                     </ul>
-                    Diese Informationen bekommen Sie in der Regel vom Provider 
-                    zugeschickt. Sollten Sie diese Informationen nicht haben, 
-                    kontaktieren Sie bitte den Provider/Administrator, da wir 
+                    Diese Informationen bekommen Sie in der Regel vom Provider
+                    zugeschickt. Sollten Sie diese Informationen nicht haben,
+                    kontaktieren Sie bitte den Provider/Administrator, da wir
                     diese Informationen nicht haben.<br>
                     <br>
-                    Sollten w&auml;hrend der Installation Probleme auftreten, 
+                    Sollten w&auml;hrend der Installation Probleme auftreten,
                     besuchen Sie bitte unser <a href="http://www.thwboard.de/forum/">Support-Forum</a>.';
 $a_lang['de']['finished'] = '
 <b>Installation beendet!</b><br>
@@ -114,7 +114,7 @@ $a_lang['de']['noupdates'] = '
 <b>Updates</b><br>
 <br>
 Es sind zur Zeit leider keine Updates verf&#xFC;bar.<br>
-Besuchen Sie bitte die <a href="http://www.thwboard.de/">ThWboard Homepage</a> um Updates herunterzuladen.'; 
+Besuchen Sie bitte die <a href="http://www.thwboard.de/">ThWboard Homepage</a> um Updates herunterzuladen.';
 
 
 
@@ -205,19 +205,19 @@ $a_lang['en']['noupdates'] = '
 <b>Updates</b><br>
 <br>
 There are currently no updates<br>
-Visit the <a href="http://www.thwboard.de/">ThWboard Homepage</a> in order to download updates.'; 
+Visit the <a href="http://www.thwboard.de/">ThWboard Homepage</a> in order to download updates.';
 
 
 
 function lng($str)
 {
     global    $lang, $a_lang;
-    
+
     if( $lang == '' )
         $lng = 'en';
     else
         $lng = $lang;
-    
+
     if( $a_lang[$lng][$str] )
         return $a_lang[$lng][$str];
     else

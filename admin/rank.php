@@ -44,7 +44,7 @@ if( $config['enable_ranks'] )
                 WHERE rankid=$rank[rankid]");
             }
         }
-        
+
         print 'Ranks have been updated.<br><br>';
     }
     elseif( $action == 'InsertRank' )
@@ -54,40 +54,40 @@ if( $config['enable_ranks'] )
             query("INSERT INTO ".$pref."rank (ranktitle, rankimage, rankposts)
                 VALUES ('" . addslashes($ranktitle) . "', '" . addslashes($rankimage) . "', '$rankposts');");
         }
-        
+
         print 'Rank has been added.<br><br>';
     }
 
 
     print '<form name="theform" method="post" action="rank.php">
   <table border="0" cellspacing="1" cellpadding="8">
-    <tr> 
+    <tr>
       <td>Title</td>
       <td>Image (optional)</td>
       <td>Required posts</td>
       <td>Remove</td>
     </tr>';
-    
+
     $r_rank = query("SELECT rankid, ranktitle, rankimage, rankposts FROM ".$pref."rank ORDER BY rankposts DESC");
     while( $rank = mysql_fetch_array($r_rank) )
     {
-        print '    <tr> 
-      <td> 
+        print '    <tr>
+      <td>
         <input class="tbinput" type="hidden" name="rankid[' . $rank['rankid'] . ']" value="' . $rank['rankid'] . '">
         <input class="tbinput" type="text" name="ranktitle[' . $rank['rankid'] . ']" value="' . htmlspecialchars($rank['ranktitle']) . '">
       </td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="rankimage[' . $rank['rankid'] . ']" value="' . htmlspecialchars($rank['rankimage']) . '">
       </td>
-      <td align="center"> 
+      <td align="center">
         <input class="tbinput" type="text" name="rankposts[' . $rank['rankid'] . ']" size="5" value="' . $rank['rankposts'] . '">
       </td>
-      <td align="center"> 
+      <td align="center">
         <input type="checkbox" name="rankdelete[' . $rank['rankid'] . ']" value="yes">
       </td>
     </tr>';
     }
-    
+
     print '  </table>
   <p>
     <input type="hidden" name="action" value="UpdateRanks">
@@ -97,9 +97,9 @@ if( $config['enable_ranks'] )
 </form>
 ';
     print '<br><hr><br><b>Add rank</b><br><br>';
-    
+
     print '
-<form name="theform" method="post" action="rank.php">  
+<form name="theform" method="post" action="rank.php">
   <table border="0" cellspacing="1" cellpadding="8">
     <tr>
       <td>Title</td>

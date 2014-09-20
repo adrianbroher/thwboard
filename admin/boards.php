@@ -26,10 +26,10 @@ tb_header();
 
 /**
  * replaces german umlauts with the according html entities.
- * 
- * this is a cleaner way than just to replace every html 
+ *
+ * this is a cleaner way than just to replace every html
  * entity in board / category names and descriptions
- **/ 
+ **/
 
 function fix_umlauts($str)
 {
@@ -39,7 +39,7 @@ function fix_umlauts($str)
     {
         $trans[$key] = '&#'.ord($key).';';
     }
-    
+
     strtr($str, $trans);
 
     return $str;
@@ -113,7 +113,7 @@ if( $action == '' )
 print '
 <form name="form1" method="post" action="boards.php">
   <table border="0" cellspacing="0" cellpadding="3">
-    <tr> 
+    <tr>
       <td colspan="2"><i>Display order</i></td>
       <td colspan="2" align="center"> <i>Options </i></td>
       <td>&nbsp;</td>
@@ -124,8 +124,8 @@ print '
     while( $category = mysql_fetch_array($r_category) )
     {
         print '
-    <tr> 
-      <td align="center"> 
+    <tr>
+      <td align="center">
         <input type="text" name="catord['.$category['categoryid'].']" size="2" value="'.$category['categoryorder'].'">
       </td>
       <td>&nbsp;</td>
@@ -140,9 +140,9 @@ print '
         while( $board = mysql_fetch_array($r_board) )
         {
             print '
-    <tr> 
+    <tr>
       <td>&nbsp;</td>
-      <td align="center"> 
+      <td align="center">
         <input type="text" name="boardord['.$board['boardid'].']" size="2" value="'.$board['boardorder'].'">
       </td>
       <td colspan="2"><a href="boards.php?action=edit&id='.$board['boardid'].'&oldboardorder='.$board['boardorder'].'&session='.$session.'">edit</a>
@@ -208,13 +208,13 @@ elseif( $action == "edit" ) {
         }
         $board['boardname'] = fix_umlauts($board['boardname']);
         $board['boarddescription'] = fix_umlauts($board['boarddescription']);
-        
+
         query("UPDATE ".$pref."board SET boardname='". addslashes($board['boardname']) . "',
         boarddescription='" . addslashes($board['boarddescription']) . "', categoryid='$board[categoryid]',
         boardorder='$maxorder', styleid='$board[styleid]',
         boarddisabled = '$board[boarddisabled]'
          WHERE boardid=$board[boardid]");
-        
+
         echo "Board has been updated!";
     }
     else
@@ -277,13 +277,13 @@ elseif( $action == "delete" ) {
 
     // delete topics
     mysql_query("DELETE FROM ".$pref."thread WHERE boardid=$forumid");
-    
+
     // delete permission
     mysql_query("DELETE FROM ".$pref."groupboard WHERE boardid=$forumid");
 
     // lastvisited
     mysql_query("DELETE FROM $pref"."lastvisited WHERE boardid=$forumid");
-    
+
     echo "Board has been deleted!<br>";
 
   } else {
@@ -311,7 +311,7 @@ elseif( $action == "newboard" )
         query("INSERT INTO ".$pref."board (boardname, boarddescription, categoryid, boardorder, styleid,
             boarddisabled) VALUES (
             '" . addslashes($board[boardname]) . "', '" . addslashes($board[boarddescription]) . "',
-            '$board[categoryid]', '$maxorder', '$board[styleid]', 
+            '$board[categoryid]', '$maxorder', '$board[styleid]',
             '$board[boarddisabled]')");
 
         print 'Forum has been added. Please verify board order.';
@@ -332,7 +332,7 @@ elseif( $action == "newboard" )
 elseif( $action == "delcat" ) {
     $r_board = query("SELECT count(boardid) AS boardcount FROM ".$pref."board WHERE categoryid=$id");
     $board = mysql_fetch_array($r_board);
-    
+
     if( $board[boardcount] > 0 )
     {
         print 'Error: Cannot delete a category which contains boards!';
@@ -375,7 +375,7 @@ elseif( $action == "RenameCategory" )
 elseif( $action == "SetCategoryName" )
 {
     query("UPDATE ".$pref."category SET categoryname='" . addslashes(fix_umlauts($newname)) . "' WHERE categoryid=$categoryid");
-    
+
     print 'category has been renamed.';
 }
 
@@ -393,7 +393,7 @@ elseif( $action == "EditBoardUsers" )
 {
     $r_board = query("SELECT boardname FROM ".$pref."board WHERE boardid=$boardid");
     $board = mysql_fetch_array($r_board);
-    
+
     print '<b>Userlist for "' . $board['boardname'] . '"</b><br><br>';
 
     $r_boardaccess = query("SELECT boardaccess.userid, user.username FROM ".$pref."boardaccess AS boardaccess LEFT JOIN ".$pref."user AS user ON boardaccess.userid=user.userid WHERE boardaccess.boardid=$boardid");
@@ -401,9 +401,9 @@ elseif( $action == "EditBoardUsers" )
     {
         print $boardaccess['username'] . ' [ <a href="boards.php?action=RemoveUserFromBoard&userid=' . $boardaccess['userid'] . '&boardid=' . $boardid . '&session=' . $session . '">remove</a> ]<br>';
     }
-    
+
     print '<form name="theform" method="post" action="boards.php">
-  User to add: 
+  User to add:
   <input type="text" name="username">
   <input type="hidden" name="action" value="AddUserToBoard">
   <input type="hidden" name="boardid" value="' . $boardid . '">
@@ -424,7 +424,7 @@ elseif( $action == "EditBoardUsers" )
 elseif( $action == 'RemoveUserFromBoard' )
 {
     query("DELETE FROM ".$pref."boardaccess WHERE userid=$userid AND boardid=$boardid");
-    
+
     if( mysql_affected_rows() == 1 )
     {
         print 'user has been removed from board access list';
@@ -451,7 +451,7 @@ elseif( $action == 'AddUserToBoard' )
 
     query("INSERT INTO ".$pref."boardaccess (boardid, userid) VALUES ($boardid, $user[userid])");
     print 'user has been added';
-    
+
     print '<br><br><a href="boards.php?action=EditBoardUsers&session=' . $session . '&boardid=' . $boardid . '">back</a> to board userlist.';
 }
 

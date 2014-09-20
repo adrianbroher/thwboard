@@ -27,7 +27,7 @@ function is_firstpost($threadid, $postid)
     global $pref;
     $r_post = thwb_query("SELECT postid FROM $pref"."post WHERE threadid='$threadid' ORDER BY posttime ASC");
     $post = mysql_fetch_array($r_post);
-    
+
     if( $post['postid'] == $postid )
         return 1;
     else
@@ -86,7 +86,7 @@ $firstpost = is_firstpost($thread['threadid'], $post['postid']);
 if( $firstpost && $P->has_permission( P_EDITTOPIC) )
 {
     $post['printtopic'] = '<input class="tbinput" type="text" name="newpost[threadtopic]" size="50" value="'.$post['threadtopic'].'" maxlength="75">';
-} 
+}
 else
 {
     $post['printtopic'] = "$post[threadtopic]";
@@ -109,7 +109,7 @@ if( ($post['userid'] == $g_user['userid'] && $P->has_permission( P_EDIT )) || $P
         {
             $codechecked = '';
         }
-        
+
         if( $post['postsmilies'] )
         {
             $smilieschecked = ' checked';
@@ -118,7 +118,7 @@ if( ($post['userid'] == $g_user['userid'] && $P->has_permission( P_EDIT )) || $P
         {
             $smilieschecked = '';
         }
-        
+
         if( $post['postemailnotify'] )
         {
             $mailchecked = ' checked';
@@ -127,7 +127,7 @@ if( ($post['userid'] == $g_user['userid'] && $P->has_permission( P_EDIT )) || $P
         {
             $mailchecked = '';
         }
-        
+
         if( $config['smilies'] )
         {
             $smilies_on_off = "AN";
@@ -141,7 +141,7 @@ if( ($post['userid'] == $g_user['userid'] && $P->has_permission( P_EDIT )) || $P
         $Tform = new Template("templates/" . $style['styletemplate'] . "/edit.html");
 
 
-        
+
         eval($Tform->GetTemplate("CONTENT"));
         eval($Tframe->GetTemplate());
     }
@@ -186,24 +186,24 @@ if( ($post['userid'] == $g_user['userid'] && $P->has_permission( P_EDIT )) || $P
         }
 
         $c_time = time();
-        
+
         thwb_query("UPDATE ".$pref."post SET posttext='" . addslashes(preparse_code($newpost['posttext'])) . "',
         postlasteditby='$g_user[username]', postlastedittime='" . time() . "',
         postsmilies='" . ($newpost['postsmilies'] ? 1 : 0) . "',
         postcode='" . ($newpost['postcode'] ? 1 : 0) . "',
         postemailnotify='" . (isset($newpost['postemailnotify']) && $newpost['postemailnotify'] ? 1 : 0) . "' WHERE postid='$post[postid]'");
-        
+
         // topic updaten, (auch board), nicht als normaluser
         if( $firstpost && $P->has_permission( P_EDITTOPIC ) )
         {
             $newpost['threadtopic'] = addslashes(preparse_code($newpost['threadtopic']));
-            
+
             // topic setten
             thwb_query("UPDATE ".$pref."thread SET threadtopic = '". $newpost['threadtopic'] ."' WHERE threadid = '$post[threadid]'");
 
             // board updaten
             updateboard($thread['boardid']);
-            
+
             // eventuell vorhandene threadlinks updaten
             $r_link = thwb_query( "SELECT threadid, boardid FROM ".$pref."thread WHERE threadlink = ". $post['threadid'] );
             if( mysql_num_rows( $r_link ) )

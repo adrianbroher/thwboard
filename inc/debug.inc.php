@@ -22,7 +22,7 @@
 
 /**
  * thwb debugging package.
- * 
+ *
  * extended error reporting (including backtraces)
  */
 
@@ -32,14 +32,14 @@ define('THWB_ERR_SQL', 1 << 1); //!< SQL error
 
 /**
  * returns a human-readable description for the given error type.
- * 
+ *
  * @param $err  error type.
  * @return string containing the description-
  **/
 
 function thwb_error_type_to_string($err)
 {
-    switch ($err) 
+    switch ($err)
     {
     case THWB_ERR_PHP:
         return 'PHP';
@@ -65,7 +65,7 @@ $_thwb_error_cfg = array
 
 /**
  * php error handler
- * 
+ *
  * @param $errno    error number
  * @param $errmsg   error message
  * @param $filename errornous file
@@ -77,8 +77,8 @@ function thwb_php_error_handler($errno, $errmsg, $filename, $linenum, $vars)
 {
     $msg = 'PHP Error: `'.$errmsg.'\' (errno '.$errno.")\n"
         .'in file: `'.$filename.'\' (line ' .$linenum.")\n";
-        
-    
+
+
     if(function_exists('debug_backtrace'))
     {
         $bt = debug_backtrace();
@@ -90,7 +90,7 @@ function thwb_php_error_handler($errno, $errmsg, $filename, $linenum, $vars)
 
 /**
  * sql error handler
- * 
+ *
  * @param $query    sql query
  * @param $bt       backtrace
  **/
@@ -110,9 +110,9 @@ function thwb_sql_error_handler($query, $bt)
 
 /**
  * handles the error message.
- * 
+ *
  * prints, logs and/or mails error (depending on config).
- * 
+ *
  * @param $msg  error message
  * @param $type error type
  **/
@@ -131,7 +131,7 @@ function thwb_handled_error($msg, $type)
     $head = 'ThWB Error: '.thwb_error_type_to_string($type)."\n"
         .'Date: '.date('Y-m-d H:i:s')."\n"
         .'User: `'.$g_user['username'].'\' ('.$g_user['userid'].")\n";
-                                                                      
+
     foreach($a_server_vars as $k => $v)
     {
         if(!empty($HTTP_SERVER_VARS[$v]))
@@ -148,7 +148,7 @@ function thwb_handled_error($msg, $type)
     {
         print '<pre>'.htmlentities($head.$msg."\n").'</pre>';
     }
-    
+
     if(!empty($_thwb_error_cfg['mail']) && !empty($config['use_email']))
     {
         @mail($_thwb_error_cfg['mail'], 'ThWB Error: '.thwb_error_type_to_string($type), ($head.$msg), "From: $config[board_admin]");

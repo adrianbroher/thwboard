@@ -10,18 +10,18 @@ class CUpdate
     var        $Author            = 'ThWboard Development Team';
     var        $Date            = '09.03.2002';
     var        $Notes            = '';
-    
+
     function AllowUpdate()
     {
         // hack code for 2.6b, because we didnt store the version until 2.7
         return 1;
     }
-    
+
     function SetError($errmsg)
     {
         $this->Error = $errmsg;
     }
-    
+
     function GetError()
     {
         return $this->Error;
@@ -38,11 +38,11 @@ class CUpdate
             }
         }
     }
-    
+
     function UpdateConf()
     {
         include('../inc/config.inc.php');
-        
+
         $fp = fopen('../inc/config.inc.php', 'w');
         fwrite($fp, '<?php
 $mysql_h    = \''.$mysql_h.'\';
@@ -54,12 +54,12 @@ $inst_lock  = 1;
 ');
         fclose($fp);
     }
-    
+
     function RunUpdate()
     {
         // alte conf datei muss entfernt werden..
         $this->UpdateConf();
-        
+
         // update queries hier ..
         thwb_query("CREATE TABLE $this->Prefix"."registry (
   keyname varchar(255) NOT NULL default '',
@@ -116,7 +116,7 @@ $inst_lock  = 1;
         thwb_query("ALTER TABLE $this->Prefix"."board DROP boardcanpostnew");
         thwb_query("ALTER TABLE $this->Prefix"."board DROP boardcanreply");
         thwb_query("ALTER TABLE $this->Prefix"."board DROP boardisprivate");
-        
+
         thwb_query("UPDATE $this->Prefix"."style SET styletemplate='default'");
 
         thwb_query("INSERT INTO $this->Prefix"."group VALUES (0,'Default Group',135,1)");
@@ -174,5 +174,5 @@ INSERT INTO $this->Prefix"."registry VALUES ('sig_maxlines','5','integer','Max. 
 INSERT INTO $this->Prefix"."registry VALUES ('sig_restrict','1','boolean','Enable signature restrictions?','Enable this to restrict the signature length using the options below.',6,0);");
 
         return 0;
-    }    
+    }
 }

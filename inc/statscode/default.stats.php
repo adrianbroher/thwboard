@@ -27,9 +27,9 @@ if( $get_part == 'head' )
 else
 {
     $t_stats = new Template('./templates/' . $style['styletemplate'] . '/stats_default.html');
-    
+
     $a_stats = array();
-    
+
     // create $a_stats['userposts']
     $r_stats = mysql_query("SELECT userposts FROM " . $pref . "user WHERE userid=$g_user[userid]");
     $g_user['userposts'] = @mysql_result($r_stats, 0);
@@ -42,7 +42,7 @@ else
     {
         $a_stats['userposts'] = '<i>Nicht eingeloggt oder noch kein Post get&auml;tigt.</i>';
     }
-    
+
     // create $a_stats['firstactivate']
     $r_stats = thwb_query("SELECT userjoin FROM " . $pref . "user ORDER BY userjoin ASC LIMIT 1");
     if( mysql_num_rows($r_stats) != 0 )
@@ -54,7 +54,7 @@ else
         $a_stats['firstactivate'] = '-';
     }
     mysql_free_result($r_stats);
-    
+
     // create $a_stats['usercount']
     $r_stats = thwb_query("SELECT count(userid) FROM " . $pref . "user");
     if( mysql_num_rows($r_stats) != 0 )
@@ -66,7 +66,7 @@ else
         $a_stats['usercount'] = '-';
     }
     mysql_free_result($r_stats);
-    
+
     // create $a_stats['activeusers']
     $r_stats = thwb_query("SELECT count(userid) AS activeusers FROM " . $pref . "user WHERE userlastpost > " . (time() - 60 * 60 * 24 * 31));
 
@@ -107,10 +107,10 @@ else
     $a_stats['numboards'] = count($boards);
     mysql_free_result($r_stats);
     unset($datarow);
-    
+
     $a_stats['numkateg'] = count($categories);
     unset($categories);
-    
+
     $r_stats = thwb_query("SELECT threadid FROM " . $pref . "thread WHERE boardid IN ('" . implode("','", $boards) . "')");
     $threads = array();
     while( $datarow = mysql_fetch_array($r_stats) )
@@ -120,7 +120,7 @@ else
     mysql_free_result($r_stats);
     unset($boards);
     $a_stats['numthreads'] = count($threads);
-    
+
     $r_stats = thwb_query("SELECT count(postid) FROM " . $pref . "post WHERE threadid IN ('" . implode("','", $threads) . "')");
     if( mysql_num_rows($r_stats) != 0 )
     {
@@ -153,7 +153,7 @@ else
     $a_stats['admins'] = substr($a_stats['admins'], 0, -2);
     mysql_free_result($r_stats);
     unset($datarow);
-    
+
     // create $a_stats['uradmins']
     $r_stats = thwb_query("SELECT userid, username FROM " . $pref . "user WHERE userisadmin = 1 AND usernodelete = 1 ORDER BY username ASC");
     $a_stats['uradmins'] = '';
@@ -164,7 +164,7 @@ else
     $a_stats['uradmins'] = substr($a_stats['uradmins'], 0, -2);
     mysql_free_result($r_stats);
     unset($datarow);
-    
+
     // create $a_stats['newmember']
     $r_stats = thwb_query("SELECT userid, username FROM " . $pref . "user ORDER BY userjoin DESC LIMIT 5");
     $a_stats['newmember'] = '';
@@ -175,6 +175,6 @@ else
     $a_stats['newmember'] = substr($a_stats['newmember'], 0, -2);
     mysql_free_result($r_stats);
     unset($datarow);
-    
+
     eval($t_stats->GetTemplate('stats'));
 }

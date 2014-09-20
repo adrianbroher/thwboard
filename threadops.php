@@ -52,7 +52,7 @@ if( !isset($thread['threadid']) || !$thread['threadid'] )
 
 /*
  * ===============================================================
- *  action: close thread 
+ *  action: close thread
  * ===============================================================
  */
 if( $action == "close" )
@@ -86,7 +86,7 @@ if( $action == "close" )
 
 /*
  * ===============================================================
- *  action: 
+ *  action:
  * ===============================================================
  */
 if( $action == "top" )
@@ -120,7 +120,7 @@ if( $action == "top" )
 
 /*
  * ===============================================================
- *  action: 
+ *  action:
  * ===============================================================
  */
 if( $action == "move" )
@@ -130,9 +130,9 @@ if( $action == "move" )
     {
         $TFrame = new Template("./templates/".$style['styletemplate']."/frame.html");
         $TMoveform = new Template("./templates/".$style['styletemplate']."/movethreadform.html");
-        
+
         $boards = array();
-        
+
         $r_board = thwb_query("SELECT boardid, boardname, categoryid FROM ".$pref."board ORDER BY boardorder");
         while( $board = mysql_fetch_array($r_board) )
         {
@@ -140,7 +140,7 @@ if( $action == "move" )
         }
 
         $MOVEOPTIONS = '';
-        
+
         $r_category = thwb_query("SELECT categoryid, categoryname FROM ".$pref."category ORDER BY categoryorder");
         while( $category = mysql_fetch_array($r_category) )
         {
@@ -150,7 +150,7 @@ if( $action == "move" )
                 $MOVEOPTIONS .= "$v";
             }
         }
-        
+
         eval($TMoveform->GetTemplate("CONTENT"));
         eval($TFrame->GetTemplate());
     }
@@ -164,7 +164,7 @@ if( $action == "move" )
 
 /*
  * ===============================================================
- *  action: 
+ *  action:
  * ===============================================================
  */
 if( $action == "do_move" )
@@ -192,7 +192,7 @@ if( $action == "do_move" )
 
         thwb_query("UPDATE ".$pref."thread SET boardid=".intval($into)." WHERE threadid=$thread[threadid]");
         updateboard($thread['boardid']);
-        
+
         if( isset($createlink) && $createlink == 1 )
         {
             // fake (link) zum thread machen, im alten board
@@ -207,7 +207,7 @@ if( $action == "do_move" )
                     '$thread[threadid]',
                     '1')");
         }
-        
+
         // last* vom zielboard updaten.
         updateboard($into);
 
@@ -230,14 +230,14 @@ if( $action == "do_move" )
 
 /*
  * ===============================================================
- *  action: delete thread 
+ *  action: delete thread
  * ===============================================================
  */
 if( $action == "delete" )
 {
     $r_thread = thwb_query("SELECT threadid, threadauthor FROM ".$pref."thread WHERE threadid=$thread[threadid]");
     $thread = mysql_fetch_array($r_thread);
-    
+
     if( ( $g_user['username'] == $thread['threadauthor'] && $P->has_permission( P_DELTHREAD ) ) || $P->has_permission( P_ODELTHREAD) )
     {
         $navpath .= "Thread l&ouml;schen";
@@ -258,18 +258,18 @@ if( $action == "delete" )
 
 /*
  * ===============================================================
- *  action: do_delete thread 
+ *  action: do_delete thread
  * ===============================================================
  */
 if( $action == "do_delete" )
 {
     $r_thread = thwb_query("SELECT threadid, threadreplies, threadauthor, boardid FROM ".$pref."thread WHERE threadid=$thread[threadid]");
     $thread = mysql_fetch_array($r_thread);
-    
+
     if( ( $g_user['username'] == $thread['threadauthor'] && $P->has_permission( P_DELTHREAD ) ) || $P->has_permission( P_ODELTHREAD) )
     {
         $thread['threadreplies']++;
-    
+
         // substract posts/thread from board
         thwb_query("UPDATE ".$pref."board SET boardposts=boardposts-$thread[threadreplies], boardthreads=boardthreads-1 WHERE boardid=$board[boardid]");
 
@@ -281,7 +281,7 @@ if( $action == "do_delete" )
 
         logaction("deleted");
         $navpath .= "Thread l&ouml;schen";
-        message("&nbsp;", 
+        message("&nbsp;",
             "Thread wurde gel&ouml;scht!<br><a href=\"".build_link("board.php?board[boardid]=$board[boardid]")."\">Zur&uuml;ck zum Board</a>");
     }
     else
@@ -322,12 +322,12 @@ if( $action == 'do_remove_link' )
     {
         $r_thread = thwb_query("SELECT threadid, boardid FROM $pref"."thread WHERE threadid=$thread[threadid]");
         $thread = mysql_fetch_array($r_thread);
-    
+
         thwb_query("DELETE FROM $pref"."thread WHERE threadid=$thread[threadid]");
-        
+
         logaction('removed thread link');
         updateboard($thread['threadid']);
-        
+
         message('Info', 'Der Thread-Link wurde erfolgreich entfernt.<br><a href="'.build_link('board.php?board[boardid]='.$board['boardid']).'">Zur&uuml;ck zum Board</a>');
     }
     else
@@ -348,7 +348,7 @@ if($action == 'merge')
     {
         $TFrame = new Template("./templates/".$style['styletemplate']."/frame.html");
         $TMoveform = new Template("./templates/".$style['styletemplate']."/mergethreadform.html");
-        
+
         eval($TMoveform->GetTemplate("CONTENT"));
         eval($TFrame->GetTemplate());
     }
@@ -365,7 +365,7 @@ if($action == 'merge')
  * does the dirty work
  **/
 
-if($action == 'do_merge')   
+if($action == 'do_merge')
 {
     $navpath .= "Threads verschmelzen";
 
@@ -377,8 +377,8 @@ if($action == 'do_merge')
     $src = addslashes($thread['threadid']);
     $tgt = addslashes($target['threadid']);
 
-    $r_threads = thwb_query('SELECT threadtime, threadreplies, boardid, threadid 
-                            FROM '.$pref.'thread 
+    $r_threads = thwb_query('SELECT threadtime, threadreplies, boardid, threadid
+                            FROM '.$pref.'thread
                             WHERE threadid IN (\''.$src.'\', \''.$tgt.'\')
                             ORDER BY threadid DESC');
 
@@ -400,21 +400,21 @@ if($action == 'do_merge')
     }
 
     if(!($a_src['threadtime'] > $a_tgt['threadtime']))
-    {           
+    {
         message('Fehler', 'Der Ziel-Thread ist j&uuml;nger als der Quell-Thread. Dies w&uuml;rde die Beitragsreihenfolge zerst&ouml;ren');
     }
 
     // do it.
 
-    thwb_query('UPDATE '.$pref.'post 
-               SET threadid = \''.$tgt.'\' 
+    thwb_query('UPDATE '.$pref.'post
+               SET threadid = \''.$tgt.'\'
                WHERE threadid = \''.$src.'\'');
 
-    thwb_query('DELETE FROM '.$pref.'thread 
+    thwb_query('DELETE FROM '.$pref.'thread
                WHERE threadid = \''.$src.'\'');
 
-    thwb_query('UPDATE '.$pref.'thread 
-               SET threadreplies = '.($a_tgt['threadreplies'] + $a_src['threadreplies'] + 1).' 
+    thwb_query('UPDATE '.$pref.'thread
+               SET threadreplies = '.($a_tgt['threadreplies'] + $a_src['threadreplies'] + 1).'
                WHERE threadid = \''.$tgt.'\'');
 
     updatethread($tgt);
@@ -428,7 +428,7 @@ if($action == 'do_merge')
 
 /*
  * ===============================================================
- *  action: markthread thread 
+ *  action: markthread thread
  * ===============================================================
  */
 /*if( $action == 'markthread' )
@@ -469,7 +469,7 @@ if($action == 'do_merge')
                 message("Fehler", "Sie können nicht mehr als ".$config['max_markedthreads']." Threads markieren.");
             }
         }
-        
+
     }
     else
     {

@@ -85,7 +85,7 @@ while( $user = mysql_fetch_array($r_user) )
             }
         }
     }
-    
+
     $user['useremail'] = get_email( $user, true );
 
     if( isset($a_online[$user['userid']]) && $user['userinvisible'] != 1 )
@@ -96,7 +96,7 @@ while( $user = mysql_fetch_array($r_user) )
     {
         $user['userisonline'] = 'Nein';
     }
-    
+
     eval($TRow->GetTemplate("TEAMROWS"));
 }
 

@@ -38,7 +38,7 @@ while (($subdir = readdir($dir)) !== false)
 {
     if(!preg_match('/\.stats\.php$/i', $subdir))
         continue;
-    
+
     include('./inc/statscode/' . $subdir);
 }
 closedir($dir);

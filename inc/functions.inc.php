@@ -67,7 +67,7 @@ function build_link($link, $noamp = false)
       {
           $add .= "?s=".$s;
       }
-      
+
       if($x = strpos($link, "#"))
       {
           $link = substr($link, 0, $x) . $add . substr($link, $x);
@@ -128,7 +128,7 @@ class Permission
 
         if( $groupids === '' )
             $groupids = '-1';
-    
+
         $this->a_group = array();
         $r_group = thwb_query("SELECT groupid, accessmask FROM $pref"."group WHERE groupid IN(".$groupids.")");
         while( $group = mysql_fetch_array($r_group) )
@@ -142,13 +142,13 @@ class Permission
             $r_groupboard = thwb_query("SELECT groupid, boardid, accessmask FROM $pref"."groupboard WHERE groupid IN (".$groupids.")");
         else
             $r_groupboard = thwb_query("SELECT groupid, boardid, accessmask FROM $pref"."groupboard WHERE boardid='$boardid' AND groupid IN (".$groupids.")");
-        
+
         while( $groupboard = mysql_fetch_array($r_groupboard) )
         {
             $this->a_groupboard[ $groupboard['boardid'] ][ $groupboard['groupid'] ] = $groupboard['accessmask'];
         }
         mysql_free_result($r_groupboard);
-        
+
         $this->set_boardid($boardid);
     }
 
@@ -156,11 +156,11 @@ class Permission
     {
         $this->boardid = $boardid;
     }
-    
+
     function has_permission($perm)
     {
         $mask = "";
-        
+
         reset($this->a_group);
         reset($this->a_groupboard);
 
@@ -182,7 +182,7 @@ class Permission
           }
 
         $access = flag_make_array($mask);
-        
+
         return (bool) ($access[$perm]);
     }
 }
@@ -235,11 +235,11 @@ function requires_permission($perm)
     $Tnopermission = new Template("templates/" . $style['styletemplate'] . "/nopermission.html");
 
     $t_loginform = '';
-    
+
     if( !$g_user['userid'] )
     {
         $Tnoperm_login = new Template("templates/" . $style['styletemplate'] . "/noperm_login.html");
-        
+
         $source = urlencode(basename($HTTP_SERVER_VARS['REQUEST_URI']));
         eval($Tnoperm_login->GetTemplate('t_loginform'));
     }
@@ -280,7 +280,7 @@ function verify_username($username)
 
     /**
      * moved length check here because calling with empty $username will fsck the `tags' check
-     * 
+     *
      * 2004-10-19   --tD
      */
 
@@ -325,7 +325,7 @@ function verify_username($username)
     {
         return NAME_TAKEN;
     }
-    
+
     return 0;
 }
 
@@ -350,7 +350,7 @@ function check_username($username)
                 message('Fehler', 'Ihr gew&uuml;nschter Benutzername enth&auml;lt ThWB-Code-Tags und kann daher nicht verwendet werden.');
         default:
     }
-    
+
     return;
 }
 
@@ -364,18 +364,18 @@ function check_email($email)
 function get_email( $user, $short = false )
 {
     global $g_user, $style;
-    
+
     if( $g_user['userid'] == 0 )
         return '- (Versteckt)';
-        
+
     $retstring = '<a href="mailto:'. $user['useremail'] .'">'
         .($short ? chopstring($user['useremail'], 20) : $user['useremail'] ) .'</a>';
-    
+
     if( !$user['userhideemail'])
     {
         return $retstring;
-    } 
-    else    
+    }
+    else
     {
       if($user['userid'] == $g_user['userid'])
         {
@@ -446,10 +446,10 @@ function message($title, $msg, $opt_back = 1, $opt_index = 1)
     $navpath .= $title;
 
     $messageoptions = "&nbsp;";
-    
+
     $opt_back ? $messageoptions .= "[ <a class=\"hefo\" href=\"javascript:history.back()\">Zur&uuml;ck</a> ] " : "";
     $opt_index ? $messageoptions .= "[ <a class=\"hefo\" href=\"".build_link("index.php")."\">Index</a> ]" : "";
-    
+
     $Tframe = new Template("templates/" . $style['styletemplate'] . "/frame.html");
     $Tmessage = new Template("templates/" . $style['styletemplate'] . "/message.html");
 
@@ -467,14 +467,14 @@ function message_redirect($msg, $url)
 
     $TRedirect = new Template('templates/' . $style['styletemplate'] . '/redirect.html');
     eval($TRedirect->GetTemplate());
-    
+
     exit;
 }
 
 function form_date($time, $verbose = 1)
 {
     global $config;
-    
+
     if( $time < (60 * 60 * 24) )
     {
         return "N/A";
@@ -529,11 +529,11 @@ function jumpmenu($currentboard = 1)
         if( $P->has_permission( P_VIEW ) )
             $a_board[$board['categoryid']][] = $board;
     }
-    
+
     // category
     $r_category = thwb_query("SELECT categoryid, categoryname FROM
     ".$pref."category ORDER BY categoryorder ASC");
-    
+
     $JUMP_MENU = '<select class="tbselect" name="board[boardid]" onChange="Submit.click()">';
     while( $category = mysql_fetch_array($r_category) )
     {
@@ -579,13 +579,13 @@ function thwb_query($query)
     global $all_t;
 
     global $_thwb_error_cfg;
-    
+
     $start = microtime();
 
     $result = mysql_query($query);
 
     $end = microtime();
-    
+
     if( !$result )
     {
         if(!empty($_thwb_error_cfg['sql']))
@@ -601,10 +601,10 @@ function thwb_query($query)
         {
             print '<pre><b>ThWboard Error</b><br>MySQL reported an error. Query is hidden for security resons.</pre>';
         }
-        
+
         exit;
     }
-    if ( isset($g_user['userisadmin']) && $g_user['userisadmin'] && $config['debugmode'] ) 
+    if ( isset($g_user['userisadmin']) && $g_user['userisadmin'] && $config['debugmode'] )
     {
         // Extended DEBUG Mody By Andy
         $start_t = explode(" ", $start);
@@ -632,7 +632,7 @@ function chopstring($string, $maxchars)
 {
     if( strlen($string) > $maxchars )
         $string = substr($string, 0, ($maxchars - 3)) . '...';
-    
+
     return $string;
 }
 
@@ -647,7 +647,7 @@ function killshout($string)
             if( $string[$i] > 'A' && $string[$i] < 'Z' )
                 $caps++;
         }
-        
+
         $ratio = $caps / strlen($string);
         if( $ratio > 0.3 )
         {
@@ -690,7 +690,7 @@ function updateboard($boardid)
         $thread = array_merge($thread, mysql_fetch_array($r_thread));
 
         $thread['postcount'] += $thread['threadcount']; // threads without replies.
-                
+
         thwb_query("UPDATE ".$pref."board SET
             boardlastpost='$thread[threadtime]',
             boardthreadid='$thread[threadid]',
@@ -713,7 +713,7 @@ function updatethread($threadid)
     {
         $r_user = thwb_query("SELECT username FROM ".$pref."user WHERE userid=$post[userid]");
         $user = mysql_fetch_array($r_user);
-        
+
         $author = $user['username'];
     }
     else
@@ -747,14 +747,14 @@ function checksize($ic_avatar)
     }
 
     global $err_msg, $config;
-    if ( $ic_avatarsize = @getimagesize($ic_avatar) ) 
+    if ( $ic_avatarsize = @getimagesize($ic_avatar) )
     {
         if ( $ic_avatarsize[0] > $config['avatarwidth'] )
-        { 
+        {
             $err_msg .= 'Das Avatar-Bild ist zu breit.<br>';
         }
         if ( $ic_avatarsize[1] > $config['avatarheight'] )
-        { 
+        {
             $err_msg .= 'Das Avatar-Bild ist zu hoch.<br>';
         }
         if ( $ic_avatarsize[2] > 3 )
@@ -764,7 +764,7 @@ function checksize($ic_avatar)
     }
     else
     {
-        $err_msg .= 'Das Avatar-Bild konnte nicht geladen werden.<br>'; 
+        $err_msg .= 'Das Avatar-Bild konnte nicht geladen werden.<br>';
     }
 }
 
@@ -772,7 +772,7 @@ function checksize($ic_avatar)
 function check_banned($text)
 {
     global $pref;
-    
+
     $r_bwords = thwb_query("SELECT banword, modword FROM $pref"."bannedwords");
     if( mysql_num_rows($r_bwords) != 0 )
     {
@@ -818,7 +818,7 @@ function strip_session($text)
 function prevent_guestspam()
 {
     global $config, $pref, $REMOTE_ADDR;
-                                                                                
+
     $r_post = thwb_query("SELECT posttime FROM ".$pref."post WHERE postip = '".$REMOTE_ADDR."' ORDER BY posttime DESC");
     $post = mysql_fetch_array($r_post);
     if((time() - $config['postdelay']) < $post['posttime'])
@@ -836,7 +836,7 @@ function update_online()
   global $s, $pref, $g_user, $config, $HTTP_SERVER_VARS;
 
   $have_sid = (($g_user['userid']) && !empty($s));
-  
+
   $a_count = array();
   $a_count =  mysql_fetch_array(thwb_query("SELECT COUNT(userid) AS count FROM ".$pref."online WHERE userid=".$g_user['userid']
                        .(($g_user['userid']) ? "" : " AND onlineip = '".$HTTP_SERVER_VARS['REMOTE_ADDR']."'")));
@@ -844,7 +844,7 @@ function update_online()
   if($a_count['count'])
     {
       $query = "UPDATE ".$pref."online SET onlineip = '".$HTTP_SERVER_VARS['REMOTE_ADDR']."', onlinetime = '".time()."'"
-    .(($have_sid) ? ", sessionid = '".$s."'" : "")." WHERE userid = '".$g_user['userid']."'" 
+    .(($have_sid) ? ", sessionid = '".$s."'" : "")." WHERE userid = '".$g_user['userid']."'"
     .(($g_user['userid']) ? "" : " AND onlineip = '".$HTTP_SERVER_VARS['REMOTE_ADDR']."'");
     }
   else
@@ -860,7 +860,7 @@ function update_online()
 
 /**
  * verifies session data
- * 
+ *
  * returns `guest' in case of authentication failure;
  * otherwise a thwb_cookie style string is returned
  **/
@@ -883,7 +883,7 @@ function verify_session()
   if($have_cookie && defined('THWB_NOSESSION_PAGE'))
     {
        // check for existing session id
-      
+
       if(!$have_sid_cookie)
       {
           $r_session = thwb_query("SELECT sessionid FROM ".$pref."online WHERE userid = '".addslashes(substr($HTTP_COOKIE_VARS['thwb_cookie'], 32))
@@ -900,7 +900,7 @@ function verify_session()
           else
           {
               // we don't have a session id
-              
+
               // we must make sure that userid exists for new_session() relies on it.
               if(empty($g_user['userid']))
               {
@@ -960,25 +960,25 @@ function verify_session()
       if((!$have_sid_cookie))
       {
           // check first 24 bytes of ip (to avoid problems with aol and other proxies)
-      
+
           if(substr(dechex(ip2long($a_session['onlineip'])), 0, 6) != substr(dechex(ip2long($HTTP_SERVER_VARS['REMOTE_ADDR'])), 0, 6))
           {
               message("IP Mismatch", "Diese Session-ID ist an eine andere IP gebunden.<br>Klicken Sie <a href=\"".build_link("login.php?source=".$path)."\">hier</a> um sich einzuloggen.");
           }
-          
+
           // check session timeout
-          
+
           if($a_session['onlinetime'] < (time() - $config['session_timeout']))
           {
               // timed out
               thwb_query("DELETE FROM ".$pref."online WHERE sessionid='".addslashes($s)."'");
-              
+
               message("Timeout", "Sie wurden automatisch ausgeloggt, weil Ihre Session-ID abgelaufen ist. <br>Bitte <a href=\"".build_link("login.php?source=".$path)."\">loggen</a> Sie sich neu ein.");
           }
       }
-  
+
       // everything is ok
-      
+
       $g_user['have_cookie'] = $have_sid_cookie;
 
       return $a_session['userpassword'].$a_session['userid'];
@@ -986,14 +986,14 @@ function verify_session()
   else
     {
       // fall through
-      
+
       return "guest";
     }
 }
 
 /**
  * new_session
- * 
+ *
  * starts a new session.
  **/
 
@@ -1027,7 +1027,7 @@ static $a_flood_names = array
 
 /**
  * logs a possible flood attempt
- * 
+ *
  * @param type  denotes the flood type
  * @param userid   user id
  **/
@@ -1047,7 +1047,7 @@ function possible_flood($type, $userid = 0)
 
 /**
  * checks whether conditions for a flood attempt are met
- * 
+ *
  * @param type  denotes the flood type
  * @param userid   user id
  *
@@ -1062,7 +1062,7 @@ function is_flooding($type, $userid = 0)
     {
         return;
     }
-    
+
     $time = 60 * $config['flood_'.$a_flood_names[$type].'_timeout'];
     $count = $config['flood_'.$a_flood_names[$type].'_count'];
     $where = '';

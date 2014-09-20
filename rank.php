@@ -53,7 +53,7 @@ while( list($i, $rank) = each($a_rank) )
         $r_user = thwb_query("SELECT COUNT(userid) FROM $pref"."user WHERE
             userposts >= ".$rank['rankposts']." AND userposts < ".$a_rank[($i - 1)]['rankposts']);
         list($rankusers) = mysql_fetch_row($r_user);
-        
+
         $r_user = thwb_query("SELECT userid, username FROM $pref"."user WHERE
             userposts >= ".$rank['rankposts']." AND userposts < ".$a_rank[($i - 1)]['rankposts'].
             " ORDER BY userposts DESC LIMIT 1");
@@ -81,7 +81,7 @@ while( list($i, $rank) = each($a_rank) )
     if( !$width )
         $width = 1;
     $invwidth = 120 - $width;
-    
+
     eval($Trankrow->GetTemplate('RANKROWS'));
 }
 

@@ -57,7 +57,7 @@ $r_user = thwb_query( "SELECT
     WHERE
         userid=".intval($user['userid'])
 );
-    
+
 if( mysql_num_rows($r_user) < 1 )
 {
     message("Fehler","Benutzer existiert nicht");

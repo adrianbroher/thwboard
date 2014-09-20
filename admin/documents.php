@@ -29,7 +29,7 @@ if( $action == "ListDocs" )
 {
     print '<b>Available documentation files</b> (../doc/)<br><br>
     NEW: German documentation is available <a href="http://www.thwboard.de/documentation.p'.'h'.'p" target="_blank">here</a>.<br><br>';
-    
+
     $d = opendir("../doc/");
     while( $file = readdir($d) )
     {
@@ -51,7 +51,7 @@ elseif( $action == "ReadDoc" )
         include "../doc/$doc";
         print '</pre></blockquote><hr>';
     }
-    
+
     print '<a href="documents.php?session=' . $session . '&action=ListDocs">return</a> to the document index';
 }
 

@@ -30,7 +30,7 @@ function EditboxEncode($string)
     $string = str_replace('"', '&quot;', $string);
     $string = str_replace('<', '&lt;', $string);
     $string = str_replace('>', '&gt;', $string);
-    
+
     return $string;
 }
 
@@ -100,7 +100,7 @@ function NewsForm($action, $news)
 if( $action == "ListNews" )
 {
     print '<b>Current Announcements</b><br><a href="announcements.php?action=AddNews&session=' . $session . '">Add</a> an announcement<br><br>Note: You can use ThWboard Code in announcements.<br><br>';
-    
+
     $r_news = query("SELECT newsid, newstopic, newstext, newstime FROM ".$pref."news ORDER BY newstime DESC");
     echo mysql_error();
     while( $news = mysql_fetch_array($r_news) )
@@ -116,7 +116,7 @@ if( $action == "ListNews" )
 elseif( $action == "EditNews" )
 {
     print '<b>Edit Announcement</b><br><br>';
-    
+
     $r_news = query("SELECT newsid, boardid, newstopic, newstext, newstime FROM ".$pref."news WHERE newsid=$newsid");
     $news = mysql_fetch_array($r_news);
     NewsForm("UpdateNews", $news);
@@ -129,7 +129,7 @@ elseif( $action == "EditNews" )
 elseif( $action == "UpdateNews" )
 {
     $news[newstopic] = EditboxDecode($news[newstopic]);
-    
+
     while( list(, $boardids2) = @each($boardids) )
     {
         $add_board = $add_board.$boardids2.";";
@@ -145,9 +145,9 @@ elseif( $action == "UpdateNews" )
 elseif( $action == "AddNews" )
 {
     print '<b>Add Announcement</b><br><br>';
-    
+
     NewsForm("InsertNews", array());
-    
+
 }
 
 
@@ -155,12 +155,12 @@ elseif( $action == "AddNews" )
 // ===================================================
 // ===================================================
 elseif( $action == "InsertNews" )
-{    
+{
     while( list(, $boardids2) = @each($boardids) )
     {
         $add_board = $add_board.$boardids2.";";
     }
-    
+
     query("INSERT INTO ".$pref."news (newstopic,boardid, newstext, newstime) VALUES ('" . addslashes($news[newstopic]) . "', ';$add_board', '" . addslashes($news[newstext]) . "', " . time() . ")");
     print 'Announcement has been added!';
 }
@@ -174,7 +174,7 @@ elseif( $action == "DeleteNews" )
     if( $confirm == 1 )
     {
         query("DELETE FROM ".$pref."news WHERE newsid=$newsid");
-        
+
         print 'Announcement has been deleted!';
     }
     else

@@ -59,7 +59,7 @@ if(!isset($ordertype))
 if(!empty($char))
 {
   $char = str_replace('"', '', parse_code($char));
-  
+
   if($char != "digit")
     {
       $where = "WHERE username LIKE '".addslashes($char)."%'";
@@ -130,7 +130,7 @@ else
 {
     $descselected = '';
     $ascselected = ' selected';
-    
+
     $ordertype = 'asc';
 }
 
@@ -161,7 +161,7 @@ if( $i < 1 )
     $i = 1;
 $imax = $page + PADDING;
 if( $imax > $pages )
-    $imax = $pages;     
+    $imax = $pages;
 
 for( $i; $i <= $imax; $i++ )
 {
@@ -186,7 +186,7 @@ $r_user = thwb_query("SELECT userid, username, useremail, usericq, userhomepage,
 
 if(!mysql_num_rows($r_user))
 {
-  $MEMBER_ROWS = '<tr bgcolor="'.$style['CellA'].'"> 
+  $MEMBER_ROWS = '<tr bgcolor="'.$style['CellA'].'">
           <td align="center" class="stdfont" colspan="8">Keine User gefunden!</td>
         </tr>';
   $pages = 1;
@@ -197,7 +197,7 @@ else
   while( $user = mysql_fetch_array($r_user) )
     {
       $i % 2 == 0 ? $user['bgcolor'] = $style['CellA'] : $user['bgcolor'] = $style['CellB'];
-      
+
       $user['userjoin'] = form_date($user['userjoin']);
       $user['userlastpost'] = form_date($user['userlastpost']);
       $user['userlocation'] = chopstring(parse_code($user['userlocation']), 50);
@@ -209,7 +209,7 @@ else
 
       $user['userhomepage'] = parse_code($user['userhomepage']);
       $user['username'] = parse_code($user['username']);
-      
+
       if( $config['showpostslevel'] != 2)
       {
         if(!$g_user['userisadmin'])
@@ -217,7 +217,7 @@ else
         $user['userposts'] = 'n/a';
           }
       }
-      
+
       $user['useremail'] = get_email( $user, true );
 
       if( $user['userhomepage'] )
@@ -228,22 +228,22 @@ else
     {
       $user['userhomepage'] = "&nbsp;";
     }
-      
+
       if( !$user['usericq'] )
     {
       $user['usericq'] = "&nbsp;";
     }
-      
+
       if( !$user['userlocation'] )
     {
       $user['userlocation'] = "&nbsp;";
     }
-      
-      
+
+
       eval($TMemberrow->GetTemplate("MEMBER_ROWS"));
       $i++;
     }
-  
+
 }
 
 $search = str_replace('"', '&quot;', $search);

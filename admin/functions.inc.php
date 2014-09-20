@@ -44,7 +44,7 @@ function query($query)
     $result = mysql_query($query);
     $rows = mysql_affected_rows();
     $error = mysql_error();
-    
+
     if( $error )
     {
         print "\n<font color=red><b>MySQL: $error</b></font><br>";
@@ -52,7 +52,7 @@ function query($query)
         exit;
 
     }
-    
+
     return $result;
 }
 
@@ -60,7 +60,7 @@ function query($query)
 function get_templatesetarray()
 {
     $a_templateset = array();
-    
+
     $dp = opendir('../templates/');
     while( $file = readdir($dp) )
     {
@@ -81,22 +81,22 @@ function yesnoradio($name, $yesno = 0)
     return '<input type="radio" name="' . $name . '" value="1"' . ($yesno == 1 ? ' checked' : '') . '>
 Yes
 <input type="radio" name="' . $name . '" value="0"' . ($yesno == 0 ? ' checked' : '') . '>
-No 
+No
 ';
 }
 
 function datebox($name, $timestamp)
 {
     $date = getdate($timestamp);
-    
+
     echo "<input type=\"text\" name=\"" . $name . "[mday]\" size=\"2\" maxlength=\"2\" value=\"$date[mday]\">
 .
 <input type=\"text\" name=\"" . $name . "[mon]\" size=\"2\" maxlength=\"2\" value=\"$date[mon]\">
 .
 <input type=\"text\" name=\"" . $name . "[year]\" size=\"4\" maxlength=\"4\" value=\"$date[year]\">
-, 
+,
 <input type=\"text\" name=\"" . $name . "[hours]\" size=\"2\" maxlength=\"2\" value=\"$date[hours]\">
-: 
+:
 <input type=\"text\" name=\"" . $name . "[minutes]\" size=\"2\" maxlength=\"2\" value=\"$date[minutes]\">
 (dd.mm.yyyy, hh:mm)";
 }
@@ -172,7 +172,7 @@ function navgroupbox_open($caption, $noline = 0)
   </tr>
 </table>
 <table width="100%" border="0" cellspacing="1" cellpadding="2">';
-/*    if( $noline ) 
+/*    if( $noline )
     {
         print '
       <font size="1" color="#3366CC">
@@ -207,16 +207,16 @@ function getusercount()
     global $pref;
     $r_user = query("SELECT count(userid) AS usercount FROM ".$pref."user");
     $user = mysql_fetch_array($r_user);
-    
+
     return $user['usercount'];
 }
 
 function getactiveusers()
-{                        
+{
     global $pref;
     $r_user = query("SELECT count(userid) AS usercount FROM ".$pref."user WHERE userlastpost > " . (time() - 60 * 60 * 24 * 31));
     $user = mysql_fetch_array($r_user);
-    
+
     return $user['usercount'];
 }
 
@@ -225,7 +225,7 @@ function getboardcount()
   global $pref;
   $r_board = query("SELECT COUNT(boardid) AS boardcount FROM $pref"."board");
   $board = mysql_fetch_array($r_board);
-  
+
   return $board['boardcount'];
 }
 
@@ -236,13 +236,13 @@ function tb_header($redir_url = '')
 <html>
 <head>
 <title>ThWboard Admin Center</title>';
-    
+
     if( $redir_url )
     {
         print '
 <meta http-equiv="Refresh" content="1; URL='.$redir_url.'">';
     }
-    
+
     print '
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <style type="text/css">
@@ -275,36 +275,36 @@ function tb_header($redir_url = '')
 </head>
 <body bgcolor="#FCFCFC" text="#575757" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr bgcolor="#000000"> 
-    <td width="160"> 
+  <tr bgcolor="#000000">
+    <td width="160">
       <table width="100%" border="0" cellspacing="0" cellpadding="5">
-        <tr> 
+        <tr>
           <td><font size="1" color="#ffffff">ThWboard admin center</font></td>
         </tr>
       </table>
     </td>
     <td width="1"></td>
-    <td align="right"> 
+    <td align="right">
       <table width="100%" border="0" cellspacing="0" cellpadding="5">
-        <tr> 
+        <tr>
           <td align="right"><font size="1" color="#ffffff"><a href=".." target="_blank" class="blackbg">Your forums</a> | <a href="http://www.thwboard.de" class="blackbg" target="_blank">ThWboard
             homepage</a></font></td>
         </tr>
       </table>
     </td>
   </tr>
-  <tr bgcolor="#000000"> 
+  <tr bgcolor="#000000">
     <td height="1" width="160"></td>
     <td height="1" width="1"><img src="./images/space.gif" width="1" height="1"></td>
     <td height="1"></td>
   </tr>
-  <tr> 
+  <tr>
     <td bgcolor="#E0E8F1" width="160" valign="top">
-    <!-- 
+    <!--
       <table width="100%" border="0" cellspacing="3" cellpadding="0">
-        <tr> 
+        <tr>
           <td> -->';
-        
+
     navgroupbox_open('General', 1);
         navbox_element('index.php?session='.$session, 'Home');
         navbox_element('documents.php?session=' . $session . '&action=ListDocs', 'Documentation');
@@ -352,7 +352,7 @@ function tb_header($redir_url = '')
         navbox_element('t-editor.php?session=' . $session . '&action=ListTemplateSets', 'Template editor');
         navbox_element('mails.php?session=' . $session . '&action=ListMails', 'Email editor');
     navgroupbox_close();
-    
+
     navgroupbox_open('Misc');
         navbox_element('versioninfo.php?session=' . $session, 'Version info');
         navbox_element('query.php?session=' . $session, 'thwbMyAdmin');
@@ -362,7 +362,7 @@ function tb_header($redir_url = '')
     navgroupbox_open('Logout');
         navbox_element('index.php?action=logout&session='.$session, 'Logout');
     navgroupbox_close();
-    
+
 
     print '
 <!--          </td>
@@ -370,9 +370,9 @@ function tb_header($redir_url = '')
       </table> -->
     </td>
     <td bgcolor="#000000" width="1"><img src="./images/space.gif" width="1" height="1"></td>
-    <td valign="top"> 
+    <td valign="top">
       <table width="100%" border="0" cellspacing="0" cellpadding="8">
-        <tr> 
+        <tr>
           <td>';
 }
 
@@ -384,12 +384,12 @@ function tb_footer()
       </table>
     </td>
   </tr>
-  <tr bgcolor="#000000"> 
+  <tr bgcolor="#000000">
     <td height="1" width="160"></td>
     <td height="1" width="1"><img src="./images/space.gif" width="1" height="1"></td>
     <td height="1"></td>
   </tr>
-  <tr> 
+  <tr>
     <td width="160">&nbsp;</td>
     <td width="1"></td>
     <td align="right"><font size="1">--&gt; ThWboard (c) 2000-2004 ThWboard Development Group&nbsp;&nbsp;&nbsp;</font></td>
@@ -398,7 +398,7 @@ function tb_footer()
 </body>
 </html>
 ';
-} 
+}
 
 function format_db_date($string_date)
 {
@@ -427,7 +427,7 @@ function get_ordered_board_list()
     {
         $a_board[$board['categoryid']][] = $board;
     }
-    
+
     $r_category = query("SELECT categoryid, categoryname FROM $pref"."category ORDER BY categoryorder ASC");
     while( $category = mysql_fetch_array($r_category) )
     {
@@ -469,7 +469,7 @@ function updateboard($boardid)
         $thread = array_merge($thread, mysql_fetch_array($r_thread));
 
         $thread['postcount'] += $thread['threadcount']; // threads without replies.
-                
+
         query("UPDATE ".$pref."board SET
             boardlastpost='$thread[threadtime]',
             boardthreadid='$thread[threadid]',
@@ -495,11 +495,11 @@ function loginform()
 </head>
 <body bgcolor="#F2F2F2" text="#575757" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table width="100%" border="0" cellspacing="0" cellpadding="5">
-  <tr> 
-    <td bgcolor="#000000"><font color="#FFFFFF" face="Verdana, Arial" size="1">ThWboard 
+  <tr>
+    <td bgcolor="#000000"><font color="#FFFFFF" face="Verdana, Arial" size="1">ThWboard
       Admin Center :: Login</font></td>
   </tr>
-  <tr> 
+  <tr>
     <td>
       <form name="login" method="post" action="index.php">
         <br>
@@ -510,36 +510,36 @@ function loginform()
         <br>
         <br>
         <table border="0" cellspacing="0" cellpadding="0" align="center">
-          <tr> 
+          <tr>
             <td bgcolor="#DBDBDB" width="1" height="1"><img src="images/space.gif" width="1" height="1"></td>
             <td bgcolor="#DBDBDB" height="1"></td>
             <td bgcolor="#DBDBDB" width="1" height="1"><img src="images/space.gif" width="1" height="1"></td>
           </tr>
-          <tr> 
+          <tr>
             <td bgcolor="#DBDBDB" width="1"></td>
-            <td> 
+            <td>
               <table border="0" cellspacing="0" cellpadding="4">
-                <tr> 
-                  <td><font size="1"><b><font face="Verdana, Arial, Helvetica, sans-serif" color="#3366CC">Login</font></b></font> 
+                <tr>
+                  <td><font size="1"><b><font face="Verdana, Arial, Helvetica, sans-serif" color="#3366CC">Login</font></b></font>
                     <table border="0" cellspacing="0" cellpadding="2">
-                      <tr> 
-                        <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">-&gt; 
+                      <tr>
+                        <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">-&gt;
                           Username&nbsp;&nbsp;&nbsp;</font></td>
-                        <td> 
+                        <td>
                           <input type="text" name="l_username" size="12">
                         </td>
                       </tr>
-                      <tr> 
-                        <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">-&gt; 
+                      <tr>
+                        <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">-&gt;
                           Password&nbsp;&nbsp;&nbsp;</font></td>
-                        <td> 
+                        <td>
                           <input type="password" name="l_password" size="12">
                         </td>
                       </tr>
                     </table>
                   </td>
                 </tr>
-                <tr> 
+                <tr>
                   <td align="right">
                     <input type="submit" name="go" value="&gt;&gt;">
                   </td>
@@ -548,7 +548,7 @@ function loginform()
             </td>
             <td bgcolor="#FFFFFF" width="1"></td>
           </tr>
-          <tr> 
+          <tr>
             <td bgcolor="#DBDBDB" width="1" height="1"><img src="images/space.gif" width="1" height="1"></td>
             <td bgcolor="#FFFFFF" height="1"></td>
             <td bgcolor="#FFFFFF" width="1" height="1"><img src="images/space.gif" width="1" height="1"></td>

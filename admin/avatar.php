@@ -28,7 +28,7 @@ echo("<b>Avatars</b><br><br>\n");
 
 if( $config['useravatar'] == 3 || $config['useravatar'] == 1 )
 {
-    if ( ($action == "" ) or ( $action == "ListAvatars" ) or !$action ) 
+    if ( ($action == "" ) or ( $action == "ListAvatars" ) or !$action )
     {
         $a_navigation = "<a href=\"avatar.php?session=$session&action=NewAvatar\">Add new Avatar</a>&nbsp;&nbsp;&nbsp;
         <a href=\"avatar.php?session=$session&action=DeleteAll\">Delete all Avatars</a>&nbsp;&nbsp;&nbsp;
@@ -52,15 +52,15 @@ if( $config['useravatar'] == 3 || $config['useravatar'] == 1 )
             echo "<td></td>\n";
         }
         echo "</tr>\n";
-        
+
         $e = '';
-        while ( $avatar_data = mysql_fetch_array($avatar_search) ) 
+        while ( $avatar_data = mysql_fetch_array($avatar_search) )
         {
-            if ( substr($avatar_data['avatarurl'], 0, 4) != "http") 
-            { 
-                $avatar_data['avatarurl'] = "../".$avatar_data['avatarurl']; 
+            if ( substr($avatar_data['avatarurl'], 0, 4) != "http")
+            {
+                $avatar_data['avatarurl'] = "../".$avatar_data['avatarurl'];
             }
-            
+
             echo "<tr>\n";
             echo "<td".($e % 2 == 0 ? ' bgcolor="#eeeeee"' : '')."><b>$avatar_data[avatarid].</b></td><td"
             .($e % 2 == 0 ? ' bgcolor="#eeeeee"' : '').">$avatar_data[avatarname]</td><td"
@@ -71,12 +71,12 @@ if( $config['useravatar'] == 3 || $config['useravatar'] == 1 )
             $e++;
         }
         echo "</table><br>\n";
-        
+
         if( !$e )
         {
             echo "<center>No Avatars available!</center><br>\n";
         }
-        
+
         echo $a_navigation;
     }
     elseif ( $action == "DeleteAvatar" )
@@ -86,7 +86,7 @@ if( $config['useravatar'] == 3 || $config['useravatar'] == 1 )
             $delete_avatar = mysql_query('DELETE FROM '.$pref.'avatar WHERE avatarid = '.$id.'');
             echo('<font color="#00C600"><b>The Avatar has been deleted!</b></font>');
         }
-        else 
+        else
         {
             echo('<b>==> Sure?</b><br><br>');
             echo('<form action="avatar.php" method=post>
@@ -98,7 +98,7 @@ if( $config['useravatar'] == 3 || $config['useravatar'] == 1 )
             <input type="submit" value="Delete!">');
         }
     }
-    elseif ( $action == "NewAvatar" ) 
+    elseif ( $action == "NewAvatar" )
     {
         echo('<b>==> Add a new Avatar</b><br><br>');
         echo('<form action="avatar.php" method="post">
@@ -110,12 +110,12 @@ if( $config['useravatar'] == 3 || $config['useravatar'] == 1 )
         <tr><td>&nbsp;</td><td><input type="submit" value="Save Settings"></td></tr>
         </table>');
     }
-    elseif ( $action == "AddAvatars" ) 
+    elseif ( $action == "AddAvatars" )
     {
         $insert_avatar = mysql_query('INSERT INTO '.$pref.'avatar (avatarname, avatarurl) VALUES ("'.$new_name.'","'.$new_url.'") ');
         echo('<font color="#00C600"><b>Avatar has been added!</b></font>');
     }
-    elseif ( $action == "EditAvatar" ) 
+    elseif ( $action == "EditAvatar" )
     {
         $avatar_search = mysql_query("SELECT avatarid, avatarname, avatarurl FROM ".$pref."avatar WHERE avatarid = $id");
         $avatar_data = mysql_fetch_array($avatar_search);
@@ -131,7 +131,7 @@ if( $config['useravatar'] == 3 || $config['useravatar'] == 1 )
         <tr><td>&nbsp;</td><td><input type="submit" value="Save Settings"></td></tr>
         </table>');
     }
-    elseif ( $action == "SaveAvatar" ) 
+    elseif ( $action == "SaveAvatar" )
     {
         $update_link = mysql_query('UPDATE '.$pref.'avatar SET avatarid = "'.$new_id.'", avatarname = "'.$new_name.'", avatarurl = "'.$new_url.'" WHERE avatarid = '.$id.'');
         echo('<font color="#00C600"><b>Avatar has been edited!</b></font><br>');
@@ -139,12 +139,12 @@ if( $config['useravatar'] == 3 || $config['useravatar'] == 1 )
     }
     elseif ( $action == "DeleteAll" )
     {
-        if ( $sure == "yes" ) 
+        if ( $sure == "yes" )
         {
             $delete_avatar = mysql_query("DELETE FROM ".$pref."avatar");
             echo('<font color="#FF7F00"><b>All Avatars have been deleted!</b></font>');
         }
-        else 
+        else
         {
             echo('<b>==> Sure?</b><br><br>');
             echo('<form action="avatar.php" method="post">
@@ -155,7 +155,7 @@ if( $config['useravatar'] == 3 || $config['useravatar'] == 1 )
             <input type=submit value="Delete!">');
         }
     }
-    elseif ($action == "ListImportAvatars") 
+    elseif ($action == "ListImportAvatars")
     {
         echo('<b>==> Import Avatars</b><br><br>');
         echo "These are all Avatar-images located in the \"<i>avatar/</i>\" directory:<br><br>";
@@ -206,7 +206,7 @@ if( $config['useravatar'] == 3 || $config['useravatar'] == 1 )
             echo "</form>";
         }
     }
-    elseif ( $action == "ImportAvatars" ) 
+    elseif ( $action == "ImportAvatars" )
     {
         while( list($ava_url, $value) = each($avabild) )
         {
@@ -224,9 +224,9 @@ else
     echo 'Pre-installed Avatars are currently disabled. You can enable them <a href="index.php?session=' . $session . '&action=EditSettings">here</a>.';
     $avatarindex = true;
 }
-if (!$avatarindex) 
+if (!$avatarindex)
 {
     echo '<br><br><a href="avatar.php?action=ListAvatars&id='.$id.'&session='.$session.'">Back to the Avatar-Overview</a>';
-} 
+}
 
 tb_footer();

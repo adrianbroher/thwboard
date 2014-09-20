@@ -31,7 +31,7 @@ function EditboxEncode($string)
     $string = str_replace('"', '&quot;', $string);
     $string = str_replace('<', '&lt;', $string);
     $string = str_replace('>', '&gt;', $string);
-    
+
     return $string;
 }
 
@@ -143,7 +143,7 @@ elseif( $action == "UpdateTemplate" )
             $t_data = str_replace("\r\n", "\n", $t_data);
             fwrite($fp, stripslashes(EditboxDecode($t_data)));
             fclose($fp);
-        
+
             print 'template has been updated!<br>click <a href="t-editor.php?action=EditTemplate&name=' . $name . '&session=' . $session . '&dir=' . $dir . '">here</a> to continue.';
         }
     }
@@ -181,23 +181,23 @@ elseif( $action == "ListTemplates" )
                 $a_templates[] = $file;
             }
         }
-        
+
         sort($a_templates);
-        
+
         print '<table width="100%" border="0" cellspacing="0" cellpadding="3">
-      <tr> 
+      <tr>
         <td><b>Filename</b></td>
         <td><b>Options</b></td>
         <td><b>Size</b></td>
         <td><b>Modified</b></td>
       </tr>';
-        
+
         while( list($k, $file) = each($a_templates) )
         {
             if( !WriteAccess('../templates/' . $dir . '/' . $file) )
             {
                 print '
-      <tr> 
+      <tr>
         <td'.($k % 2 == 0 ? ' bgcolor="#eeeeee"' : '').'>'.$file.'</td>
         <td'.($k % 2 == 0 ? ' bgcolor="#eeeeee"' : '').'>Can'."'".'t edit: No permission</td>
         <td'.($k % 2 == 0 ? ' bgcolor="#eeeeee"' : '').'>'.ceil(filesize('../templates/' . $dir . '/'.$file)/1000).' KB</td>
@@ -207,7 +207,7 @@ elseif( $action == "ListTemplates" )
             else
             {
                 print '
-      <tr> 
+      <tr>
         <td'.($k % 2 == 0 ? ' bgcolor="#eeeeee"' : '').'>'.$file.'</td>
         <td'.($k % 2 == 0 ? ' bgcolor="#eeeeee"' : '').'><a href="t-editor.php?action=EditTemplate&session='.$session.'&name='.$file.'&dir=' . $dir . '">Edit</a></td>
         <td'.($k % 2 == 0 ? ' bgcolor="#eeeeee"' : '').'>'.ceil(filesize('../templates/' . $dir . '/'.$file)/1000).' KB</td>

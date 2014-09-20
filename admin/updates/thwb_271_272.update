@@ -10,23 +10,23 @@ class CUpdate
     var        $Author            = 'ThWboard Development Team';
     var        $Date            = '13.03.2002';
     var        $Notes            = '';
-    
+
     function AllowUpdate()
     {
         $r_registry = thwb_query("SELECT keyvalue FROM $this->Prefix"."registry WHERE keyname='version'");
         $registry = mysql_fetch_array($r_registry);
-        
+
         if( $registry['keyvalue'] != $this->OldVersion )
             return 0;
         else
             return 1;
     }
-    
+
     function SetError($errmsg)
     {
         $this->Error = $errmsg;
     }
-    
+
     function GetError()
     {
         return $this->Error;
@@ -44,5 +44,5 @@ class CUpdate
         thwb_query("UPDATE $this->Prefix"."registry SET keyvalue='".$this->NewVersion."' WHERE keyname='version'");
 
         return 0;
-    }    
+    }
 }

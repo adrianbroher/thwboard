@@ -43,7 +43,7 @@ function cachestats($s, $e, $u, $data)
             " . $data['nuser'] . ",
             " . $data['nthread'] . ",
             " . $data['npost'] . "
-            )"); 
+            )");
 }
 }
 
@@ -54,7 +54,7 @@ function getcachedstats($s, $e, $u)
     global $pref;
     $r_query = thwb_query("SELECT stat_month as month, stat_auser as auser, stat_nuser as nuser, stat_nthread as nthread, stat_npost as npost FROM " .
             $pref . "statcache WHERE stat_stime = $s AND stat_etime = $e AND stat_uid = $u DESC LIMIT 1");
-    
+
     return mysql_fetch_array($r_query);
 }
 }
@@ -71,7 +71,7 @@ else
 
     $historyrow = '';
     $data = array();
-    
+
     $exit = false;
     $negcount = 0;
     $r_firstactive = thwb_query("SELECT userjoin FROM " . $pref . "user ORDER BY userjoin ASC LIMIT 1");
@@ -84,7 +84,7 @@ else
     {
       $endtime = mktime(0, 0, 0, date("m", time()) + 1 - $negcount, 0, date("Y", time()));
       $starttime = mktime(0, 0, 0, date("m", time()) - $negcount, 1, date("Y", time()));
-        
+
         if( $iscurmonth || !isscached($starttime, $endtime, $g_user['userid']) )
         {
             $r_stats = thwb_query("SELECT count(u.userid) as nuser FROM " . $pref . "user as u WHERE u.userjoin > $starttime AND u.userjoin <= $endtime");

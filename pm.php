@@ -84,7 +84,7 @@ if( $action == "do_deleteall" )
   }
 
   $pm = $HTTP_POST_VARS['pm'];
-  
+
   thwb_query("DELETE FROM ".$pref."pm WHERE pmtoid=$g_user[userid]");
   header("Location: ".build_link('pm.php', true));
 }
@@ -112,7 +112,7 @@ elseif( isset($deletepms) )
     {
         while( list($k, $v) = each($deletepms) )
             $deletepms[$k] = intval($v);
-        
+
         thwb_query("DELETE FROM ".$pref."pm WHERE pmtoid=$g_user[userid] AND pmid IN(" . addslashes(implode(',', $deletepms)) . ")");
         header("Location: ".build_link('pm.php', true));
         exit;
@@ -131,7 +131,7 @@ elseif( $action == "new" )
         // http://www.securiteam.com/securitynews/5FP0C204KE.html
         $action = $HTTP_POST_VARS['action'];
         $errmsg = '';
-        
+
         $pm['pmtext'] = strip_session($pm['pmtext']);
 
         if( strlen($pm['username']) < 1 )
@@ -148,7 +148,7 @@ elseif( $action == "new" )
         {
             $errmsg .= "Der Text ist zu kurz! (mindestens 3 Zeichen)<br>";
         }
-        
+
         if( strlen($pm['pmtext']) > $config['pm_maxlength'] )
         {
             $errmsg .= "Der Text ist zu lang! (maximal $config[pm_maxlength] Zeichen)<br>";
@@ -183,7 +183,7 @@ elseif( $action == "new" )
         $r_frompm = thwb_query("SELECT count(pmid) FROM ".$pref."pm WHERE pmtoid=$g_user[userid]");
         list($frompmcount) = mysql_fetch_row($r_frompm);
 
-        if ( $pm['pmmethod'] == 'pm' ) 
+        if ( $pm['pmmethod'] == 'pm' )
         {
             // flood check
 
@@ -207,7 +207,7 @@ elseif( $action == "new" )
                 // send msg!
                 thwb_query("INSERT INTO ".$pref."pm (pmfromid, pmtoid, pmtopic, pmtext, pmtime, pmflags, pmfolder)
                     VALUES ($g_user[userid], $user[userid],'" . addslashes($pm['pmtopic']) . "','" . addslashes($pm['pmtext']) . "',".time().", 1, 0);");
-                
+
                 if((($frompmcount < $config['max_privmsg']) || $P->has_permission(P_NOPMLIMIT)) && $pm['pmsaveinoutbox'] == 1)
                 {
                     thwb_query("INSERT INTO ".$pref."pm (pmtoid, pmfromid, pmtopic, pmtext, pmtime, pmflags, pmfolder)
@@ -234,14 +234,14 @@ elseif( $action == "new" )
 
           eval($Pmmail->GetTemplate("mail_body"));
           @mail($user['useremail'],"Private Nachricht: ".$pm['pmtopic'], $mail_body, "From: ".$g_user['username']." <".$g_user['useremail'].">");
-          
+
           if( ( $frompmcount < $config['max_privmsg'] ) AND ( $pm['pmsaveinoutbox'] == 1 ) )
             {
               thwb_query("INSERT INTO ".$pref."pm (pmtoid, pmfromid, pmtopic, pmtext, pmtime, pmflags, pmfolder)
                 VALUES ($g_user[userid], $user[userid],'" . addslashes($pm['pmtopic']." *E-Mail*") . "','" . addslashes($pm['pmtext']) . "',".time().",0 , 1);");
             }
           $navpath .= "Private Messages";
-          
+
           message("Message verschickt", "Ihre Private Message wurde als E-Mail verschickt!<br><a href=\"".build_link('pm.php')."\">Private Message Center</a>");
         }
     }
@@ -255,7 +255,7 @@ elseif( $action == "new" )
             $print_emailradio = '';
 
         $pm = array();
-        
+
         if(!isset($recipient))
           {
             $recipient = '';
@@ -344,7 +344,7 @@ elseif( $action == "show" )
 
     $pm = mysql_fetch_array($r_pm);
     $pm['tousername'] = $g_user['username'];
-    
+
     if( $pm['pmtoid'] != $g_user['userid'] )
     {
         message("Error", "You don't have permission to access this page");
@@ -463,7 +463,7 @@ else
             $i_out++;
         }
     }
-    
+
     if( $inbox_mails == 0 )
     {
         eval($Tpmnomsg->GetTemplate("PMROWS_INBOX"));
@@ -475,16 +475,16 @@ else
 
     $full_box = $inbox_mails + $outbox_mails;
     $diskquota = round( ( $full_box / $config['max_privmsg'] ) * 100);
-    
+
     if ($inbox_mails_new == 0 )
     {
         $msg_new_msgs['inbox'] = ", davon keine ungelesen";
     }
-    elseif ( $inbox_mails_new == 1 ) 
+    elseif ( $inbox_mails_new == 1 )
     {
         $msg_new_msgs['inbox'] = ", davon eine Nachricht ungelesen";
     }
-    else 
+    else
     {
         $msg_new_msgs['inbox'] = ", davon $inbox_mails_new Nachricht ungelesen";
     }
@@ -512,8 +512,8 @@ else
             $pic['start_width'] = 10;
             $pic['end_width'] = 10;
             $pic['middle_width'] = (300*($diskquota/100))-($pic['start_width']+$pic['end_width']);
-        } 
-        else 
+        }
+        else
         {
             $pic['start_width'] = 29;
             $pic['end_width'] = 29;
@@ -524,9 +524,9 @@ else
     }*/
     // Initiating Template
     $Tpm = new Template("templates/" . $style['styletemplate'] . "/pm.html");
-    
+
     $navpath .= 'Privatnachrichten &Uuml;bersicht';
-    
+
     eval($Tpm->GetTemplate("CONTENT"));
     eval($TFrame->GetTemplate());
 }

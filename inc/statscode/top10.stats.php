@@ -40,7 +40,7 @@ else
   /** top 10 posters **/
 
   $data['title'] = 'Top 10 Poster';
-  
+
   $name = array();
   $value = array();
   $a_posters = array();
@@ -62,9 +62,9 @@ else
     }
 
   mysql_free_result($r_posters);
-  
+
   eval($TRow->GetTemplate("stats_top10_row"));
- 
+
   $stats_top10_row .= "<br>";
     }
 
@@ -99,7 +99,7 @@ else
       $value[$i] = 'n/a';
     }
 
-  mysql_free_result($r_boards);  
+  mysql_free_result($r_boards);
 
   eval($TRow->GetTemplate("stats_top10_row"));
 
@@ -137,7 +137,7 @@ else
       $value[$i] = 'n/a';
     }
 
-  mysql_free_result($r_postthreads);  
+  mysql_free_result($r_postthreads);
 
   eval($TRow->GetTemplate("stats_top10_row"));
 
@@ -174,7 +174,7 @@ else
       $value[$i] = 'n/a';
     }
 
-  mysql_free_result($r_viewthreads);  
+  mysql_free_result($r_viewthreads);
 
   eval($TRow->GetTemplate("stats_top10_row"));
 

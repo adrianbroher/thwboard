@@ -43,7 +43,7 @@ function get_smilies()
     );
 
     define( 'THWB_SMILIES', true );
-        
+
     return $a_smilies;
 }
 
@@ -51,12 +51,12 @@ function get_smilies()
 function get_thwb_tags()
 {
     global $style, $a_thwbcode, $a_thwbcode2nd;
-    
+
     $a_thwbcode = $a_thwbcode2nd = array();
-    
+
     //ttt: please keep an eye on the order the tags appear;
     //       e.g. noparse /must/ come after [php] and [code]
-    
+
     /**
      * Achtung!
      * Wenn hier ein Code-Tag hinzugefügt wird,
@@ -86,7 +86,7 @@ function get_thwb_tags()
     // [url]www.thwboard.de[/url]
     $a_thwbcode[SEARCH][] = "/\[url\]([^ ,\"\n]+)\.([^ ,\"\n]+)\[\/url\]/Ui";
     $a_thwbcode[REPLACE][] = '[noparse]<a href="http://\1.\2" target="_blank">\1.\2</a>[/noparse]';
-        
+
     // http://www.thwboard.de
     $a_thwbcode[SEARCH][] = "/(^|[\]\( \n])([a-zA-Z0-9.\-+]+):\/\/([^ \"\n]+?)([\?!,\.\)]*)(?=[ \"\n\[]|$)/";
     $a_thwbcode[REPLACE][] = '\1[noparse]<a href="\2://\3" target="_blank">[/noparse]\2://\3</a>\4';
@@ -99,7 +99,7 @@ function get_thwb_tags()
     // [mail=""]
     $a_thwbcode[SEARCH][] = '/\[mail="([._0-9a-zA-Z-]+)@([._0-9a-zA-Z-]+)"\](.*)\[\/mail\]/Ui';
     $a_thwbcode[REPLACE][] = '[noparse]<a href="mailto:\1@\2">\3</a>[/noparse]';
-      
+
     // [url=""]
     $a_thwbcode[SEARCH][] = "/\[url=\"([a-zA-Z0-9.\-+]+):\/\/([^ \"\n]+)\"\](.*)\[\/url\]/Usi";
     $a_thwbcode[REPLACE][] = '[noparse]<a href="\1://\2" target="_blank">[/noparse]\3</a>';
@@ -130,9 +130,9 @@ function get_thwb_tags()
     // [/quote]
     $a_thwbcode2nd[SEARCH][] = '/\[\/quote\]/';
     $a_thwbcode2nd[REPLACE][] = '</font></td></tr></table><br>';
-    
+
     define( 'THWB_TAGS', true );
-    
+
     return $a_thwbcode;
 }
 
@@ -140,7 +140,7 @@ function get_thwb_tags()
 class CStack {
     var $tos;
     var $stack;
-    
+
     function CStack()
     {
         $this->stack = array();
@@ -156,7 +156,7 @@ class CStack {
         else
             return 0;
     }
-    
+
     //ttt: now supports regexps
     function search( $var, $preg=0 )
     {
@@ -179,7 +179,7 @@ class CStack {
 
 
 function close_tags( &$tags, &$s_pos, &$string, $curtag='' )
-{    
+{
     if( strlen($curtag) > 0 )
     {
         if( !$tags->search($curtag) )
@@ -194,7 +194,7 @@ function close_tags( &$tags, &$s_pos, &$string, $curtag='' )
     {
         $curtag = "###"; // just a dummy
     }
-    
+
     $oldtag = $tags->peek();
     while( $oldtag && ($oldtag != $curtag)  )
     {
@@ -217,12 +217,12 @@ function fixup_quotes( $string )
     $s_pos = 0; // $s_pos is position in $string
     $t_pos = 0; // $t_pos is position in $tmp
     $tags = new CStack();
-    
+
     while( is_integer($t_pos = strpos($tmp, '[')) )
     {
         $s_pos += $t_pos+1;
         $tmp = substr( $tmp, $t_pos+1 );
-        
+
         $endpos = strpos( $tmp, ']' );
         if( is_integer($endpos) ) {
             $curtag = substr( $tmp, 0, $endpos );
@@ -247,7 +247,7 @@ function fixup_quotes( $string )
     // if there are still some endtags missing, add them at the end
     $s_pos = strlen( $string ) +1; // normally this should be -1, but close_tags moves back 2 chars
     close_tags( $tags, $s_pos, $string );
-    
+
     return $string;
 }
 
@@ -289,20 +289,20 @@ function format_phpsource($string)
 
     $string = trim($string);
     $string = str_replace('\"', '"', $string);
-    
+
     if( (float)(phpversion()) >= 4.2 )
     {
-        $string = str_replace("<br>", "\n", $string);    
+        $string = str_replace("<br>", "\n", $string);
         $string = str_replace('&lt;', '<', $string);
         $string = str_replace('&gt;', '>', $string);
-            
+
         //ttt: automatically insert < ?php if necessary
         if( !preg_match( '/^\<\?(php)?/s', $string ) )
             $string = "<?php\n". $string;
-        
+
         if( !preg_match( '/\?\>$/s', $string ) )
             $string .= "\n?>";
-        
+
         $string = highlight_string($string, TRUE);
     }
 
@@ -315,20 +315,20 @@ function preparse_code($string)
     $string = str_replace("\r", '', $string);
     $string = str_replace(chr(160), '', $string);
     $string = trim($string);
-    
+
     $string = str_replace("con\\con", '', $string);
     $string = str_replace("con/con", '', $string);
 
     // [code] tags.
     $string = str_replace("\t", '    ', $string);
 
-    $string = ereg_replace("\[code\]([ \n]*)", '[code]', $string); 
-    $string = ereg_replace("\[/code\]([ \n]*)", '[/code] ', $string); 
-    $string = ereg_replace("\[php\]([ \n]*)", '[php]', $string); 
-    $string = ereg_replace("\[/php\]([ \n]*)", '[/php] ', $string); 
-    $string = ereg_replace("\[quote\]([ \n]*)", '[quote]', $string); 
-    $string = ereg_replace("\[/quote\]([ \n]*)", '[/quote] ', $string); 
-    
+    $string = ereg_replace("\[code\]([ \n]*)", '[code]', $string);
+    $string = ereg_replace("\[/code\]([ \n]*)", '[/code] ', $string);
+    $string = ereg_replace("\[php\]([ \n]*)", '[php]', $string);
+    $string = ereg_replace("\[/php\]([ \n]*)", '[/php] ', $string);
+    $string = ereg_replace("\[quote\]([ \n]*)", '[quote]', $string);
+    $string = ereg_replace("\[/quote\]([ \n]*)", '[/quote] ', $string);
+
     return $string;
 }
 
@@ -351,30 +351,30 @@ function parse_code($string, $do_br = 0, $do_img = 0, $do_code = 0, $do_smilies 
 
     $string = str_replace('<', '&lt;', $string);
     $string = str_replace('>', '&gt;', $string);
-    
+
     if( $do_code )
     {
         global $a_thwbcode, $a_thwbcode2nd;
-        
+
         if( !defined('THWB_TAGS') )
             get_thwb_tags();
-        
-        $string = preg_replace($a_thwbcode[SEARCH], $a_thwbcode[REPLACE], $string );        
+
+        $string = preg_replace($a_thwbcode[SEARCH], $a_thwbcode[REPLACE], $string );
         // nested [quote] fixup
         $string = fixup_quotes($string);
-        
+
         $string = preg_replace($a_thwbcode2nd[SEARCH], $a_thwbcode2nd[REPLACE], $string );
     }
 
     if( $do_smilies && $config['smilies'] )
     {
         global $a_smilies;
-        
+
         if( !defined('THWB_SMILIES') )
             $a_smilies = get_smilies();
-        
+
         if( !$smilies_fixed )
-        {    
+        {
             reset($a_smilies);
             $url_prepend = '<img src="templates/'.$style['styletemplate'].'/images/icon/';
             while( current( $a_smilies ) )
@@ -396,7 +396,7 @@ function parse_code($string, $do_br = 0, $do_img = 0, $do_code = 0, $do_smilies 
         $string = preg_replace('/\[img\](|[ \n]*<a href=\")([a-zA-Z]+):\/\/([^ \"\n]+)(|\" target=\"_blank\">\2:\/\/\3([ \n]*)<\/a>[ \n]*)\[\/img\]/Usi', '<img src="\2://\3" alt="" border="0">', $string);
       }
 
-    
+
     if( $do_br )
         $string = str_replace("\n", '<br />', $string);
     else

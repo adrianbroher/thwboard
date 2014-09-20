@@ -30,7 +30,7 @@ function unhtmlspecialchars($s)
 	$s = str_replace('&#039;', "'", $s);
 	$s = str_replace('&quot;', '"', $s);
 	$s = str_replace('&amp;', '&', $s);
-	
+
 	return $s;
 }
 
@@ -50,8 +50,8 @@ MySQL Query<br>
 <br>
 <br>
 <br>
-<b>Note:</b> You may want to disable this feature. For security reasons, there 
-is no appropriate option here, at the admin center. To disable this feature, connect 
+<b>Note:</b> You may want to disable this feature. For security reasons, there
+is no appropriate option here, at the admin center. To disable this feature, connect
 with your ftp client and simply delete this file (&quot;query.php&quot;).';
 }
 
@@ -104,7 +104,7 @@ Query: <i>'.$query.'</i><br>
 				else
 				{
 					$fields = mysql_num_fields($r);
-					$r_field = 
+					$r_field =
 
 					$i = 0;
 					print '<table width="100%" border="0" cellspacing="1" cellpadding="4">';
@@ -136,7 +136,7 @@ Query: <i>'.$query.'</i><br>
 				print 'Query sucessfull.';
 			}
 		}
-	} 
+	}
 }
 
 

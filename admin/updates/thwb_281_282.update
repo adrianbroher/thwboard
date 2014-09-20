@@ -34,15 +34,15 @@ class CUpdate
     {
         $r_registry = thwb_query("SELECT keyvalue FROM $this->Prefix"."registry WHERE keyname='version'");
         $registry = mysql_fetch_array($r_registry);
-        
+
         return ($registry['keyvalue'] == $this->OldVersion);
     }
-    
+
     function SetError($errmsg)
     {
         $this->Error = $errmsg;
     }
-    
+
     function GetError()
     {
         return $this->Error;
@@ -57,7 +57,7 @@ class CUpdate
     {
         /* board version */
         thwb_query("UPDATE $this->Prefix"."registry SET keyvalue='".$this->NewVersion."' WHERE keyname='version'");
-        
+
         /* userinterest changed to tinytext / useractivation */
         thwb_query("ALTER TABLE $this->Prefix"."user MODIFY userinterests TINYTEXT NOT NULL,
                                                              ADD useractivate TINYINT(1) UNSIGNED DEFAULT '0' NOT NULL");
@@ -87,7 +87,7 @@ class CUpdate
           {
             thwb_query("UPDATE $this->Prefix"."groupboard SET accessmask = '".build_string($a_mask['accessmask'])."' WHERE groupid = ".$a_mask['groupid']." AND boardid = ".$a_mask['boardid']);
           }
-        
+
         return 0;
-    }    
+    }
 }

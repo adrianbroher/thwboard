@@ -27,29 +27,29 @@ tb_header();
 if( $action == "bans" )
 {
     print '<b>User bans</b><br><br>';
-    
+
     if( !isset($addban) )
     {
         print '
 <a href="users.php?session='.$session.'&action=show_banlist">Display current banlist</a>
 <form name="form2" method="post" action="">
   <table width="100%" border="0" cellspacing="1" cellpadding="3">
-    <tr> 
+    <tr>
       <td colspan="2"><i>Set ban</i></td>
     </tr>
-    <tr> 
+    <tr>
       <td><b>Username</b></td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="username">
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td valign="top"><b>Ban type</b></td>
-      <td> 
+      <td>
         <input type="radio" name="type" value="perm">
         Permanent ban<br>
         <input type="radio" name="type" value="timebased" checked>
-        Timebased ban: Expires in 
+        Timebased ban: Expires in
         <input class="tbinput" type="text" name="duration" size="8" maxlength="8">
         <select class="tbinput" name="duration_multiplier">
           <option value="days">Days</option>
@@ -58,20 +58,20 @@ if( $action == "bans" )
         </select>
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td valign="top"><b>Public reason</b></td>
-      <td> 
+      <td>
         <textarea  name="pubreason" rows="5" cols="50"></textarea>
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td valign="top"><b>Admin notes/reason</b><br><font size="1">(This message is visible to admins only)</font></td>
-      <td> 
+      <td>
         <textarea name="reason" rows="5" cols="50"></textarea>
       </td>
     </tr>
-    <tr align="center"> 
-      <td colspan="2"> 
+    <tr align="center">
+      <td colspan="2">
         <input type="hidden" name="action" value="bans">
         <input type="hidden" name="addban" value="1">
         <input type="hidden" name="session" value="' . $session . '">
@@ -123,7 +123,7 @@ if( $action == "bans" )
 
             query("INSERT INTO ".$pref."ban (userid, banpubreason, banreason, banexpire) VALUES
                 ($user[userid], '".addslashes($pubreason)."', '".addslashes($reason)."', $exp)");
-            
+
             print 'User has been banned.';
         }
     }
@@ -193,7 +193,7 @@ elseif( $action == 'delban' )
 {
     query("UPDATE ".$pref."user SET userbanned=0 WHERE userid=$userid" );
     query("DELETE FROM ".$pref."ban WHERE userid=$userid");
-    
+
     print '<b>Unbanned</b><br><br>User has been unbanned';
 }
 
@@ -203,10 +203,10 @@ elseif( $action == 'delban' )
 elseif( $action == 'show_reasons' )
 {
     print '<b>Ban reasons</b><br><br>';
-    
+
     $r_ban = query("SELECT banreason, banpubreason FROM $pref"."ban WHERE userid=$userid");
     $ban = mysql_fetch_array($r_ban);
-    
+
     print '<i>Public reason:</i><br>'.$ban['banpubreason'];
     print '<i><br><br><br><br>Private reason:</i><br>'.$ban['banreason'];
 }

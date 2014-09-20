@@ -35,7 +35,7 @@ function EditboxEncode($string)
     $string = str_replace('"', '&quot;', $string);
     $string = str_replace('<', '&lt;', $string);
     $string = str_replace('>', '&gt;', $string);
-    
+
     return $string;
 }
 
@@ -45,7 +45,7 @@ $Tprofile=new Template("templates/" . $style['styletemplate'] . "/profile.html")
 $r_user = thwb_query("SELECT userid, username, userhomepage, userlocation, usericq, useraim, usermsn,
     useroccupation, userinterests, usersignature,
     userhideemail, userhidesig, userinvisible, usernoding,
-    styleid, useremail, useravatar, userbday 
+    styleid, useremail, useravatar, userbday
     FROM ".$pref."user WHERE userid='$g_user[userid]'");
 
 $user = mysql_fetch_array($r_user);
@@ -66,60 +66,60 @@ if( ( $config['useravatar'] != 0 ) && ( $user['useravatar'] != 'notallowed' ) )
     $Tavatarrow = new Template("templates/" . $style['styletemplate'] . "/avatarrow.html");
     $Tavatarpre = new Template("templates/" . $style['styletemplate'] . "/avatarpre.html");
     $Tavatarop = new Template("templates/" . $style['styletemplate'] . "/avatarop.html");
-    
-    if( $config['useravatar'] == 3 ) 
+
+    if( $config['useravatar'] == 3 )
     {
         $q_avatar = thwb_query("SELECT avatarurl FROM ".$pref."avatar WHERE avatarurl='".addslashes($user['useravatar'])."'");
-        
-        if( $a_avatar = mysql_fetch_array($q_avatar) ) 
+
+        if( $a_avatar = mysql_fetch_array($q_avatar) )
         {
-            if ( $a_avatar['avatarurl'] == $user['useravatar'] ) 
+            if ( $a_avatar['avatarurl'] == $user['useravatar'] )
             {
                 $isinstal = true;
             }
         }
     }
-    
+
     if( $config['useravatar'] == 1 || $config['useravatar'] == 3 )
     {
         $r_avatar = thwb_query("SELECT avatarname, avatarurl FROM ".$pref."avatar");
         $avatarselect .= "<option value=\"avatar/noavatar.png\"" . ( (!$user['useravatar']) || (!isset($install) || !$isinstal) ? " selected" : "" ) . ">* Kein Avatar *</option>\n";
-        
-        while ( $avatars = mysql_fetch_array($r_avatar) ) 
+
+        while ( $avatars = mysql_fetch_array($r_avatar) )
         {
-            if ( $avatars['avatarurl'] == 'avatar/noavatar.png' ) 
-            { 
-                $avatars['avatarurl'] = ''; 
+            if ( $avatars['avatarurl'] == 'avatar/noavatar.png' )
+            {
+                $avatars['avatarurl'] = '';
             }
             $avatarselect .= "<option value=\"" . $avatars['avatarurl'] . "\"" . ( $avatars['avatarurl'] == $user['useravatar'] ? " selected" : "" ) . ">" . $avatars['avatarname'] . "</option>\n";
         }
-        
+
         eval($Tavatarpre->GetTemplate("AVATRAPRE"));
     }
-    
+
     if ( ( $config['useravatar'] == 2 ) || ( $config['useravatar'] == 3) )
     {
-        
-        if ( $config['useravatar'] == 3 ) 
+
+        if ( $config['useravatar'] == 3 )
         {
             $alter = '<br>'.$style['smallfont'].'Alternative Avatarquelle des Benutzers:' . $style['smallfontend'] . '<br>';
             $alt_message = ' oder um die vorinstallierte Avatar Auswahl zu aktivieren';
-            
-            if ( !isset($isinstal) || !$isinstal ) 
-            { 
-                $avatarentry = $user['useravatar']; 
-            } 
+
+            if ( !isset($isinstal) || !$isinstal )
+            {
+                $avatarentry = $user['useravatar'];
+            }
             else
-            { 
-                $avatarentry = ''; 
+            {
+                $avatarentry = '';
             }
         }
         else
           {
             $alter = $alt_message = '';
-            $avatarentry = $user['useravatar']; 
+            $avatarentry = $user['useravatar'];
         }
-        
+
         eval($Tavatarop->GetTemplate('AVATRAOP'));
     }
 

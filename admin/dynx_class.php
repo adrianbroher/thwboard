@@ -104,14 +104,14 @@ function SelectAll(a)
 function style_bottom($action, $buttontitle, $hiddeninput = 0)
 {
     global $l_username, $l_userpassword;
-    
+
     if( !$hiddeninput )
     {
         print ('
       <input type="hidden" name="l_username" value="' . $l_username . '">
           <input type="hidden" name="l_userpassword" value="' . $l_userpassword . '">');
         }
-    
+
     print ('      <input type="hidden" name="action" value="' . $action . '"><br>
           <br><input type="submit" name="next" value="' . $buttontitle . '" class="dynxbutton">
       </form>
@@ -135,7 +135,7 @@ function style_bottom($action, $buttontitle, $hiddeninput = 0)
 function check_login( $user, $pass )
 {
     global $DB_Stream, $pref;
-    
+
     $r_user = $DB_Stream->query(
         "SELECT
             userpassword
@@ -145,7 +145,7 @@ function check_login( $user, $pass )
             username='". addslashes($user) ."'
         AND userisadmin=1"
     );
-    
+
     if( mysql_num_rows($r_user) )
     {
         $user = mysql_fetch_array($r_user);
@@ -158,7 +158,7 @@ function check_login( $user, $pass )
 function ERROR_Handler ( $erorrno, $errormsg = '' )
 {
     global $errorMessages;
-    
+
     print '
 <b>Ein Fehler ist aufgetreten:</b><br>
 <br>
@@ -184,10 +184,10 @@ function style2sql( $style_file, $pref )
         if( trim($line) )
         {
             $pos = strpos($line, '=');
-        
+
             $name = substr($line, 0, $pos);
             $value = substr($line, $pos + 1);
-            
+
             if( $name == 'styleversion' )
             {
                 $ver = trim($value);
@@ -220,7 +220,7 @@ function style2sql( $style_file, $pref )
 class FILEFUNC
 {
     var $F_Stream = '';
-    
+
     function writefile($path, $filecontext)
     {
         if( !FILEFUNC::WriteAccess($path) )
@@ -236,7 +236,7 @@ class FILEFUNC
             return TRUE;
         }
     }
-    
+
     function writeaccess($file)
     {
         $this->F_Stream = @fopen($file, 'w');
@@ -250,12 +250,12 @@ class FILEFUNC
             return TRUE;
         }
     }
-    
+
     function has_access( $file, $access_rights )
     {
         return 1;
     }
-      
+
 }
 
 // ===================================================
@@ -277,19 +277,19 @@ class DB_Connection
             ERROR_Handler($this->_errorno, $this->_errormsg);
         }
     }
-    
+
     function query( $querystring )
     {
         $test = 2;
         $r_result = @mysql_query( $querystring );
-        
+
         if( mysql_error() )
         {
             $this->_errormsg = mysql_error();
             $this->_errorno = 2;
             ERROR_Handler($this->_errorno, $this->_errormsg);
         }
-        
+
         return $r_result;
     }
 }
@@ -300,35 +300,35 @@ class timer
 {
     var $starttime = '';
     var $endtime = '';
-    
+
     function timer()
     {
         $this->start();
     }
-    
+
     function start()
     {
         $this->starttime = $this->_getmicrotime();
     }
-    
+
     function stop()
     {
         $this->endtime = $this->_getmicrotime();
         return $this->gettime();
         $this = null;
     }
-    
+
     function _getmicrotime()
     {
         list( $usec, $sec ) = explode( " ", microtime() );
         return( (float)$usec + (float)$sec );
     }
-    
+
     function gettime( $multi = 100000 )
     {
         return round( ($this->endtime - $this->starttime) * $multi, 0);
     }
-    
+
     function pause()
     {
         $this->endtime = _getmicrotime();
@@ -343,13 +343,13 @@ class server
     var $connection = '';
     var $serveruri = '';
     var $thwboardver = '2.8'; // Fuer 2.8 bisher...
-    
+
     function server( $uri, $retries )
     {
         $this->serveruri = $uri;
         $this->pingserver();
     }
-    
+
     // Noch dummy, bekommt in der naechsten Version einen richtigen Zweck
     function pingserver()
     {
@@ -370,16 +370,16 @@ class server
             $answere .= fread($this->connection, 1024);
         }
         fclose( $this->connection );
-        
+
         // fuer den fall das Server-Headers mitgeschickt werden
         if( substr($answere, 0, 7) == 'X-Power' )
         {
             $pos = strpos($answere, "html");
             $answere = substr($answere, $pos + 8);
         }
-        
+
         $answere = trim($answere);
-        
+
         if( substr( $answere, 0, 9) == 'srv_error' )
         {
             // Identifiziere Fehlermeldung des Servers und gebe entsprechende Erklaerungen aus
@@ -404,10 +404,10 @@ class server
                     ERROR_Handler(6, $answere);
             }
         }
-        
+
         return( $answere );
     }
-    
+
     //ttt: Wird dies noch gebraucht? Hat Probleme gemacht in Verbindung mit fopen()...
     function getReadBytes()
     {

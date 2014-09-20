@@ -72,7 +72,7 @@ if( $config['use_email'] )
             {
                 message('Fehler', 'Ung&uuml;ltiger Hash.');
             }
-            
+
             if( $hash != $user['userpassword'] )
             {
                 message("Fehler", "Ung&#xFC;ltiger Hash.");
@@ -80,7 +80,7 @@ if( $config['use_email'] )
             else
             {
                 /* set new password */
-                                      
+
                 thwb_query("UPDATE ".$pref."user SET userpassword='" . $new_hash . "' WHERE username='" . addslashes($username) . "'");
 
                 eval($TMail->GetTemplate("text"));

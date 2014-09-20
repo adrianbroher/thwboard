@@ -41,8 +41,8 @@ if( isset($sortbyname) && $sortbyname )
 {
     $avatar_sort = "$style[stdfont]<a href=\"".build_link("listavatar.php")."\">Nach Avatar-Nummer sortieren</a>$style[stdfontend]";
     $orderby = "avatarname";
-} 
-else 
+}
+else
 {
     $avatar_sort = "$style[stdfont]<a href=\"".build_link("listavatar.php?sortbyname=1")."\">Nach Namen sortieren</a>$style[stdfontend]";
     $orderby = "avatarid";
@@ -51,7 +51,7 @@ else
 $start = $e = 0;
 $r_avatar = thwb_query("SELECT avatarid, avatarname, avatarurl FROM ".$pref."avatar ORDER BY $orderby");
 $avatar_rows = '';
-while( $avatar_data = mysql_fetch_array($r_avatar) ) 
+while( $avatar_data = mysql_fetch_array($r_avatar) )
 {
     $start++;
 

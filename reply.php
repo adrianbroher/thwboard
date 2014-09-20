@@ -142,7 +142,7 @@ thwb_query("UPDATE ".$pref."board SET
     boardthreadid=$thread[threadid] WHERE boardid='$board[boardid]'");
 
 if( $g_user['userid'] )
-{    
+{
     // Den postings wert des postenden users erh&ouml;hen
     thwb_query("UPDATE ".$pref."user SET userlastpost=$ctime, userposts=userposts+1 WHERE userid='$g_user[userid]'");
 }
@@ -166,7 +166,7 @@ if( $config['use_email'] )
         post.userid=user.userid AND
         post.postemailnotify=1 AND
         user.userid<>$g_user[userid]");
-    
+
     while( $email = mysql_fetch_array($r_email) )
     {
         $text = '';

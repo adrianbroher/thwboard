@@ -35,12 +35,12 @@ define('FLD_PASSWD', 8);
 define('FLD_TEXT', 16);
 
 $a_searchfield = array(
-    array('userid', 'User ID', FLD_INT), 
-    array('username', 'Username', FLD_STR), 
-    array('useremail', 'Email address', FLD_STR), 
-    array('usersignature', 'Signature', FLD_STR), 
-    array('userposts', 'Postcount', FLD_INT), 
-    array('userjoin', 'Registration date', FLD_DATE), 
+    array('userid', 'User ID', FLD_INT),
+    array('username', 'Username', FLD_STR),
+    array('useremail', 'Email address', FLD_STR),
+    array('usersignature', 'Signature', FLD_STR),
+    array('userposts', 'Postcount', FLD_INT),
+    array('userjoin', 'Registration date', FLD_DATE),
     array('userlastpost', 'Last post', FLD_DATE),
     array('useractivate', 'Not activated?', FLD_BOOL)
 );
@@ -67,7 +67,7 @@ $a_editfield = array(
     'usernoding' => array('Disable "new PM" popup?', '', FLD_BOOL),
     'useractivate' => array('Needs activation?', '', FLD_BOOL)
 );
-    
+
 
 
 function delete_user($userid, $username)
@@ -102,7 +102,7 @@ function in_group($groupids, $groupid)
  * ==========================================================
  *              AddUser
  * ==========================================================
- */    
+ */
 if( $action == 'AddUser' )
 {
     if( $username )
@@ -143,33 +143,33 @@ if( $action == 'AddUser' )
 <br>
 <form name="theform" method="post" action="./useredit.php">
   <table width="100%" border="0" cellspacing="0" cellpadding="3">
-    <tr> 
+    <tr>
       <td>Username</td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="username">
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td>Email</td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="useremail">
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td>Password</td>
-      <td> 
+      <td>
         <input class="tbinput" type="password" name="userpassword">
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td>Password (re-enter)</td>
-      <td> 
+      <td>
         <input class="tbinput" type="password" name="userpassword2">
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td>&nbsp;</td>
-      <td> 
+      <td>
         <input type="hidden" name="action" value="AddUser">
         <input type="hidden" name="session" value="' . $session . '">
         <input type="submit" name="submit" value="Add User &gt;&gt;">
@@ -187,7 +187,7 @@ if( $action == 'AddUser' )
  * ==========================================================
  *              DeleteUser
  * ==========================================================
- */    
+ */
 elseif( $action == "DeleteUser" )
 {
     if( $username )
@@ -208,7 +208,7 @@ elseif( $action == "DeleteUser" )
             else
             {
                 delete_user($user['userid'], $username);
-            
+
                 print 'User deleted.';
             }
         }
@@ -219,15 +219,15 @@ elseif( $action == "DeleteUser" )
 <br>
 <form name="theform" method="post" action="./useredit.php">
   <table width="100%" border="0" cellspacing="0" cellpadding="3">
-    <tr> 
+    <tr>
       <td>Username</td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="username">
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td>&nbsp;</td>
-      <td> 
+      <td>
         <input type="hidden" name="action" value="DeleteUser">
         <input type="hidden" name="session" value="' . $session . '">
         <input type="submit" name="submit" value="Delete User &gt;&gt;">
@@ -244,7 +244,7 @@ elseif( $action == "DeleteUser" )
  * ==========================================================
  *              Filter
  * ==========================================================
- */    
+ */
 elseif( $action == "Filter" )
 {
     print '
@@ -253,7 +253,7 @@ elseif( $action == "Filter" )
   Note: Leave all fields blank to list all users (not recommended)<br>
   <br>
   <table border="0" width="700" cellspacing="1" cellpadding="3">
-    <tr> 
+    <tr>
       <td><i>Searchfield</i></td>
       <td><i>Search type</i></td>
       <td><i>Value</i></td>
@@ -265,7 +265,7 @@ elseif( $action == "Filter" )
     <tr>
       <td><b>'.$field[1].'</b></td>
       <td>';
-      
+
           if( $field[2] == FLD_INT )
         {
             print '
@@ -285,7 +285,7 @@ elseif( $action == "Filter" )
         }
         elseif( $field[2] == FLD_BOOL )
         {
-          print '<input class="tbinput" name="searchtype['.$field[0].']" type="hidden" value="1">';  
+          print '<input class="tbinput" name="searchtype['.$field[0].']" type="hidden" value="1">';
         }
         else
         {
@@ -295,11 +295,11 @@ elseif( $action == "Filter" )
           <option value="after">after</option>
         </select>';
         }
-      
+
         print '
       </td>
       <td>';
-        
+
         if( $field[2] == FLD_INT )
         {
             print '
@@ -319,22 +319,22 @@ elseif( $action == "Filter" )
             print '
         <input class="tbinput" type="text" name="searchvalue['.$field[0].']"> <i>(dd.mm.yyyy)</i>';
         }
-        
+
         print '
       </td>
     </tr>
 ';
     }
-    
+
 print '
-    <tr> 
+    <tr>
       <td colspan="3">
-        &nbsp; 
+        &nbsp;
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td>
-        <b>Action</b> 
+        <b>Action</b>
       </td>
       <td colspan="2">
         <select class="tbinput" name="subaction">
@@ -343,8 +343,8 @@ print '
         </select>
       </td>
     </tr>
-    <tr align="center"> 
-      <td colspan="3"> 
+    <tr align="center">
+      <td colspan="3">
         <input type="hidden" name="advanced" value="1">
         <input type="hidden" name="action" value="ListUsers">
         <input type="hidden" name="session" value="'.$session.'">
@@ -363,11 +363,11 @@ print '
  * ==========================================================
  *              ListUsers
  * ==========================================================
- */    
+ */
 elseif( $action == "ListUsers" )
 {
     $where = 'WHERE 1';
-        
+
     while( list($field, $value) = each($searchvalue) )
     {
         if( !empty($value) )
@@ -398,20 +398,20 @@ elseif( $action == "ListUsers" )
                     $day = (int)(substr($value, 0, 2));
                     $mon = (int)(substr($value, 3, 2));
                     $year = (int)(substr($value, 6, 4));
-                    
+
                     $timestamp = mktime(0, 0, 0, $mon, $day, $year);
                     if( $searchtype[$field] == 'before' )
                         $where .= " < $timestamp";
                     else
                         $where .= " > $timestamp";
             } // switch
-        } // if 
+        } // if
     } // while
 
     if( $subaction == 'list' )
     {
         $r_user = query("SELECT username, userid, useremail FROM ".$pref."user $where");
-    
+
         print "<b>Search result</b><br><br>";
         if( mysql_num_rows($r_user) < 1 )
         {
@@ -422,7 +422,7 @@ elseif( $action == "ListUsers" )
             print '
 <form name="form1" method="post" action="useredit.php">
   <table width="600" border="0" cellspacing="1" cellpadding="3">
-    <tr> 
+    <tr>
       <td>&nbsp;</td>
       <td><i>User ID</i></td>
       <td><i>Username</i></td>
@@ -435,18 +435,18 @@ elseif( $action == "ListUsers" )
             {
                 print '
     <tr bgcolor="'.($i % 2 == 0 ? '#E5E5E5' : '#F2F2F2').'">
-      <td> 
+      <td>
         <input type="checkbox" name="a_userid[]" value="'.$user['userid'].'">
       </td>
       <td><b>'.$user['userid'].'</b></td>
       <td>'.htmlspecialchars($user['username']).'</td>
       <td>'.$user['useremail'].'</td>
-      <td><a href="useredit.php?action=EditUser&userid='.$user['userid'].'&session='.$session.'">Edit</a> | 
+      <td><a href="useredit.php?action=EditUser&userid='.$user['userid'].'&session='.$session.'">Edit</a> |
           <a href="useredit.php?action=DeleteUser&username='.$user['username'].'&session='.$session.'">Delete</a></td>
     </tr>';
                 $i++;
             }
-        
+
             print '
   </table><br><br>
   <input type="hidden" name="session" value="'.$session.'">
@@ -455,33 +455,33 @@ elseif( $action == "ListUsers" )
   <input type="submit" name="del" value="Delete selected users">
 -->
 <table width="100%" border="0" cellspacing="1" cellpadding="3">
-  <tr> 
+  <tr>
     <td colspan="2"><b>Selected users:</b></td>
   </tr>
-  <tr> 
-    <td colspan="2"> 
+  <tr>
+    <td colspan="2">
       <hr size="1">
     </td>
   </tr>
-  <tr> 
-    <td> 
+  <tr>
+    <td>
       <input type="submit" name="mass_delete" value="Delete">
     </td>
-    <td> 
+    <td>
       <input type="checkbox" name="sure" value="1">
       I\'m sure</td>
   </tr>
 <!--
-  <tr> 
-    <td colspan="2"> 
+  <tr>
+    <td colspan="2">
       <hr size="1">
     </td>
   </tr>
-  <tr> 
-    <td> 
+  <tr>
+    <td>
       <input type="submit" name="move_into_group" value="Move into group:">
     </td>
-    <td> 
+    <td>
       <select name="groupid">';
             $r_group = query("SELECT name, groupid FROM $pref"."group ORDER BY groupid ASC");
             while( $group = mysql_fetch_array($r_group) )
@@ -494,33 +494,33 @@ elseif( $action == "ListUsers" )
     </td>
   </tr>
 -->
-  <tr> 
-    <td valign="top" colspan="2"> 
+  <tr>
+    <td valign="top" colspan="2">
       <hr size="1">
     </td>
   </tr>
-  <tr> 
-    <td valign="top"> 
+  <tr>
+    <td valign="top">
       <input type="submit" name="mass_pm" value="Send private message:">
     </td>
-    <td> 
+    <td>
       <table width="100%" border="0" cellspacing="1" cellpadding="3">
-        <tr> 
+        <tr>
           <td>Subject</td>
-          <td> 
+          <td>
             <input type="text" name="pmtopic">
           </td>
         </tr>
-        <tr> 
+        <tr>
           <td valign="top">Text</td>
-          <td> 
+          <td>
             <textarea name="pmtext" rows="5" cols="50"></textarea>
           </td>
         </tr>
       </table>
     </td>
   </tr>
-  <tr> 
+  <tr>
     <td valign="top" colspan="2">
       <hr size="1">
     </td>
@@ -532,7 +532,7 @@ elseif( $action == "ListUsers" )
     {
         $r_user = query("SELECT COUNT(userid) AS usercount FROM ".$pref."user $where");
         $user = mysql_fetch_array($r_user);
-        
+
         print '<b>Search result</b><br><br>'.$user['usercount'].' user(s)';
     }
 }
@@ -543,7 +543,7 @@ elseif( $action == "ListUsers" )
  * ==========================================================
  *              mass_delete
  * ==========================================================
- */    
+ */
 elseif( isset($mass_delete) )
 {
     if( !isset($sure) )
@@ -568,7 +568,7 @@ elseif( isset($mass_delete) )
                 delete_user($user['userid'], $user['username']);
                 $deleted++;
             }
-            
+
             print '<br>Deleted <b>'.$deleted.'</b> users.';
         }
         else
@@ -586,7 +586,7 @@ elseif( isset($mass_delete) )
  * ==========================================================
  *              mass_pm
  * ==========================================================
- */    
+ */
 elseif( isset($mass_pm) )
 {
     if( !empty($a_userid) )
@@ -614,20 +614,20 @@ VALUES
     }
 }
 
- 
+
 
 
 /*
  * ==========================================================
  *              move_into_group
  * ==========================================================
- */    
+ */
 elseif( isset($move_into_group) )
 {
     if( !empty($a_userid) )
     {
         /* select users */
-        
+
     }
     else
     {
@@ -642,17 +642,17 @@ elseif( isset($move_into_group) )
  * ==========================================================
  *              UpdateUser
  * ==========================================================
- */    
+ */
 elseif( $action == "UpdateUser" )
 {
     $r_user = query("SELECT username FROM ".$pref."user WHERE userid=$userid");
     $tuser = mysql_fetch_array($r_user);
-    
+
     if( substr($user['userhomepage'], 0, 7) != "http://" )
     {
         $user['userhomepage'] = "http://" . $user['userhomepage'];
     }
-    
+
     $query = '';
     while( list($k, $v) = each($user) )
     {
@@ -671,15 +671,15 @@ elseif( $action == "UpdateUser" )
         }
     }
     $query = substr($query, 1);
-    
+
     if( $user['username'] != $tuser['username'] )
     {
         $user['username'] = addslashes($user['username']);
         $tuser['username'] = addslashes($tuser['username']);
-    
+
         query("UPDATE ".$pref."thread SET threadlastreplyby='$user[username]' WHERE threadlastreplyby='$tuser[username]'");
         query("UPDATE ".$pref."board SET boardlastpostby='$user[username]' WHERE boardlastpostby='$tuser[username]'");
-        
+
         query("UPDATE $pref"."thread SET threadauthor='$user[username]' WHERE threadauthor='$tuser[username]'");
     }
 
@@ -687,11 +687,11 @@ elseif( $action == "UpdateUser" )
         $groupids = ','.implode(',', $groupids).',';
     else
         $groupids = ',,';
-    
+
     $query .= ", groupids='$groupids'";
 
     query("UPDATE ".$pref."user SET $query WHERE userid=$userid");
-        
+
     print 'User has been updated!';
 }
 
@@ -702,7 +702,7 @@ elseif( $action == "UpdateUser" )
  * ==========================================================
  *              EditUser
  * ==========================================================
- */    
+ */
 elseif( $action == "EditUser" )
 {
     $r_user = query("SELECT * FROM ".$pref."user WHERE userid=$userid");
@@ -719,7 +719,7 @@ elseif( $action == "EditUser" )
     if( $user['usernodelete'] == 0 || $user['userisadmin'] == 0 )
     {
         print '
-    <tr> 
+    <tr>
       <td><b>User status</b></td>
       <td>
         <select class="tbinput" name="user[userisadmin]">
@@ -732,7 +732,7 @@ elseif( $action == "EditUser" )
     else
     {
         print '
-    <tr> 
+    <tr>
       <td><b>User status</b></td>
       <td>
         <font color="#990000">Cannot be changed (User is god admin).</font>
@@ -740,13 +740,13 @@ elseif( $action == "EditUser" )
       </td>
     </tr>';
     }
-    
+
     print '
     <tr>
       <td valign="top"><b>User group</b><br><font size="1">Use CTRL to select multiple</font></td>
       <td>
         <select class="tbinput" name="groupids[]" size="5" multiple>';
-        
+
         $r_group = query("SELECT name, groupid FROM $pref"."group ORDER BY groupid ASC");
         while( $group = mysql_fetch_array($r_group) )
         {
@@ -759,7 +759,7 @@ elseif( $action == "EditUser" )
     while( list($k, $field) = each($a_editfield) )
     {
         print '
-    <tr> 
+    <tr>
       <td valign="top"><b>'.$field[0].'</b>'.($field[1] != '' ? '<br><font size="1">'.$field[1].'</font>' : '').'</td>
       <td valign="middle">';
         switch( $field[2] )
@@ -779,8 +779,8 @@ elseif( $action == "EditUser" )
             case FLD_BOOL:
                 print '<input type="radio" name="user['.$k.']" value="1"'.($user[$k] ? ' checked' : '').'>Yes&nbsp;&nbsp;&nbsp;<input type="radio" name="user['.$k.']" value="0"'.(!$user[$k] ? ' checked' : '').'>No';
                 break;
-        }    
-        print ' 
+        }
+        print '
       </td>
     </tr>';
     }
@@ -788,12 +788,12 @@ elseif( $action == "EditUser" )
 */
 
     print '
-    <tr> 
+    <tr>
       <td colspan="2" align="center">
         &nbsp;
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td colspan="2" align="center">
         <input type="hidden" value="UpdateUser" name="action">
         <input type="hidden" name="userid" value="'.$userid.'">

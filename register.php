@@ -54,7 +54,7 @@ else
     $Tregform = new Template("templates/" . $style['styletemplate'] . "/register.html");
 
     $passwordfield = '';
-    
+
     $navpath .= "User Registrierung &raquo; Dateneingabe";
 
     $TPasswordfield = new Template('./templates/'.$style['styletemplate'].'/register_pwdfield.html');

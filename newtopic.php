@@ -59,10 +59,10 @@ if( !isset($Submit) )
         {
             $newtopicicons .= "<br>";
         }
-    
+
         $j++;
     }
-    
+
     if( $config['smilies'] )
     {
         $smilies_on_off = "AN";
@@ -98,12 +98,12 @@ if( !isset($Submit) )
             $replyusername = '';
         }
     }
-    
+
     $Tframe= new Template("templates/" . $style['styletemplate'] . "/frame.html");
     $Tform= new Template("templates/" . $style['styletemplate'] . "/newtopic.html");
 
     $navpath .= 'Neues Thema erstellen';
-    
+
     eval($Tform->GetTemplate("CONTENT"));
     eval($Tframe->GetTemplate());
 }
@@ -113,7 +113,7 @@ else
 
     $post['posttext'] = strip_session($post['posttext']);
 
-  
+
   // Bannedwords-Protection
   if( $config["usebwordprot"] == BWORD_TOPIC || $config["usebwordprot"] == BWORD_ALL )
     {
@@ -140,13 +140,13 @@ else
     {
       $msg .= "Der Text ist zu lang<br>";
     }
-  
+
   if( strlen($msg) > 0 )
     {
       $navpath .= 'Neuer Thread';
       message("Fehler","Es sind leider folgende Fehler aufgetreten:<br><br><font color='$style[color_err]'>$msg</font>");
     }
-  
+
   if( !$P->has_permission( P_NOFLOODPROT ) && time() - $config['postdelay'] < $g_user['userlastpost'] )
     {
       $navpath .= 'Neuer Thread';
@@ -158,16 +158,16 @@ else
   {
       prevent_guestspam();
   }
-  
+
   $time = time();
-  
+
   (isset($post['postemailnotify']) && $post['postemailnotify']) ? $post['postemailnotify'] = 1 : $post['postemailnotify'] = 0;
-  
+
   if( !isset($thread['topiciconid']) || !$topicicon[($thread['topiciconid'])] )
     {
       $thread['topiciconid'] = 0;
     }
-  
+
   if( $P->has_permission( P_POSTNEW ) && ($g_user['userid'] == 0) )
     {
       // check username
@@ -175,7 +175,7 @@ else
 
       // override notify
       $post['postemailnotify'] = 0;
-      
+
       $g_user['username'] = $config['guestprefix'] . $post['postguestname'];
       $post['postguestname'] = $config['guestprefix'] . addslashes($post['postguestname']);
     }
@@ -183,12 +183,12 @@ else
     {
       $post['postguestname'] = '';
     }
-  
+
   if( $config['uppercase_prot'] )
     {
       $thread['threadtopic'] = killshout( $thread['threadtopic'] );
     }
-  
+
   // Autoclose & delete
   if ( isset($config['auto_close']) && $config['auto_close'] > 0 )
     {
@@ -208,9 +208,9 @@ else
         '".addslashes($g_user['username'])."',
         '".intval($thread['threadiconid'])."',
         '$time')");
-  
+
   $thread['threadid'] = mysql_insert_id();
-  
+
   // die neue nachricht abspeichern in dem messages table
   thwb_query("INSERT INTO ".$pref."post (posttime, posttext, userid, threadid, postemailnotify, postip, postsmilies,
         postcode, postguestname)
@@ -233,12 +233,12 @@ else
     boardthreadtopic='" . addslashes(preparse_code($thread['threadtopic'])) . "',
     boardthreadid=$thread[threadid]
         WHERE boardid='$board[boardid]'");
-  
+
   if( $g_user['userid'] )
     {
       // Den postings wert des postenden users erh&ouml;hen
       thwb_query("UPDATE ".$pref."user SET userlastpost=$time, userposts=userposts+1 WHERE userid='$g_user[userid]'");
     }
-  
+
   header("Location: ".build_link("showtopic.php?threadid=$thread[threadid]", true));
 }

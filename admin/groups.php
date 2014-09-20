@@ -71,7 +71,7 @@ $p_desc = array(
     P_NOPMLIMIT => 'No private message limit?',
     P_INTEAM => 'Listed on the teampage?',
     P_CEVENT => 'Can add new calendar entries?',
-    P_FORCEPM => 'Can send PMs if recipient\'s PM box is full?' 
+    P_FORCEPM => 'Can send PMs if recipient\'s PM box is full?'
 );
 
 $p_globalonly = array(
@@ -81,7 +81,7 @@ $p_globalonly = array(
     P_CEVENT => 1,
     P_FORCEPM => 1
 );
-    
+
 include "common.inc.php";
 
 function flag_make_string($arr)
@@ -148,7 +148,7 @@ function grouplist_remove(&$list, $groupid)
         if( $gid != $groupid )
             $a_new[] = $gid;
     }
-    
+
     $list = implode(',', $a_new);
 }
 
@@ -180,28 +180,28 @@ function print_perms($accessmask, $color = '', $global = 0)
 function group_form($group, $action)
 {
     global $session, $p_desc;
-    
+
     print '<form name="theform" method="post" action="groups.php">
   <table width="100%" border="0" cellspacing="0" cellpadding="4">
-    <tr> 
+    <tr>
       <td><b>Group name (non-public)</b></td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="name" value="'.htmlspecialchars($group['name']).'">
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td><b>Group title</b></td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" name="title" value="'.htmlspecialchars($group['title']).'">
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td><b>Group title priority</b><br><font size="1">For users who are in more than one group. The title (if set)<br> of the group with the highest priority will be displayed below<br> their name. Use numbers between 0 and 999.</font></td>
-      <td> 
+      <td>
         <input class="tbinput" type="text" size="4" name="titlepriority" value="'.htmlspecialchars($group['titlepriority']).'">
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td>Permissions:</td>
       <td></td>
     </tr>';
@@ -209,23 +209,23 @@ function group_form($group, $action)
     $i = 0;
     while( list($k, $v) = each($p_desc) )
     {
-        print '<tr'.($i % 2 == 0 ? '' : ' bgcolor="#E2E2E2"').'> 
+        print '<tr'.($i % 2 == 0 ? '' : ' bgcolor="#E2E2E2"').'>
       <td>'.$v.'</td>
       <td>
         <input type="radio" name="permission['.$k.']" value="yes"'.(check_flag($group['accessmask'], $k) ? ' checked' : '' ).'>
-        Yes&nbsp;&nbsp;&nbsp; 
+        Yes&nbsp;&nbsp;&nbsp;
         <input type="radio" name="permission['.$k.']" value="no"'.(check_flag($group['accessmask'], $k) ? '' : ' checked' ).'>
-        No 
+        No
       </td>
     </tr>';
         $i++;
     }
-    
-    print '<tr> 
+
+    print '<tr>
       <td>&nbsp;</td>
       <td></td>
-    </tr><tr> 
-      <td colspan="2" align="center"> 
+    </tr><tr>
+      <td colspan="2" align="center">
         <input type="hidden" name="session" value="'.$session.'">
         <input type="hidden" name="groupid" value="'.$group['groupid'].'">
         <input type="hidden" name="action" value="'.$action.'">
@@ -239,16 +239,16 @@ function group_form($group, $action)
 function groupboard_form($group, $board, $useglobal)
 {
     global $session, $p_desc, $p_globalonly;
-    
+
     print '<form name="theform" method="post" action="groups.php">
   <table width="100%" border="0" cellspacing="0" cellpadding="4">
-    <tr> 
+    <tr>
       <td colspan="2">Edit permissions for group &quot;<b>'.$group['name'].'</b>&quot; and board &quot;<b>'.$board['boardname'].'</b>&quot;</td>
-      <td> 
+      <td>
         &nbsp;
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td colspan="2">
         <input type="radio" name="useglobal" value="yes"'.($useglobal ? ' checked' : '').'>
         This board uses the groups global permission rules. (The settings below will be ignored)<br>
@@ -262,24 +262,24 @@ function groupboard_form($group, $board, $useglobal)
     {
         if( !isset($p_globalonly[$k]) )
         {
-            print '<tr'.($i % 2 == 0 ? '' : ' bgcolor="#E2E2E2"').'> 
+            print '<tr'.($i % 2 == 0 ? '' : ' bgcolor="#E2E2E2"').'>
       <td>'.$v.'</td>
-      <td> 
+      <td>
         <input type="radio" name="permission['.$k.']" value="yes"'.(check_flag($group['accessmask'], $k) ? ' checked' : '' ).'>
-        Yes&nbsp;&nbsp;&nbsp; 
+        Yes&nbsp;&nbsp;&nbsp;
         <input type="radio" name="permission['.$k.']" value="no"'.(check_flag($group['accessmask'], $k) ? '' : ' checked' ).'>
-        No 
+        No
       </td>
     </tr>';
             $i++;
         }
     }
-    
-    print '<tr> 
+
+    print '<tr>
       <td>&nbsp;</td>
       <td></td>
-    </tr><tr> 
-      <td colspan="2" align="center"> 
+    </tr><tr>
+      <td colspan="2" align="center">
         <input type="hidden" name="session" value="'.$session.'">
         <input type="hidden" name="groupid" value="'.$group['groupid'].'">
         <input type="hidden" name="boardid" value="'.$board['boardid'].'">
@@ -302,12 +302,12 @@ if( $action == 'list' )
     print '
 <form name="form1" method="post" action="groups.php">
   <table border="0" cellspacing="1" cellpadding="3">
-    <tr> 
+    <tr>
       <td colspan="2"><b>Special groups</b></td>
     </tr>
-    <tr> 
+    <tr>
       <td>Group for new users</td>
-      <td> 
+      <td>
         <select name="default_groupid">';
 
     while( $group = mysql_fetch_array($r_group) )
@@ -318,9 +318,9 @@ if( $action == 'list' )
         </select>
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td>Guest group (users who are not logged in)</td>
-      <td> 
+      <td>
         <select name="guest_groupid">';
     mysql_data_seek($r_group, 0);
     while( $group = mysql_fetch_array($r_group) )
@@ -331,14 +331,14 @@ if( $action == 'list' )
         </select>
       </td>
     </tr>
-    <tr align="right"> 
-      <td colspan="2"> 
+    <tr align="right">
+      <td colspan="2">
         <input type="hidden" name="session" value="'.$session.'">
         <input type="hidden" name="action" value="set_default_groups">
         <input type="submit" name="done" value="Done">
       </td>
     </tr>
-    <tr> 
+    <tr>
       <td colspan="2"> </td>
     </tr>
   </table>
@@ -351,14 +351,14 @@ if( $action == 'list' )
     <td><b>Members</b></td>
     <td><b>Options</b></td>
   </tr>';
-      
+
     $i = 0;
     mysql_data_seek($r_group, 0);
     while( $group = mysql_fetch_array($r_group) )
     {
         if( $group['groupid'] == $config['guest_groupid'] )
         {
-            print '<tr'.($i % 2 == 0 ? '' : ' bgcolor="#E2E2E2"').'> 
+            print '<tr'.($i % 2 == 0 ? '' : ' bgcolor="#E2E2E2"').'>
     <td valign="top">'.$group['name'].'</td>
     <td valign="top"><font size="1">(users who are<br>not logged in)</font></td>
     <td>';
@@ -368,13 +368,13 @@ if( $action == 'list' )
         {
             $r_user = query("SELECT count(userid) AS count FROM $pref"."user WHERE INSTR(groupids, ',$group[groupid],')>0");
             $user = mysql_fetch_array($r_user);
-        
-            print '<tr'.($i % 2 == 0 ? '' : ' bgcolor="#E2E2E2"').'> 
+
+            print '<tr'.($i % 2 == 0 ? '' : ' bgcolor="#E2E2E2"').'>
     <td valign="top">'.$group['name'].'</td>
     <td valign="top">'.$user['count'].' member(s) - <a href="groups.php?action=listmembers&session='.$session.'&groupid='.$group['groupid'].'">list</a></td>
     <td>';
         }
-    
+
 
     print '<font size="1">
 <a href="groups.php?action=boardpermtable&groupid='.$group['groupid'].'&session='.$session.'">View/Edit permissions</a><br>
@@ -385,15 +385,15 @@ if( $action == 'list' )
           $i++;
     }
     print '</table><br><br>';
-    
+
 }
 elseif( $action == 'listmembers' )
 {
     $r_group = query("SELECT name FROM $pref"."group WHERE groupid=$groupid");
     $group = mysql_fetch_array($r_group);
-    
+
     print 'Member listing for group "<b>'.$group['name'].'</b>"<br><br>';
-    
+
     $r_user = query("SELECT username, userid FROM $pref"."user WHERE INSTR(groupids, ',$groupid,')>0 ORDER BY username ASC");
     if( mysql_num_rows($r_user) == 0 )
     {
@@ -409,7 +409,7 @@ elseif( $action == 'listmembers' )
 }
 elseif( $action == 'create' )
 {
-    print '<b>Create new group</b><br><br>';    
+    print '<b>Create new group</b><br><br>';
     group_form(array(), 'insert');
 }
 elseif( $action == 'insert' )
@@ -427,9 +427,9 @@ elseif( $action == 'insert' )
             if( $permission[$k] == 'yes' )
             {
                 $accessmask = flag_or($accessmask, $k);
-            }            
+            }
         }
-        
+
         query("INSERT INTO $pref"."group (name, accessmask, title, titlepriority) VALUES
             ('".addslashes($name)."', '".$accessmask."', '".addslashes($title)."', '".$titlepriority."');");
         print 'Group has been added!';
@@ -440,7 +440,7 @@ elseif( $action == 'delete' )
     $r_group = query("SELECT nodelete, name FROM $pref"."group WHERE groupid='".$groupid."'");
     $group = mysql_fetch_array($r_group);
 
-    /* WARNING: do NOT remove this check unless you know what youre doing .. */    
+    /* WARNING: do NOT remove this check unless you know what youre doing .. */
     if( $groupid == $config['default_groupid'] || $groupid == $config['guest_groupid'] )
     {
         print 'Sorry, you cannot delete this group (Are you trying to delete the default or guest group?).';
@@ -481,8 +481,8 @@ elseif( $action == 'edit' )
 {
     $r_group = query("SELECT groupid, name, accessmask, title, titlepriority FROM $pref"."group WHERE groupid='".$groupid."'");
     $group = mysql_fetch_array($r_group);
-    
-    print '<b>Edit group</b><br><br>';    
+
+    print '<b>Edit group</b><br><br>';
     group_form($group, 'update');
 }
 
@@ -492,7 +492,7 @@ elseif( $action == 'editgroupboard' )
 {
     $r_group = query("SELECT groupid, name, accessmask FROM $pref"."group WHERE groupid='$groupid'");
     $group = mysql_fetch_array($r_group);
-        
+
     $r_board = query("SELECT boardid, boardname FROM $pref"."board WHERE boardid='$boardid'");
     $board = mysql_fetch_array($r_board);
 
@@ -530,7 +530,7 @@ elseif( $action == 'updategroupboard' )
         {
           $accessmask[$k] = (($v == "yes") ? "1" : "0");
         }
-        
+
         // insert new
         query("INSERT INTO $pref"."groupboard (groupid, boardid, accessmask) VALUES ('$groupid', '$boardid', '$accessmask')");
 
@@ -558,7 +558,7 @@ elseif( $action == 'update' )
 
         query("UPDATE $pref"."group SET name='".addslashes($name)."', accessmask='$accessmask',
             title='".addslashes($title)."', titlepriority='$titlepriority' WHERE groupid=$groupid");
-        print 'Group has been updated!';        
+        print 'Group has been updated!';
     }
 }
 
@@ -573,12 +573,12 @@ elseif( $action == 'boardpermtable' )
 
     // select groups global perms
     $r_group = query("SELECT name, accessmask FROM $pref"."group WHERE groupid='$groupid'");
-    $group = mysql_fetch_array($r_group); 
+    $group = mysql_fetch_array($r_group);
 
     print 'Board/permission table for group: <b>'.$group['name'].'</b><br><br>';
 
     print '<br><font color="#000066">Blue</font> - Board uses global permission<br>
-<font color="#990000">Red</font> - Board uses custom permission 
+<font color="#990000">Red</font> - Board uses custom permission
 <br><br>';
 
     // board-perm
@@ -588,7 +588,7 @@ elseif( $action == 'boardpermtable' )
     {
         $a_groupboard[$groupboard['boardid']] = $groupboard['accessmask'];
     }
-        
+
     // boards
     $r_board = query("SELECT boardid, boardname, categoryid FROM $pref"."board ORDER BY boardorder ASC");
     $a_board = array();
@@ -607,13 +607,13 @@ elseif( $action == 'boardpermtable' )
         print '<td width="20" align="center"><img src="./images/pbar_'.($k).'.png"></td>';
     }
     print '</tr>';
-    
+
     // global perms
     print '<tr>';
     print '<td><i>Global permissions - <a href="groups.php?action=edit&groupid='.$groupid.'&session='.$session.'">Modify</a></i></td>';
     print_perms($group['accessmask'], '#000000', 1);
     print '</tr>';
-    
+
     // select categories
     $r_category = query("SELECT categoryid, categoryname FROM $pref"."category ORDER BY categoryorder ASC");
     while( $category = mysql_fetch_array($r_category) )
@@ -636,7 +636,7 @@ elseif( $action == 'boardpermtable' )
         }
     }
 
-    print '</table>';    
+    print '</table>';
 }
 
 
@@ -648,7 +648,7 @@ elseif( $action == 'grouppermtable' )
     print 'Group/permission table for board: <b>'.$boardname.'</b><br><br>';
 
     print '<br><font color="#000066">Blue</font> - Board uses global permission<br>
-<font color="#990000">Red</font> - Board uses custom permission 
+<font color="#990000">Red</font> - Board uses custom permission
 <br><br>';
 
     /* global perms */
@@ -658,7 +658,7 @@ elseif( $action == 'grouppermtable' )
     {
         $a_group[$group['groupid']] = $group;
     }
-    
+
     /* custom */
     $a_groupboard = array();
     $r_groupboard = query("SELECT groupid, accessmask FROM $pref"."groupboard WHERE boardid='$boardid'");
@@ -666,7 +666,7 @@ elseif( $action == 'grouppermtable' )
     {
         $a_groupboard[$groupboard['groupid']] = $groupboard;
     }
-    
+
     print '<table width="100%" border="0" cellspacing="0" cellpadding="4">';
 
     /* header */
@@ -676,7 +676,7 @@ elseif( $action == 'grouppermtable' )
         print '<td width="20" align="center"><img src="./images/pbar_'.($k).'.png"></td>';
     }
     print '</tr>';
-    
+
     /* group rows */
     while( list(, $group) = each($a_group) )
     {

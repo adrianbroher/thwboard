@@ -23,15 +23,15 @@
 /**
  * as of php5, $HTTP_*_VARS are disabled
  * so we have to recreate them here
- * 
+ *
  * this is actually pretty evil, but it does work.
  **/
 
 if(substr(phpversion(), 0, 1) > 4)
 {
     $a_globals = array(
-        'HTTP_SERVER_VARS' => '_SERVER', 
-        'HTTP_COOKIE_VARS' => '_COOKIE', 
+        'HTTP_SERVER_VARS' => '_SERVER',
+        'HTTP_COOKIE_VARS' => '_COOKIE',
         'HTTP_POST_VARS' => '_POST',
         'HTTP_GET_VARS' => '_GET',
         'HTTP_ENV_VARS' => '_ENV'
@@ -87,7 +87,7 @@ if( $l_username )
     if( mysql_num_rows($r_user) == 1 )
     {
         $user = mysql_fetch_array($r_user);
-        
+
         $session = md5(time() . "Kfjasdl(84939qjKJASDldf.y<.yj48hh" . microtime());
         query("INSERT INTO ".$pref."session (sessionid, lastaction, userid, username, ip)
             VALUES ('$session', " . time() . ", '$user[userid]', '".addslashes($user['username'])."', '$REMOTE_ADDR')");
@@ -112,7 +112,7 @@ query("UPDATE ".$pref."session SET lastaction=" . time() . " WHERE sessionid='$s
 
 // log!
  query( "INSERT INTO ".$pref."adminlog (logtype, logtime, loguser, logip, logscript, logaction)
-       VALUES ('LOG_ADMIN', ".time().", '".addslashes($g_user['username'])."', '$REMOTE_ADDR', '".basename($PHP_SELF)."', '".addslashes($action)."')" ); 
+       VALUES ('LOG_ADMIN', ".time().", '".addslashes($g_user['username'])."', '$REMOTE_ADDR', '".basename($PHP_SELF)."', '".addslashes($action)."')" );
 
 $r_registry = query("SELECT keyname, keyvalue, keytype FROM " . $pref . "registry");
 while ( $registry = mysql_fetch_array($r_registry) )
@@ -123,14 +123,14 @@ while ( $registry = mysql_fetch_array($r_registry) )
         case 'boolean':
             $config[$registry['keyname']] = intval($registry['keyvalue']);
             break;
-            
+
         case 'array':
             $array = explode("\n", $registry['keyvalue']);
             while( list($k, $v) = @each($array) )
                 $array[$k] = '"'.addslashes(trim($v)).'"';
             eval("\$config[\$registry['keyname']] = array(".implode(',', $array).");");
             break;
-                
+
         default:
             $config[$registry['keyname']] = $registry['keyvalue'];
     }
