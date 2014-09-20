@@ -315,7 +315,6 @@ class timer
     {
         $this->endtime = $this->_getmicrotime();
         return $this->gettime();
-        $this = null;
     }
 
     function _getmicrotime()

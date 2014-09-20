@@ -56,7 +56,7 @@ define('CFG_NEWS_LENGTH', 120);     //!< newstext is shortened to this amount of
  * @param str   string to strip
  **/
 
-function strip_code($str, $no_tags = false)
+function strip_code(&$str, $no_tags = false)
 {
     /**
      * ``simple'' tags
@@ -98,7 +98,7 @@ function strip_code($str, $no_tags = false)
  * cuts the given string at the first possible point after CFG_NEWS_LENGTH
  **/
 
-function cut_str($str)
+function cut_str(&$str)
 {
     if(strlen($str) <= CFG_NEWS_LENGTH)
     {
@@ -319,9 +319,9 @@ while($a_thread = mysql_fetch_assoc($r_threads))
 
     $a_post = mysql_fetch_assoc($r_post);
 
-    strip_code(&$a_post['posttext'], (!empty($_GET['type']) && $_GET['type'] == 'rss'));
+    strip_code($a_post['posttext'], (!empty($_GET['type']) && $_GET['type'] == 'rss'));
 
-    cut_str(&$a_post['posttext']);
+    cut_str($a_post['posttext']);
 
     /**
      * if we're doing something else than generating rss output, we need the replycount
