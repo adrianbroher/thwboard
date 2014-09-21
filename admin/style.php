@@ -436,8 +436,6 @@ if( $action == "ListStyles" )
 
     echo '<br><br><font color="red">*</font> = Global default style: This style will be used in every board unless the board has its own style.<br>
     <font color="darkblue">*</font> = Public style: Users can select this style in their profile.<br><br>';
-
-    echo '<b><font color="red">New!</font> Get more styles:</b> <a href="dynx.php" target="_blank">Download</a><br><br>';
 }
 
 

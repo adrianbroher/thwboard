@@ -338,7 +338,6 @@ ul.actions li {
                     <li><a href="style.php?session='.$session.'&amp;action=ListStyles">View / edit styles</a></li>
                     <li><a href="style.php?session='.$session.'&amp;action=NewStyle">Create style</a></li>
                     <li><a href="style.php?session='.$session.'&amp;action=ImportStyle">Import style</a></li>
-                    <li><a href="dynx.php">Download styles</a></li>
                 </ul>
             </li>
             <li>
