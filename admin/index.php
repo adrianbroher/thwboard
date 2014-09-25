@@ -40,16 +40,6 @@ tb_header();
  */
 if( $action == "" )
 {
-    // try to determine version
-    $current_version = '';
-
-    // don't check if cvs or svn tree
-    if( !file_exists('CVS') && !file_exists('.svn') && ($fp = @fopen('http://www.thwboard.de/current_version.php')) )
-    {
-        $current_version = fread($fp, 32);
-        fclose($fp);
-    }
-
     print '<b>ThWboard - Administrative Center</b><br><br>';
 
     print 'Welcome to the administrative center of your ThWboard.<br>Please keep in mind that thwboard is still <u>beta software</u> and may sometimes not work as expected.<br>';
@@ -59,18 +49,6 @@ if( $action == "" )
 
     print '<font style="color: #008;">ThWboard version information</font><font size="1"><br>';
     print 'Your version: <b>'.$config['version'].'</b>';
-    if( $current_version )
-    {
-        print 'Latest stable version available: <b>'.$current_version.'</b> [ <a href="http://www.thwboard.de/">Info ..</a> ]<br>';
-        if( $current_version != $config['version'] )
-        {
-            print '<br><font style="color: #800;">Your version might be outdated.</font><br>';
-        }
-    }
-    else
-    {
-        print ' <font style="color: #800;">[ CVS / Subversion Source Tree ]</font><br>';
-    }
     print '</font><br>';
 
     print '
