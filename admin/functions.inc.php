@@ -351,7 +351,6 @@ ul.actions li {
                 <div>Misc</div>
                 <ul>
                     <li><a href="versioninfo.php?session='.$session.'">Version info</a></li>
-                    <li><a href="query.php?session='.$session.'">thwbMyAdmin</a></li>
                     <li><a href="mysql.php?session='.$session.'">Mysql-Clean</a></li>
                 </ul>
             </li>
