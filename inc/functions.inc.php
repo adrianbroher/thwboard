@@ -588,19 +588,11 @@ function thwb_query($query)
 
     if( !$result )
     {
-        if(!empty($_thwb_error_cfg['sql']))
-        {
-            thwb_sql_error_handler($query, ((function_exists('debug_backtrace')) ? debug_backtrace() : array()));
-        }
-        else if(!empty($g_user['userisadmin']) && $g_user['userisadmin'])
-        {
-            print '<pre><b>ThWboard Error</b><br>MySQL reported an error: '.mysql_error().'<br>Query: <br>'.$query.'</pre>';
-        }
-
-        if(empty($g_user['userisadmin']) || (!($g_user['userisadmin'])))
-        {
-            print '<pre><b>ThWboard Error</b><br>MySQL reported an error. Query is hidden for security resons.</pre>';
-        }
+        trigger_error(
+            "ThWboard: MySQL query failed with: ".mysql_error()."\n".
+            "Query:\n".$query."\n",
+            E_USER_ERROR
+        );
 
         exit;
     }
