@@ -63,7 +63,7 @@ if( $user['userpassword'] != md5($login_password) )
 {
     $msg .= "Das Passwort ist leider falsch.<br>";
 
-    possible_flood(FLOOD_LOGIN, $user['userid']);
+    possible_flood(FLOOD_LOGIN);
 }
 
 if( $user['useractivate'] )
