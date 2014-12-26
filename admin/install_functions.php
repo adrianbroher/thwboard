@@ -751,7 +751,7 @@ function p_welcome()
 
 function p_license()
 {
-    $license = implode('', file('../doc/license'));
+    $license = implode('', file('../COPYING'));
 /*    $license = nl2br($license);
     $license = str_replace("\t", '    ', $license);
     $license = str_replace('  ', '&nbsp;&nbsp;', $license);*/

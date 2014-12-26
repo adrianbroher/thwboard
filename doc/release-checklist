@@ -1,8 +1,0 @@
-release checklist
-- alle bugs entfernen
-- cvs taggen (format: v2_73)
-- frisches cvs checkout machen
-- release script laufen lassen
-- current_version.php auf thwb.de updaten
-- release post machen (changelog + text)
-- bei sourceforge uppen, release erstellen (+mail an package-monitorer)
