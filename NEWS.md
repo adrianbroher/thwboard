@@ -1,333 +1,469 @@
-$Id: changelog 75 2004-10-29 19:24:22Z dp $
+ThWboard NEWS -- history of user-visible changes.
+=================================================
+
+Copyright (C) 2000-2004 by ThWboard Development Group
+
+See the end of the file for license conditions.
 
 Beta 2.85
-========
+---------
 
-Bug: Bilder in PMs werden wieder geparsed. (theDon)
-Bug: Diverse Notices (theDon)
-Bug: unter Umständen wurden noch gültige Sessions gelöscht. (theDon)
-Bug: Suche kann wieder auf einzelne Boards eingegrenzt werden. (theDon)
-Bug: Suche: URL für Seitenwechsel war unter Umständen zu lang. (theDon)
-Bug: ThWB-Tags wurden in der Faq / Formatierungsmöglichkeiten falsch dargestellt. (theDon)
-Bug: Postings werden nicht länger nach foruminternen Links abgeschnitten (Paul)
-Bug: Redundante Einträge in der Online-Tabelle sind jetzt Vergangenheit. (theDon)
-Bug: Such-Highlight funktionierte teilweise nicht korrekt. (theDon)
-Bug: Guest-Flood-Protection griff nicht bei neuen Themen. (theDon)
-Bug: Suche: Seitenlinks waren teilweise zu lang. (theDon)
-Bug: Umlaute in Boardnamen & Beschreibung. (theDon)
-Bug: Diverse kleine Bugs im Zusammenhang mit URLs und Bildern. (theDon)
-Bug: Aktivierungsemails wurden bei AOL falsch dargestellt. (theDon)
-Bug: Beim Löschen des ersten Posts eines Threads wurde der Threadautor nicht aktualisiert. (theDon)
+### Changes
 
-Änderung: ``Passwort vergessen'' jetzt mit Aktivierungslink. (theDon)
-Änderung: In der Memberliste werden bei der Auswahl eines Anfangsbuchstabens die User in alphabetischer Reihenfolge angezeigt. (theDon)
-Änderung: Wenn die eigene Email-Adresse versteckt ist, wird dies gekennzeichnet. (theDon)
-Änderung: Session-Handling komplett überarbeitet. (theDon)
-Änderung: Install-Script benutzt $HTTP_POST_VARS. (theDon)
-Änderung: GZip-Kompression läuft jetzt über Output-Buffering. (theDon)
-Änderung: Session-Rewrite. (theDon)
-Änderung: Message-Amount - Beschreibung missverständlich. (theDon)
-Änderung: Englische Bezeichnungen aus der Boardübersicht entfernt. (theDon)
-Änderung: Wenn url_fopen_wrappers aus ist, wird die Avatargröße nicht mehr überprüft. (ermöglicht externe Avatare bei neueren PHP-Versionen, weil da url_fopen_wrappers standardmäßig aus ist.) (theDon)
+- Create RSS feeds for whole board or limited by board. (theDon, Luki)
+- Export user emails as text list. (theDon, Luki)
+- Notify users when the private message box quota is exausted by 95% or
+  more. (theDon)
+- Improved login flood protection. (theDon)
+- Improved post flood protection. (theDon)
+- Implemented thread merge function. (theDon)
+- Extended debug reports. (Luki, theDon)
+- Added debug report sinks. (Luki, theDon)
+- List subscribed threads. (theDon)
+- Unsubscribe threads. (theDon)
+- List posts since last visit for registered users. (Luki, theDon)
+- Added non-activated users to database cleaning tool. (theDon)
+- Added unread threads to database cleaning tool. (theDon)
+- Added a checklist to the database cleaning tool to uncheck users and
+  threads (theDon)
+- Added permission to allow users sending private messages even if the
+  target inbox is full. (theDon, MrNase)
+- Substitute [img] URI [/img] with an img tag. (theDon)
+- Remove session IDs when sending private messages. (theDon)
+- Added basic PHP5-compability. (theDon)
+- Allow email changes with an activation e-mail. (theDon)
+- The restore password feature now requires an confirmation. (theDon)
+- The user list uses alphabetical order when limiting the search to the
+  first character. (theDon)
+- Only check the dimensions of the avatar in case url_fopen_wrapper is
+  enabled. (theDon)
+- Show a notice if your own e-mail is hidden. (theDon)
+- Replaced some english terms with their germain equivalent in the
+  index. (theDon)
+- Show a error message when trying to log when already logged in.
+  (theDon)
+- Write css cache when setting a style as default. (theDon)
+- Parse image ThWB tags within private messages. (theDon)
 
-Neu: RSS-Feed (gleichzeit als neues newsscript einsetzbar) (theDon / Luki)
-Neu: Newsletter: E-Mail-Adressen-Export als Liste. (theDon / Luki)
-Neu: Hinweis, wenn mehr als 95% des Platzes für PMs verbraucht ist. (theDon)
-Neu: Verbesserte Flood-Protection. (theDon)
-Neu: Threads verschmelzen. (theDon)
-Neu: Erweiterter Error-Report-Modus. (Luki / theDon)
-Neu: Übersicht über alle Themen, für die eine Email-Benachrichtigung erfolgt. Dies behebt auch den Bug, dass Benachrichtigungen nicht wieder abbestellt werden konnten. (theDon)
-Neu: ``Beiträge seit letztem Besuch''. (Luki / theDon)
-Neu: Beim MySQL-Cleaner im Admincenter kann man jetzt auch nach Views und nicht aktivierten Usern filtern. (theDon)
-Neu: Beim MySQL-Cleaner wird eine Liste mit den zu löschenden Usern / Threads angezeigt, bei der bestimmte User / Threads abgewählt werden können. (theDon)
-Neu: Beim Versuch sich einzuloggen erscheint ein Fehler, wenn man bereits eingeloggt ist. (theDon)
-Neu: Neue Permission: `User kann PM senden, obwohl die Inbox des Empfängers voll ist.' (theDon / Dominik Hahn (MrNase))
-Neu: CSS-Files werden jetzt auch geschrieben, wenn man einen Style als Standard einsetzt. (theDon)
-Neu: [img] URI [/img] wird jetzt auch als Bild erkannt. (theDon)
-Neu: Session-IDs werden auch aus PMs entfernt. (theDon)
-Neu: PHP5-Kompatibilität. (theDon)
-Neu: Email-Adressenänderung mit Aktivierungsemail. (theDon)
+### Bugfixes
+
+- Do not destroy still valid sessions in certain cases. (theDon)
+- Limit the search by board does not affect the search. (theDon)
+- The search page links can exceed the allowed length. (theDon)
+- ThWB tags were not displayed properly withing the documentation.
+  (theDon)
+- Post with in forum links are cut off after the link. (Paul)
+- Do not store duplicate entries within the online list. (theDon)
+- Search highlights are not placed properly. (theDon)
+- Guest flood protection was not applied when creating new topics.
+  (theDon)
+- German Umlauts are not encoded properly. (theDon)
+- The user activation email is not displayed properly for AOL webmail
+  users. (theDon)
+- When deleting the first post of a thread the thread author is not
+  updated. (theDon)
+- Fix some PHP notices and warnings. (theDon)
+
 
 Beta 2.84
-========
+---------
 
-Bug: Beim Löschen von Posts / Threads wurde falsch gezählt. (theDon)
-Bug: Unnötiges &highlight= bei der Suche. (theDon)
-Bug: Newsletter konnte unter Umständen nicht verschickt werden. (theDon)
-Bug: Quicklinks können jetzt auch ohne http:// beginnen. (theDon)	
-Bug: Session-ID wurde unter Umständen nicht korrekt weitergegeben. (theDon)
-Bug: Keine Zeilenumbrüche in PMs. (theDon)
-Bug: XSS in board.php. (theDon)
-Bug: `0-9' In der Memberlist funktionierte nicht. (theDon)
-Bug: Es wurde bei voller PM-Box keine PM-Kopie im Postausgang gespeichert, wenn der User `Kein PM-Limit' hatte. (theDon)
-Bug: Threads konntent nicht gelöscht oder verschoben werden. (theDon)
+### Changes
 
-Änderung: Es werden nur noch die ersten 24 Bits der IP verglichen, dies sollte Probleme mit AOL beheben. (theDon)
-Änderung: ThWBCode im Kalender möglich. (theDon)
-Änderung: Bei IP-Mismatches wird, falls ein gültiges cookie vorhanden ist, kein Fehler angezeigt. (theDon)
-Änderung: Die Zeit für session timeouts ist jetzt einstellbar. (theDon)
-Änderung: Templates: Optimierungen. (Dominik Hahn (MrNase))
-Änderung: CSS werden ausgelagert. (theDon)
-Änderung: User mit ThWB-Code-Tags im Namen können sich nicht registrieren. (theDon)
+- Added post and thread recount feature to database cleaning tool.
+  (theDon)
+- Added optimization feature to database cleaning tool.
+  (theDon, Hack written by MrNase)
+- Remove session IDs from postings. (theDon)
+- Made the category titles within the index toggle the visibility of the
+  category. (theDon)
+- Added links to every post pointing to the top and the bottom of
+  a thread page. (theDon)
+- Allow use of ThWB tags in the calendar. (theDon)
+- Administrators now can set the session timeout. (theDon)
+- Do not allow user a registration with user names containing ThWB tags.
+  (theDon)
+- Optimized html templates. (Dominik Hahn (MrNase))
+- Moved CSS code into separate file. (theDon)
+- Quicklinks now assume http:// as default scheme. (theDon)
 
-Neu: Im MySQL-Cleaner können jetzt die Post- und Threadcounts für die Boards neu gezählt werden. (theDon)
-Neu: Im MySQL-Cleaner können jezt die Tabellen optimiert werden. (theDon, Hack von MrNase)
-Neu: In Posts werden Session-IDs  aus Boardlinks entfernt. (theDon)
-Neu: Kategorien in der Boardübersicht anklickbar. (theDon)
-Neu: In Threads kann direkt zum Seitenanfang/-ende gesprungen werden. (theDon)
+### Bugfixes
+
+- Deleting posts or threads does not update user and board post count
+  properly. (theDon)
+- Remove highlight parameter in search result list. (theDon)
+- Unable to send newsletter. (theDon)
+- Session ID is lost in cases.Â (theDon)
+- Private message do not display newlines. (theDon)
+- XSS in thread list. (theDon)
+- Unable to filter user list names with a leading digit. (theDon)
+- No private message copy were stored in the outbox in case the target
+  inbox where full. (theDon)
+- Unable to delete or move threads. (theDon)
+- Only compare the first 24 bits of a IP to fix issues with AOL users.
+  (theDon)
+- Do not show an error if the IP does not match but there is a valid
+  session cookie. (theDon)
+
 
 Beta 2.83
-========
+---------
 
-Bug: Alle User wurden auf der Teampage aufgeführt. (theDon)
-Bug: Es konnten keine Gruppenrechte für bestimmte Boards festgelegt werden. (theDon)
-Bug: diverse Notices und andere Fehler. (theDon)
+### Changes
 
-Änderung: PHP-Fehler werden nur noch für Admins angezeigt. (theDon)
-Änderung: Die IP-Überprüfung bei den Sessions ist jetzt für bestimmte User abschaltbar. Dies kann für den jeweiligen User ein Sicherheitsrisiko bedeuten, behebt jedoch Probleme mit AOL. (theDon)	
+- Only administrators can see PHP error messages. (theDon)
+- The IP check can be disabled for specific users. (theDon)
+
+### Bugfixes
+
+- Do not display all users on the staff page. (theDon)
+- Unable to set group permissions for certain boards. (theDon)
+- Fix some PHP notices and warnings. (theDon)
+
 
 Beta 2.82
-========
-	
-      Neu: Die Memberliste lässt sich jetzt direkt durchsuchen und man kann zu einem bestimmten Buchstaben springen. (theDon)
-      Neu: Als Alternative zum Cookie kann man auch wahlweise sessions benutzen. (theDon)
+---------
 
-      Bug: Announcements nicht lesbar nach Board-"Jump"
-      Bug: [quote] case-sensitive (Sebastian)
-      Bug: Uppercase-Protection fixed (Sebastian)
-      Bug: Bug beim erstmaligen Einloggen behoben (Sebastian)
-      Bug: Regexp exploit bei der Suche (Paul)
-      Bug: Interne Foren nicht länger durchsuchbar (Paul)
-      Bug: #4168 gefixt (Paul)
-      Bug: HTML im Profil (Superhausi/Sebastian)
-      Bug: Avatar-Sicherheitsluecke (Superhausi)
-      Bug: Avatar "notallowed" (Superhausi)
-      Bug: #3917 - Topic Badwords / leeres Topic (Superhausi)
-      Bug: diverse GET/POST HTML-Injections entfernt (Superhausi)
-      Bug: PMs bei Antwort/Zitat/Weiterleitung gefixt (Superhausi/Sebastian)
-      Bug: Quicklinks und register_globals (Superhausi/Sebastian)
-      Bug: SQL-Injection im Admin-Center (Superhausi)
-      Bug: SQL-Injection in den Announcements (Paul)
-      Bug: event in admin/calendar.php und showevent.php ermöglicht SQL-Injection (theDon)
-      Bug: source in do_login.php ermöglicht HTML-Injection (Tendor)
-      Bug: MySQL-User-Cleanup funktioniert wieder (Sebastian)
-      Bug: Altersanzeige im Profil war falsch (Sebastian)
-      Bug: Cookie-Problem nach E-Mail-Adressen-Aenderung (Sebastian)
-      Bug: Weiterleitung bei Link-Thread (Sebastian)
-      Bug: manche E-Mail-Adressen wurden nicht akzeptiert, ist hoffentlich jetzt besser (Sebastian)
-      Bug: Diverse XSS Bugs wurden behoben (Paul/Sebastian)
-      Bug: boardlastthread wurde nicht geparst (Sebastian)
-      Bug: #4590 - AIM/MSG wurden nicht escaped (Paul)
-      Bug: #4594 - Homepage im Profil wurde zerstückelt (Paul)
-      Bug: #4596/#4587 - PM schicken geht wieder (Paul)
-      Bug: URLs nicht geparst nach [/quote] etc. (Sebastian)
-      Bug: Diverse XSS fixes #4604, #4605 (Paul)
-      Bug: time in board.php ermöglicht XSS (theDon)
-      Bug: " Im Homepage-Feld (Profil) ermöglicht XSS (theDon)
-      Bug: Deaktivierte Events werden im Kalender nicht mehr angezeigt (theDon)
-      Bug: [img]-Tags im Profil u. in PMs werden jetzt abhängig vom Imageslevel geparsed (theDon)
-      Bug: Style-Upload im Admincenter geht wieder (theDon)
-      Bug: Die Zeile mit den Wochentagen im Kalender wurde mit bestimmten Styles nicht korrekt angezeigt. (theDon)
-      Bug: Im Kalender konnte HTML-Code eingegeben werden. (theDon)
-      Bug: Die Suche highlighted jetzt nicht mehr innerhalb von HTML-Tags. (theDon, Fix von Tendor)
-      Bug: Usernamen mit ThWb-Tags führten zu Fehlern beim Zitieren (Sebastian)
-      Bug: Badwords-Protection im Admincenter verwendete teilweise deutsche Wörter. (theDon)
-      Bug: Beim Verschicken eines Newsletters konnte es bei großen Foren zu einem timeout kommen. (theDon)
-      Bug: XSS-Vulnerability bei Bildern.(theDon)
-      Bug: Administratoren konnten bei showpostlevel != 2 in der Memberlist keine Postcounts sehen. (theDon)
-      Bug: Aktive User wurden in der Statistik falsch gezählt. (theDon)
-      Bug: Kalendereinträge wurden evtl um einige Tage verschoben angezeigt. (theDon)
-      Bug: Im Kalender wurde unter Umständen das aktuelle Datum nicht markiert. (theDon)
-      Bug: Unicode-Sonderzeichen werden jetzt korrekt behandelt. (theDon)
-      Bug: Leere Posts sollten endgültig beseitigt sein. (theDon)
-      Bug: Diverse XSS-Fixes. (theDon, Fixes von Tendor)
-      Bug: $P wurde nicht immer initialisiert. (theDon)
-      Bug: updateboard() trägt unter Umständen einen threadlink als boardlastpost ein. (theDon)
+### Changes
 
- Änderung: Beim Registrieren wird jetzt eine Mail mit Aktivierungslink verschickt. (theDon, Hack von MrNase)
- Änderung: Das Board läuft jetzt fehlerfrei mit error_reporting(E_ALL). (theDon)
- Änderung: Prinzipiell unbegrenzt viele Gruppenrechte möglich, standartmäßig bis zu 50. (theDon/Daniel)
- Änderung: Die Scripts und Icons unter extras/ sind jetzt tar.(gz|bz2) - komprimiert. Weiterhin gibt es jetzt auch eine tar.bz2-Version. (theDon)
- Änderung: Die Verzeichnisse bei der Versionsinformation im Admincenter sind jetzt relativ zum Boardpfad, nicht zum Admincenter. (theDon)
- Änderung: In der Boardübersicht bekommt man für den zuletzt geänderten thread ein hover-info mit dem vollen Namen. (theDon, Fix von Luki)
- Änderung: Das Versenden eines Newsletters wird zur Entlastung des Servers hin und wieder mit sleep() unterbrochen. (theDon)
- Änderung: URL-Parsing verbessert. (theDon, Fix von Tendor)
- Änderung: <script language> in <script type> geändert (theDon)
- Änderung: statt mysql_create_db() wird jetzt `CREATE DATABASE' verwendent (MySQL-4 Kompatibilität) (theDon)
- Änderung: Die Zeile mit den Wochentagen im Kalender hat jetzt nicht mehr die Rahmenfarbe. (theDon)
- Änderung: keine Smilies mehr bei closed-message (Sebastian)
- Änderung: URLs mit Kommas und Protokolle mit Zahlen gehen jetzt (Sebastian)
- Änderung: Aendert man das Topic eines verlinkten Threads, aendert sich auch das Topic des Links (Sebastian)
- Änderung: userinterests auf tinytext begrenzt (Sebastian)
- Änderung: MySQL-Thread-Cleanup loescht auch Threadlinks und Posts (Sebastian)
- Änderung: edittimeout gilt auch fuer das Loeschen von Posts (Sebastian)
- Änderung: Bei Registrierung, Login und Posten eines Gastes wird jetzt ein Hinweis auf bestehendes Datenschutzrecht angezeigt und die Erlaubnis
-           zur Speicherung der IP-Addresse bei der Registrierung abgefragt (Daniel)
+- The user list can now be searched or filtered by the leading character.
+  (theDon)
+- Users now can optionally use an url session id instead of a cookie.
+  (theDon)
+- Users now recieve an email on registration with an activation link to
+  verify the email ownership. (theDon, Hack written by MrNase)
+- The whole board now runs error free with error_reporting set to E_ALL.
+  (theDon)
+- Extra scripts and icons now provided as .tar.bz2 archive in the extras
+  directory. (theDon)
+- The database cleanup tool now also deletes thread links and opening
+  posts. (Sebastian)
+- The number of group permissions flags was increased to 50.
+  (theDon, Daniel)
+- Limited the size of user interests to 255 or less characters depending
+  on the used utf-8 characters. (Sebastian)
+- When sending news letters the sending process is interupted for some
+  time after sending a block of mails. (theDon)
+- Removed smilies from board closed message. (Sebastian)
+- URLs will be completely converted to hyperlinks even if they contain
+  commas or a numeric schema. (Sebastian)
+- When changing the topic of a linked thread the link topic is updated
+  accordingly. (Sebastian)
+- The edit timeout is now used to limit the post deletion time.
+  (Sebastian)
+- If the thread topic overflows in the forum index a hot tip with the
+  complete topic is displayed. (Luki)
+- When registering, logging in or when posting as a guest a notice
+  regarding the privacy and logging of the IP address is shown. (Daniel)
+- The weekday title in the calendar does use the secondary background
+  color. (theDon)
+- All displayed pathes in the administration interface are now relative
+  to the board installation path and not relative to the administration
+  interface. (theDon)
+
+### Bugfixes
+
+- Can not read announcements after entering the board by jump menu.
+- Quote ThWB tags should not be case-sensitive. (Sebastian)
+- Thread topic uppercase protection does not work sometimes. (Sebastian)
+- Removed bug that prevents user from logging in. (Sebastian)
+- The Regexp for page highlights allows beyond post selections. (Paul)
+- Private boards are not searchable. (Paul)
+- \#thw4168 - Fixed bug. (Paul)
+- Users can inject HTML into their profile. (Superhausi, Sebastian)
+- Users can upload malicious avatar names. (Superhausi)
+- The notallowed avatar placeholder is added sometimes into the post.
+  (Superhausi)
+- \#thw3917 - Bad words filter leads sometimes to an empty topic.
+  (Superhausi)
+- \#thw4596, \#thw4587 - Removed various XSS injections.
+  (Superhausi, Paul, Sebastian, theDon, Tendor)
+- Users are not redirected when replying, quoting or forwaring a private
+  message. (Superhausi, Sebastian)
+- Quicklinks required register_globals enabled. (Superhausi, Sebastian)
+- Fixed an SQL injection within the administration interface.
+  (Superhausi)
+- Fixed an SQL injection within the announcement view. (Paul)
+- Fixed an SQL injection within the calendar administration interface.
+  (theDon)
+- Fixed an SQL injection within the calendar event view. (theDon)
+- Removed an XSS injection in the login process. (Tendor)
+- The non-activated user database cleaning tool works again. (Sebastian)
+- The age in the user profile is one year off. (Sebastian)
+- Users have a stale session cookie after changing their email address.
+  (Sebastian)
+- Linked threads do not redirect to real thread. (Sebastian)
+- Relaxed the email format validation when registering. (Sebastian)
+- Adding quotes in the user homepage allows XSS. (theDon)
+- Removed an XSS injection in the calendar. (theDon)
+- Removed an XSS injection with the image ThWB tag. (theDon)
+- The time parameter in the thread list allows XSS. (theDon)
+- The permissions object is not always initialized properly. (theDon)
+- Users can sometimes create empty posts. (theDon)
+- The calendar does not always highlight the current day. (theDon)
+- The number of active users in the statistiscs page is not correct.
+  (theDon)
+- When sending a newsletter to a large amount of users the script can
+  reach time out. (theDon)
+- ThWB img tag is now parsed according to the set image level. (theDon)
+- Some calendar events are shown on the wrong day. (theDon)
+- Some labels in the bad words administrator interface are not translated.
+  (theDon)
+- \#thw4590 - AIM and MSG are not escaped properly in the user profile.
+  (Paul)
+- \#thw4594 - Homepage in user profile is not saved properly. (Paul)
+- When updating a board a thread link can be set as most recent thread.
+  (theDon)
+- The calendar weekday header is not displayed propely with some styles.
+  (theDon)
+- Administrators are unable to upload a style. (theDon)
+- When quoting a username containing ThWB tags the quote output is
+  broken. (theDon)
+- Administrators can not see the postcount of users when the show postings
+  level is set to 2. (theDon)
+- The search results does highlight HTML tags. (theDon)
+- URLs after are not converted to links after a closing quote ThWB tag.
+  (Sebastian)
+- \#thw4596, \#thw4587 - Unable to send private messages (Paul)
+- The last thread title in the board list does not interpret ThWB tags.
+  (Sebastian)
+- Unicode characters are not handled properly when sending a post. (theDon)
+
 
 Beta 2.81
-=========
+---------
 
-      Neu: User können Kalender-Events hinzufügen (Superhausi)
-      Neu: Installation jetzt auch ohne Schreibrecht möglich (Paul)
-      Neu: Entfernen von Thread-Links möglich (Paul)
-      Neu: In Templates ist jetzt auch das Ausführen von PHP-Code möglich,
-           Tutorial dazu bald verfügbar (Daniel)
+### Changes
 
-      Bug: Beim ändern des PW im Profil wurde man ausgeloggt - fixed (Daniel)
-      Bug: Beim ändern der Email-Adresse im Profil wird Fehler ausgegeben - fixed (Daniel)
-      Bug: Hilfeverweis beim editieren war falsch verlinkt (Daniel)
-      Bug: Codetag und Color-Tag korrigiert (Daniel)
-      Bug: Register-global-fix (Daniel)
-      Bug: Keine Fehler mehr bei geschlossenem Forum (Paul)
-      Bug: Lizenzproblem bei Installation behoben (Daniel, Paul)
-      Bug: http:// Anzeige bei leerer HP-Zeile im Profil (Daniel)
-      Bug: Zeilenumbruch-Bug im Admin-Template-Editor (Daniel)
-      Bug: [ im Zitat oder Code löst Design-Probleme aus (Daniel)
-      Bug: post < minlength oder > maxlength möglich (Daniel)
-      Bug: kleine Fehler in showtopic.php (Sebastian)
-	  Bug: Kalender Fehler bei Daten < 1970 (Paul)
-	
- Änderung: Navpath bei Login-Fehlermeldungen hinzugefügt (Daniel)
- Änderung: Diverse Rechtschreibfehler korrigiert (Paul)
- Änderung: Codeparsing fixes, [noparse] tag eingeführt, parsing related Kram ausgelagert (Paul)
- Änderung: ThWbCode - Smilies, Codes, [quote]-fixes, pregs erweitert (Sebastian)
- Änderung: Bei einigen Funktionen fehlenden navpath hinzugefügt (Daniel)
- Änderung: Userhomepage im Profil öffnet sich nun in einem neuen Browser-Fenster (Daniel)
- Änderung: Smilie/Code arrays ausgelagert (Paul)
- Änderung: Bei Post-Fehlern Navpath hinzugefügt (Daniel)
- Änderung: E-Mail-Adressen zum Schutz vor E-Mail-Grabbern nur noch für eingeloggte User sichtbar (Sebastian)
- Änderung: Uppercase Topic Protection verbessert (Paul)
+- Users can create calendar events. (Superhausi)
+- Installations can now be run without writing permissions in the config
+  directory. (Paul)
+- Thread links now can be deleted. (Paul)
+- Templates now can contain PHP code snipplets. (Daniel)
+- Added missing navigation path to various features. (Daniel)
+- User homepages now open in a new browser window/tab. (Daniel)
+- Only logged in users can see a users email. (Sebastian)
+- Added noparse ThWB tag. (Paul)
 
-Beta 2.8
-=========
+### Bugfixes
 
-      Neu: Avatar hack integriert (Morpheus, Hack von Andy)
-      Neu: Stark erweiterte Endbenutzer-Hilfe innerhalb des Forums (Paul, Hack von Jonas)
-      Neu: Rank Übersicht und Statistik unter Hilfe/Ränge (Paul, Hack von Hallenbeck)
-      Neu: Thread-erstell Zeit wird seperat gespeichert [Newshack] (Paul)
-      Neu: Mysql-Cleaner inkl Statistiken des Forums und der Mysql-DB (Morpheus)
-      Neu: Auto Close und Autodelete ( Morpheus )
-      Neu: PHP-Hightlightning [php] ~ [/php] ( Morpheus )
-      Neu: [mail][/mail] (Paul)
-      Neu: Installer multilingual, PHP 4.2 kompatibel (Paul)
-      Neu: News Script (News aus dem Forum auf einer anderen Seite) (Paul)
-      Neu: Smilies können nun auch in den PMs genutzt werden falls im Admincenter eingeschaltet (Morpheus)
-      Neu: PMs können nun auch als E-Mails versendet werden (Morpheus)	
-      Neu: (Admin-)Benutzersuche stark überarbeitet: Mehrere Kriterien verwendbar (Paul)
-      Neu: Benutzerprofil im Admincenter aktualisiert (Morpheus)
-      Neu: Eingabefeld-Fokus auf einigen Seiten (Paul)
-      Neu: Gzip Kompression einstellbar im Admincenter (Paul)
-      Neu: Einige neue Gruppenrechte (Paul)
-      Neu: Badwords protection (Daniel)
-      Neu: Erster Admin kann nicht gelöscht / degradiert werden (Superhausi)
-      Neu: Nach dem Login wird man zur vorherigen Seite weitergeleitet (Paul)
-      Neu: Gäste haben jetzt eine eigene Gruppe (Paul)
-      Neu: Suchwörter werden jetzt im Ergebis farblich markiert [vgl. Google] (Paul)
-	
-      Bug: Benutzernamen Überprüfung rewrite (Fixes bzgl. gebannte Namen) (Paul)
-      Bug: Seiten bei Suchnavigation in bestimmten Boards werden jetzt korrekt verlinkt (Paul)
-      Bug: Parse Error in installfunctions.php in Verbindung mit aelteren PHP Versionen behoben (Paul)
-      Bug: Geloeschte Posts: Index wurde nicht geupdatet wenn der Post der letzte im Thread war (Paul)
-      Bug: Moderator-Titel wird wieder angezeigt (Paul)
-      Bug: Verschachtelte [img]/[url] Tags funktionieren jetzt (Paul)
-      Bug: Cross Site Scripting fixes (Paul)
-      Bug: Beim [quote] Tag werden Whitespaces jetzt sinngemäß entfernt (Paul)
-      Bug: Jump Menü - Man kann nun auf Kategorieren springen (Paul)
-      Bug: Gesendete PMs werden jetzt korrekt eingefärbt (Paul)
-      Bug: Name bei gesendeten PMs wird jetzt korrekt angezeigt (Paul)
-      Bug: Suchfunktion funktionierte beim Blaettern im Ergebnis nicht richtig (Paul)
-      Bug: Bei Registrierung und im Profil muss eine gültige E-Mail-Adresse angegeben werden
-           (irgendwas@irgendwo.[2,4]) (Daniel)
-      Bug: Bei bestimmten Anwendungen wurde die URL nicht richtig geparst und ein HTML-Fehler produziert (Morpheus)
-      Bug: Threadtopic nicht länger als Editierfeld für Normaluser (Paul)
-      Bug: Template/Style Fehler in topics.html: Seitennavigation wurde nicht korrekt eingefärbt (Paul)
-      Bug: Template/Style Fehler in redirect.html: Hintergrund war statisch (Paul)
-      Bug: Template/Style Fehler in message.html: Darstellung in Opera war inkorrekt (Paul)
-      Bug: Benutzerrecht für unendlich PMs funktioniert jetzt (Paul)
-      Bug: Deaktivierte Foren werden bei der Suche ausgeschlossen (Paul)
+- When changing the password the user is logged out. (Daniel)
+- When changin the email address an error is shown. (Daniel)
+- Fixed color, quotes and code ThWB tag. (Daniel)
+- Fixed smiley recognition. (Daniel)
+- Users can create posts that exeed the maximum length or fall below the
+  minimum length. (Daniel)
+- Help links in post form were pointing to the right document. (Daniel)
+- Do not display http:// in the user profile when there is no homepage
+  set. (Daniel)
+- The template editor adds new lines when saving. (Daniel)
+- Can not create calendar events before 1970. (Paul)
 
- Änderung: Bilder sind jetzt im templates/-Verzeichnis (Paul)
- Änderung: Announcement-Layout angepasst (Paul)
- Änderung: eregi functionen in PREG umgewandelt (Morpheus)
- Änderung: bei vielen Messages (Fehlermeldungen, u.ä.) Navpath hinzugefügt (Daniel)
- Änderung: Cookies reduziert auf ein einzelnes (Daniel)
- Änderung: ThWboard-Code wird nicht länger in [code] Tags ausgeführt (Paul)
+
+Beta 2.80
+---------
+
+### Changes
+
+- Installer now supports multiple languages. (Paul)
+- Installer now compatible with PHP 4.2. (Paul)
+- Added a news script, that displays opening posts of a certain board as
+  news entries. (Paul)
+- Added previous avatar hack to code. (Morpheus, Hack written by Andy)
+- Extended user help. (Paul, Hack written by Jonas)
+- Added overview and statistics for user ranks below the help/ranks.
+  (Paul, Hack written by Hallenbeck)
+- Added php ThWB tag, which allows users to markup php code. (Morpheus)
+- Added php ThWB mail tag, which converts email to email hyperlinks. (Paul)
+- Smilies can now be used in private messages when enabled. (Morpheus)
+- Private messages can now be sent as emails instead of sending them to
+  an internal inbox. (Morpheus)
+- Administrators now can toggle output GZIP compression in the
+  administration center. (Paul)
+- Added database cleanup tool to remove unread threads or not completely
+  registered users. (Morpheus)
+- All threads can now be closed after a timeout. (Morpheus)
+- All threads can now be deleted after a timeout. (Morpheus)
+- The first administrator created when installing the board can not be
+  deleted or demoted anymore. (Superhausi)
+- The user search within the administration center now exposes more
+  search parameters. (Paul)
+- Added bad words protection.  User posts, names and topics are checked
+  for a blacklist of words and substituted with administrator configurable
+  alternatives. (Daniel)
+- Users are redirected to the previous visited URL after logging in.
+  (Paul)
+- Guests are part of a dedicated group. (Paul)
+- Updated the user profile editor in the administration center to expose
+  all current user properties. (Morpheus)
+- Added input field focus to some forms. (Paul)
+- Added new group permissions. (Paul)
+- When searching the search terms are highlighted in the search result.
+  (Paul)
+- Template related images are located within the template directory
+  structure. (Paul)
+- Added the navigation path to various forum messages like error
+  messages, status notifications and similar notifications. (Daniel)
+- ThWB tags are not parsed within code tags anymore. (Paul)
+- Merged cookies to a single cookie. (Daniel)
+- Changed announcement listing layout to match the other board parts.
+  (Paul)
+- Added categories as targets in jump dropdown menu. (Paul)
+
+
+### Bugfixes
+
+- When navigating through the search results after a board limited
+  search some pages are skipped. (Paul)
+- Fixed a PHP parse error in the installer for older PHP versions. (Paul)
+- The last post date in a thread was not updated when deleting the last
+  post (Paul)
+- The moderator title is not displayed properly sometimes. (Paul)
+- Img ThWB tags wrapped within url tags are not displayed properly. (Paul)
+- Fixed some XSS bugs. (Paul)
+- When registering or changing users can set an invalid email address.
+  (Paul)
+- When adding quote ThWB tags whitespace after the quote is retained.
+  (Paul)
+- A sent private message is still marked as not send. (Paul)
+- The displayed sender name on a private message is not the actual sender.
+  (Paul)
+- Some URLs are not parsed properly. (Morpheus)
+- Users can enter longer thread topic than they are allowed to save.
+  (Paul)
+- The page navigation is not displayed properly in the thread list. (Paul)
+- The background in the redirect page is not scrolling. (Paul)
+- The message template is not displayed on Opera. (Paul)
+- The permission to send private messages to full inboxes is not
+  honoured. (Paul)
+- Threads within hidden boards are listed in search results. (Paul)
 
 
 Beta 2.73
-=========
+---------
 
-      Bug: Gäste können nicht länger neue Topics erstellen wenn der Name gebannt ist (Paul)
-      Bug: Suchfunktion in Verbindung mit Threads der letzen Tage funktioniert jetzt korrekt (Paul)
-      Bug: User löschen funktioniert jetzt problemlos (Paul)
-      Bug: Hilfe Text für Showpostslevel bei Basic Settings korrigiert (Paul)
-      Bug: Für Gäste unsichtbare Boards können nicht länger durchsucht werden (Paul)
-      Bug: Update Info funktioniert jetzt in der .php3 Version (Paul)
+### Changes
 
- Änderung: Admin kann einstellen welche Gruppe die standard Gruppe sein soll (Paul)
+- Administrators now can configure which group should be the default one.
+  (Paul)
+
+### Bugfixes
+
+- Guests can still create threads even if their name is banned. (Paul)
+- The search results for the 'new threads since last visit' do not show
+  all new threads. (Paul)
+- When deleting a user not all related data is deleted. (Paul)
+- Fixed the information text for the 'show post level' setting. (Paul)
+- User are able to select hidden boards in the search mask. (Paul)
+- Unable to recieve update informations when running the .php3 version
+  of the board. (Paul)
+
 
 Beta 2.72
-=========
+---------
 
-      Neu: Style import auch lokal vom Server möglich (Paul)
+### Changes
 
-      Bug: Suchfunktion funktioniert wieder für Admins und User, die keinen Zugriff haben (Paul)
-      Bug: User lassen sich wieder löschen im Admin Center (Paul)
-      Bug: Letzten Post von User anzeigen funktioniert jetzt korrekt (Paul)
+- Administrators now can import styles locally from the server. (Paul)
+- After logging out users will not be listed in the 'who is online'
+  list anymore. (Paul)
 
- Änderung: User werden in der User online Liste gelöscht nachdem sie ausgeloggt sind (Paul)
+### Bugfixes
+
+- Banned users and administrators are unable to use the search. (Paul)
+- Administrators can again delete users from the administration interface.
+  (Paul)
+- The last post entry in the user profile does not point to the actual
+  last post by the user. (Paul)
+
 
 Beta 2.71
-=========
+---------
 
-      Neu: Maximale Anzahl der User, die gleichzeitig online sind wird jetzt gespeichert/angezeigt (Paul)
-      Neu: Jumpmenü für Threads der letzten x Tage im Index eingebaut, im Admincenter abschaltbar (Paul, Hack von Jonas)
-      Neu: Neuer Style: Experience (Templates & .style, Andy)
+### Changes
 
-      Bug: Administrator hatte keinen Zugriff auf Boards (Paul)
-      Bug: Userlevel lässt sich jetzt wieder ändern (Paul)
-      Bug: [phpInstaller] Man kann auf "About" klicken, auch wenn das Forum schon installiert ist (Paul)
-      Bug: Quicklinks sind wieder editierbar (Morpheus)
-      Bug: User werden nicht doppelt angezeigt in der Useronline Liste (Morpheus)
+- The board now records the peak value and time of simultaneously online
+  users. (Paul)
+- Added a dropdown menu to list the threads in the last x days quickly.
+  This can be disabled in the administration center.
+  (Paul, Hack written by Jonas)
+- Added a news style 'Experience', containing templates and style file.
+  (Andy)
 
- Änderung: MySQL Daten ohne `-Zeichen.
+### Bugfixes
 
-Beta 2.7
-========
+- Administrators can not access boards. (Paul)
+- User levels can not be changed. (Paul)
+- The 'About' link in the installer can still be accessed when the board
+  is installed. (Paul)
+- Quicklinks can not edited. (Morpheus)
+- Users can be listed multiple times in the 'who is online' list.
+  (Morpheus)
 
-      Neu: Support für mehrere Boards in einer Datenbank (Morpheus)
-      Neu: Eintragung des AIM und MSN (Morpheus)
-      Neu: Möglichkeit zur visuellen Deativierung privater Foren (Morpheus)
-      Neu: Titel kann im Thread editiert werden (Morpheus)
-      Neu: Gast Prefix änderbar im Admin-Home (Morpheus)
-      Neu: Newsletter-Hack wurde Standart (Adrian)
-      Neu: Weitere Optionen im Profil (Suchen, Letzter Post) (Paul)
-      Neu: Admin Center: Navigation im Source leichter modifizierbar (Paul)
-      Neu: Umfangreiches Gruppensystem (Paul)
-      Neu: Installer überarbeitet (Paul)
-      Neu: Update System integriert (Paul)
-      Neu: Configs sind nun in der Datenbank (Morpheus)
-      Neu: Lastvisited jetzt in der DB (Paul)
-      Neu: Alle Boards als gelesen markieren (Paul)
-      Neu: Debug-Funktionen fest integriert, mit verschiedenen Stufen (Andy, Morpheus)
-      Neu: Board kann temporär geschlossen werden (Morpheus)
-      Neu: PMs können nun aus dem Profil heraus verschickt werden
-      Neu: Boards können nun für Gäste unsichtbar gemacht werden (Morpheus)
-      Neu: Announcements können nun einzelnen Boards zugeordnet werden (Morpheus)
-      Neu: Admin-Center Redesign (Paul)
-      Neu: Optionen zur Signaturlängenbeschränkung (Paul)
-      Neu: Template Sets integriert (Morpheus)
-      Neu: Style Im/Export verbessert: Download/Upload (Paul)
 
-      Bug: Bug beim Editieren von Posts mit "&nbsp;" und anderen specialchars entfernt (Morpheus)
-      Bug: Bug beim Editieren von Posts mit "</TEXTAREA>" entfernt (Morpheus)
-      Bug: Thread wird nun gelöscht wenn der erste Post gelöscht wird (Morpheus)
-      Bug: Gäste werden nun korrekt angezeigt / gezählt (Morpheus)
-      Bug: Bei Deactivierung der E-Mail-Funktionen wurden die Benutzer wurden nicht automtisch eingeloggt (Morpheus)
-      Bug: Zeilensprung funktioniert bei den Netscape Browsern wieder (Morpheus)
-      Bug: Mehrere Blätterfunktionen gefixt (Memberlist, Board, etc) (Paul)
-      Bug: [code]-Tag funktioniert jetzt mit Einrückungen (Tab und Spaces) (Paul)
-      Bug: Email Adresse ändern funktioniert jetzt wieder (Paul)
+Beta 2.70
+---------
 
- Änderung: Admin kann bei geschlossenem Forum trozdem das Forum betreten (Paul)
- Änderung: Login-Code modifiziert, Cookie problem -eventuell- gelöst? (Testen!) (Paul)
+### Changes
+
+- Added table prefixes to allow multiple installations within a single
+  database. (Morpheus)
+- Added user attributes to store AIM and MSN user names. (Morpheus)
+- Added the feature to hide some boards for specific groups. (Morpheus)
+- The thread title now can be edited within the first post of a thread.
+  (Morpheus)
+- The guest name prefix now can be edited by the administrator.
+  (Morpheus)
+- Added the newsletter hack to the code. (Adrian)
+- Added a link to the user profile to search for posts written by that
+  user. (Paul)
+- Added a link to the user profile to access the last post written by that
+  user. (Paul)
+- Added a permission groups system. (Paul)
+- Updated installer. (Paul)
+- Added a featuire to check for updates of the software. (Paul)
+- Configurations are now stored within the database. (Morpheus)
+- Added the last visit date to the user attributes. (Paul)
+- Users now can mark all boards or single boards as read. (Paul)
+- Added debug notifications and debug levels. (Andy, Morpheus)
+- The board can now be closed temporary with a notice. (Morpheus)
+- Added a link to the user profile to send that user a private message.
+- Boards can now be hidden from guests. (Morpheus)
+- When creating announcements the announcement can be assigned to a board.
+  (Morpheus)
+- Redesigned the administration center. (Paul)
+- Added options to limit the signature size. (Paul)
+- Added importing and exporting styles by upload or download a style file.
+  (Paul)
+- Administrators can access the board even it is closed. (Paul)
+
+### Bugfixes
+
+- Fixed cookie set issue when logging in. (Paul)
+- HTML encoded character are not properly decoded when editing a post.
+  (Morpheus)
+- Threads are not deleted when the first post is deleted. (Morpheus)
+- The number of guests is not counted properly. (Morpheus)
+- When the activation email is disabled users are not logged in
+  automatically when registering themselves. (Morpheus)
+- The member list, thread list and thread view are not paginated properly.
+  (Paul)
+- Code ThWB tag does not honour indentations. (Paul)
+- Unable to edit your own email address. (Paul)
+
+
+----------------------------------------------------------------------
+This file is part of ThWboard
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program;  If not, see <http://www.gnu.org/licenses/>.
