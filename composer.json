@@ -11,5 +11,11 @@
     "require": {
         "php": ">=5.3.0",
         "ext-mysql": "*"
+    },
+    "require-dev": {
+        "phing/phing": "2.*"
+    },
+    "config": {
+        "bin-dir": "bin/"
     }
 }
