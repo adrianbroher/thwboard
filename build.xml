@@ -25,6 +25,8 @@ with this program;  If not, see <http://www.gnu.org/licenses/>.
 <project name="ThWboard" default="test"
     description="The ThWboard is a free bulletin board system.">
 
+    <taskdef name="webserver" classname="phing.tasks.ext.ServerTask" />
+
     <fileset dir="." id="sources">
         <include name="**/*.php" />
         <include name="admin/updates/*.update" />
@@ -36,6 +38,22 @@ with this program;  If not, see <http://www.gnu.org/licenses/>.
         <exclude name="extras/" />
         <exclude name="vendor/" />
     </fileset>
+
+    <target name="functional-test">
+        <if>
+            <not>
+                <available file="build.properties" />
+            </not>
+            <then>
+                <fail message="No build.properties found. Please set up environment with `bin/phing init`." />
+            </then>
+        </if>
+
+        <property file="build.properties" />
+
+        <webserver>
+        </webserver>
+    </target>
 
     <target name="init" description="Setting up the test environment">
         <echo><![CDATA[
@@ -127,6 +145,6 @@ table_prefix=tb_
         </phplint>
     </target>
 
-    <target name="test" depends="lint"
+    <target name="test" depends="lint,functional-test"
         description="Runs all implemented test suites"/>
 </project>
