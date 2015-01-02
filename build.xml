@@ -65,6 +65,8 @@ default:
     suites:
         default:
             paths: [ tests/functional ]
+            contexts:
+                - CommonActionsContext
     formatters:
         progress:
     extensions:
