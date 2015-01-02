@@ -51,7 +51,36 @@ with this program;  If not, see <http://www.gnu.org/licenses/>.
 
         <property file="build.properties" />
 
+        <!-- Write a local YAML configuration file for behat -->
+        <echo file="behat.yml"><![CDATA[
+# This file was created by `bin/phing functional-test`. Please run
+# `bin/phing init` to change this configuration.
+default:
+    autoload:
+        - tests/behat-bootstrap/
+    suites:
+        default:
+            paths: [ tests/functional ]
+    formatters:
+        progress:
+    extensions:
+        Behat\MinkExtension:
+            base_url: http://127.0.0.1:8080
+            goutte: ~
+        ]]></echo>
+
         <webserver>
+            <if>
+                <not><isset property="test.functional.feature" /></not>
+                <then>
+                    <exec executable="bin/behat" passthru="true" checkreturn="true" />
+                </then>
+                <else>
+                    <exec executable="bin/behat" passthru="true" checkreturn="true">
+                        <arg value="${test.functional.feature}" />
+                    </exec>
+                </else>
+            </if>
         </webserver>
     </target>
 
