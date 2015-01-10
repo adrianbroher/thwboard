@@ -65,7 +65,7 @@ CREATE TABLE $pref"."adminlog (
   logaction varchar(32) NOT NULL default '',
   lognotes varchar(255) NOT NULL default '',
   PRIMARY KEY  (logid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 CREATE TABLE $pref"."avatar (
@@ -74,7 +74,7 @@ CREATE TABLE $pref"."avatar (
   avatarurl varchar(255) NOT NULL default '',
   PRIMARY KEY  (avatarid),
   UNIQUE KEY avatarname (avatarname)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 CREATE TABLE $pref"."ban (
@@ -86,7 +86,7 @@ CREATE TABLE $pref"."ban (
   banexpire int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (banid),
   KEY userid (userid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 CREATE TABLE $pref"."bannedwords (
@@ -96,7 +96,7 @@ CREATE TABLE $pref"."bannedwords (
   ispartofword tinyint(1) NOT NULL default '0',
   PRIMARY KEY  (wordid),
   UNIQUE KEY banword (banword)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 CREATE TABLE $pref"."board (
@@ -115,7 +115,7 @@ CREATE TABLE $pref"."board (
   boarddisabled tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (boardid),
   KEY boardid (boardid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 INSERT INTO $pref"."board (boardid, boardname, boardlastpost, boardthreads, boardposts, boarddescription, categoryid, boardorder, styleid, boardlastpostby, boardthreadtopic, boardthreadid, boarddisabled)
 VALUES (
@@ -131,7 +131,7 @@ CREATE TABLE $pref"."calendar (
   eventactive smallint(1) NOT NULL default '1',
   userid int(10) UNSIGNED NOT NULL,
   PRIMARY KEY  (eventid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 
@@ -142,7 +142,7 @@ CREATE TABLE $pref"."category (
   categoryorder int(11) unsigned NOT NULL default '0',
   PRIMARY KEY  (categoryid),
   KEY categoryid (categoryid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 INSERT INTO $pref"."category VALUES (1,'Kategorie 1',1);
@@ -156,7 +156,7 @@ CREATE TABLE $pref"."group (
   title varchar(255) NOT NULL default '',
   titlepriority int(11) NOT NULL default '0',
   PRIMARY KEY  (groupid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 INSERT INTO $pref"."group VALUES (1, 'Default Group', '1110001000000000000000', 1, '', 0);
@@ -170,7 +170,7 @@ CREATE TABLE $pref"."groupboard (
   groupid int(10) unsigned NOT NULL default '0',
   accessmask varchar(50) NOT NULL default '0',
   KEY boardid (boardid,groupid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 
@@ -180,7 +180,7 @@ CREATE TABLE $pref"."lastvisited (
   userid int(10) unsigned NOT NULL default '0',
   lastvisitedtime int(10) unsigned NOT NULL default '0',
   KEY useridboardid (userid,boardid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 
@@ -193,7 +193,7 @@ CREATE TABLE $pref"."news (
   boardid varchar(255) NOT NULL default '',
   PRIMARY KEY  (newsid),
   KEY newsid (newsid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 
@@ -205,14 +205,14 @@ CREATE TABLE $pref"."online (
   userid int(10) unsigned NOT NULL default '0',
   KEY onlinetime (onlinetime),
   KEY sessionid (sessionid)
-) TYPE=Heap;
+) ENGINE=Heap;
 
 CREATE TABLE ${pref}flood (
   userid int(10) NOT NULL default '0',
   type tinyint(1) default NULL,
-  time timestamp(14) NOT NULL,
+  time timestamp(6) NOT NULL,
   ip varchar(16) NOT NULL default ''
-) TYPE=HEAP;
+) ENGINE=HEAP;
 
 CREATE TABLE $pref"."pm (
   pmid int(10) unsigned NOT NULL auto_increment,
@@ -225,7 +225,7 @@ CREATE TABLE $pref"."pm (
   pmfolder tinyint(1) unsigned NOT NULL default '0',
   PRIMARY KEY  (pmid),
   KEY pmid (pmid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 
@@ -248,7 +248,7 @@ CREATE TABLE $pref"."post (
   KEY postid (postid),
   KEY userid (userid),
   KEY threadid (threadid,userid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 
@@ -261,7 +261,7 @@ CREATE TABLE $pref"."qlink (
   linkcounter int(11) unsigned NOT NULL default '0',
   linkactive int(1) unsigned NOT NULL default '1',
   PRIMARY KEY  (linkid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 
@@ -272,7 +272,7 @@ CREATE TABLE $pref"."rank (
   rankimage varchar(255) NOT NULL default '',
   rankposts int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (rankid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 
@@ -286,7 +286,7 @@ CREATE TABLE $pref"."registry (
   keygroupid int(10) unsigned NOT NULL default '0',
   keydisplayorder int(11) unsigned NOT NULL default '0',
   PRIMARY KEY  (keyname)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 INSERT INTO $pref"."registry VALUES ('board_name','Forum-name','string','Board name','',1,'');
@@ -356,7 +356,7 @@ CREATE TABLE $pref"."registrygroup (
   keygroupname varchar(64) NOT NULL default '',
   keygroupdisplayorder int(10) unsigned NOT NULL default '0',
   PRIMARY KEY  (keygroupid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 INSERT INTO $pref"."registrygroup VALUES (1,'General','');
@@ -378,7 +378,7 @@ CREATE TABLE $pref"."session (
   ip varchar(16) NOT NULL default '0',
   PRIMARY KEY  (sessionid),
   KEY sessionid (sessionid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 
@@ -406,7 +406,7 @@ CREATE TABLE $pref"."style (
   styletemplate varchar(32) NOT NULL default 'default',
   PRIMARY KEY  (styleid),
   KEY styleid (styleid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 INSERT INTO $pref"."style VALUES (1,'Default','#FAFAFA','#454545','#1B6ECC','#ECECEC','#323232','#FAFAFA','#F5F5F5','#DEDEDE','#990000','#1B6ECC','#1B6ECC','#69B271','Verdana, Helvetica','./templates/default/images/space.png','./templates/default/images/newtopic.png','',1,'default');
@@ -429,7 +429,7 @@ CREATE TABLE $pref"."thread (
   PRIMARY KEY  (threadid),
   KEY threadid (threadid),
   KEY boardid (boardid,threadtop,threadtime)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 
 
@@ -468,7 +468,7 @@ CREATE TABLE $pref"."user (
   PRIMARY KEY  (userid),
   UNIQUE KEY username (username),
   KEY userid (userid)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 ";
 
     // split at ;\r\n or ;\n

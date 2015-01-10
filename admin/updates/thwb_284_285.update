@@ -47,7 +47,7 @@ class CUpdate
 
         /* flood protection foo */
 
-        thwb_query("CREATE TABLE ${pref}flood (userid int(10) NOT NULL default '0',type tinyint(1) default NULL,time timestamp(14) NOT NULL,ip varchar(16) NOT NULL default '') TYPE=HEAP;");
+        thwb_query("CREATE TABLE ${pref}flood (userid int(10) NOT NULL default '0',type tinyint(1) default NULL,time timestamp(6) NOT NULL,ip varchar(16) NOT NULL default '') ENGINE=HEAP;");
 
         thwb_query("INSERT INTO ${pref}registrygroup VALUES (8,'Flood Protection',7);");
 
