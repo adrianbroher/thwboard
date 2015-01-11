@@ -172,7 +172,20 @@ SQL
             p_errormsg(lng('error'), sprintf(lng('connecterror'), mysql_error()), 'JavaScript:history.back(0)');
         }
 
-        $r_database = mysql_listdbs();
+        $r_database = thwb_query(
+<<<SQL
+SHOW
+    DATABASES
+WHERE
+    `Database`
+NOT IN (
+    'information_schema',
+    'mysql',
+    'performance_schema',
+    'test'
+)
+SQL
+        );
 
         $databases = [];
         $i = 0;

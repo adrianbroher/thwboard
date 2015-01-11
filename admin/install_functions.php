@@ -503,7 +503,20 @@ function WriteAccess($file)
 
 function db_exists($dbname)
 {
-    $r_database = mysql_listdbs();
+    $r_database = thwb_query(
+<<<SQL
+SHOW
+    DATABASES
+WHERE
+    `Database`
+NOT IN (
+    'information_schema',
+    'mysql',
+    'performance_schema',
+    'test'
+)
+SQL
+    );
 
     $i = 0;
 
