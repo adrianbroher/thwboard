@@ -763,7 +763,7 @@ function p_welcome()
     print lng('infotxt');
 }
 
-function p_license()
+function p_license($accept)
 {
     $license = implode('', file('../COPYING'));
 /*    $license = nl2br($license);
@@ -775,11 +775,11 @@ function p_license()
                       <textarea cols="67" wrap="OFF" rows="12" readonly>'.$license.'</textarea>
                       <br>
                       <br>
-                      <input id="license-accept"  type="checkbox" name="license-accept" value="true">
+                      <input id="license-accept"  type="checkbox" name="license-accept" value="true"'.($accept ? ' checked="checked"' : '').'>
                       <label for="license-accept">'.lng('licread').'</label></p>';
 }
 
-function p_mysqldata()
+function p_mysqldata($hostname, $username)
 {
     print '
                     <b>'.lng('mysqldata').'</b><br>
@@ -791,14 +791,14 @@ function p_mysqldata()
                         <td><label for="database-hostname">'.lng('mysqlhost').'</label></td>
                         <td width="10">&nbsp;</td>
                         <td>
-                          <input id="database-hostname" type="text" name="database-hostname" class="inst_button" value="localhost">
+                          <input id="database-hostname" type="text" name="database-hostname" class="inst_button" value="'.$hostname.'">
                         </td>
                       </tr>
                       <tr>
                         <td><label for="database-username">'.lng('mysqluser').'</label></td>
                         <td width="10">&nbsp;</td>
                         <td>
-                          <input id="database-username" type="text" name="database-username" class="inst_button">
+                          <input id="database-username" type="text" name="database-username" class="inst_button" value="'.$username.'">
                         </td>
                       </tr>
                       <tr>
@@ -811,14 +811,14 @@ function p_mysqldata()
                     </table>';
 }
 
-function p_selectdb($databases)
+function p_selectdb($databases, $mode, $database_name)
 {
     print '
                     <b>'.lng('selectdb').'</b><br>
                     <br>
                     '.lng('choosedb').'<br>
                     <br>
-                    <label for="database-allocation-use"><input id="database-allocation-use" name="database-allocation" type="radio" value="use">'.lng('use').'</label> <label for="database-name-use">'.lng('existingdb').'</label><br>
+                    <label for="database-allocation-use"><input id="database-allocation-use" name="database-allocation" type="radio" value="use"'.(($mode == 'use') ? 'checked="checked"' : '').'>'.lng('use').'</label> <label for="database-name-use">'.lng('existingdb').'</label><br>
                     <select id="database-name-use" name="database-name-use" size="6" class="inst_button">';
 
     foreach ($databases as $database) {
@@ -828,11 +828,11 @@ function p_selectdb($databases)
     print '         </select>
                     <br>
                     <br>
-                    <label for="database-allocation-new"><input id="database-allocation-new" name="database-allocation" type="radio" value="new">'.lng('create').'</label> <label for="database-name-new">'.lng('newdbname').'</label><br>
-                    <input id="database-name-new" type="text" name="database-name-new" class="inst_button">';
+                    <label for="database-allocation-new"><input id="database-allocation-new" name="database-allocation" type="radio" value="new"'.(($mode == 'new') ? 'checked="checked"' : '').'>'.lng('create').'</label> <label for="database-name-new">'.lng('newdbname').'</label><br>
+                    <input id="database-name-new" type="text" name="database-name-new" class="inst_button" value="'.htmlspecialchars($database_name).'">';
 }
 
-function p_chooseprefix($dbname, $tables)
+function p_chooseprefix($dbname, $tables, $prefix, $overwrite)
 {
     print '
 <b>'.lng('chooseprefix').'</b><br>
@@ -853,13 +853,13 @@ function p_chooseprefix($dbname, $tables)
 
     print '
   <label for="table-prefix">'.lng('enterprefix').'</label><br>
-<input id="table-prefix" type="text" name="table-prefix" value="tb_" class="inst_button"> ('.lng('dontchange').')<br>
+<input id="table-prefix" type="text" name="table-prefix" value="'.htmlspecialchars($prefix).'" class="inst_button"> ('.lng('dontchange').')<br>
 <br>
-<label for="database-clear"><input id="database-clear" type="checkbox" name="database-clear" value="true"> '.lng('deleteexisting').'</label>';
+<label for="database-clear"><input id="database-clear" type="checkbox" name="database-clear" value="true"'.($overwrite ? ' checked="checked"': '').'> '.lng('deleteexisting').'</label>';
 }
 
 
-function p_adminprofile()
+function p_adminprofile($username, $email)
 {
     print '
 <b>'.lng('createadmin').'</b><br>
@@ -869,14 +869,14 @@ function p_adminprofile()
     <td><label for="administrator-username">'.lng('username').'</label></td>
     <td width="10">&nbsp;</td>
     <td>
-      <input id="administrator-username" type="text" name="administrator-username" value="root" class="inst_button">
+      <input id="administrator-username" type="text" name="administrator-username" value="'.htmlspecialchars($username).'" class="inst_button">
     </td>
   </tr>
   <tr>
     <td><label for="administrator-email">'.lng('email').'</label></td>
     <td width="10">&nbsp;</td>
     <td>
-      <input id="administrator-email" type="text" name="administrator-email" class="inst_button">
+      <input id="administrator-email" type="text" name="administrator-email" class="inst_button" value="'.htmlspecialchars($email).'">
     </td>
   </tr>
   <tr>

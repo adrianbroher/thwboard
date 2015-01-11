@@ -95,13 +95,21 @@ SQL
         break;
 
     case 'table-create':
+        if (!isset($_REQUEST['administrator-username'])) {
+            $_REQUEST['administrator-username'] = 'root';
+        }
+
+        if (!isset($_REQUEST['administrator-email'])) {
+            $_REQUEST['administrator-email'] = '';
+        }
+
         mysql_connect($_POST['database-hostname'], $_POST['database-username'], $_POST['database-password']);
         mysql_select_db($_POST['database-name']);
 
         create_tables($_POST['table-prefix'], $_POST['database-clear'] == 'true');
 
         p_header('administrator-create');
-        p_adminprofile();
+        p_adminprofile($_REQUEST['administrator-username'], $_REQUEST['administrator-email']);
         p_footer('administrator-create', [
             'database-hostname' => $_POST['database-hostname'],
             'database-username' => $_POST['database-username'],
@@ -130,6 +138,14 @@ SQL
 
         $_POST['database-name'] = ($_POST['database-allocation'] == 'use') ? $_POST['database-name-use'] : $_POST['database-name-new'];
 
+        if (!isset($_REQUEST['table-prefix'])) {
+            $_REQUEST['table-prefix'] = 'tb_';
+        }
+
+        if (!isset($_REQUEST['database-clear'])) {
+            $_REQUEST['database-clear'] = false;
+        }
+
         if ($_POST['database-allocation'] == 'new') {
             thwb_query("CREATE DATABASE ".$_POST['database-name']);
 
@@ -150,7 +166,7 @@ SQL
         }
 
         p_header('table-create');
-        p_chooseprefix($_POST['database-name'], $tables);
+        p_chooseprefix($_POST['database-name'], $tables, $_REQUEST['table-prefix'], $_REQUEST['database-clear'] == 'true');
         p_footer('table-create', [
             'database-hostname' => $_POST['database-hostname'],
             'database-username' => $_POST['database-username'],
@@ -160,6 +176,14 @@ SQL
         break;
 
     case 'database-select':
+        if (!isset($_REQUEST['database-allocation'])) {
+            $_REQUEST['database-allocation'] = 'use';
+        }
+
+        if (!isset($_REQUEST['database-name'])) {
+            $_REQUEST['database-name'] = '';
+        }
+
         $dbhandle = @mysql_connect($_POST['database-hostname'], $_POST['database-username'], $_POST['database-password']);
 
         if (!$dbhandle) {
@@ -190,7 +214,7 @@ SQL
         }
 
         p_header('table-prefix');
-        p_selectdb($databases);
+        p_selectdb($databases, $_REQUEST['database-allocation'], $_REQUEST['database-name']);
         p_footer('table-prefix', [
             'database-hostname' => $_POST['database-hostname'],
             'database-username' => $_POST['database-username'],
@@ -199,18 +223,26 @@ SQL
         break;
 
     case 'database-credentials':
+        if (!isset($_REQUEST['database-hostname'])) {
+            $_REQUEST['database-hostname'] = 'localhost';
+        }
+
+        if (!isset($_REQUEST['database-username'])) {
+            $_REQUEST['database-username'] = '';
+        }
+
         if ($_POST['license-accept'] != 'true') {
             p_errormsg(lng('error'), lng('licaccept'), 'JavaScript:history.back(0)');
         } else {
             p_header('database-select');
-            p_mysqldata();
+            p_mysqldata($_REQUEST['database-hostname'], $_REQUEST['database-username']);
             p_footer('database-select');
         }
         break;
 
     case 'license':
         p_header('database-credentials');
-        p_license();
+        p_license($_REQUEST['license-accept']);
         p_footer('database-credentials');
         break;
 
