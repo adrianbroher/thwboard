@@ -602,7 +602,7 @@ td {  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 8pt
               <table width="100%" border="0" cellspacing="0" cellpadding="6">
                 <tr>
                   <td><b>'.$cfg['appname'].' '.lng('installation').'</b><br>
-                    <a href="install.php?step=about&lang='.$_REQUEST['lang'].'">phpInstaller</a> v'.$cfg['installer_ver'].'</td>
+                    <a href="install.php?step=about&lang='.$_REQUEST['lang'].'">About phpInstaller</a> v'.$cfg['installer_ver'].'</td>
                   <td align="right"><img src="./images/thwboard_logo.gif"></td>
                 </tr>
               </table>
