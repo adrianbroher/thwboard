@@ -824,15 +824,20 @@ function p_chooseprefix($dbname, $tables)
 {
     print '
 <b>'.lng('chooseprefix').'</b><br>
-<br>
-'.sprintf(lng('tablelist'), $dbname).'
+<br>';
+
+    if (!empty($tables)) {
+        print sprintf(lng('tablelist'), $dbname).'
 <ul>';
 
-    while (list(, $v) = @each($tables)) {
-        print '<li>'.$v.'</li>';
-    }
+        while (list(, $v) = @each($tables)) {
+            print '<li>'.$v.'</li>';
+        }
 
-    print '</ul>';
+        print '</ul>';
+    } else {
+        print sprintf(lng('emptytablelist'), $dbname).'<br>';
+    }
 
     print '
   <label for="table-prefix">'.lng('enterprefix').'</label><br>
