@@ -173,19 +173,15 @@ function first_cut($tag, $str)
     return ((($found) ? (strlen($str) - strlen($i)) : 0));
 }
 
-/**
- * we need some standard board includes.
- * determine whether or not we are included
- * and use the correct path.
- **/
-
-$a_includes = array('config', 'functions', 'thwbcode');
 $incpref = ((defined('THWB_NEWS_INCLUDED')) ? THWB_NEWS_PATH : '.');
 
-foreach($a_includes as $inc)
-{
-    require($incpref.'/inc/'.$inc.'.inc.php');
+if (!@include($incpref.'/inc/config.inc.php')) {
+    print 'Das Forum ist noch nicht eingerichtet! Bitte <a href="./admin/install.php">installieren</a> Sie zuerst die Forensoftware um das Forum nutzen zu k&ouml;nnen.';
+    exit;
 }
+
+require $incpref.'/inc/functions.inc.php';
+require $incpref.'/inc/thwbcode.inc.php';
 
 if( !$pref )
     $pref = 'thwb_';

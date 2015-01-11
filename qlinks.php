@@ -20,7 +20,11 @@
 */
 // quicklinks by Morpheus
 
-include "./inc/config.inc.php";
+if (!@include('./inc/config.inc.php')) {
+    print 'Das Forum ist noch nicht eingerichtet! Bitte <a href="./admin/install.php">installieren</a> Sie zuerst die Forensoftware um das Forum nutzen zu k&ouml;nnen.';
+    exit;
+}
+
 $mysql = @mysql_connect($mysql_h, $mysql_u, $mysql_p);
 $db = @mysql_select_db($mysql_db);
 

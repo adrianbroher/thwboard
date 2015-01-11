@@ -54,9 +54,8 @@ if(!empty($HTTP_SERVER_VARS['REQUEST_URI']) && (strstr($HTTP_SERVER_VARS['REQUES
   die();
 }
 
-if( !@include('./inc/config.inc.php') )
-{
-    print 'Das Forum ist noch nicht installiert! Klicken Sie <a href="./admin/install.php">hier</a>, um mit der Installation zu beginnen.';
+if (!@include('./inc/config.inc.php')) {
+    print 'Das Forum ist noch nicht eingerichtet! Bitte <a href="./admin/install.php">installieren</a> Sie zuerst die Forensoftware um das Forum nutzen zu k&ouml;nnen.';
     exit;
 }
 

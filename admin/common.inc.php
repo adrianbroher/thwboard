@@ -50,7 +50,7 @@ if(substr(phpversion(), 0, 1) > 4)
 include('functions.inc.php');
 if( !@include('./../inc/config.inc.php') )
 {
-    print 'Das Forum ist noch nicht installiert! Klicken Sie <a href="./install.php">hier</a>, um mit der Installation zu beginnen.';
+    print 'Das Forum ist noch nicht eingerichtet! Bitte <a href="./install.php">installieren</a> Sie zuerst die Forensoftware um das Forum nutzen zu k&ouml;nnen.';
     exit;
 }
 
