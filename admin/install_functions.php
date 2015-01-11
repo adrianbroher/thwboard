@@ -998,7 +998,7 @@ function p_loginform()
     <td><select id="language" name="lang" class="inst_button">';
 
     while (list($k, $v) = each($a_lang)) {
-        print '<option value="'.$k.'">'.$a_lang[$k]['desc'].' </option>';
+        print '<option'.(($k == 'en') ? ' selected="selected"' : '').' value="'.$k.'">'.$a_lang[$k]['desc'].' </option>';
     }
 
     print '</select></td>
@@ -1017,7 +1017,7 @@ function p_selectlang()
 <select id="language" name="lang" class="inst_button">';
 
     while (list($k, $v) = each($a_lang)) {
-        print '<option value="'.$k.'">'.$a_lang[$k]['desc'].' </option>';
+        print '<option '.(($k === 'en') ? 'selected="selected" ': '').'value="'.$k.'">'.$a_lang[$k]['desc'].' </option>';
     }
 
     print '</select>';
