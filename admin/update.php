@@ -79,15 +79,15 @@ if (mysql_num_rows($r_user)) {
     $user = mysql_fetch_array($r_user);
 
     if ($user['userpassword'] != md5($_POST['login-password'])) {
-        $_POST['step'] = 'login';
+        $_GET['step'] = 'login';
     }
 } else {
-    $_POST['step'] = 'login';
+    $_GET['step'] = 'login';
 }
 
-switch ($_POST['step']) {
+switch ($_GET['step']) {
     case 'login':
-        p_header();
+        p_header('update-select');
         p_loginform();
         p_footer('update-select');
         break;
@@ -124,7 +124,7 @@ switch ($_POST['step']) {
             if ($update->UpdaterVer > $cfg['updater_ver']) {
                 p_errormsg(lng('error'), lng('tooold'));
             } else {
-                p_header();
+                p_header('update-run');
                 p_updateinfo($update);
                 p_footer('update-run', [
                     'update-run' => $scriptname,
@@ -147,7 +147,7 @@ switch ($_POST['step']) {
         }
 
         natsort($a_file);
-        p_header();
+        p_header('update-show');
         p_updatewelcome($a_file);
         p_footer('update-show', [
             'login-username' => $_POST['login-username'],

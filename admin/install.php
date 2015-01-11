@@ -31,15 +31,15 @@ if (version_compare(PHP_VERSION, '4.0.6', '<')) {
 
 require('install_functions.php');
 
-if (!isset($_POST['step'])) {
-    $_POST['step'] = '';
+if (!isset($_GET['step'])) {
+    $_GET['step'] = '';
 }
 
-if (!install_allowed() && $_POST['step'] != 'about' && $_POST['step'] != '') {
-    $_POST['step'] = 'deny';
+if (!install_allowed() && $_GET['step'] != 'about' && $_GET['step'] != '') {
+    $_GET['step'] = 'deny';
 }
 
-switch ($_POST['step']) {
+switch ($_GET['step']) {
     case 'configuration-download':
         header('Content-Type: application/octetstream');
         header('Content-Disposition: filename="config.inc.php"');
@@ -83,7 +83,7 @@ VALUES
 SQL
         );
 
-        p_header();
+        p_header('configuration-write');
         p_prewrite('install.php?step=configuration-download&database-hostname='.$_POST['database-hostname'].'&database-username='.$_POST['database-username'].'&database-password='.$_POST['database-password'].'&database-name='.$_POST['database-name'].'&table-prefix='.$_POST['table-prefix']);
         p_footer('configuration-write', [
             'database-hostname' => $_POST['database-hostname'],
@@ -100,7 +100,7 @@ SQL
 
         create_tables($_POST['table-prefix'], $_POST['database-clear'] == 'true');
 
-        p_header();
+        p_header('administrator-create');
         p_adminprofile();
         p_footer('administrator-create', [
             'database-hostname' => $_POST['database-hostname'],
@@ -155,7 +155,7 @@ SQL
             $i++;
         }
 
-        p_header();
+        p_header('table-create');
         p_chooseprefix($db, $tables);
         p_footer('table-create', [
             'database-hostname' => $_POST['database-hostname'],
@@ -182,7 +182,7 @@ SQL
             $i++;
         }
 
-        p_header();
+        p_header('table-prefix');
         p_selectdb($databases);
         p_footer('table-prefix', [
             'database-hostname' => $_POST['database-hostname'],
@@ -195,14 +195,14 @@ SQL
         if ($_POST['license-accept'] != 'true') {
             p_errormsg(lng('error'), lng('licaccept'));
         } else {
-            p_header();
+            p_header('database-select');
             p_mysqldata();
             p_footer('database-select');
         }
         break;
 
     case 'license':
-        p_header();
+        p_header('database-credentials');
         p_license();
         p_footer('database-credentials');
         break;
@@ -220,13 +220,13 @@ SQL
         break;
 
     case 'welcome':
-        p_header();
+        p_header('license');
         p_welcome();
         p_footer('license');
         break;
 
     default:
-        p_header();
+        p_header('welcome');
         p_selectlang();
         p_footer('welcome');
 }

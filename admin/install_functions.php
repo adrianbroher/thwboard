@@ -559,7 +559,7 @@ function p_deny_install()
 '.lng('deniedtxt');
 }
 
-function p_header()
+function p_header($step = '')
 {
     global $PHP_SELF, $cfg;
 
@@ -576,7 +576,7 @@ td {  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 8pt
 </style>
 </head>
 <body bgcolor="#3A6EA5" text="#000000" link="#0000FF" vlink="#0033FF" alink="#0000FF">
-<form name="theform" method="post" action="'.basename($PHP_SELF).'">
+<form name="theform" method="post" action="'.($step ? ('?step=' . $step) : '').'">
   <table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
     <tr>
       <td bgcolor="#D4D0C8" height="1" width="1"><img src="./images/space.gif" width="1" height="1"></td>
@@ -650,7 +650,6 @@ function p_footer($action = '', $vars = 0)
               <table width="100%" border="0" cellspacing="0" cellpadding="16">
                 <tr>
                   <td align="right">
-                    <input type="hidden" name="action" value="'.$action.'">
                     '.( $action != '' ? '<input type="submit" name="next" value="'.lng('next').' &gt;" class="inst_button">' : '&nbsp;');
 
     while (list($k, $v) = each($vars)) {
