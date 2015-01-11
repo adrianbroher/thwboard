@@ -51,7 +51,7 @@ switch ($_GET['step']) {
 
     case 'administrator-create':
         if (strlen($_POST['administrator-password']) < 5) {
-            p_errormsg(lng('error'), lng('adminpwtooshort'));
+            p_errormsg(lng('error'), lng('adminpwtooshort'), 'JavaScript:history.back(0)');
         }
 
         mysql_connect($_POST['database-hostname'], $_POST['database-username'], $_POST['database-password']);
@@ -113,7 +113,7 @@ SQL
 
     case 'configuration-write':
         if (!WriteAccess('../inc/config.inc.php')) {
-            p_errormsg(lng('error'), lng('chmoderror'));
+            p_errormsg(lng('error'), lng('chmoderror'), 'JavaScript:history.back(0)');
         } else {
             $fp = @fopen('../inc/config.inc.php', 'w');
             p_configuration($fp, $_POST);
@@ -140,7 +140,7 @@ SQL
             thwb_query("CREATE DATABASE ".$db);
 
             if (!db_exists($db)) {
-                p_errormsg(lng('error'), sprintf(lng('mysqlerror'), $db, mysql_error()));
+                p_errormsg(lng('error'), sprintf(lng('mysqlerror'), $db, mysql_error()), 'JavaScript:history.back(0)');
             }
         }
 
@@ -169,7 +169,7 @@ SQL
         $dbhandle = @mysql_connect($_POST['database-hostname'], $_POST['database-username'], $_POST['database-password']);
 
         if (!$dbhandle) {
-            p_errormsg(lng('error'), sprintf(lng('connecterror'), mysql_error()));
+            p_errormsg(lng('error'), sprintf(lng('connecterror'), mysql_error()), 'JavaScript:history.back(0)');
         }
 
         $r_database = mysql_listdbs();
@@ -193,7 +193,7 @@ SQL
 
     case 'database-credentials':
         if ($_POST['license-accept'] != 'true') {
-            p_errormsg(lng('error'), lng('licaccept'));
+            p_errormsg(lng('error'), lng('licaccept'), 'JavaScript:history.back(0)');
         } else {
             p_header('database-select');
             p_mysqldata();

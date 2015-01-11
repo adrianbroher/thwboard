@@ -729,16 +729,18 @@ CONFIG
     );
 }
 
-function p_errormsg($title, $message)
+function p_errormsg($title, $message, $back_url = null)
 {
     p_header();
     print '
 <b>'.$title.'</b><br>
 <br>
 '.$message.'<br>
-<br>
-<a href="JavaScript:history.back(0)">'.lng('back').'</a>
-';
+<br>';
+    if ($back_url) {
+        print '<a href="'.htmlspecialchars($back_url).'">'.lng('back').'</a>';
+    }
+
     p_footer();
     exit;
 }

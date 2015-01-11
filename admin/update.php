@@ -99,11 +99,11 @@ switch ($_GET['step']) {
         $update->Prefix = $pref;
 
         if (!$update->AllowUpdate()) {
-            p_errormsg(lng('error'), lng('cantexec'));
+            p_errormsg(lng('error'), lng('cantexec'), 'JavaScript:history.back(0)');
         }
 
         if ($update->RunUpdate()) {
-            p_errormsg(lng('error'), $update->GetError());
+            p_errormsg(lng('error'), $update->GetError(), 'JavaScript:history.back(0)');
         } else {
             p_errormsg(lng('updatesuccess'), lng('updatesuccesstxt'));
         }
@@ -114,7 +114,7 @@ switch ($_GET['step']) {
         $scriptname = 'updates/'.$_POST['update-selected'];
 
         if (!file_exists($scriptname) || !$scriptname) {
-            p_errormsg(lng('error'), lng('notfound'));
+            p_errormsg(lng('error'), lng('notfound'), 'JavaScript:history.back(0)');
         } else {
             include $scriptname;
 
@@ -122,7 +122,7 @@ switch ($_GET['step']) {
 
             $update->Prefix = $pref;
             if ($update->UpdaterVer > $cfg['updater_ver']) {
-                p_errormsg(lng('error'), lng('tooold'));
+                p_errormsg(lng('error'), lng('tooold'), 'JavaScript:history.back(0)');
             } else {
                 p_header('update-run');
                 p_updateinfo($update);
