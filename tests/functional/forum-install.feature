@@ -169,7 +169,7 @@ Feature: Forum install
             | MySQL password    | %DATABASE_PASSWORD% |
         And I press "Next"
         Then I should see "Select MySQL database"
-        And the "mode_db" field should contain "use"
+        And the "database-allocation" field should contain "use"
         And I should see the following <value> available in the select "existing database":
             | value           |
             | %DATABASE_NAME% |
@@ -180,7 +180,7 @@ Feature: Forum install
         Then I should see "The credentials given have no permissions to create a database."
         When I follow "Back"
         Then I should see "Select MySQL database"
-        And the "mode_db" field should contain "create"
+        And the "database-allocation" field should contain "new"
         And I should see the following <value> available in the select "existing database":
             | value           |
             | %DATABASE_NAME% |
@@ -190,7 +190,7 @@ Feature: Forum install
         Then I should see "The database name should only consist of lowercase characters, uppercase characters, digits and underscore."
         When I follow "Back"
         Then I should see "Select MySQL database"
-        And the "mode_db" field should contain "create"
+        And the "database-allocation" field should contain "new"
         And I should see the following <value> available in the select "existing database":
             | value           |
             | %DATABASE_NAME% |

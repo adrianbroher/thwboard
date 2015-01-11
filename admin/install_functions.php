@@ -818,18 +818,17 @@ function p_selectdb($databases)
                     <br>
                     '.lng('choosedb').'<br>
                     <br>
-                    <label for="database-name-use">'.lng('existingdb').'</label><br>
-                    <select id="database-name-use" name="database-name-use" size="6" class="inst_button">
-                      <option value="_usefield" selected>( '.lng('usefield').' )</option>';
+                    <label for="database-allocation-use"><input id="database-allocation-use" name="database-allocation" type="radio" value="use">'.lng('use').'</label> <label for="database-name-use">'.lng('existingdb').'</label><br>
+                    <select id="database-name-use" name="database-name-use" size="6" class="inst_button">';
 
     foreach ($databases as $database) {
-        print '<option value="'.$database.'">'.lng('existingdb').': '.$database.'</option>';
+        print '<option value="'.$database.'">'.$database.'</option>';
     }
 
     print '         </select>
                     <br>
                     <br>
-                    <label for="database-name-new">'.lng('newdbname').'</label><br>
+                    <label for="database-allocation-new"><input id="database-allocation-new" name="database-allocation" type="radio" value="new">'.lng('create').'</label> <label for="database-name-new">'.lng('newdbname').'</label><br>
                     <input id="database-name-new" type="text" name="database-name-new" class="inst_button">';
 }
 

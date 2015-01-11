@@ -128,25 +128,19 @@ SQL
     case 'table-prefix':
         mysql_connect($_POST['database-hostname'], $_POST['database-username'], $_POST['database-password']);
 
-        $db = '';
+        $_POST['database-name'] = ($_POST['database-allocation'] == 'use') ? $_POST['database-name-use'] : $_POST['database-name-new'];
 
-        if ($_POST['database-name-new'] && $_POST['database-name-use'] == '_usefield') {
-            $db = $_POST['database-name-new'];
-        } else {
-            $db = $_POST['database-name-use'];
-        }
+        if ($_POST['database-allocation'] == 'new') {
+            thwb_query("CREATE DATABASE ".$_POST['database-name']);
 
-        if (!db_exists($db)) {
-            thwb_query("CREATE DATABASE ".$db);
-
-            if (!db_exists($db)) {
-                p_errormsg(lng('error'), sprintf(lng('mysqlerror'), $db, mysql_error()), 'JavaScript:history.back(0)');
+            if (!db_exists($_POST['database-name'])) {
+                p_errormsg(lng('error'), sprintf(lng('mysqlerror'), $_POST['database-name'], mysql_error()), 'JavaScript:history.back(0)');
             }
         }
 
-        mysql_select_db($db);
+        mysql_select_db($_POST['database-name']);
 
-        $r_table = mysql_list_tables($db);
+        $r_table = mysql_list_tables($_POST['database-name']);
         $a_tables = [];
         $i = 0;
 
@@ -156,12 +150,12 @@ SQL
         }
 
         p_header('table-create');
-        p_chooseprefix($db, $tables);
+        p_chooseprefix($_POST['database-name'], $tables);
         p_footer('table-create', [
             'database-hostname' => $_POST['database-hostname'],
             'database-username' => $_POST['database-username'],
             'database-password' => $_POST['database-password'],
-            'database-name' => $db
+            'database-name' => $_POST['database-name']
         ]);
         break;
 
