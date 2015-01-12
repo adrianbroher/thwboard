@@ -47,7 +47,7 @@ SQL
 list($version) = mysql_fetch_row($r_registry);
 $version = (float)($version);
 
-$loginUsername = addslashes($l_username);
+$loginUsername = addslashes($_POST['l_username']);
 
 if ($version < 2.8) {
     $r_user = thwb_query(
@@ -78,14 +78,14 @@ SQL
 if (mysql_num_rows($r_user)) {
     $user = mysql_fetch_array($r_user);
 
-    if ($user['userpassword'] != md5($l_userpassword)) {
-        $action = 'login';
+    if ($user['userpassword'] != md5($_POST['l_userpassword'])) {
+        $_POST['action'] = 'login';
     }
 } else {
-    $action = 'login';
+    $_POST['action'] = 'login';
 }
 
-switch ($action) {
+switch ($_POST['action']) {
     case 'login':
         p_header();
         p_loginform();
@@ -93,7 +93,7 @@ switch ($action) {
         break;
 
     case 'startupdate':
-        include $scriptname;
+        include $_POST['scriptname'];
         $update = new CUpdate();
 
         $update->Prefix = $pref;
@@ -111,7 +111,7 @@ switch ($action) {
         break;
 
     case 'update':
-        $scriptname = 'updates/'.$scriptname;
+        $scriptname = 'updates/'.$_POST['scriptname'];
 
         if (!file_exists($scriptname) || !$scriptname) {
             p_errormsg(lng('error'), lng('notfound'));
@@ -128,8 +128,8 @@ switch ($action) {
                 p_updateinfo($update);
                 p_footer('startupdate', [
                     'scriptname' => $scriptname,
-                    'l_username' => $l_username,
-                    'l_userpassword' => $l_userpassword
+                    'l_username' => $_POST['l_username'],
+                    'l_userpassword' => $_POST['l_userpassword']
                 ]);
             }
         }
@@ -150,8 +150,8 @@ switch ($action) {
         p_header();
         p_updatewelcome($a_file);
         p_footer('update', [
-            'l_username' => $l_username,
-            'l_userpassword' => $l_userpassword
+            'l_username' => $_POST['l_username'],
+            'l_userpassword' => $_POST['l_userpassword']
         ]);
         break;
 }

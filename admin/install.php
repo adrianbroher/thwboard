@@ -31,15 +31,15 @@ if (version_compare(PHP_VERSION, '4.0.6', '<')) {
 
 require('install_functions.php');
 
-if (!isset($action)) {
-    $action = '';
+if (!isset($_POST['action'])) {
+    $_POST['action'] = '';
 }
 
-if (!install_allowed() && $action != 'about' && $action != '') {
-    $action = 'deny';
+if (!install_allowed() && $_POST['action'] != 'about' && $_POST['action'] != '') {
+    $_POST['action'] = 'deny';
 }
 
-switch ($action) {
+switch ($_POST['action']) {
     case 'generate_config':
         header('Content-Type: application/octetstream');
         header('Content-Disposition: filename="config.inc.php"');
@@ -47,26 +47,26 @@ switch ($action) {
         header('Expires: 0');
 
         p_configuration(STDOUT, [
-            'database-hostname' => $HTTP_POST_VARS['hostname'],
-            'database-username' => $HTTP_POST_VARS['user'],
-            'database-password' => $HTTP_POST_VARS['pass'],
-            'database-name' => $HTTP_POST_VARS['db'],
-            'table-prefix' => $HTTP_POST_VARS['prefix']
+            'database-hostname' => $_POST['hostname'],
+            'database-username' => $_POST['user'],
+            'database-password' => $_POST['pass'],
+            'database-name' => $_POST['db'],
+            'table-prefix' => $_POST['prefix']
         ]);
         break;
 
     case 'createadmin':
-        if (strlen($HTTP_POST_VARS['admin_pass']) < 5) {
+        if (strlen($_POST['admin_pass']) < 5) {
             p_errormsg(lng('error'), lng('adminpwtooshort'));
         }
 
-        mysql_connect($HTTP_POST_VARS['hostname'], $HTTP_POST_VARS['user'], $HTTP_POST_VARS['pass']);
-        mysql_select_db($HTTP_POST_VARS['db']);
+        mysql_connect($_POST['hostname'], $_POST['user'], $_POST['pass']);
+        mysql_select_db($_POST['db']);
 
         thwb_query(
 <<<SQL
 INSERT INTO
-    {$HTTP_POST_VARS['prefix']}user
+    {$_POST['prefix']}user
 (
     username,
     useremail,
@@ -78,9 +78,9 @@ INSERT INTO
 )
 VALUES
 (
-    '{$admin_user}',
-    '{$admin_email}',
-    MD5('{$admin_pass}'),
+    '{$_POST['admin_user']}',
+    '{$_POST['admin_mail']}',
+    MD5('{$_POST['admin_pass']}'),
     '1',
     UNIX_TIMESTAMP(),
     ',3,',
@@ -91,35 +91,35 @@ SQL
 
         p_header();
         p_prewrite(
-            $HTTP_POST_VARS['hostname'],
-            $HTTP_POST_VARS['user'],
-            $HTTP_POST_VARS['pass'],
-            $HTTP_POST_VARS['db'],
-            $HTTP_POST_VARS['prefix']
+            $_POST['hostname'],
+            $_POST['user'],
+            $_POST['pass'],
+            $_POST['db'],
+            $_POST['prefix']
         );
         p_footer('writeconfig', [
-            'hostname' => $HTTP_POST_VARS['hostname'],
-            'user' => $HTTP_POST_VARS['user'],
-            'pass' => $HTTP_POST_VARS['pass'],
-            'db' => $HTTP_POST_VARS['db'],
-            'prefix' => $HTTP_POST_VARS['prefix']
+            'hostname' => $_POST['hostname'],
+            'user' => $_POST['user'],
+            'pass' => $_POST['pass'],
+            'db' => $_POST['db'],
+            'prefix' => $_POST['prefix']
         ]);
         break;
 
     case 'createtables':
-        mysql_connect($HTTP_POST_VARS['hostname'], $HTTP_POST_VARS['user'], $HTTP_POST_VARS['pass']);
-        mysql_select_db($HTTP_POST_VARS['db']);
+        mysql_connect($_POST['hostname'], $_POST['user'], $_POST['pass']);
+        mysql_select_db($_POST['db']);
 
-        create_tables($delete_existing);
+        create_tables($_POST['delete_existing']);
 
         p_header();
         p_adminprofile();
         p_footer('createadmin', [
-            'hostname' => $HTTP_POST_VARS['hostname'],
-            'user' => $HTTP_POST_VARS['user'],
-            'pass' => $HTTP_POST_VARS['pass'],
-            'db' => $HTTP_POST_VARS['db'],
-            'prefix' => $HTTP_POST_VARS['prefix']
+            'hostname' => $_POST['hostname'],
+            'user' => $_POST['user'],
+            'pass' => $_POST['pass'],
+            'db' => $_POST['db'],
+            'prefix' => $_POST['prefix']
         ]);
         break;
 
@@ -129,11 +129,11 @@ SQL
         } else {
             $fp = @fopen('../inc/config.inc.php', 'w');
             p_configuration($fp, [
-                'database-hostname' => $HTTP_POST_VARS['hostname'],
-                'database-username' => $HTTP_POST_VARS['user'],
-                'database-password' => $HTTP_POST_VARS['pass'],
-                'database-name' => $HTTP_POST_VARS['db'],
-                'table-prefix' => $HTTP_POST_VARS['prefix']
+                'database-hostname' => $_POST['hostname'],
+                'database-username' => $_POST['user'],
+                'database-password' => $_POST['pass'],
+                'database-name' => $_POST['db'],
+                'table-prefix' => $_POST['prefix']
             ]);
             fclose($fp);
 
@@ -144,14 +144,14 @@ SQL
         break;
 
     case 'setprefix':
-        mysql_connect($HTTP_POST_VARS['hostname'], $HTTP_POST_VARS['user'], $HTTP_POST_VARS['pass']);
+        mysql_connect($_POST['hostname'], $_POST['user'], $_POST['pass']);
 
         $db = '';
 
-        if ($HTTP_POST_VARS['name_db'] && $HTTP_POST_VARS['selected_db'] == '_usefield') {
-            $db = $HTTP_POST_VARS['name_db'];
+        if ($_POST['name_db'] && $_POST['selected_db'] == '_usefield') {
+            $db = $_POST['name_db'];
         } else {
-            $db = $HTTP_POST_VARS['selected_db'];
+            $db = $_POST['selected_db'];
         }
 
         if (!db_exists($db)) {
@@ -176,15 +176,15 @@ SQL
         p_header();
         p_chooseprefix($db, $tables);
         p_footer('createtables', [
-            'hostname' => $HTTP_POST_VARS['hostname'],
-            'user' => $HTTP_POST_VARS['user'],
-            'pass' => $HTTP_POST_VARS['pass'],
+            'hostname' => $_POST['hostname'],
+            'user' => $_POST['user'],
+            'pass' => $_POST['pass'],
             'db' => $db
         ]);
         break;
 
     case 'selectdb':
-        $dbhandle = @mysql_connect($HTTP_POST_VARS['hostname'], $HTTP_POST_VARS['user'], $HTTP_POST_VARS['pass']);
+        $dbhandle = @mysql_connect($_POST['hostname'], $_POST['user'], $_POST['pass']);
 
         if (!$dbhandle) {
             p_errormsg(lng('error'), sprintf(lng('connecterror'), mysql_error()));
@@ -203,14 +203,14 @@ SQL
         p_header();
         p_selectdb($databases);
         p_footer('setprefix', [
-            'hostname' => $HTTP_POST_VARS['hostname'],
-            'user' => $HTTP_POST_VARS['user'],
-            'pass' => $HTTP_POST_VARS['pass']
+            'hostname' => $_POST['hostname'],
+            'user' => $_POST['user'],
+            'pass' => $_POST['pass']
         ]);
         break;
 
     case 'mysqldata':
-        if ($HTTP_POST_VARS['accept'] != 'yes') {
+        if ($_POST['accept'] != 'yes') {
             p_errormsg(lng('error'), lng('licaccept'));
         } else {
             p_header();

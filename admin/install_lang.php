@@ -216,12 +216,12 @@ Visit the <a href="http://www.thwboard.de/">ThWboard Homepage</a> in order to do
 
 function lng($str)
 {
-    global $lang, $a_lang;
+    global $a_lang;
 
-    if ($lang == '') {
+    if ($_REQUEST['lang'] == '') {
         $lng = 'en';
     } else {
-        $lng = $lang;
+        $lng = $_REQUEST['lang'];
     }
 
     if ($a_lang[$lng][$str]) {

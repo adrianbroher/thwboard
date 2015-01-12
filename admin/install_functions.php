@@ -24,31 +24,6 @@
 
 require __DIR__.'/install_lang.php';
 
-/**
- * as of php5, $HTTP_*_VARS are disabled
- * so we have to recreate them here
- *
- * this is actually pretty evil, but it does work.
- **/
-
-if (substr(phpversion(), 0, 1) > 4) {
-    $a_globals = [
-        'HTTP_SERVER_VARS' => '_SERVER',
-        'HTTP_COOKIE_VARS' => '_COOKIE',
-        'HTTP_POST_VARS' => '_POST',
-        'HTTP_GET_VARS' => '_GET',
-        'HTTP_ENV_VARS' => '_ENV'
-    ];
-
-    foreach ($a_globals as $k => $v) {
-        global $$k;
-
-        $$k = $$v;
-    }
-
-    unset($a_globals);
-}
-
 $cfg['appname'] = 'ThWboard';
 $cfg['applogo'] = './images/thwboard_logo.gif';
 $cfg['installer_ver'] = 1.1;
@@ -56,21 +31,9 @@ $cfg['updater_ver'] = 1.1;
 
 error_reporting(0); // E_ERROR | E_WARNING | E_PARSE
 
-if (isset($HTTP_GET_VARS)) {
-    extract($HTTP_GET_VARS, EXTR_SKIP);
-}
-
-if (isset($HTTP_PUT_VARS)) {
-    extract($HTTP_PUT_VARS, EXTR_SKIP);
-}
-
-if (isset($HTTP_POST_VARS)) {
-    extract($HTTP_POST_VARS, EXTR_SKIP);
-}
-
 // choose default language if none selected
-if (!isset($HTTP_POST_VARS['lang'])) {
-    $HTTP_POST_VARS['lang'] = '';
+if (!isset($_REQUEST['lang'])) {
+    $_REQUEST['lang'] = '';
 }
 
 function create_tables($delete_existing)
@@ -640,7 +603,7 @@ td {  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 8pt
               <table width="100%" border="0" cellspacing="0" cellpadding="6">
                 <tr>
                   <td><b>'.$cfg['appname'].' '.lng('installation').'</b><br>
-                    <a href="install.php?action=about&lang='.$lang.'">phpInstaller</a> v'.$cfg['installer_ver'].'</td>
+                    <a href="install.php?action=about&lang='.$_REQUEST['lang'].'">phpInstaller</a> v'.$cfg['installer_ver'].'</td>
                   <td align="right"><img src="./images/thwboard_logo.gif"></td>
                 </tr>
               </table>
@@ -664,8 +627,6 @@ td {  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 8pt
 
 function p_footer($action = '', $vars = 0)
 {
-    global $lang;
-
     if ($vars == 0) {
         $vars = [];
     }
@@ -697,8 +658,8 @@ function p_footer($action = '', $vars = 0)
         print '<input type="hidden" name="'.$k.'" value="'.$v.'">';
     }
 
-    if ($lang) {
-        print '<input type="hidden" name="lang" value="'.$lang.'">';
+    if ($_REQUEST['lang']) {
+        print '<input type="hidden" name="lang" value="'.$_REQUEST['lang'].'">';
     }
 
     print '
