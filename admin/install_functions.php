@@ -13,7 +13,7 @@
           your option) any later version.
 
         ==============================================
-*/
+ */
 
 require __DIR__.'/install_lang.php';
 
@@ -24,18 +24,16 @@ require __DIR__.'/install_lang.php';
  * this is actually pretty evil, but it does work.
  **/
 
-if(substr(phpversion(), 0, 1) > 4)
-{
-    $a_globals = array(
+if (substr(phpversion(), 0, 1) > 4) {
+    $a_globals = [
         'HTTP_SERVER_VARS' => '_SERVER',
         'HTTP_COOKIE_VARS' => '_COOKIE',
         'HTTP_POST_VARS' => '_POST',
         'HTTP_GET_VARS' => '_GET',
         'HTTP_ENV_VARS' => '_ENV'
-        );
+    ];
 
-    foreach($a_globals as $k => $v)
-    {
+    foreach ($a_globals as $k => $v) {
         global $$k;
 
         $$k = $$v;
@@ -51,16 +49,22 @@ $cfg['updater_ver'] = 1.1;
 
 error_reporting(0); // E_ERROR | E_WARNING | E_PARSE
 
-if( isset($HTTP_GET_VARS) )
+if (isset($HTTP_GET_VARS)) {
     extract($HTTP_GET_VARS, EXTR_SKIP);
-if( isset($HTTP_PUT_VARS) )
+}
+
+if (isset($HTTP_PUT_VARS)) {
     extract($HTTP_PUT_VARS, EXTR_SKIP);
-if( isset($HTTP_POST_VARS) )
+}
+
+if (isset($HTTP_POST_VARS)) {
     extract($HTTP_POST_VARS, EXTR_SKIP);
+}
 
 // choose default language if none selected
-if( !isset($HTTP_POST_VARS['lang']) )
+if (!isset($HTTP_POST_VARS['lang'])) {
     $HTTP_POST_VARS['lang'] = '';
+}
 
 function create_tables($delete_existing)
 {
@@ -501,16 +505,15 @@ CREATE TABLE $pref"."user (
     // split at ;\r\n or ;\n
     $a_query = preg_split('/;[ \t]*\r?\n/m', $mysql_data);
 
-    while( list(, $query) = each($a_query) )
-    {
+    while (list(, $query) = each($a_query)) {
         $query = trim($query);
-        if( $query )
-        {
-            if( strstr($query, 'CREATE TABLE') && $delete_existing )
-            {
+
+        if ($query) {
+            if (strstr($query, 'CREATE TABLE') && $delete_existing) {
                 ereg('CREATE TABLE ([^ ]*)', $query, $regs);
                 thwb_query("DROP TABLE IF EXISTS $regs[1]");
             }
+
             thwb_query($query);
         }
     }
@@ -519,14 +522,13 @@ CREATE TABLE $pref"."user (
 function WriteAccess($file)
 {
     $fp = @fopen($file, 'w');
-    if( !$fp )
-    {
-        return FALSE;
-    }
-    else
-    {
+
+    if (!$fp) {
+        return false;
+    } else {
         fclose($fp);
-        return TRUE;
+
+        return true;
     }
 }
 
@@ -535,24 +537,26 @@ function db_exists($dbname)
     $r_database = mysql_listdbs();
 
     $i = 0;
-    while( $i < mysql_num_rows($r_database) )
-    {
-        if( strtolower($dbname) == strtolower(mysql_tablename($r_database, $i)) )
-        {
+
+    while ($i < mysql_num_rows($r_database)) {
+        if (strtolower($dbname) == strtolower(mysql_tablename($r_database, $i))) {
             return 1;
         }
+
         $i++;
     }
+
     return 0;
 }
 
 function column_exists($table, $column)
 {
     $r_query = thwb_query("DESCRIBE $table");
-    while( $query = mysql_fetch_array($r_query) )
-    {
-        if( $query['Field']== $column )
+
+    while ($query = mysql_fetch_array($r_query)) {
+        if ($query['Field']== $column) {
             return 1;
+        }
     }
 
     return 0;
@@ -561,29 +565,21 @@ function column_exists($table, $column)
 function thwb_query($query)
 {
     $result = mysql_query($query);
-    if( mysql_error() )
-    {
-        p_errormsg(lng('error'), sprintf( lng('queryerror'), $query, mysql_error() )   );
+
+    if (mysql_error()) {
+        p_errormsg(lng('error'), sprintf(lng('queryerror'), $query, mysql_error()));
     }
+
     return $result;
 }
 
 function install_allowed()
 {
-    if( file_exists('../inc/config.inc.php') )
-    {
+    if (file_exists('../inc/config.inc.php')) {
         return 0;
-    }
-    else
-    {
+    } else {
         return 1;
     }
-/*    include '../inc/config.inc.php';
-
-    if( $inst_lock )
-        return 0;
-    else
-        return 1;*/
 }
 
 function p_deny_install()
@@ -596,7 +592,7 @@ function p_deny_install()
 
 function p_header()
 {
-  global $PHP_SELF, $cfg;
+    global $PHP_SELF, $cfg;
 
     print '
 <html>
@@ -661,10 +657,12 @@ td {  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 8pt
 
 function p_footer($action = '', $vars = 0)
 {
-  global $lang;
+    global $lang;
 
-    if( $vars == 0 )
-        $vars = array();
+    if ($vars == 0) {
+        $vars = [];
+    }
+
     print '
                   </td>
                 </tr>
@@ -688,15 +686,15 @@ function p_footer($action = '', $vars = 0)
                     <input type="hidden" name="action" value="'.$action.'">
                     '.( $action != '' ? '<input type="submit" name="next" value="'.lng('next').' &gt;" class="inst_button">' : '&nbsp;');
 
-while( list($k, $v) = each($vars) )
-{
-    print '<input type="hidden" name="'.$k.'" value="'.$v.'">';
-}
+    while (list($k, $v) = each($vars)) {
+        print '<input type="hidden" name="'.$k.'" value="'.$v.'">';
+    }
 
-if( $lang )
-    print '<input type="hidden" name="lang" value="'.$lang.'">';
+    if ($lang) {
+        print '<input type="hidden" name="lang" value="'.$lang.'">';
+    }
 
-print '
+    print '
 
                   </td>
                 </tr>
@@ -841,9 +839,13 @@ function p_selectdb($databases)
                     <br>
                     <br>
                     <select name="selected_db" size="6" class="inst_button">
-                      <option value="_usefield" selected>( '.lng('usefield').' )</option>
-                      '.$databases.';
-                    </select>
+                      <option value="_usefield" selected>( '.lng('usefield').' )</option>';
+
+    foreach ($databases as $database) {
+        print '<option value="'.$database.'">'.lng('existingdb').': '.$database.'</option>';
+    }
+
+    print '         </select>
                     <br>
                     <br>
                     '.lng('orname').'<br>
@@ -857,10 +859,11 @@ function p_chooseprefix($dbname, $tables)
 <br>
 '.sprintf(lng('tablelist'), $dbname).'
 <ul>';
-    while( list(, $v) = @each($tables) )
-    {
+
+    while (list(, $v) = @each($tables)) {
         print '<li>'.$v.'</li>';
     }
+
     print '</ul>';
 
     print '
@@ -947,8 +950,7 @@ bleiben. Ansonsten gilt die GNU General Public License (GPL).<br>
 
 function p_updatewelcome($update)
 {
-    if( $update )
-    {
+    if ($update) {
         print '
 <b>Updates</b><br>
 <br>
@@ -956,16 +958,13 @@ function p_updatewelcome($update)
 <br>
   <select class="inst_button" name="scriptname" size="6">';
 
-    while( list(, $scriptname) = each($update) )
-    {
-        print '<option value="'.$scriptname.'">'.$scriptname.'</option>';
-    }
+        while (list(, $scriptname) = each($update)) {
+            print '<option value="'.$scriptname.'">'.$scriptname.'</option>';
+        }
 
-    print '
+        print '
   </select>';
-    }
-    else
-    {
+    } else {
         print lng('noupdates');
     }
 }
@@ -1025,12 +1024,11 @@ function p_loginform()
     <td width="10">&nbsp;</td>
     <td><select name="lang" class="inst_button">';
 
-    while( list($k, $v) = each($a_lang) )
-    {
+    while (list($k, $v) = each($a_lang)) {
         print '<option value="'.$k.'">'.$a_lang[$k]['desc'].' </option>';
     }
 
-print '</select></td>
+    print '</select></td>
   </tr>
 </table>';
 }
@@ -1045,10 +1043,9 @@ function p_selectlang()
 Please choose your language:<br><br>
 <select name="lang" class="inst_button">';
 
-    while( list($k, $v) = each($a_lang) )
-    {
+    while (list($k, $v) = each($a_lang)) {
         print '<option value="'.$k.'">'.$a_lang[$k]['desc'].' </option>';
     }
 
-print '</select>';
+    print '</select>';
 }

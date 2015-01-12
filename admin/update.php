@@ -13,7 +13,8 @@
           your option) any later version.
 
         ==============================================
-*/
+ */
+
 require('install_functions.php');
 
 include '../inc/config.inc.php';
@@ -21,38 +22,63 @@ include '../inc/config.inc.php';
 mysql_connect($mysql_h, $mysql_u, $mysql_p);
 mysql_select_db($mysql_db);
 
-if( !$pref )
-{
+if (!$pref) {
     $pref = 'thwb_';
 }
 
-$r_registry = thwb_query("SELECT keyvalue FROM $pref"."registry WHERE keyname='version'");
+$r_registry = thwb_query(
+<<<SQL
+SELECT
+    keyvalue
+FROM
+    {$pref}registry
+WHERE
+    keyname = 'version'
+SQL
+);
+
 list($version) = mysql_fetch_row($r_registry);
 $version = (float)($version);
 
-if( $version < 2.8 )
-{
-    $r_user = thwb_query("SELECT userpassword FROM $pref"."user WHERE username='" . addslashes( $l_username ) . "' AND userlevel=1");
+$loginUsername = addslashes($l_username);
+
+if ($version < 2.8) {
+    $r_user = thwb_query(
+<<<SQL
+SELECT
+    userpassword
+FROM
+    {$pref}user
+WHERE
+    username = '{$loginUsername}' AND
+    userlevel = 1
+SQL
+    );
+} else {
+    $r_user = thwb_query(
+<<<SQL
+SELECT
+    userpassword
+FROM
+    {$pref}user
+WHERE
+    username = '{$loginUsername}' AND
+    userisadmin = 1
+SQL
+    );
 }
-else
-{
-    $r_user = thwb_query("SELECT userpassword FROM $pref"."user WHERE username='" . addslashes( $l_username ) . "' AND userisadmin=1");
-}
-if( mysql_num_rows($r_user) )
-{
+
+if (mysql_num_rows($r_user)) {
     $user = mysql_fetch_array($r_user);
-    if( $user['userpassword'] != md5($l_userpassword) )
-    {
+
+    if ($user['userpassword'] != md5($l_userpassword)) {
         $action = 'login';
     }
-}
-else
-{
+} else {
     $action = 'login';
 }
 
-switch($action)
-{
+switch ($action) {
     case 'login':
         p_header();
         p_loginform();
@@ -61,66 +87,54 @@ switch($action)
 
     case 'startupdate':
         include $scriptname;
-        $update = new CUpdate;
+        $update = new CUpdate();
 
         $update->Prefix = $pref;
-        if( !$update->AllowUpdate() )
-        {
-            p_errormsg(lng('error'),
-                lng('cantexec'));
+
+        if (!$update->AllowUpdate()) {
+            p_errormsg(lng('error'), lng('cantexec'));
         }
 
-        if( $update->RunUpdate() )
-        {
-            p_errormsg(lng('error'),
-                $update->GetError());
-        }
-        else
-        {
-            p_errormsg(lng('updatesuccess'),
-                lng('updatesuccesstxt'));
+        if ($update->RunUpdate()) {
+            p_errormsg(lng('error'), $update->GetError());
+        } else {
+            p_errormsg(lng('updatesuccess'), lng('updatesuccesstxt'));
         }
 
         break;
 
     case 'update':
         $scriptname = 'updates/'.$scriptname;
-        if( !file_exists($scriptname) || !$scriptname )
-        {
+
+        if (!file_exists($scriptname) || !$scriptname) {
             p_errormsg(lng('error'), lng('notfound'));
-        }
-        else
-        {
+        } else {
             include $scriptname;
 
-            $update = new CUpdate;
+            $update = new CUpdate();
 
             $update->Prefix = $pref;
-            if( $update->UpdaterVer > $cfg['updater_ver'] )
-            {
+            if ($update->UpdaterVer > $cfg['updater_ver']) {
                 p_errormsg(lng('error'), lng('tooold'));
-            }
-            else
-            {
+            } else {
                 p_header();
                 p_updateinfo($update);
-                p_footer('startupdate', array(
+                p_footer('startupdate', [
                     'scriptname' => $scriptname,
                     'l_username' => $l_username,
                     'l_userpassword' => $l_userpassword
-                ));
+                ]);
             }
         }
         break;
 
     case 'welcome':
     default:
-        $a_file = array();
+        $a_file = [];
         $dp = opendir('updates/');
-        while( $file = readdir($dp) )
-        {
-            if( substr($file, -7, 7) == '.update' )
-            {
+
+        while ($file = readdir($dp)) {
+            if (substr($file, -7, 7) == '.update') {
                 $a_file[] = $file;
             }
         }
@@ -128,9 +142,9 @@ switch($action)
         natsort($a_file);
         p_header();
         p_updatewelcome($a_file);
-        p_footer('update', array(
+        p_footer('update', [
             'l_username' => $l_username,
             'l_userpassword' => $l_userpassword
-        ));
+        ]);
         break;
 }

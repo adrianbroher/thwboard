@@ -13,14 +13,12 @@
           your option) any later version.
 
         ==============================================
-*/
+ */
 
-
-$a_lang = array(
-    'de' => array(),
-    'en' => array()
-);
-
+$a_lang = [
+    'de' => [],
+    'en' => []
+];
 
 /* german */
 $a_lang['de']['desc'] = 'Deutsch';
@@ -211,15 +209,17 @@ Visit the <a href="http://www.thwboard.de/">ThWboard Homepage</a> in order to do
 
 function lng($str)
 {
-    global    $lang, $a_lang;
+    global $lang, $a_lang;
 
-    if( $lang == '' )
+    if ($lang == '') {
         $lng = 'en';
-    else
+    } else {
         $lng = $lang;
+    }
 
-    if( $a_lang[$lng][$str] )
+    if ($a_lang[$lng][$str]) {
         return $a_lang[$lng][$str];
-    else
+    } else {
         return '*** missing string `'.$str.'´';
+    }
 }

@@ -13,26 +13,24 @@
           your option) any later version.
 
         ==============================================
-*/
-function check_php_version ($version)
-{
-    $testSplit = explode ('.', $version);
-    $currentSplit = explode ('.', phpversion ());
+ */
 
-    if( $testSplit[0] < $currentSplit[0] )
-    {
+function check_php_version($version)
+{
+    $testSplit = explode('.', $version);
+    $currentSplit = explode('.', phpversion());
+
+    if ($testSplit[0] < $currentSplit[0]) {
         return true;
     }
-    if( $testSplit[0] == $currentSplit[0] )
-    {
-        if( $testSplit[1] < $currentSplit[1] )
-        {
+
+    if ($testSplit[0] == $currentSplit[0]) {
+        if ($testSplit[1] < $currentSplit[1]) {
             return true;
         }
-        if( $testSplit[1] == $currentSplit[1] )
-        {
-            if( $testSplit[2] <= $currentSplit[2] )
-            {
+
+        if ($testSplit[1] == $currentSplit[1]) {
+            if ($testSplit[2] <= $currentSplit[2]) {
                 return true;
             }
         }
@@ -41,25 +39,24 @@ function check_php_version ($version)
     return false;
 }
 
-if( !check_php_version('4.0.6') )
-{
-    die('ThWboard install can not be performed because the PHP version used is to old ( < 4.0.6 ).<br>Please ask your webmaster or server administrator for updating the PHP version.');
+if (!check_php_version('4.0.6')) {
+    die(
+        'ThWboard install can not be performed because the PHP version used is to old ( < 4.0.6 ).<br>'.
+        'Please ask your webmaster or server administrator for updating the PHP version.'
+    );
 }
 
 require('install_functions.php');
 
-if( !isset($action) )
-{
+if (!isset($action)) {
     $action = '';
 }
 
-if( !install_allowed() && $action != 'about' && $action != '' )
-{
+if (!install_allowed() && $action != 'about' && $action != '') {
     $action = 'deny';
 }
 
-switch( $action )
-{
+switch ($action) {
     case 'generate_config':
         header('Content-Type: application/octetstream');
         header('Content-Disposition: filename="config.inc.php"');
@@ -76,26 +73,54 @@ switch( $action )
         break;
 
     case 'createadmin':
-        if( strlen($HTTP_POST_VARS['admin_pass']) < 5 )
-        {
+        if (strlen($HTTP_POST_VARS['admin_pass']) < 5) {
             p_errormsg(lng('error'), lng('adminpwtooshort'));
         }
 
         mysql_connect($HTTP_POST_VARS['hostname'], $HTTP_POST_VARS['user'], $HTTP_POST_VARS['pass']);
         mysql_select_db($HTTP_POST_VARS['db']);
 
-        thwb_query("INSERT INTO $HTTP_POST_VARS[prefix]"."user (username, useremail, userpassword, userisadmin, userjoin, groupids, usernodelete) VALUES
-            ('$admin_user', '$admin_email', '".md5($HTTP_POST_VARS['admin_pass'])."', '1', ".time().", ',3,', '1')");
+        thwb_query(
+<<<SQL
+INSERT INTO
+    {$HTTP_POST_VARS['prefix']}user
+(
+    username,
+    useremail,
+    userpassword,
+    userisadmin,
+    userjoin,
+    groupids,
+    usernodelete
+)
+VALUES
+(
+    '{$admin_user}',
+    '{$admin_email}',
+    MD5('{$admin_pass}'),
+    '1',
+    UNIX_TIMESTAMP(),
+    ',3,',
+    '1'
+)
+SQL
+        );
 
         p_header();
-        p_prewrite($HTTP_POST_VARS['hostname'], $HTTP_POST_VARS['user'], $HTTP_POST_VARS['pass'], $HTTP_POST_VARS['db'], $HTTP_POST_VARS['prefix']);
-        p_footer('writeconfig', array(
+        p_prewrite(
+            $HTTP_POST_VARS['hostname'],
+            $HTTP_POST_VARS['user'],
+            $HTTP_POST_VARS['pass'],
+            $HTTP_POST_VARS['db'],
+            $HTTP_POST_VARS['prefix']
+        );
+        p_footer('writeconfig', [
             'hostname' => $HTTP_POST_VARS['hostname'],
             'user' => $HTTP_POST_VARS['user'],
             'pass' => $HTTP_POST_VARS['pass'],
             'db' => $HTTP_POST_VARS['db'],
             'prefix' => $HTTP_POST_VARS['prefix']
-        ));
+        ]);
         break;
 
     case 'createtables':
@@ -106,22 +131,19 @@ switch( $action )
 
         p_header();
         p_adminprofile();
-        p_footer('createadmin', array(
+        p_footer('createadmin', [
             'hostname' => $HTTP_POST_VARS['hostname'],
             'user' => $HTTP_POST_VARS['user'],
             'pass' => $HTTP_POST_VARS['pass'],
             'db' => $HTTP_POST_VARS['db'],
             'prefix' => $HTTP_POST_VARS['prefix']
-        ));
+        ]);
         break;
 
     case 'writeconfig':
-        if( !WriteAccess('../inc/config.inc.php') )
-        {
+        if (!WriteAccess('../inc/config.inc.php')) {
             p_errormsg(lng('error'), lng('chmoderror'));
-        }
-        else
-        {
+        } else {
             $fp = @fopen('../inc/config.inc.php', 'w');
             p_configuration($fp, [
                 'database-hostname' => $HTTP_POST_VARS['hostname'],
@@ -142,78 +164,72 @@ switch( $action )
         mysql_connect($HTTP_POST_VARS['hostname'], $HTTP_POST_VARS['user'], $HTTP_POST_VARS['pass']);
 
         $db = '';
-        if( $HTTP_POST_VARS['name_db'] && $HTTP_POST_VARS['selected_db'] == '_usefield' )
-        {
+
+        if ($HTTP_POST_VARS['name_db'] && $HTTP_POST_VARS['selected_db'] == '_usefield') {
             $db = $HTTP_POST_VARS['name_db'];
-        }
-        else
-        {
+        } else {
             $db = $HTTP_POST_VARS['selected_db'];
         }
 
-        if( !db_exists($db) )
-        {
-          thwb_query("CREATE DATABASE ".$db);
-          if( !db_exists($db) )
-            {
-              p_errormsg(lng('error'), sprintf(lng('mysqlerror'), $db, mysql_error()));
+        if (!db_exists($db)) {
+            thwb_query("CREATE DATABASE ".$db);
+
+            if (!db_exists($db)) {
+                p_errormsg(lng('error'), sprintf(lng('mysqlerror'), $db, mysql_error()));
             }
         }
 
         mysql_select_db($db);
 
         $r_table = mysql_list_tables($db);
-        $a_tables = array();
+        $a_tables = [];
         $i = 0;
-        while( $i < mysql_num_rows($r_table) )
-        {
+
+        while ($i < mysql_num_rows($r_table)) {
             $tables[] = mysql_tablename($r_table, $i);
             $i++;
         }
 
         p_header();
         p_chooseprefix($db, $tables);
-        p_footer('createtables', array(
+        p_footer('createtables', [
             'hostname' => $HTTP_POST_VARS['hostname'],
             'user' => $HTTP_POST_VARS['user'],
             'pass' => $HTTP_POST_VARS['pass'],
             'db' => $db
-        ));
+        ]);
         break;
 
     case 'selectdb':
         $dbhandle = @mysql_connect($HTTP_POST_VARS['hostname'], $HTTP_POST_VARS['user'], $HTTP_POST_VARS['pass']);
-        if( !$dbhandle )
-        {
+
+        if (!$dbhandle) {
             p_errormsg(lng('error'), sprintf(lng('connecterror'), mysql_error()));
         }
 
         $r_database = mysql_listdbs();
 
-        $databases = '';
+        $databases = [];
         $i = 0;
-        while( $i < mysql_num_rows($r_database) )
-        {
-            $databases .= '<option value="'.mysql_tablename($r_database, $i).'">'.lng('existingdb').': '.mysql_tablename($r_database, $i).'</option>';
+
+        while ($i < mysql_num_rows($r_database)) {
+            $databases[] = mysql_tablename($r_database, $i);
             $i++;
         }
 
         p_header();
         p_selectdb($databases);
-        p_footer('setprefix', array(
+        p_footer('setprefix', [
             'hostname' => $HTTP_POST_VARS['hostname'],
             'user' => $HTTP_POST_VARS['user'],
             'pass' => $HTTP_POST_VARS['pass']
-        ));
+        ]);
         break;
 
     case 'mysqldata':
-        if( $HTTP_POST_VARS['accept'] != 'yes' )
-        {
+        if ($HTTP_POST_VARS['accept'] != 'yes') {
             p_errormsg(lng('error'), lng('licaccept'));
-        }
-        else
-        {
+        } else {
             p_header();
             p_mysqldata();
             p_footer('selectdb');
@@ -248,5 +264,4 @@ switch( $action )
         p_header();
         p_selectlang();
         p_footer('welcome');
-
 }
