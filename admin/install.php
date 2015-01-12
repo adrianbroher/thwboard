@@ -22,31 +22,7 @@
  * with this program;  If not, see <http://www.gnu.org/licenses/>.
  */
 
-function check_php_version($version)
-{
-    $testSplit = explode('.', $version);
-    $currentSplit = explode('.', phpversion());
-
-    if ($testSplit[0] < $currentSplit[0]) {
-        return true;
-    }
-
-    if ($testSplit[0] == $currentSplit[0]) {
-        if ($testSplit[1] < $currentSplit[1]) {
-            return true;
-        }
-
-        if ($testSplit[1] == $currentSplit[1]) {
-            if ($testSplit[2] <= $currentSplit[2]) {
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
-if (!check_php_version('4.0.6')) {
+if (version_compare(PHP_VERSION, '4.0.6', '<')) {
     die(
         'ThWboard install can not be performed because the PHP version used is to old ( < 4.0.6 ).<br>'.
         'Please ask your webmaster or server administrator for updating the PHP version.'
