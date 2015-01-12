@@ -33,6 +33,10 @@ if (!$pref) {
     $pref = 'thwb_';
 }
 
+if (isset($_POST['login-username']) && isset($_POST['login-password']) && empty($_POST['login-username']) && empty($_POST['login-password'])) {
+    p_errormsg(lng('error'), lng('noadmincredentialserror'), 'JavaScript:history.back(0)');
+}
+
 $r_registry = thwb_query(
 <<<SQL
 SELECT
@@ -79,8 +83,10 @@ if (mysql_num_rows($r_user)) {
     $user = mysql_fetch_array($r_user);
 
     if ($user['userpassword'] != md5($_POST['login-password'])) {
-        $_GET['step'] = 'login';
+        p_errormsg(lng('error'), lng('wrongadmincredentialserror'), 'JavaScript:history.back(0)');
     }
+} else if(isset($_POST['login-username']) && isset($_POST['login-password'])) {
+    p_errormsg(lng('error'), lng('wrongadmincredentialserror'), 'JavaScript:history.back(0)');
 } else {
     $_GET['step'] = 'login';
 }

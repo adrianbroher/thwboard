@@ -50,6 +50,10 @@ switch ($_GET['step']) {
         break;
 
     case 'administrator-create':
+        if (empty($_POST['administrator-username'])) {
+            p_errormsg(lng('error'), lng('adminnameempty'), 'JavaScript:history.back(0)');
+        }
+
         if (strlen($_POST['administrator-password']) < 5) {
             p_errormsg(lng('error'), lng('adminpwtooshort'), 'JavaScript:history.back(0)');
         }
@@ -103,6 +107,10 @@ SQL
             $_REQUEST['administrator-email'] = '';
         }
 
+        if (preg_match('/[^a-zA-Z1-9_]/', $_POST['table-prefix'])) {
+            p_errormsg(lng('error'), lng('invalidtableprefixerror'), 'JavaScript:history.back(0)');
+        }
+
         mysql_connect($_POST['database-hostname'], $_POST['database-username'], $_POST['database-password']);
         mysql_select_db($_POST['database-name']);
 
@@ -146,11 +154,22 @@ SQL
             $_REQUEST['database-clear'] = false;
         }
 
-        if ($_POST['database-allocation'] == 'new') {
-            thwb_query("CREATE DATABASE ".$_POST['database-name']);
+        if (preg_match('/[^a-zA-Z0-9_]/', $_POST['database-name'])) {
+            p_errormsg(lng('error'), lng('invaliddatabasenameerror'), 'JavaScript:history.back(0)');
+        }
 
-            if (!db_exists($_POST['database-name'])) {
-                p_errormsg(lng('error'), sprintf(lng('mysqlerror'), $_POST['database-name'], mysql_error()), 'JavaScript:history.back(0)');
+        if ($_POST['database-allocation'] == 'new') {
+            $query = "CREATE DATABASE ".$_POST['database-name'];
+            mysql_query($query);
+
+            switch (mysql_errno()) {
+                case 0:
+                    break;
+                case 1044:
+                    p_errormsg(lng('error'), lng('cantcreatedatabaseerror'), 'JavaScript:history.back(0)');
+                    break;
+                default:
+                    p_errormsg(lng('error'), sprintf(lng('queryerror'), $query, mysql_error()));
             }
         }
 
@@ -184,10 +203,36 @@ SQL
             $_REQUEST['database-name'] = '';
         }
 
+        if (empty($_POST['database-hostname'])) {
+            p_errormsg(lng('error'), sprintf(lng('nodatabasehosterror')), 'Javascript:history.back()');
+        }
+
+        if (empty($_POST['database-username']) && empty($_POST['database-password'])) {
+            p_errormsg(lng('error'), sprintf(lng('nocredentialserror')), 'Javascript:history.back()');
+        }
+
         $dbhandle = @mysql_connect($_POST['database-hostname'], $_POST['database-username'], $_POST['database-password']);
 
         if (!$dbhandle) {
-            p_errormsg(lng('error'), sprintf(lng('connecterror'), mysql_error()), 'JavaScript:history.back(0)');
+            $message = '';
+            $backlink = '';
+
+            switch (mysql_errno()) {
+                case 1045:
+                    $message = lng('wrongcredentialserror');
+                    $backlink = 'JavaScript:history.back(0)';
+                    break;
+                case 2002:
+                    $message = lng('cannotconnecterror');
+                    $backlink = 'JavaScript:history.back(0)';
+                    break;
+                default:
+                    $message = sprintf(lng('connecterror'), mysql_errno());
+                    $backlink = 'JavaScript:history.back(0)';
+                    break;
+            }
+
+            p_errormsg(lng('error'), $message, $backlink);
         }
 
         $r_database = thwb_query(
