@@ -51,11 +51,11 @@ switch ($_GET['step']) {
 
     case 'administrator-create':
         if (empty($_POST['administrator-username'])) {
-            p_errormsg(lng('error'), lng('adminnameempty'), 'JavaScript:history.back(0)');
+            p_errormsg(lng('error'), lng('adminnameempty'), '?step=table-create&database-hostname='.$_REQUEST['database-hostname'].'&database-username='.$_REQUEST['database-username'].'&database-password='.$_REQUEST['database-password'].'&database-name='.$_REQUEST['database-name'].'&table-prefix='.$_REQUEST['table-prefix'].'&database-clear=true&administrator-username='.$_REQUEST['administrator-username'].'&administrator-email='.$_REQUEST['administrator-email'].'&administrator-password='.$_REQUEST['administrator-password']);
         }
 
         if (strlen($_POST['administrator-password']) < 5) {
-            p_errormsg(lng('error'), lng('adminpwtooshort'), 'JavaScript:history.back(0)');
+            p_errormsg(lng('error'), lng('adminpwtooshort'), '?step=table-create&database-hostname='.$_REQUEST['database-hostname'].'&database-username='.$_REQUEST['database-username'].'&database-password='.$_REQUEST['database-password'].'&database-name='.$_REQUEST['database-name'].'&table-prefix='.$_REQUEST['table-prefix'].'&database-clear=true&administrator-username='.$_REQUEST['administrator-username'].'&administrator-email='.$_REQUEST['administrator-email'].'&administrator-password='.$_REQUEST['administrator-password']);
         }
 
         mysql_connect($_POST['database-hostname'], $_POST['database-username'], $_POST['database-password']);
@@ -107,23 +107,23 @@ SQL
             $_REQUEST['administrator-email'] = '';
         }
 
-        if (preg_match('/[^a-zA-Z1-9_]/', $_POST['table-prefix'])) {
-            p_errormsg(lng('error'), lng('invalidtableprefixerror'), 'JavaScript:history.back(0)');
+        if (preg_match('/[^a-zA-Z1-9_]/', $_REQUEST['table-prefix'])) {
+            p_errormsg(lng('error'), lng('invalidtableprefixerror'), '?step=table-prefix&database-allocation=use&database-hostname='.$_REQUEST['database-hostname'].'&database-username='.$_REQUEST['database-username'].'&database-password='.$_REQUEST['database-password'].'&database-name='.$_REQUEST['database-name'].'&table-prefix='.$_REQUEST['table-prefix'].'&database-clear='.$_REQUEST['database-clear']);
         }
 
-        mysql_connect($_POST['database-hostname'], $_POST['database-username'], $_POST['database-password']);
-        mysql_select_db($_POST['database-name']);
+        mysql_connect($_REQUEST['database-hostname'], $_REQUEST['database-username'], $_REQUEST['database-password']);
+        mysql_select_db($_REQUEST['database-name']);
 
-        create_tables($_POST['table-prefix'], $_POST['database-clear'] == 'true');
+        create_tables($_REQUEST['table-prefix'], $_REQUEST['database-clear'] == 'true');
 
         p_header('administrator-create');
         p_adminprofile($_REQUEST['administrator-username'], $_REQUEST['administrator-email']);
         p_footer('administrator-create', [
-            'database-hostname' => $_POST['database-hostname'],
-            'database-username' => $_POST['database-username'],
-            'database-password' => $_POST['database-password'],
-            'database-name' => $_POST['database-name'],
-            'table-prefix' => $_POST['table-prefix']
+            'database-hostname' => $_REQUEST['database-hostname'],
+            'database-username' => $_REQUEST['database-username'],
+            'database-password' => $_REQUEST['database-password'],
+            'database-name' => $_REQUEST['database-name'],
+            'table-prefix' => $_REQUEST['table-prefix']
         ]);
         break;
 
@@ -142,9 +142,11 @@ SQL
         break;
 
     case 'table-prefix':
-        mysql_connect($_POST['database-hostname'], $_POST['database-username'], $_POST['database-password']);
+        mysql_connect($_REQUEST['database-hostname'], $_REQUEST['database-username'], $_REQUEST['database-password']);
 
-        $_POST['database-name'] = ($_POST['database-allocation'] == 'use') ? $_POST['database-name-use'] : $_POST['database-name-new'];
+        if (!isset($_REQUEST['database-name'])) {
+            $_REQUEST['database-name'] = ($_REQUEST['database-allocation'] == 'use') ? $_REQUEST['database-name-use'] : $_REQUEST['database-name-new'];
+        }
 
         if (!isset($_REQUEST['table-prefix'])) {
             $_REQUEST['table-prefix'] = 'tb_';
@@ -154,28 +156,28 @@ SQL
             $_REQUEST['database-clear'] = false;
         }
 
-        if (preg_match('/[^a-zA-Z0-9_]/', $_POST['database-name'])) {
-            p_errormsg(lng('error'), lng('invaliddatabasenameerror'), 'JavaScript:history.back(0)');
+        if (preg_match('/[^a-zA-Z0-9_]/', $_REQUEST['database-name'])) {
+            p_errormsg(lng('error'), lng('invaliddatabasenameerror'), '?step=database-select&database-hostname='.$_REQUEST['database-hostname'].'&database-username='.$_REQUEST['database-username'].'&database-password='.$_REQUEST['database-password'].'&database-allocation='.$_REQUEST['database-allocation'].'&database-name='.$_REQUEST['database-name']);
         }
 
-        if ($_POST['database-allocation'] == 'new') {
-            $query = "CREATE DATABASE ".$_POST['database-name'];
+        if ($_REQUEST['database-allocation'] == 'new') {
+            $query = "CREATE DATABASE ".$_REQUEST['database-name'];
             mysql_query($query);
 
             switch (mysql_errno()) {
                 case 0:
                     break;
                 case 1044:
-                    p_errormsg(lng('error'), lng('cantcreatedatabaseerror'), 'JavaScript:history.back(0)');
+                    p_errormsg(lng('error'), lng('cantcreatedatabaseerror'), '?step=database-select&database-hostname='.$_REQUEST['database-hostname'].'&database-username='.$_REQUEST['database-username'].'&database-password='.$_REQUEST['database-password'].'&database-allocation='.$_REQUEST['database-allocation'].'&database-name='.$_REQUEST['database-name']);
                     break;
                 default:
                     p_errormsg(lng('error'), sprintf(lng('queryerror'), $query, mysql_error()));
             }
         }
 
-        mysql_select_db($_POST['database-name']);
+        mysql_select_db($_REQUEST['database-name']);
 
-        $r_table = mysql_list_tables($_POST['database-name']);
+        $r_table = mysql_list_tables($_REQUEST['database-name']);
         $a_tables = [];
         $i = 0;
 
@@ -185,12 +187,12 @@ SQL
         }
 
         p_header('table-create');
-        p_chooseprefix($_POST['database-name'], $tables, $_REQUEST['table-prefix'], $_REQUEST['database-clear'] == 'true');
+        p_chooseprefix($_REQUEST['database-name'], $tables, $_REQUEST['table-prefix'], $_REQUEST['database-clear'] == 'true');
         p_footer('table-create', [
-            'database-hostname' => $_POST['database-hostname'],
-            'database-username' => $_POST['database-username'],
-            'database-password' => $_POST['database-password'],
-            'database-name' => $_POST['database-name']
+            'database-hostname' => $_REQUEST['database-hostname'],
+            'database-username' => $_REQUEST['database-username'],
+            'database-password' => $_REQUEST['database-password'],
+            'database-name' => $_REQUEST['database-name']
         ]);
         break;
 
@@ -203,15 +205,15 @@ SQL
             $_REQUEST['database-name'] = '';
         }
 
-        if (empty($_POST['database-hostname'])) {
-            p_errormsg(lng('error'), sprintf(lng('nodatabasehosterror')), 'Javascript:history.back()');
+        if (empty($_REQUEST['database-hostname'])) {
+            p_errormsg(lng('error'), sprintf(lng('nodatabasehosterror')), '?step=database-credentials&license-accept=true');
         }
 
-        if (empty($_POST['database-username']) && empty($_POST['database-password'])) {
-            p_errormsg(lng('error'), sprintf(lng('nocredentialserror')), 'Javascript:history.back()');
+        if (empty($_REQUEST['database-username']) && empty($_REQUEST['database-password'])) {
+            p_errormsg(lng('error'), sprintf(lng('nocredentialserror')), '?step=database-credentials&license-accept=true');
         }
 
-        $dbhandle = @mysql_connect($_POST['database-hostname'], $_POST['database-username'], $_POST['database-password']);
+        $dbhandle = @mysql_connect($_REQUEST['database-hostname'], $_REQUEST['database-username'], $_REQUEST['database-password']);
 
         if (!$dbhandle) {
             $message = '';
@@ -220,11 +222,11 @@ SQL
             switch (mysql_errno()) {
                 case 1045:
                     $message = lng('wrongcredentialserror');
-                    $backlink = 'JavaScript:history.back(0)';
+                    $backlink = '?step=database-credentials&license-accept=true&database-hostname='.$_REQUEST['database-hostname'].'&database-username='.$_REQUEST['database-username'];
                     break;
                 case 2002:
                     $message = lng('cannotconnecterror');
-                    $backlink = 'JavaScript:history.back(0)';
+                    $backlink = '?step=database-credentials&license-accept=true&database-hostname='.$_REQUEST['database-hostname'].'&database-username='.$_REQUEST['database-username'];
                     break;
                 default:
                     $message = sprintf(lng('connecterror'), mysql_errno());
@@ -261,9 +263,9 @@ SQL
         p_header('table-prefix');
         p_selectdb($databases, $_REQUEST['database-allocation'], $_REQUEST['database-name']);
         p_footer('table-prefix', [
-            'database-hostname' => $_POST['database-hostname'],
-            'database-username' => $_POST['database-username'],
-            'database-password' => $_POST['database-password']
+            'database-hostname' => $_REQUEST['database-hostname'],
+            'database-username' => $_REQUEST['database-username'],
+            'database-password' => $_REQUEST['database-password']
         ]);
         break;
 
@@ -276,8 +278,8 @@ SQL
             $_REQUEST['database-username'] = '';
         }
 
-        if ($_POST['license-accept'] != 'true') {
-            p_errormsg(lng('error'), lng('licaccept'), 'JavaScript:history.back(0)');
+        if ($_REQUEST['license-accept'] != 'true') {
+            p_errormsg(lng('error'), lng('licaccept'), '?step=license');
         } else {
             p_header('database-select');
             p_mysqldata($_REQUEST['database-hostname'], $_REQUEST['database-username']);
