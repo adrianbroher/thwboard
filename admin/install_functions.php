@@ -36,9 +36,8 @@ if (!isset($_REQUEST['lang'])) {
     $_REQUEST['lang'] = '';
 }
 
-function create_tables($delete_existing)
+function create_tables($prefix, $delete_existing)
 {
-    global $prefix;
     $pref = $prefix;
 
 /*
@@ -603,7 +602,7 @@ td {  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 8pt
               <table width="100%" border="0" cellspacing="0" cellpadding="6">
                 <tr>
                   <td><b>'.$cfg['appname'].' '.lng('installation').'</b><br>
-                    <a href="install.php?action=about&lang='.$_REQUEST['lang'].'">phpInstaller</a> v'.$cfg['installer_ver'].'</td>
+                    <a href="install.php?step=about&lang='.$_REQUEST['lang'].'">phpInstaller</a> v'.$cfg['installer_ver'].'</td>
                   <td align="right"><img src="./images/thwboard_logo.gif"></td>
                 </tr>
               </table>
@@ -762,7 +761,7 @@ function p_license()
                       <textarea cols="67" wrap="OFF" rows="12" readonly>'.$license.'</textarea>
                       <br>
                       <br>
-                      <input type="checkbox" name="accept" value="yes">
+                      <input type="checkbox" name="license-accept" value="true">
                       '.lng('licread').'</p>';
 }
 
@@ -778,21 +777,21 @@ function p_mysqldata()
                         <td>'.lng('mysqlhost').'</td>
                         <td width="10">&nbsp;</td>
                         <td>
-                          <input type="text" name="hostname" class="inst_button" value="localhost">
+                          <input type="text" name="database-hostname" class="inst_button" value="localhost">
                         </td>
                       </tr>
                       <tr>
                         <td>'.lng('mysqluser').'</td>
                         <td width="10">&nbsp;</td>
                         <td>
-                          <input type="text" name="user" class="inst_button">
+                          <input type="text" name="database-username" class="inst_button">
                         </td>
                       </tr>
                       <tr>
                         <td>'.lng('mysqlpass').'</td>
                         <td width="10">&nbsp;</td>
                         <td>
-                          <input type="password" name="pass" class="inst_button">
+                          <input type="password" name="database-password" class="inst_button">
                         </td>
                       </tr>
                     </table>';
@@ -806,7 +805,7 @@ function p_selectdb($databases)
                     '.lng('choosedb').'<br>
                     <br>
                     <br>
-                    <select name="selected_db" size="6" class="inst_button">
+                    <select name="database-name-use" size="6" class="inst_button">
                       <option value="_usefield" selected>( '.lng('usefield').' )</option>';
 
     foreach ($databases as $database) {
@@ -817,7 +816,7 @@ function p_selectdb($databases)
                     <br>
                     <br>
                     '.lng('orname').'<br>
-                    <input type="text" name="name_db" class="inst_button">';
+                    <input type="text" name="database-name-new" class="inst_button">';
 }
 
 function p_chooseprefix($dbname, $tables)
@@ -836,9 +835,9 @@ function p_chooseprefix($dbname, $tables)
 
     print '
   '.lng('enterprefix').'<br>
-<input type="text" name="prefix" value="tb_" class="inst_button"> ('.lng('dontchange').')<br>
+<input type="text" name="table-prefix" value="tb_" class="inst_button"> ('.lng('dontchange').')<br>
 <br>
-<input type="checkbox" name="delete_existing" value="yes"> '.lng('deleteexisting');
+<input type="checkbox" name="database-clear" value="true"> '.lng('deleteexisting');
 }
 
 
@@ -852,29 +851,29 @@ function p_adminprofile()
     <td>'.lng('username').'</td>
     <td width="10">&nbsp;</td>
     <td>
-      <input type="text" name="admin_user" value="root" class="inst_button">
+      <input type="text" name="administrator-username" value="root" class="inst_button">
     </td>
   </tr>
   <tr>
     <td>'.lng('email').'</td>
     <td width="10">&nbsp;</td>
     <td>
-      <input type="text" name="admin_email" class="inst_button">
+      <input type="text" name="administrator-email" class="inst_button">
     </td>
   </tr>
   <tr>
     <td>'.lng('password').'</td>
     <td width="10">&nbsp;</td>
     <td>
-      <input type="password" name="admin_pass" class="inst_button">
+      <input type="password" name="administrator-password" class="inst_button">
     </td>
   </tr>
 </table>';
 }
 
-function p_prewrite($hostname, $user, $pass, $db, $prefix)
+function p_prewrite($hostname, $downloadURL)
 {
-    $text = sprintf(lng('completingtxt'), $hostname, $user, $pass, $db, $prefix);
+    $text = sprintf(lng('completingtxt'), $downloadURL);
 
     print '
 <b>'.lng('completing').'</b><br>
@@ -924,7 +923,7 @@ function p_updatewelcome($update)
 <br>
 '.lng('selectupdate').'<br>
 <br>
-  <select class="inst_button" name="scriptname" size="6">';
+  <select class="inst_button" name="update-selected" size="6">';
 
         while (list(, $scriptname) = each($update)) {
             print '<option value="'.$scriptname.'">'.$scriptname.'</option>';
@@ -980,12 +979,12 @@ function p_loginform()
   <tr>
     <td>'.lng('username').'</td>
     <td width="10">&nbsp;</td>
-    <td><input type="text" name="l_username" class="inst_button"></td>
+    <td><input type="text" name="login-username" class="inst_button"></td>
   </tr>
   <tr>
     <td>'.lng('password').'</td>
     <td width="10">&nbsp;</td>
-    <td><input type="password" name="l_userpassword" class="inst_button"></td>
+    <td><input type="password" name="login-password" class="inst_button"></td>
   </tr>
   <tr>
     <td>Language</td>

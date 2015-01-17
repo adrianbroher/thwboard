@@ -47,7 +47,7 @@ SQL
 list($version) = mysql_fetch_row($r_registry);
 $version = (float)($version);
 
-$loginUsername = addslashes($_POST['l_username']);
+$loginUsername = addslashes($_POST['login-username']);
 
 if ($version < 2.8) {
     $r_user = thwb_query(
@@ -78,22 +78,22 @@ SQL
 if (mysql_num_rows($r_user)) {
     $user = mysql_fetch_array($r_user);
 
-    if ($user['userpassword'] != md5($_POST['l_userpassword'])) {
-        $_POST['action'] = 'login';
+    if ($user['userpassword'] != md5($_POST['login-password'])) {
+        $_POST['step'] = 'login';
     }
 } else {
-    $_POST['action'] = 'login';
+    $_POST['step'] = 'login';
 }
 
-switch ($_POST['action']) {
+switch ($_POST['step']) {
     case 'login':
         p_header();
         p_loginform();
-        p_footer('welcome');
+        p_footer('update-select');
         break;
 
-    case 'startupdate':
-        include $_POST['scriptname'];
+    case 'update-run':
+        include $_POST['update-run'];
         $update = new CUpdate();
 
         $update->Prefix = $pref;
@@ -110,8 +110,8 @@ switch ($_POST['action']) {
 
         break;
 
-    case 'update':
-        $scriptname = 'updates/'.$_POST['scriptname'];
+    case 'update-show':
+        $scriptname = 'updates/'.$_POST['update-selected'];
 
         if (!file_exists($scriptname) || !$scriptname) {
             p_errormsg(lng('error'), lng('notfound'));
@@ -126,16 +126,16 @@ switch ($_POST['action']) {
             } else {
                 p_header();
                 p_updateinfo($update);
-                p_footer('startupdate', [
-                    'scriptname' => $scriptname,
-                    'l_username' => $_POST['l_username'],
-                    'l_userpassword' => $_POST['l_userpassword']
+                p_footer('update-run', [
+                    'update-run' => $scriptname,
+                    'login-username' => $_POST['login-username'],
+                    'login-password' => $_POST['login-password']
                 ]);
             }
         }
         break;
 
-    case 'welcome':
+    case 'update-select':
     default:
         $a_file = [];
         $dp = opendir('updates/');
@@ -149,9 +149,9 @@ switch ($_POST['action']) {
         natsort($a_file);
         p_header();
         p_updatewelcome($a_file);
-        p_footer('update', [
-            'l_username' => $_POST['l_username'],
-            'l_userpassword' => $_POST['l_userpassword']
+        p_footer('update-show', [
+            'login-username' => $_POST['login-username'],
+            'login-password' => $_POST['login-password']
         ]);
         break;
 }
