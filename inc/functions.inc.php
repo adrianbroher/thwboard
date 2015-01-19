@@ -465,6 +465,7 @@ function message_redirect($msg, $url)
 {
     global $style;
 
+    header("Location: http://{$_SERVER['HTTP_HOST']}/$url");
     $TRedirect = new Template('templates/' . $style['styletemplate'] . '/redirect.html');
     eval($TRedirect->GetTemplate());
 
