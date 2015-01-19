@@ -254,26 +254,47 @@ elseif( $action == "edit" ) {
  *        addcat
  * ########################################################################################
  */
-elseif( $action == "addcat" ) {
-  if( $catname ) {
-    $result=query( "SELECT max(categoryorder) FROM ".$pref."category" );
-    list($maxorder)=mysql_fetch_row($result);
+if ($action == "addcat") {
+    if ($catname) {
+        $result = query(
+<<<SQL
+SELECT
+    MAX(categoryorder)
+FROM
+    {$pref}category
+SQL
+        );
+        list($maxorder) = mysql_fetch_row($result);
 
-    $maxorder++;
-    $catname = fix_umlauts($catname);
+        $maxorder++;
+        $catname = addslashes(fix_umlauts($catname));
 
-    query( "INSERT INTO ".$pref."category (categoryname, categoryorder) VALUES ('" . addslashes($catname) . "', $maxorder);" );
-    print "Category saved.";
-  } else {
-    print '<b>New Category</b><br>';
-    print '<form method="post" action="boards.php">
+        query(
+<<<SQL
+INSERT INTO
+    {$pref}category
+(
+    categoryname,
+    categoryorder
+)
+VALUES
+(
+    '{$catname}',
+    {$maxorder}
+)
+SQL
+        );
+        print "Category saved.";
+    } else {
+        print '<b>New Category</b><br>';
+        print '<form method="post" action="boards.php">
   <label for="category-name">Name</label>
   <input id="category-name" class="tbinput" type="text" name="catname">
   <input type="hidden" name="action" value="addcat">
   <input type="hidden" name="session" value="' . $session . '">
   <input type="submit" name="Abschicken" value="Save">
 </form>';
-  }
+    }
 }
 
 
