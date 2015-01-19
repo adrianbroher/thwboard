@@ -524,16 +524,16 @@ function loginform()
                     <table border="0" cellspacing="0" cellpadding="2">
                       <tr>
                         <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">-&gt;
-                          Username&nbsp;&nbsp;&nbsp;</font></td>
+                          <label for="login-username">Username</label>&nbsp;&nbsp;&nbsp;</font></td>
                         <td>
-                          <input type="text" name="l_username" size="12">
+                          <input id="login-username" type="text" name="l_username" size="12">
                         </td>
                       </tr>
                       <tr>
                         <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">-&gt;
-                          Password&nbsp;&nbsp;&nbsp;</font></td>
+                          <label for="login-password">Password</label>&nbsp;&nbsp;&nbsp;</font></td>
                         <td>
-                          <input type="password" name="l_password" size="12">
+                          <input id="login-password" type="password" name="l_password" size="12">
                         </td>
                       </tr>
                     </table>
@@ -541,7 +541,7 @@ function loginform()
                 </tr>
                 <tr>
                   <td align="right">
-                    <input type="submit" name="go" value="&gt;&gt;">
+                    <input type="submit" name="go" value="Login">
                   </td>
                 </tr>
               </table>
