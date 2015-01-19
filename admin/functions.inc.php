@@ -355,7 +355,7 @@ ul.actions li {
     navgroupbox_open('Boards and categories');
         navbox_element('boards.php?session=' . $session, 'Edit boards/categories');
         navbox_element('boards.php?session=' . $session . '&action=newboard', 'Add board');
-        navbox_element('boards.php?session=' . $session . '&action=addcat', 'Add category');
+        navbox_element('boards.php?session=' . $session . '&action=category-new', 'Add category');
     navgroupbox_close();
 
     navgroupbox_open('Extensions');

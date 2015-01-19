@@ -251,15 +251,15 @@ elseif( $action == "edit" ) {
 
 /*
  * ########################################################################################
- *        addcat
+ * Add a new category
  * ########################################################################################
  */
-if ($action == "addcat") {
+if ($_GET['action'] == 'category-new') {
     if (isset($_POST['submit'])) {
-        if (empty($_POST['catname'])) {
+        if (empty($_POST['category-name'])) {
             print "The category name can't be empty";
         } else {
-            $catname = addslashes(fix_umlauts($_POST['catname']));
+            $catname = addslashes(fix_umlauts($_POST['category-name']));
 
             $result = mysql_query(
 <<<SQL
@@ -295,10 +295,9 @@ SQL
         }
     } else {
         print '<b>New Category</b><br>';
-        print '<form method="post" action="boards.php">
+        print '<form method="post" action="boards.php?action=category-new">
   <label for="category-name">Name</label>
-  <input id="category-name" class="tbinput" type="text" name="catname">
-  <input type="hidden" name="action" value="addcat">
+  <input id="category-name" class="tbinput" type="text" name="category-name">
   <input type="hidden" name="session" value="' . $session . '">
   <input type="submit" name="submit" value="Save">
 </form>';
