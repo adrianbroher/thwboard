@@ -1034,7 +1034,7 @@ function possible_flood($type, $userid = 0)
     }
 
     thwb_query('INSERT INTO '.$pref.'flood (userid, type, time, ip)
-               VALUES ('.$userid.', '.$type.', '.time().', \''.$HTTP_SERVER_VARS['REMOTE_ADDR'].'\')');
+               VALUES ('.$userid.', '.$type.', NOW(), \''.$HTTP_SERVER_VARS['REMOTE_ADDR'].'\')');
 }
 
 /**
@@ -1055,13 +1055,13 @@ function is_flooding($type, $userid = 0)
         return;
     }
 
-    $time = 60 * $config['flood_'.$a_flood_names[$type].'_timeout'];
+    $time = $config['flood_'.$a_flood_names[$type].'_timeout'];
     $count = $config['flood_'.$a_flood_names[$type].'_count'];
     $where = '';
 
     // clear old entries first
 
-    thwb_query('DELETE FROM '.$pref.'flood WHERE type = '.$type.' AND time < '.(time() - $time));
+    thwb_query('DELETE FROM '.$pref.'flood WHERE type = '.$type.' AND time < (NOW() - INTERVAL '.$time.' MINUTE)');
 
     if($type == FLOOD_REGISTER || $type == FLOOD_LOGIN)
     {
