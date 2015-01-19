@@ -247,15 +247,15 @@ elseif( $action == "addcat" ) {
     $catname = fix_umlauts($catname);
 
     query( "INSERT INTO ".$pref."category (categoryname, categoryorder) VALUES ('" . addslashes($catname) . "', $maxorder);" );
-    print 'Category added.';
+    print "Category saved.";
   } else {
     print '<b>New Category</b><br>';
     print '<form method="post" action="boards.php">
-  Category Name:
-  <input class="tbinput" type="text" name="catname">
+  <label for="category-name">Name</label>
+  <input id="category-name" class="tbinput" type="text" name="catname">
   <input type="hidden" name="action" value="addcat">
   <input type="hidden" name="session" value="' . $session . '">
-  <input type="submit" name="Abschicken" value="Add Category">
+  <input type="submit" name="Abschicken" value="Save">
 </form>';
   }
 }
