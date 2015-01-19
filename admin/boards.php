@@ -255,10 +255,27 @@ elseif( $action == "edit" ) {
  * ########################################################################################
  */
 if ($action == "addcat") {
-    if ($catname) {
-        $catname = addslashes(fix_umlauts($catname));
+    if (isset($_POST['submit'])) {
+        if (empty($_POST['catname'])) {
+            print "The category name can't be empty";
+        } else {
+            $catname = addslashes(fix_umlauts($_POST['catname']));
 
-        query(
+            $result = mysql_query(
+<<<SQL
+SELECT
+    COUNT(categoryid)
+FROM
+    {$pref}category
+WHERE
+    categoryname = '$catname'
+SQL
+            );
+
+            if (mysql_result($result, 0) != 0) {
+                print "The category already exists";
+            } else {
+                query(
 <<<SQL
 INSERT INTO
     {$pref}category
@@ -272,8 +289,10 @@ SELECT
 FROM
     {$pref}category
 SQL
-        );
-        print "Category saved.";
+                );
+                print "Category saved.";
+            }
+        }
     } else {
         print '<b>New Category</b><br>';
         print '<form method="post" action="boards.php">
@@ -281,7 +300,7 @@ SQL
   <input id="category-name" class="tbinput" type="text" name="catname">
   <input type="hidden" name="action" value="addcat">
   <input type="hidden" name="session" value="' . $session . '">
-  <input type="submit" name="Abschicken" value="Save">
+  <input type="submit" name="submit" value="Save">
 </form>';
     }
 }
