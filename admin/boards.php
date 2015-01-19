@@ -256,17 +256,6 @@ elseif( $action == "edit" ) {
  */
 if ($action == "addcat") {
     if ($catname) {
-        $result = query(
-<<<SQL
-SELECT
-    MAX(categoryorder)
-FROM
-    {$pref}category
-SQL
-        );
-        list($maxorder) = mysql_fetch_row($result);
-
-        $maxorder++;
         $catname = addslashes(fix_umlauts($catname));
 
         query(
@@ -277,11 +266,11 @@ INSERT INTO
     categoryname,
     categoryorder
 )
-VALUES
-(
+SELECT
     '{$catname}',
-    {$maxorder}
-)
+    MAX(categoryorder) + 1
+FROM
+    {$pref}category
 SQL
         );
         print "Category saved.";
