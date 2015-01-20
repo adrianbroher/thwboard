@@ -398,40 +398,52 @@ elseif( $action == "delcat" ) {
  *        RenameCategory
  * ########################################################################################
  */
-elseif( $action == "RenameCategory" )
-{
-    $r_category = query("SELECT categoryid, categoryname FROM ".$pref."category WHERE categoryid=$categoryid");
+if ($action == "RenameCategory") {
+    $r_category = query(
+<<<SQL
+SELECT
+    categoryid,
+    categoryname
+FROM
+    {$pref}category
+WHERE
+    categoryid = {$categoryid}
+SQL
+    );
     $category = mysql_fetch_array($r_category);
-    $category['categoryname'] = $category['categoryname'];
+
     print '<b>Edit Category</b><br>
 <form method="post" action="boards.php">
   <label for="category-name">Name</label>
-  <input class="tbinput" id="category-name" type="text" name="newname" value="' . $category[categoryname] . '">
+  <input class="tbinput" id="category-name" type="text" name="newname" value="' . $category['categoryname'] . '">
   <input type="hidden" name="action" value="SetCategoryName">
   <input type="hidden" name="session" value="' . $session . '">
-  <input type="hidden" name="categoryid" value="' . $category[categoryid] . '">
+  <input type="hidden" name="categoryid" value="' . $category['categoryid'] . '">
   <input type="submit" name="submit" value="Save">
 </form>';
 }
-
-
 
 /*
  * ########################################################################################
  *        SetCategoryName
  * ########################################################################################
  */
-elseif( $action == "SetCategoryName" )
-{
-    query("UPDATE ".$pref."category SET categoryname='" . addslashes(fix_umlauts($newname)) . "' WHERE categoryid=$categoryid");
+elseif ($action == "SetCategoryName") {
+    $categoryName = addslashes(fix_umlauts($newname));
+
+    query(
+<<<SQL
+UPDATE
+    {$pref}category
+SET
+    categoryname = '{$categoryName}'
+WHERE
+    categoryid = {$categoryid}
+SQL
+    );
 
     print "Category saved.";
 }
-
-
-
-
-
 
 /*
  * ########################################################################################
