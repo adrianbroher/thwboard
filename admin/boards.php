@@ -140,7 +140,7 @@ if( $action == '' )
                 '.$category['categoryname'].'
                 <ul class="actions">
                     <li><input type="text" name="catord['.$category['categoryid'].']" size="2" value="'.$category['categoryorder'].'"></li>
-                    <li><a href="boards.php?action=RenameCategory&categoryid='.$category['categoryid'].'&session='.$session.'">edit</a></li>
+                    <li><a href="boards.php?action=RenameCategory&categoryid='.$category['categoryid'].'&session='.$session.'" title="Edit category '.htmlspecialchars($category['categoryname']).'">edit</a></li>
                     <li><a href="boards.php?action=delcat&id='.$category['categoryid'].'&session='.$session.'">delete</a></li>
                 </ul>
         </div>
@@ -403,12 +403,14 @@ elseif( $action == "RenameCategory" )
     $r_category = query("SELECT categoryid, categoryname FROM ".$pref."category WHERE categoryid=$categoryid");
     $category = mysql_fetch_array($r_category);
     $category['categoryname'] = $category['categoryname'];
-    print '<b>Rename Category</b><br><form method="post" action="boards.php">
-  Rename to: <input class="tbinput" type="text" name="newname" value="' . $category[categoryname] . '">
+    print '<b>Edit Category</b><br>
+<form method="post" action="boards.php">
+  <label for="category-name">Name</label>
+  <input class="tbinput" id="category-name" type="text" name="newname" value="' . $category[categoryname] . '">
   <input type="hidden" name="action" value="SetCategoryName">
   <input type="hidden" name="session" value="' . $session . '">
   <input type="hidden" name="categoryid" value="' . $category[categoryid] . '">
-  <input type="submit" value="rename">
+  <input type="submit" name="submit" value="Save">
 </form>';
 }
 
@@ -423,7 +425,7 @@ elseif( $action == "SetCategoryName" )
 {
     query("UPDATE ".$pref."category SET categoryname='" . addslashes(fix_umlauts($newname)) . "' WHERE categoryid=$categoryid");
 
-    print 'category has been renamed.';
+    print "Category saved.";
 }
 
 
