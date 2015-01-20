@@ -140,7 +140,7 @@ if( $action == '' )
                 '.$category['categoryname'].'
                 <ul class="actions">
                     <li><input type="text" name="catord['.$category['categoryid'].']" size="2" value="'.$category['categoryorder'].'"></li>
-                    <li><a href="boards.php?action=RenameCategory&categoryid='.$category['categoryid'].'&session='.$session.'" title="Edit category '.htmlspecialchars($category['categoryname']).'">edit</a></li>
+                    <li><a href="boards.php?action=category-edit&id='.$category['categoryid'].'&session='.$session.'" title="Edit category '.htmlspecialchars($category['categoryname']).'">edit</a></li>
                     <li><a href="boards.php?action=delcat&id='.$category['categoryid'].'&session='.$session.'">delete</a></li>
                 </ul>
         </div>
@@ -395,12 +395,12 @@ elseif( $action == "delcat" ) {
 
 /*
  * ########################################################################################
- *        RenameCategory
+ * Edit a category
  * ########################################################################################
  */
-if ($_GET['action'] == 'RenameCategory') {
+if ($_GET['action'] == 'category-edit') {
     if (isset($_POST['submit'])) {
-        $categoryName = addslashes(fix_umlauts($newname));
+        $categoryName = addslashes(fix_umlauts($_POST['category-name']));
 
         query(
 <<<SQL
@@ -409,7 +409,7 @@ UPDATE
 SET
     categoryname = '{$categoryName}'
 WHERE
-    categoryid = $categoryid
+    categoryid = {$_GET['id']}
 SQL
         );
 
@@ -423,17 +423,16 @@ SELECT
 FROM
     {$pref}category
 WHERE
-    categoryid = {$categoryid}
+    categoryid = {$_GET['id']}
 SQL
         );
         $category = mysql_fetch_array($r_category);
 
         print '<b>Edit Category</b><br>
-<form method="post" action="boards.php?action=SetCategoryName">
+<form method="post" action="boards.php?action=category-edit&amp;id='.htmlspecialchars($_GET['id']).'">
   <label for="category-name">Name</label>
-  <input class="tbinput" id="category-name" type="text" name="newname" value="' . $category['categoryname'] . '">
+  <input class="tbinput" id="category-name" type="text" name="category-name" value="' . $category['categoryname'] . '">
   <input type="hidden" name="session" value="' . $session . '">
-  <input type="hidden" name="categoryid" value="' . $category['categoryid'] . '">
   <input type="submit" name="submit" value="Save">
 </form>';
     }
