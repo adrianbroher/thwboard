@@ -400,9 +400,26 @@ elseif( $action == "delcat" ) {
  */
 if ($_GET['action'] == 'category-edit') {
     if (isset($_POST['submit'])) {
-        $categoryName = addslashes(fix_umlauts($_POST['category-name']));
+        if (empty($_POST['category-name'])) {
+            print "The category name can't be empty";
+        } else {
+            $categoryName = addslashes(fix_umlauts($_POST['category-name']));
 
-        query(
+            $result = mysql_query(
+<<<SQL
+SELECT
+    COUNT(categoryid)
+FROM
+    {$pref}category
+WHERE
+    categoryname = '{$categoryName}'
+SQL
+            );
+
+            if (mysql_result($result, 0) != 0) {
+                print "The category already exists";
+            } else {
+                query(
 <<<SQL
 UPDATE
     {$pref}category
@@ -411,9 +428,11 @@ SET
 WHERE
     categoryid = {$_GET['id']}
 SQL
-        );
+                );
 
-        print "Category saved.";
+                print "Category saved.";
+            }
+        }
     } else {
         $r_category = query(
 <<<SQL
