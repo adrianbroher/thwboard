@@ -78,7 +78,7 @@ else
             }
 
             $offset += 100;
-            print mysql_num_rows($r_user).' User bearbeitet, <a href="update2627.php?action=convert&mysql_host='.$mysql_host.'&mysql_database='.$mysql_database.'&mysql_user='.$mysql_user.'&mysql_password='.$mysql_password.'&offset='.$offset.'">hier</a> klicken um weitere User zu bearbeiten.<br><br>(einfach "hier" weiterklicken)';
+            print mysql_num_rows($r_user).' User bearbeitet, <a href="thwb_26b_27.php?action=convert&mysql_host='.$mysql_host.'&mysql_database='.$mysql_database.'&mysql_user='.$mysql_user.'&mysql_password='.$mysql_password.'&offset='.$offset.'">hier</a> klicken um weitere User zu bearbeiten.<br><br>(einfach "hier" weiterklicken)';
         }
     }
 }
