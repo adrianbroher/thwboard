@@ -10,7 +10,8 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "ext-mysql": "*"
+        "ext-mysql": "*",
+        "league/plates": "3.*"
     },
     "require-dev": {
         "behat/behat": "3.*@stable",
