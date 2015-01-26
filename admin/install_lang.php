@@ -129,8 +129,6 @@ paar n&#xFC;tzliche Links:<br>
 <li><a target="_blank" href="http://www.thwboard.de/forum/">Das ThWboard Support Forum</a> (f&#xFC;r Anregungen, Kritik, Lob usw.)</li>
 </ul>';
 $a_lang['de']['noupdates'] = '
-<b>Updates</b><br>
-<br>
 Es sind zur Zeit leider keine Updates verf&#xFC;bar.<br>
 Besuchen Sie bitte die <a href="http://www.thwboard.de/">ThWboard Homepage</a> um Updates herunterzuladen.';
 
@@ -233,8 +231,6 @@ The installation process was successfully completed. Your ThWboard should be wor
 <li><a target="_blank" href="./index.php">The Admin-Center of your ThWboard</a></li>
 <li><a target="_blank" href="http://www.thwboard.de/forum/">The ThWboard Support Forums</a> (Comments, questions etc)</li>';
 $a_lang['en']['noupdates'] = '
-<b>Updates</b><br>
-<br>
 There are currently no updates<br>
 Visit the <a href="http://www.thwboard.de/">ThWboard Homepage</a> in order to download updates.';
 

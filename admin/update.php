@@ -93,9 +93,17 @@ if (mysql_num_rows($r_user)) {
 
 switch ($_GET['step']) {
     case 'login':
-        p_header('update-select');
-        p_loginform();
-        p_footer('update-select');
+        echo $template->render('install-header', [
+            'step' => 'update-select',
+            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang']
+        ]);
+        echo $template->render('update-login', [
+            'languages' => $a_lang
+        ]);
+        echo $template->render('install-footer', [
+            'action' => 'update-select',
+            'language' => $_REQUEST['lang']
+        ]);
         break;
 
     case 'update-run':
@@ -130,12 +138,21 @@ switch ($_GET['step']) {
             if ($update->UpdaterVer > $cfg['updater_ver']) {
                 p_errormsg(lng('error'), lng('tooold'), 'JavaScript:history.back(0)');
             } else {
-                p_header('update-run');
-                p_updateinfo($update);
-                p_footer('update-run', [
-                    'update-run' => $scriptname,
-                    'login-username' => $_POST['login-username'],
-                    'login-password' => $_POST['login-password']
+                echo $template->render('install-header', [
+                    'step' => 'update-run',
+                    'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang']
+                ]);
+                echo $template->render('update-show', [
+                    'update' => $update
+                ]);
+                echo $template->render('install-footer', [
+                    'action' => 'update-show',
+                    'language' => $_REQUEST['lang'],
+                    'variables' => [
+                        'update-run' => $scriptname,
+                        'login-username' => $_POST['login-username'],
+                       'login-password' => $_POST['login-password']
+                    ]
                 ]);
             }
         }
@@ -155,9 +172,9 @@ switch ($_GET['step']) {
         natsort($a_file);
         p_header('update-show');
         p_updatewelcome($a_file);
-        p_footer('update-show', [
+        p_footer('update-show', array(
             'login-username' => $_POST['login-username'],
             'login-password' => $_POST['login-password']
-        ]);
+        ));
         break;
 }
