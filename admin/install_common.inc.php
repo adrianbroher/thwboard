@@ -914,7 +914,7 @@ function p_about()
 <b>phpInstaller</b> ist ein Script zum installieren von PHP-Basierenden Anwendungen,
 die MySQL Daten erstellen m&uuml;ssen und/oder Dateien schreiben m&uuml;ssen.<br>
 <br>
-<b>phpInstaller</b> besteht aus vier Skripten, install.php, install_lang.php, update.php sowie install_functions.php.
+<b>phpInstaller</b> besteht aus vier Skripten, install.php, install_lang.php, update.php sowie install_common.inc.php.
 Der Installer darf zu nichtkommerziellen Zwecken weitergegeben und f&#xFC;r eigene Projekte
 eingesetzt werden, solange das Copyright und der Programmname im Titel und dieser Seite unver&auml;ndert erhalten
 bleiben. Ansonsten gilt die GNU General Public License (GPL).<br>

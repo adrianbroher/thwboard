@@ -29,7 +29,7 @@ if (version_compare(PHP_VERSION, '4.0.6', '<')) {
     );
 }
 
-require('install_functions.php');
+require 'install_common.inc.php';
 
 if (!isset($_GET['step'])) {
     $_GET['step'] = '';

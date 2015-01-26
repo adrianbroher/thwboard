@@ -22,7 +22,7 @@
  * with this program;  If not, see <http://www.gnu.org/licenses/>.
  */
 
-require('install_functions.php');
+require 'install_common.inc.php';
 
 include '../inc/config.inc.php';
 

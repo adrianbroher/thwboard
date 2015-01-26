@@ -72,7 +72,7 @@ class ThWboardModelFeatureContext implements Context
      */
     public function installBoard()
     {
-        require_once __DIR__.'/../../admin/install_functions.php';
+        require_once __DIR__.'/../../admin/install_common.inc.php';
 
         $dbh = mysql_connect($this->database_hostname, $this->database_username, $this->database_password);
         mysql_select_db($this->database_name, $dbh);
