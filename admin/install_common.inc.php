@@ -605,19 +605,12 @@ function p_errormsg($title, $message, $back_url = null)
 {
     global $template;
 
-    echo $template->render('install-header', ['about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang']]);
-
-    print '
-<b>'.$title.'</b><br>
-<br>
-'.$message.'<br>
-<br>';
-    if ($back_url) {
-        print '<a href="'.htmlspecialchars($back_url).'">'.lng('back').'</a>';
-    }
-
-    echo $template->render('install-footer', [
-        'language' => $_REQUEST['lang']
+    echo $template->render('install-error', [
+        'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
+        'back_url' => $back_url,
+        'language' => $_REQUEST['lang'],
+        'message' => $message,
+        'title' => $title
     ]);
     exit;
 }

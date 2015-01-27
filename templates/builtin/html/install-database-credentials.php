@@ -1,3 +1,9 @@
+<?php $this->layout('install-frame', [
+    'about_handler' => $about_handler,
+    'language' => $language,
+    'step' => $step,
+    'variables' => $variables
+]) ?>
 <b><?= $this->_('mysqldata') ?></b><br>
 <br>
 <?= $this->_('entermysqldata') ?><br>

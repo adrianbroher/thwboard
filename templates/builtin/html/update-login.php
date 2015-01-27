@@ -1,3 +1,9 @@
+<?php $this->layout('install-frame', [
+    'about_handler' => $about_handler,
+    'language' => $language,
+    'step' => $step,
+    'variables' => $variables
+]) ?>
 <b><?= $this->_('login') ?></b><br>
 <br>
 <table cellspacing="0" cellpadding="2" border="0">

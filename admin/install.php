@@ -87,16 +87,11 @@ VALUES
 SQL
         );
 
-        echo $template->render('install-header', [
-            'step' => 'configuration-write',
-            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang']
-        ]);
         echo $template->render('install-prewrite', [
-            'download_url' => 'install.php?step=configuration-download&database-hostname='.$_POST['database-hostname'].'&database-username='.$_POST['database-username'].'&database-password='.$_POST['database-password'].'&database-name='.$_POST['database-name'].'&table-prefix='.$_POST['table-prefix']
-        ]);
-        echo $template->render('install-footer', [
-            'action' => 'configuration-write',
+            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
+            'download_url' => 'install.php?step=configuration-download&database-hostname='.$_POST['database-hostname'].'&database-username='.$_POST['database-username'].'&database-password='.$_POST['database-password'].'&database-name='.$_POST['database-name'].'&table-prefix='.$_POST['table-prefix'],
             'language' => $_REQUEST['lang'],
+            'step' => 'configuration-write',
             'variables' => [
                 'database-hostname' => $_REQUEST['database-hostname'],
                 'database-username' => $_REQUEST['database-username'],
@@ -125,17 +120,12 @@ SQL
 
         create_tables($_REQUEST['table-prefix'], $_REQUEST['database-clear'] == 'true');
 
-        echo $template->render('install-header', [
-            'step' => 'administrator-create',
-            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang']
-        ]);
         echo $template->render('install-administrator-create', [
-            'username' => $_REQUEST['administrator-username'],
-            'email' => $_REQUEST['administrator-email']
-        ]);
-        echo $template->render('install-footer', [
-            'action' => 'administrator-create',
+            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
+            'email' => $_REQUEST['administrator-email'],
             'language' => $_REQUEST['lang'],
+            'step' => 'administrator-create',
+            'username' => $_REQUEST['administrator-username'],
             'variables' => [
                 'database-hostname' => $_REQUEST['database-hostname'],
                 'database-username' => $_REQUEST['database-username'],
@@ -154,11 +144,8 @@ SQL
             p_configuration($fp, $_POST);
             fclose($fp);
 
-            echo $template->render('install-header', [
-                'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang']
-            ]);
-            echo $template->render('install-done');
-            echo $template->render('install-footer', [
+            echo $template->render('install-done', [
+                'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
                 'language' => $_REQUEST['lang']
             ]);
         }
@@ -209,19 +196,14 @@ SQL
             $i++;
         }
 
-        echo $template->render('install-header', [
-            'step' => 'table-create',
-            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang']
-        ]);
         echo $template->render('install-table-prefix', [
+            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
             'database_name' => $_REQUEST['database-name'],
-            'tables' => $tables,
-            'table_prefix' => $_REQUEST['table-prefix'],
-            'database_overwrite' => ($_REQUEST['database-clear'] == 'true')
-        ]);
-        echo $template->render('install-footer', [
-            'action' => 'table-create',
+            'database_overwrite' => ($_REQUEST['database-clear'] == 'true'),
             'language' => $_REQUEST['lang'],
+            'step' => 'table-create',
+            'table_prefix' => $_REQUEST['table-prefix'],
+            'tables' => $tables,
             'variables' => [
                 'database-hostname' => $_REQUEST['database-hostname'],
                 'database-username' => $_REQUEST['database-username'],
@@ -295,18 +277,13 @@ SQL
             $i++;
         }
 
-        echo $template->render('install-header', [
-            'step' => 'table-prefix',
-            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang']
-        ]);
         echo $template->render('install-database-select', [
-            'databases' => $databases,
+            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
             'allocation' => $_REQUEST['database-allocation'],
-            'database_name' => $_REQUEST['database-name']
-        ]);
-        echo $template->render('install-footer', [
-            'action' => 'table-prefix',
+            'database_name' => $_REQUEST['database-name'],
+            'databases' => $databases,
             'language' => $_REQUEST['lang'],
+            'step' => 'table-prefix',
             'variables' => [
                 'database-hostname' => $_REQUEST['database-hostname'],
                 'database-username' => $_REQUEST['database-username'],
@@ -327,42 +304,29 @@ SQL
         if ($_REQUEST['license-accept'] != 'true') {
             p_errormsg(lng('error'), lng('licaccept'), '?step=license');
         } else {
-            echo $template->render('install-header', [
-                'step' => 'database-select',
-                'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang']
-            ]);
             echo $template->render('install-database-credentials', [
+                'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
                 'hostname' => $_REQUEST['database-hostname'],
+                'language' => $_REQUEST['lang'],
+                'step' => 'database-select',
                 'username' => $_REQUEST['database-username']
-            ]);
-            echo $template->render('install-footer', [
-                'action' => 'database-select',
-                'language' => $_REQUEST['lang']
             ]);
         }
         break;
 
     case 'license':
-        echo $template->render('install-header', [
-            'step' => 'database-credentials',
-            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang']
-        ]);
         echo $template->render('install-license', [
+            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
+            'accept' => $_REQUEST['license-accept'],
+            'language' => $_REQUEST['lang'],
             'license' => implode('', file('../COPYING')),
-            'accept' => $_REQUEST['license-accept']
-        ]);
-        echo $template->render('install-footer', [
-            'action' => 'database-credentials',
-            'language' => $_REQUEST['lang']
+            'step' => 'database-credentials'
         ]);
         break;
 
     case 'about':
-        echo $template->render('install-header', [
-            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang']
-        ]);
-        echo $template->render('install-about');
-        echo $template->render('install-footer', [
+        echo $template->render('install-about', [
+            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
             'language' => $_REQUEST['lang']
         ]);
         break;
@@ -372,27 +336,18 @@ SQL
         break;
 
     case 'welcome':
-        echo $template->render('install-header', [
-            'step' => 'license',
-            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang']
-        ]);
-        echo $template->render('install-welcome');
-        echo $template->render('install-footer', [
-            'action' => 'license',
-            'language' => $_REQUEST['lang']
+        echo $template->render('install-welcome', [
+            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
+            'language' => $_REQUEST['lang'],
+            'step' => 'license'
         ]);
         break;
 
     default:
-        echo $template->render('install-header', [
-            'step' => 'welcome',
-            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang']
-        ]);
         echo $template->render('install-selectlanguage', [
-            'languages' => $a_lang
-        ]);
-        echo $template->render('install-footer', [
-            'action' => 'welcome',
-            'language' => $_REQUEST['lang']
+            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
+            'language' => $_REQUEST['lang'],
+            'languages' => $a_lang,
+            'step' => 'welcome'
         ]);
 }

@@ -1,3 +1,8 @@
+<?php $this->layout('install-frame', [
+    'about_handler' => $about_handler,
+    'language' => $language,
+    'variables' => $variables
+]) ?>
 <b>About phpInstaller</b><br>
 <br>
 <b>phpInstaller</b> ist ein Script zum installieren von PHP-Basierenden Anwendungen,

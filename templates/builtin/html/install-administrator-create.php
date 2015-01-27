@@ -1,3 +1,9 @@
+<?php $this->layout('install-frame', [
+    'about_handler' => $about_handler,
+    'language' => $language,
+    'step' => $step,
+    'variables' => $variables
+]) ?>
 <b><?= $this->_('createadmin') ?></b><br>
 <br>
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
