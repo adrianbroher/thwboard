@@ -32,11 +32,6 @@ $cfg['updater_ver'] = 1.1;
 
 error_reporting(0); // E_ERROR | E_WARNING | E_PARSE
 
-// choose default language if none selected
-if (!isset($_REQUEST['lang'])) {
-    $_REQUEST['lang'] = '';
-}
-
 function create_tables($prefix, $delete_existing)
 {
     $pref = $prefix;
@@ -606,9 +601,9 @@ function p_errormsg($title, $message, $back_url = null)
     global $template;
 
     echo $template->render('install-error', [
-        'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
+        'about_handler' => 'install.php?step=about',
         'back_url' => $back_url,
-        'language' => $_REQUEST['lang'],
+        'language' => $_SESSION['lang'],
         'message' => $message,
         'title' => $title
     ]);

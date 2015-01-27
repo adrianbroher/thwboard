@@ -33,6 +33,8 @@ if (!$pref) {
     $pref = 'thwb_';
 }
 
+session_start();
+
 if (isset($_POST['login-username']) && isset($_POST['login-password']) && empty($_POST['login-username']) && empty($_POST['login-password'])) {
     p_errormsg(lng('error'), lng('noadmincredentialserror'), '?step=login');
 }
@@ -94,15 +96,15 @@ if (mysql_num_rows($r_user)) {
 switch ($_GET['step']) {
     case 'login':
         echo $template->render('update-login', [
-            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
-            'language' => $_REQUEST['lang'],
+            'about_handler' => 'install.php?step=about',
             'languages' => $a_lang,
             'step' => 'update-select'
         ]);
         break;
 
     case 'update-run':
-        include $_POST['update-run'];
+        include 'updates/'.$_SESSION['update'];
+
         $update = new CUpdate();
 
         $update->Prefix = $pref;
@@ -113,43 +115,35 @@ switch ($_GET['step']) {
 
         if ($update->RunUpdate()) {
             p_errormsg(lng('error'), $update->GetError(), 'JavaScript:history.back(0)');
-        } else {
-            p_errormsg(lng('updatesuccess'), lng('updatesuccesstxt'));
         }
 
+        p_errormsg(lng('updatesuccess'), lng('updatesuccesstxt'));
         break;
 
     case 'update-show':
-        $scriptname = 'updates/'.$_POST['update-selected'];
+        include 'updates/'.$_SESSION['update'];
 
-        if (!file_exists($scriptname) || !$scriptname) {
-            p_errormsg(lng('error'), lng('notfound'), 'JavaScript:history.back(0)');
-        } else {
-            include $scriptname;
+        $update = new CUpdate();
 
-            $update = new CUpdate();
+        $update->Prefix = $pref;
 
-            $update->Prefix = $pref;
-            if ($update->UpdaterVer > $cfg['updater_ver']) {
-                p_errormsg(lng('error'), lng('tooold'), 'JavaScript:history.back(0)');
-            } else {
-                echo $template->render('update-show', [
-                    'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
-                    'language' => $_REQUEST['lang'],
-                    'step' => 'update-run',
-                    'update' => $update,
-                    'variables' => [
-                        'update-run' => $scriptname,
-                        'login-username' => $_POST['login-username'],
-                        'login-password' => $_POST['login-password']
-                    ]
-                ]);
-            }
+        if ($update->UpdaterVer > $cfg['updater_ver']) {
+            p_errormsg(lng('error'), lng('tooold'), 'JavaScript:history.back(0)');
         }
+
+        echo $template->render('update-show', [
+            'about_handler' => 'install.php?step=about',
+            'step' => 'update-run',
+            'update' => $update
+        ]);
         break;
 
     case 'update-select':
     default:
+        if (isset($_POST['lang'])) {
+            $_SESSION['lang'] = $_POST['lang'];
+        }
+
         $a_file = [];
         $dp = opendir('updates/');
 
@@ -159,16 +153,22 @@ switch ($_GET['step']) {
             }
         }
 
+        if (isset($_POST['submit'])) {
+            if (empty($_POST['update-selected']) || !in_array($_POST['update-selected'], $a_file)) {
+                p_errormsg(lng('error'), lng('notfound'), 'JavaScript:history.back(0)');
+            }
+
+            $_SESSION['update'] = $_POST['update-selected'];
+
+            header('Location: '.$_SERVER['PHP_SELF'].'?step=update-show');
+            exit();
+        }
+
         natsort($a_file);
         echo $template->render('update-select', [
-            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
-            'language' => $_REQUEST['lang'],
-            'step' => 'update-show',
-            'updates' => $a_file,
-            'variables' => [
-                'login-username' => $_POST['login-username'],
-                'login-password' => $_POST['login-password']
-            ]
+            'about_handler' => 'install.php?step=about',
+            'step' => 'update-select',
+            'updates' => $a_file
         ]);
         break;
 }

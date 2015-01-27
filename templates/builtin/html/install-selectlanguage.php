@@ -1,8 +1,6 @@
 <?php $this->layout('install-frame', [
     'about_handler' => $about_handler,
-    'language' => $language,
-    'step' => $step,
-    'variables' => []
+    'step' => $step
 ]) ?>
 <b>Welcome to phpInstaller!</b><br>
 <br>

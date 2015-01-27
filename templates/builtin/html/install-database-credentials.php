@@ -1,8 +1,6 @@
 <?php $this->layout('install-frame', [
     'about_handler' => $about_handler,
-    'language' => $language,
-    'step' => $step,
-    'variables' => $variables
+    'step' => $step
 ]) ?>
 <b><?= $this->_('mysqldata') ?></b><br>
 <br>

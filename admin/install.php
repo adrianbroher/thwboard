@@ -29,10 +29,16 @@ if (version_compare(PHP_VERSION, '5.4', '<')) {
     );
 }
 
+session_start();
+
 require 'install_common.inc.php';
 
 if (!isset($_GET['step'])) {
     $_GET['step'] = '';
+}
+
+if (!isset($_SESSION['lang'])) {
+    $_SESSION['lang'] = 'en';
 }
 
 if (!install_allowed() && $_GET['step'] != 'about' && $_GET['step'] != '') {
@@ -46,25 +52,31 @@ switch ($_GET['step']) {
         header('Pragma: no-cache');
         header('Expires: 0');
 
-        p_configuration(STDOUT, $_POST);
+        p_configuration(STDOUT, $_SESSION);
         break;
 
     case 'administrator-create':
-        if (empty($_POST['administrator-username'])) {
-            p_errormsg(lng('error'), lng('adminnameempty'), '?step=table-create&database-hostname='.$_REQUEST['database-hostname'].'&database-username='.$_REQUEST['database-username'].'&database-password='.$_REQUEST['database-password'].'&database-name='.$_REQUEST['database-name'].'&table-prefix='.$_REQUEST['table-prefix'].'&database-clear=true&administrator-username='.$_REQUEST['administrator-username'].'&administrator-email='.$_REQUEST['administrator-email'].'&administrator-password='.$_REQUEST['administrator-password']);
+        if (isset($_POST['submit'])) {
+            $_SESSION['administrator-username'] = $_POST['administrator-username'];
+            $_SESSION['administrator-email'] = $_POST['administrator-email'];
+            $_SESSION['administrator-password'] = $_POST['administrator-password'];
+
+            if (empty($_SESSION['administrator-username'])) {
+                p_errormsg(lng('error'), lng('adminnameempty'), '?step=table-create');
+            }
+
+            if (strlen($_SESSION['administrator-password']) < 5) {
+                p_errormsg(lng('error'), lng('adminpwtooshort'), '?step=table-create');
+            }
         }
 
-        if (strlen($_POST['administrator-password']) < 5) {
-            p_errormsg(lng('error'), lng('adminpwtooshort'), '?step=table-create&database-hostname='.$_REQUEST['database-hostname'].'&database-username='.$_REQUEST['database-username'].'&database-password='.$_REQUEST['database-password'].'&database-name='.$_REQUEST['database-name'].'&table-prefix='.$_REQUEST['table-prefix'].'&database-clear=true&administrator-username='.$_REQUEST['administrator-username'].'&administrator-email='.$_REQUEST['administrator-email'].'&administrator-password='.$_REQUEST['administrator-password']);
-        }
-
-        mysql_connect($_POST['database-hostname'], $_POST['database-username'], $_POST['database-password']);
-        mysql_select_db($_POST['database-name']);
+        mysql_connect($_SESSION['database-hostname'], $_SESSION['database-username'], $_SESSION['database-password']);
+        mysql_select_db($_SESSION['database-name']);
 
         thwb_query(
 <<<SQL
 INSERT INTO
-    {$_POST['table-prefix']}user
+    {$_SESSION['table-prefix']}user
 (
     username,
     useremail,
@@ -76,9 +88,9 @@ INSERT INTO
 )
 VALUES
 (
-    '{$_POST['administrator-username']}',
-    '{$_POST['administrator-email']}',
-    MD5('{$_POST['administrator-password']}'),
+    '{$_SESSION['administrator-username']}',
+    '{$_SESSION['administrator-email']}',
+    MD5('{$_SESSION['administrator-password']}'),
     '1',
     UNIX_TIMESTAMP(),
     ',3,',
@@ -88,51 +100,40 @@ SQL
         );
 
         echo $template->render('install-prewrite', [
-            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
-            'download_url' => 'install.php?step=configuration-download&database-hostname='.$_POST['database-hostname'].'&database-username='.$_POST['database-username'].'&database-password='.$_POST['database-password'].'&database-name='.$_POST['database-name'].'&table-prefix='.$_POST['table-prefix'],
-            'language' => $_REQUEST['lang'],
-            'step' => 'configuration-write',
-            'variables' => [
-                'database-hostname' => $_REQUEST['database-hostname'],
-                'database-username' => $_REQUEST['database-username'],
-                'database-password' => $_REQUEST['database-password'],
-                'database-name' => $_POST['database-name'],
-                'table-prefix' => $_POST['table-prefix']
-            ]
+            'about_handler' => 'install.php?step=about',
+            'download_url' => 'install.php?step=configuration-download',
+            'step' => 'configuration-write'
         ]);
         break;
 
     case 'table-create':
-        if (!isset($_REQUEST['administrator-username'])) {
-            $_REQUEST['administrator-username'] = 'root';
+        if (!isset($_SESSION['administrator-username'])) {
+            $_SESSION['administrator-username'] = 'root';
         }
 
-        if (!isset($_REQUEST['administrator-email'])) {
-            $_REQUEST['administrator-email'] = '';
+        if (!isset($_SESSION['administrator-email'])) {
+            $_SESSION['administrator-email'] = '';
         }
 
-        if (preg_match('/[^a-zA-Z1-9_]/', $_REQUEST['table-prefix'])) {
-            p_errormsg(lng('error'), lng('invalidtableprefixerror'), '?step=table-prefix&database-allocation=use&database-hostname='.$_REQUEST['database-hostname'].'&database-username='.$_REQUEST['database-username'].'&database-password='.$_REQUEST['database-password'].'&database-name='.$_REQUEST['database-name'].'&table-prefix='.$_REQUEST['table-prefix'].'&database-clear='.$_REQUEST['database-clear']);
+        if (isset($_POST['submit'])) {
+            $_SESSION['table-prefix'] = $_POST['table-prefix'];
+            $_SESSION['database-clear'] = ($_POST['database-clear'] == 'true');
+
+            if (preg_match('/[^a-zA-Z1-9_]/', $_POST['table-prefix'])) {
+                p_errormsg(lng('error'), lng('invalidtableprefixerror'), '?step=table-prefix');
+            }
         }
 
-        mysql_connect($_REQUEST['database-hostname'], $_REQUEST['database-username'], $_REQUEST['database-password']);
-        mysql_select_db($_REQUEST['database-name']);
+        mysql_connect($_SESSION['database-hostname'], $_SESSION['database-username'], $_SESSION['database-password']);
+        mysql_select_db($_SESSION['database-name']);
 
-        create_tables($_REQUEST['table-prefix'], $_REQUEST['database-clear'] == 'true');
+        create_tables($_SESSION['table-prefix'], $_SESSION['database-clear']);
 
         echo $template->render('install-administrator-create', [
-            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
-            'email' => $_REQUEST['administrator-email'],
-            'language' => $_REQUEST['lang'],
+            'about_handler' => 'install.php?step=about',
+            'email' => $_SESSION['administrator-email'],
             'step' => 'administrator-create',
-            'username' => $_REQUEST['administrator-username'],
-            'variables' => [
-                'database-hostname' => $_REQUEST['database-hostname'],
-                'database-username' => $_REQUEST['database-username'],
-                'database-password' => $_REQUEST['database-password'],
-                'database-name' => $_POST['database-name'],
-                'table-prefix' => $_POST['table-prefix']
-            ]
+            'username' => $_SESSION['administrator-username']
         ]);
         break;
 
@@ -141,53 +142,55 @@ SQL
             p_errormsg(lng('error'), lng('chmoderror'), 'JavaScript:history.back(0)');
         } else {
             $fp = @fopen('../inc/config.inc.php', 'w');
-            p_configuration($fp, $_POST);
+            p_configuration($fp, $_SESSION);
             fclose($fp);
 
             echo $template->render('install-done', [
-                'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
-                'language' => $_REQUEST['lang']
+                'about_handler' => 'install.php?step=about'
             ]);
         }
         break;
 
     case 'table-prefix':
-        mysql_connect($_REQUEST['database-hostname'], $_REQUEST['database-username'], $_REQUEST['database-password']);
+        mysql_connect($_SESSION['database-hostname'], $_SESSION['database-username'], $_SESSION['database-password']);
 
-        if (!isset($_REQUEST['database-name'])) {
-            $_REQUEST['database-name'] = ($_REQUEST['database-allocation'] == 'use') ? $_REQUEST['database-name-use'] : $_REQUEST['database-name-new'];
+        if (isset($_POST['submit'])) {
+            $_SESSION['database-allocation'] = $_POST['database-allocation'];
+            $_SESSION['database-name'] = ($_SESSION['database-allocation'] == 'use') ? $_POST['database-name-use'] : $_POST['database-name-new'];
         }
 
-        if (!isset($_REQUEST['table-prefix'])) {
-            $_REQUEST['table-prefix'] = 'tb_';
+        if (!isset($_SESSION['table-prefix'])) {
+            $_SESSION['table-prefix'] = 'tb_';
         }
 
-        if (!isset($_REQUEST['database-clear'])) {
-            $_REQUEST['database-clear'] = false;
+        if (!isset($_SESSION['database-clear'])) {
+            $_SESSION['database-clear'] = false;
         }
 
-        if (preg_match('/[^a-zA-Z0-9_]/', $_REQUEST['database-name'])) {
-            p_errormsg(lng('error'), lng('invaliddatabasenameerror'), '?step=database-select&database-hostname='.$_REQUEST['database-hostname'].'&database-username='.$_REQUEST['database-username'].'&database-password='.$_REQUEST['database-password'].'&database-allocation='.$_REQUEST['database-allocation'].'&database-name='.$_REQUEST['database-name']);
+        if (preg_match('/[^a-zA-Z0-9_]/', $_SESSION['database-name'])) {
+            p_errormsg(lng('error'), lng('invaliddatabasenameerror'), '?step=database-select');
         }
 
-        if ($_REQUEST['database-allocation'] == 'new') {
-            $query = "CREATE DATABASE ".$_REQUEST['database-name'];
+        if ($_SESSION['database-allocation'] == 'new') {
+            $query = "CREATE DATABASE ".$_SESSION['database-name'];
             mysql_query($query);
 
             switch (mysql_errno()) {
                 case 0:
                     break;
                 case 1044:
-                    p_errormsg(lng('error'), lng('cantcreatedatabaseerror'), '?step=database-select&database-hostname='.$_REQUEST['database-hostname'].'&database-username='.$_REQUEST['database-username'].'&database-password='.$_REQUEST['database-password'].'&database-allocation='.$_REQUEST['database-allocation'].'&database-name='.$_REQUEST['database-name']);
+                    p_errormsg(lng('error'), lng('cantcreatedatabaseerror'), '?step=database-select');
                     break;
                 default:
                     p_errormsg(lng('error'), sprintf(lng('queryerror'), $query, mysql_error()));
             }
+
+            $_SESSION['database-allocation'] = 'use';
         }
 
-        mysql_select_db($_REQUEST['database-name']);
+        mysql_select_db($_SESSION['database-name']);
 
-        $r_table = mysql_list_tables($_REQUEST['database-name']);
+        $r_table = mysql_list_tables($_SESSION['database-name']);
         $a_tables = [];
         $i = 0;
 
@@ -197,40 +200,39 @@ SQL
         }
 
         echo $template->render('install-table-prefix', [
-            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
-            'database_name' => $_REQUEST['database-name'],
-            'database_overwrite' => ($_REQUEST['database-clear'] == 'true'),
-            'language' => $_REQUEST['lang'],
+            'about_handler' => 'install.php?step=about',
+            'database_name' => $_SESSION['database-name'],
+            'database_overwrite' => $_SESSION['database-clear'],
             'step' => 'table-create',
-            'table_prefix' => $_REQUEST['table-prefix'],
-            'tables' => $tables,
-            'variables' => [
-                'database-hostname' => $_REQUEST['database-hostname'],
-                'database-username' => $_REQUEST['database-username'],
-                'database-password' => $_REQUEST['database-password'],
-                'database-name' => $_REQUEST['database-name']
-            ]
+            'table_prefix' => $_SESSION['table-prefix'],
+            'tables' => $tables
         ]);
         break;
 
     case 'database-select':
-        if (!isset($_REQUEST['database-allocation'])) {
-            $_REQUEST['database-allocation'] = 'use';
+        if (!isset($_SESSION['database-allocation'])) {
+            $_SESSION['database-allocation'] = 'use';
         }
 
-        if (!isset($_REQUEST['database-name'])) {
-            $_REQUEST['database-name'] = '';
+        if (!isset($_SESSION['database-name'])) {
+            $_SESSION['database-name'] = '';
         }
 
-        if (empty($_REQUEST['database-hostname'])) {
-            p_errormsg(lng('error'), sprintf(lng('nodatabasehosterror')), '?step=database-credentials&license-accept=true');
+        if (isset($_POST['submit'])) {
+            if (empty($_POST['database-hostname'])) {
+                p_errormsg(lng('error'), sprintf(lng('nodatabasehosterror')), '?step=database-credentials');
+            }
+
+            if (empty($_POST['database-username']) && empty($_POST['database-password'])) {
+                p_errormsg(lng('error'), sprintf(lng('nocredentialserror')), '?step=database-credentials');
+            }
+
+            $_SESSION['database-hostname'] = $_POST['database-hostname'];
+            $_SESSION['database-username'] = $_POST['database-username'];
+            $_SESSION['database-password'] = $_POST['database-password'];
         }
 
-        if (empty($_REQUEST['database-username']) && empty($_REQUEST['database-password'])) {
-            p_errormsg(lng('error'), sprintf(lng('nocredentialserror')), '?step=database-credentials&license-accept=true');
-        }
-
-        $dbhandle = @mysql_connect($_REQUEST['database-hostname'], $_REQUEST['database-username'], $_REQUEST['database-password']);
+        $dbhandle = @mysql_connect($_SESSION['database-hostname'], $_SESSION['database-username'], $_SESSION['database-password']);
 
         if (!$dbhandle) {
             $message = '';
@@ -239,11 +241,11 @@ SQL
             switch (mysql_errno()) {
                 case 1045:
                     $message = lng('wrongcredentialserror');
-                    $backlink = '?step=database-credentials&license-accept=true&database-hostname='.$_REQUEST['database-hostname'].'&database-username='.$_REQUEST['database-username'];
+                    $backlink = '?step=database-credentials';
                     break;
                 case 2002:
                     $message = lng('cannotconnecterror');
-                    $backlink = '?step=database-credentials&license-accept=true&database-hostname='.$_REQUEST['database-hostname'].'&database-username='.$_REQUEST['database-username'];
+                    $backlink = '?step=database-credentials';
                     break;
                 default:
                     $message = sprintf(lng('connecterror'), mysql_errno());
@@ -278,47 +280,47 @@ SQL
         }
 
         echo $template->render('install-database-select', [
-            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
-            'allocation' => $_REQUEST['database-allocation'],
-            'database_name' => $_REQUEST['database-name'],
+            'about_handler' => 'install.php?step=about',
+            'allocation' => $_SESSION['database-allocation'],
+            'database_name' => $_SESSION['database-name'],
             'databases' => $databases,
-            'language' => $_REQUEST['lang'],
-            'step' => 'table-prefix',
-            'variables' => [
-                'database-hostname' => $_REQUEST['database-hostname'],
-                'database-username' => $_REQUEST['database-username'],
-                'database-password' => $_REQUEST['database-password']
-            ]
+            'step' => 'table-prefix'
         ]);
         break;
 
     case 'database-credentials':
-        if (!isset($_REQUEST['database-hostname'])) {
-            $_REQUEST['database-hostname'] = 'localhost';
+        if (!isset($_SESSION['database-hostname'])) {
+            $_SESSION['database-hostname'] = 'localhost';
         }
 
-        if (!isset($_REQUEST['database-username'])) {
-            $_REQUEST['database-username'] = '';
+        if (!isset($_SESSION['database-username'])) {
+            $_SESSION['database-username'] = '';
         }
 
-        if ($_REQUEST['license-accept'] != 'true') {
-            p_errormsg(lng('error'), lng('licaccept'), '?step=license');
-        } else {
-            echo $template->render('install-database-credentials', [
-                'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
-                'hostname' => $_REQUEST['database-hostname'],
-                'language' => $_REQUEST['lang'],
-                'step' => 'database-select',
-                'username' => $_REQUEST['database-username']
-            ]);
+        if (isset($_POST['submit'])) {
+            $_SESSION['license-accept'] = ($_REQUEST['license-accept'] == 'true');
+
+            if (!$_SESSION['license-accept']) {
+                p_errormsg(lng('error'), lng('licaccept'), '?step=license');
+            }
         }
+
+        echo $template->render('install-database-credentials', [
+            'about_handler' => 'install.php?step=about',
+            'hostname' => $_SESSION['database-hostname'],
+            'step' => 'database-select',
+            'username' => $_SESSION['database-username']
+        ]);
         break;
 
     case 'license':
+        if (!isset($_SESSION['license-accept'])) {
+            $_SESSION['license-accept'] = false;
+        }
+
         echo $template->render('install-license', [
-            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
-            'accept' => $_REQUEST['license-accept'],
-            'language' => $_REQUEST['lang'],
+            'about_handler' => 'install.php?step=about',
+            'accept' => $_SESSION['license-accept'],
             'license' => implode('', file('../COPYING')),
             'step' => 'database-credentials'
         ]);
@@ -326,8 +328,7 @@ SQL
 
     case 'about':
         echo $template->render('install-about', [
-            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
-            'language' => $_REQUEST['lang']
+            'about_handler' => 'install.php?step=about',
         ]);
         break;
 
@@ -336,17 +337,19 @@ SQL
         break;
 
     case 'welcome':
+        if (isset($_POST['lang'])) {
+            $_SESSION['lang'] = $_POST['lang'];
+        }
+
         echo $template->render('install-welcome', [
-            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
-            'language' => $_REQUEST['lang'],
+            'about_handler' => 'install.php?step=about',
             'step' => 'license'
         ]);
         break;
 
     default:
         echo $template->render('install-selectlanguage', [
-            'about_handler' => 'install.php?step=about&lang='.$_REQUEST['lang'],
-            'language' => $_REQUEST['lang'],
+            'about_handler' => 'install.php?step=about',
             'languages' => $a_lang,
             'step' => 'welcome'
         ]);

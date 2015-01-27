@@ -1,7 +1,5 @@
 <?php $this->layout('install-frame', [
     'about_handler' => $about_handler,
-    'language' => $language,
-    'step' => $step,
-    'variables' => $variables
+    'step' => $step
 ]) ?>
 <?= $this->_('infotxt') ?>

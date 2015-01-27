@@ -76,13 +76,7 @@ td {  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 8pt
                                         <tr>
                                             <td align="right">
 <?php if (isset($step)): ?>
-                                                <input type="submit" name="next" value="<?= $this->_('next') ?> &gt;" class="inst_button">
-<?php endif ?>
-<?php foreach ($variables as $name => $value): ?>
-                                                <input type="hidden" name="<?= $this->e($name) ?>" value="<?= $this->e($value) ?>">
-<?php endforeach ?>
-<?php if (!empty($language)): ?>
-                                                <input type="hidden" name="lang" value="<?= $this->e($language) ?>">
+                                                <input type="submit" name="submit" value="<?= $this->_('next') ?> &gt;" class="inst_button">
 <?php endif ?>
                                             </td>
                                         </tr>

@@ -240,10 +240,10 @@ function lng($str)
 {
     global $a_lang;
 
-    if ($_REQUEST['lang'] == '') {
+    if (!isset($_SESSION['lang'])) {
         $lng = 'en';
     } else {
-        $lng = $_REQUEST['lang'];
+        $lng = $_SESSION['lang'];
     }
 
     if ($a_lang[$lng][$str]) {
