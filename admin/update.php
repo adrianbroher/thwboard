@@ -35,8 +35,13 @@ if (!$pref) {
 
 session_start();
 
-if (isset($_POST['login-username']) && isset($_POST['login-password']) && empty($_POST['login-username']) && empty($_POST['login-password'])) {
-    p_errormsg(lng('error'), lng('noadmincredentialserror'), '?step=login');
+if (!isset($_SESSION['authenticated']) && isset($_GET['step']) && $_GET['step'] != 'login') {
+    header('Location: '.$_SERVER['PHP_SELF']);
+    exit();
+}
+
+if (!isset($_GET['step'])) {
+    $_GET['step'] = 'login';
 }
 
 $r_registry = thwb_query(
@@ -53,55 +58,7 @@ SQL
 list($version) = mysql_fetch_row($r_registry);
 $version = (float)($version);
 
-$loginUsername = addslashes($_POST['login-username']);
-
-if ($version < 2.8) {
-    $r_user = thwb_query(
-<<<SQL
-SELECT
-    userpassword
-FROM
-    {$pref}user
-WHERE
-    username = '{$loginUsername}' AND
-    userlevel = 1
-SQL
-    );
-} else {
-    $r_user = thwb_query(
-<<<SQL
-SELECT
-    userpassword
-FROM
-    {$pref}user
-WHERE
-    username = '{$loginUsername}' AND
-    userisadmin = 1
-SQL
-    );
-}
-
-if (mysql_num_rows($r_user)) {
-    $user = mysql_fetch_array($r_user);
-
-    if ($user['userpassword'] != md5($_POST['login-password'])) {
-        p_errormsg(lng('error'), lng('wrongadmincredentialserror'), '?step=login');
-    }
-} else if(isset($_POST['login-username']) && isset($_POST['login-password'])) {
-    p_errormsg(lng('error'), lng('wrongadmincredentialserror'), '?step=login');
-} else {
-    $_GET['step'] = 'login';
-}
-
 switch ($_GET['step']) {
-    case 'login':
-        echo $template->render('update-login', [
-            'about_handler' => 'install.php?step=about',
-            'languages' => $a_lang,
-            'step' => 'update-select'
-        ]);
-        break;
-
     case 'update-run':
         include 'updates/'.$_SESSION['update'];
 
@@ -139,11 +96,6 @@ switch ($_GET['step']) {
         break;
 
     case 'update-select':
-    default:
-        if (isset($_POST['lang'])) {
-            $_SESSION['lang'] = $_POST['lang'];
-        }
-
         $a_file = [];
         $dp = opendir('updates/');
 
@@ -171,4 +123,64 @@ switch ($_GET['step']) {
             'updates' => $a_file
         ]);
         break;
+
+    case 'login':
+        if (isset($_POST['submit'])) {
+            $_SESSION['lang'] = $_POST['lang'];
+
+            if (empty($_POST['login-username']) && empty($_POST['login-password'])) {
+                p_errormsg(lng('error'), lng('noadmincredentialserror'), '?step=login');
+            }
+
+            $loginUsername = addslashes($_POST['login-username']);
+
+            if ($version < 2.8) {
+                $r_user = thwb_query(
+<<<SQL
+SELECT
+    userpassword
+FROM
+    {$pref}user
+WHERE
+    username = '{$loginUsername}' AND
+    userlevel = 1
+SQL
+    );
+            } else {
+                $r_user = thwb_query(
+<<<SQL
+SELECT
+    userpassword
+FROM
+    {$pref}user
+WHERE
+    username = '{$loginUsername}' AND
+    userisadmin = 1
+SQL
+                );
+            }
+
+            if (mysql_num_rows($r_user) === 0) {
+                p_errormsg(lng('error'), lng('wrongadmincredentialserror'), '?step=login');
+            }
+
+            $user = mysql_fetch_array($r_user);
+
+            if ($user['userpassword'] != md5($_POST['login-password'])) {
+                p_errormsg(lng('error'), lng('wrongadmincredentialserror'), '?step=login');
+            }
+
+            $_SESSION['authenticated'] = true;
+
+            header('Location: '.$_SERVER['PHP_SELF'].'?step=update-select');
+            exit();
+        }
+
+        echo $template->render('update-login', [
+            'about_handler' => 'install.php?step=about',
+            'languages' => $a_lang,
+            'step' => 'login'
+        ]);
+        break;
+
 }
