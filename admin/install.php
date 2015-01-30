@@ -22,9 +22,9 @@
  * with this program;  If not, see <http://www.gnu.org/licenses/>.
  */
 
-if (version_compare(PHP_VERSION, '4.0.6', '<')) {
+if (version_compare(PHP_VERSION, '5.4', '<')) {
     die(
-        'ThWboard install can not be performed because the PHP version used is to old ( < 4.0.6 ).<br>'.
+        'ThWboard install can not be performed because the PHP version used is to old ( < 5.4 ).<br>'.
         'Please ask your webmaster or server administrator for updating the PHP version.'
     );
 }

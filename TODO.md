@@ -9,7 +9,7 @@ Next
 ----
 
 * Implement functional tests with behat.
-* Remove pre PHP 5.3 compability.
+* Remove pre PHP 5.4 compability.
 * Replace $HTTP_*_VARS with $\_GET, $\_POST, etc. superglobals.
 * Replace mysql_* API with PDO.
 * replace custom templates with plates.
