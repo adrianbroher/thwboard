@@ -58,6 +58,10 @@ SQL
 list($version) = mysql_fetch_row($r_registry);
 $version = (float)($version);
 
+if ($version < 2.8) {
+    p_errormsg(lng('error'), lng('installationtooold'));
+}
+
 switch ($_GET['step']) {
     case 'update-run':
         include 'updates/'.$_SESSION['update'];
@@ -134,20 +138,7 @@ switch ($_GET['step']) {
 
             $loginUsername = addslashes($_POST['login-username']);
 
-            if ($version < 2.8) {
-                $r_user = thwb_query(
-<<<SQL
-SELECT
-    userpassword
-FROM
-    {$pref}user
-WHERE
-    username = '{$loginUsername}' AND
-    userlevel = 1
-SQL
-    );
-            } else {
-                $r_user = thwb_query(
+            $r_user = thwb_query(
 <<<SQL
 SELECT
     userpassword
@@ -157,8 +148,7 @@ WHERE
     username = '{$loginUsername}' AND
     userisadmin = 1
 SQL
-                );
-            }
+            );
 
             if (mysql_num_rows($r_user) === 0) {
                 p_errormsg(lng('error'), lng('wrongadmincredentialserror'), '?step=login');

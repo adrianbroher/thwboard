@@ -77,20 +77,12 @@ Feature: Forum update
         Then I should see "Updates"
         And I should see "Please select the update you want to run."
         And I should see the following <value> available in the select "Available updates":
-            | value                      |
-            | stats_history.update       |
-            | thwb_26b_27.update         |
-            | thwb_27_271.update         |
-            | thwb_28_281.update         |
-            | thwb_271_272.update        |
-            | thwb_272_273.update        |
-            | thwb_273_28.update         |
-            | thwb_281_282.update        |
-            | thwb_282_283.update        |
-            | thwb_283_284.update        |
-            | thwb_284_285.update        |
-            | thwb_lastvisitedfix.update |
-            | thwb_quotes_fix.update     |
+            | value               |
+            | thwb_28_281.update  |
+            | thwb_281_282.update |
+            | thwb_282_283.update |
+            | thwb_283_284.update |
+            | thwb_284_285.update |
         When I select "thwb_283_284.update" from "Available updates"
         And I press "Next"
         Then I should see "Update information"
@@ -120,20 +112,12 @@ Feature: Forum update
         Then I should see "Updates"
         And I should see "Please select the update you want to run."
         And I should see the following <value> available in the select "Available updates":
-            | value                      |
-            | stats_history.update       |
-            | thwb_26b_27.update         |
-            | thwb_27_271.update         |
-            | thwb_28_281.update         |
-            | thwb_271_272.update        |
-            | thwb_272_273.update        |
-            | thwb_273_28.update         |
-            | thwb_281_282.update        |
-            | thwb_282_283.update        |
-            | thwb_283_284.update        |
-            | thwb_284_285.update        |
-            | thwb_lastvisitedfix.update |
-            | thwb_quotes_fix.update     |
+            | value               |
+            | thwb_28_281.update  |
+            | thwb_281_282.update |
+            | thwb_282_283.update |
+            | thwb_283_284.update |
+            | thwb_284_285.update |
         When I select "thwb_284_285.update" from "Available updates"
         And I press "Next"
         Then I should see "Update information"

@@ -131,6 +131,7 @@ paar n&#xFC;tzliche Links:<br>
 $a_lang['de']['noupdates'] = '
 Es sind zur Zeit leider keine Updates verf&#xFC;bar.<br>
 Besuchen Sie bitte die <a href="http://www.thwboard.de/">ThWboard Homepage</a> um Updates herunterzuladen.';
+$a_lang['de']['installationtooold'] = 'Die aktuelle Installation ist zu alt. Bitte benutzen sie den alten Installer um die Installation auf 2.8 oder eine sp&auml;tere Version zu aktualisieren.';
 
 
 
@@ -233,6 +234,7 @@ The installation process was successfully completed. Your ThWboard should be wor
 $a_lang['en']['noupdates'] = '
 There are currently no updates<br>
 Visit the <a href="http://www.thwboard.de/">ThWboard Homepage</a> in order to download updates.';
+$a_lang['en']['installationtooold'] = 'The current installation is too old. Please use the old installer to upgrade the installation to 2.8 or later.';
 
 
 

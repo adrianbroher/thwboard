@@ -88,6 +88,23 @@ class CUpdate
             thwb_query("UPDATE $this->Prefix"."groupboard SET accessmask = '".build_string($a_mask['accessmask'])."' WHERE groupid = ".$a_mask['groupid']." AND boardid = ".$a_mask['boardid']);
           }
 
+        thwb_query("CREATE TABLE $pref"."statcache (stat_id int(11) unsigned NOT NULL auto_increment, stat_stime int(11) unsigned NOT NULL default '0',
+                stat_etime int(11) unsigned NOT NULL default '0', stat_uid int(11) unsigned NOT NULL default '0',
+                stat_month varchar(64) NOT NULL default '', stat_auser int(11) unsigned NOT NULL default '0',
+                stat_nuser int(11) unsigned NOT NULL default '0', stat_nthread int(11) unsigned NOT NULL default '0',
+                stat_npost int(11) unsigned NOT NULL default '0', PRIMARY KEY  (stat_id), KEY stat_stime (stat_stime,stat_etime),
+                KEY stat_month (stat_month), KEY stat_uid (stat_uid)) TYPE=MyISAM;");
+
+      $r_post = thwb_query("SELECT postid, posttext FROM {$this->Prefix}post WHERE posttext LIKE '%[QUOTE]%' OR posttext LIKE '%[/QUOTE]%'");
+      $a_post = array();
+
+      while($a_post = mysql_fetch_array($r_post))
+      {
+        $a_post['posttext'] = preg_replace("/\[(\/|)QUOTE\]/", "[$1quote]", $a_post['posttext']);
+
+        thwb_query("UPDATE {$this->Prefix}post SET posttext='".addslashes($a_post['posttext'])."' WHERE postid=$a_post[postid]");
+      }
+
         return 0;
     }
 }
