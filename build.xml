@@ -67,6 +67,9 @@ default:
             paths: [ tests/functional ]
             contexts:
                 - CommonActionsContext
+                - HTMLDumpContext:
+                    context_name: CommonActionsContext
+                    html_dump_path: /tmp/thwboard
     formatters:
         progress:
     extensions:
