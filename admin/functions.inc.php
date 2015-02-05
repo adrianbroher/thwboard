@@ -77,7 +77,7 @@ function get_templatesetarray()
 }
 
 
-function navgroupbox_open($caption, $noline = 0)
+function navgroupbox_open($caption)
 {
     print '
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -92,20 +92,6 @@ function navgroupbox_open($caption, $noline = 0)
   </tr>
 </table>
 <table width="100%" border="0" cellspacing="1" cellpadding="2">';
-/*    if( $noline )
-    {
-        print '
-      <font size="1" color="#3366CC">
-      <b>'.$caption.'</b></font>
-      <table width="100%" border="0" cellspacing="1" cellpadding="2">';
-    }
-    else
-    {
-        print '
-      <font size="1" color="#000000">------------------------------<br></font><font size="1" color="#3366CC">
-      <b>'.$caption.'</b></font>
-      <table width="100%" border="0" cellspacing="1" cellpadding="2">';
-    }*/
 }
 
 function navgroupbox_close()
@@ -286,7 +272,7 @@ ul.actions li {
         <tr>
           <td> -->';
 
-    navgroupbox_open('General', 1);
+    navgroupbox_open('General');
         navbox_element('index.php?session='.$session, 'Home');
         navbox_element('documents.php?session=' . $session . '&action=ListDocs', 'Documentation');
         navbox_element('index.php?session=' . $session . '&action=EditSettings', 'Basic settings');
