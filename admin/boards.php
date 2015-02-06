@@ -52,6 +52,22 @@ function BoardForm($board, $action)
 {
     global $pref;
     global $session;
+
+
+    $r_style = query("SELECT styleid, stylename FROM $pref"."style WHERE styleisdefault=0");
+
+    $styles = [];
+    while ($style = mysql_fetch_array($r_style)) {
+        $styles[] = $style;
+    }
+
+    $r_category = query("SELECT categoryid, categoryname FROM $pref"."category");
+
+    $categories = [];
+    while ($category = mysql_fetch_assoc($r_category)) {
+        $categories[] = $category;
+    }
+
     print '<form method="post" action="boards.php">
   <table width="100%" border="0" cellspacing="0" cellpadding="3">
     <tr>
@@ -68,9 +84,13 @@ function BoardForm($board, $action)
     </tr>
     <tr>
       <td>Category</td>
-      <td>';
-    listbox("board[categoryid]", "categoryid", "categoryname", "".$pref."category", $board['categoryid']);
-    print '      </td>
+      <td>
+        <select class="tbinput" name="board[categoryid]">';
+    foreach ($categories as $category) {
+        print '  <option value="'.$category['categoryid'].'"'.($category['categoryid'] == $board['categoryid'] ? ' selected="selected"' : '').'>'.$category['categoryname'].'</option>';
+    }
+    print '</select>
+      </td>
     </tr>
     <tr>
       <td>Style</td>
@@ -79,14 +99,11 @@ function BoardForm($board, $action)
     print '
 <select class="tbinput" name="board[styleid]">
 <option value="0">( Use default )</option>';
-    $r_style = query("SELECT styleid, stylename FROM $pref"."style WHERE styleisdefault=0");
-    while( $style = mysql_fetch_array($r_style) )
-    {
+    foreach ($styles as $style) {
         print '<option value="'.$style['styleid'].'">'.$style['stylename'].'</option>';
     }
 print '</select>';
 
-//    listbox("board[styleid]", "styleid", "stylename", "".$pref."style", $board['styleid'], '<option value="0">-- USE DEFAULT --</option>');
     print '      </td>
     </tr>
     <tr>

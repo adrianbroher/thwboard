@@ -145,18 +145,6 @@ function editbox($name, $value="", $size="", $maxlength="") {
   print $editbox;
 }
 
-function listbox($name, $key, $value, $table, $initial_select = -1, $additional = '') {
-  print "\n\n<!-- listbox created by listbox() -->\n";
-  print "<select class=\"tbinput\" name=\"$name\">\n$additional";
-
-  $result=query("SELECT $key, $value FROM $table");
-  while( list($key, $value)=mysql_fetch_row($result) ) {
-    print "  <option value=\"$key\"" . ($key == $initial_select ? " selected" : "") . ">$value</option>\n";
-  }
-  print "</select>\n";
-  print "<!--                              -->\n\n";
-}
-
 function navgroupbox_open($caption, $noline = 0)
 {
     print '
