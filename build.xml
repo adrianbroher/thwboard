@@ -70,6 +70,7 @@ default:
                 - HTMLDumpContext:
                     context_name: CommonActionsContext
                     html_dump_path: /tmp/thwboard
+                - ThWboardModelFeatureContext
     formatters:
         progress:
     extensions:
