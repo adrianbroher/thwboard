@@ -22,6 +22,8 @@
  * with this program;  If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Behat\Gherkin\Node\TableNode;
+
 use Behat\Behat\Context\Context;
 
 /**
@@ -114,5 +116,168 @@ SQL
         }
 
         @unlink(__DIR__.'/../../inc/config.inc.php');
+    }
+
+    /** Downgrades the forum schema to the given version.
+     *
+     * @Given /^the forum is downgraded to (?P<version>[0-9]+\.[0-9]+)$/
+     */
+    public function downgradeBoard($version)
+    {
+        if (2.84 != $version) {
+            throw new InvalidArgumentException("Can only downgrade to version 2.84, requested {$version}");
+        }
+
+        $r_version = $this->pdo->query(
+<<<SQL
+SELECT
+    keyvalue
+FROM
+    {$this->table_prefix}registry
+WHERE
+    keyname = 'version'
+SQL
+        );
+
+        if ($version == $r_version->fetchColumn()) {
+            return;
+        }
+
+        $this->pdo->exec(
+<<<SQL
+DROP TABLE IF EXISTS
+    {$this->table_prefix}flood
+SQL
+        );
+
+        $this->pdo->exec(
+<<<SQL
+DELETE FROM
+    {$this->table_prefix}registrygroup
+WHERE
+    keygroupname IN (
+        'Flood Protection',
+        'Error Reporting'
+    )
+SQL
+        );
+
+        $this->pdo->exec(
+<<<SQL
+DELETE FROM
+    {$this->table_prefix}registry
+WHERE
+    keyname IN (
+        'flood_login_count',
+        'flood_login_timeout',
+        'flood_register_count',
+        'flood_register_timeout',
+        'flood_mail_count',
+        'flood_mail_timeout',
+        'debug_what',
+        'debug_mail',
+        'debug_do_log',
+        'debug_log_path'
+    )
+SQL
+        );
+
+        $this->pdo->exec(
+<<<SQL
+UPDATE
+    {$this->table_prefix}registry
+SET
+    keyvalue = '2.84'
+WHERE
+    keyname = 'version'
+SQL
+        );
+
+        $this->pdo->exec(
+<<<SQL
+ALTER TABLE
+    {$this->table_prefix}registrygroup
+    AUTO_INCREMENT = 8;
+SQL
+        );
+    }
+
+    /** Set up the users required for a scenario.
+     *
+     * @Given /^the following users exist:$/
+     */
+    public function setUpUsers(TableNode $table)
+    {
+        $this->pdo->exec(
+<<<SQL
+DELETE FROM
+    {$this->table_prefix}user
+SQL
+        );
+        $this->pdo->exec(
+<<<SQL
+ALTER TABLE
+    {$this->table_prefix}user
+    AUTO_INCREMENT = 1
+SQL
+        );
+
+        if (0 !== count(array_diff(['name', 'password', 'email', 'member of'], $table->getRow(0)))) {
+            throw new InvalidArgumentException("Table missing one of the required columns (name, password, email, member of)");
+        }
+
+        $users = [];
+
+        foreach ($table->getHash() as $user) {
+            $r_group = $this->pdo->query(
+<<<SQL
+SELECT
+    groupid
+FROM
+    {$this->table_prefix}group
+WHERE
+    name = '{$user['member of']}'
+SQL
+            );
+
+            if (1 !== $r_group->rowCount()) {
+                throw new DomainException("User '{$user['name']}' is assigned to the non existing group '{$user['member of']}'");
+            }
+
+            $user['groupid'] = $r_group->fetchColumn();
+
+            $user['isadmin'] = (isset($user['flags']) && in_array('isadmin', array_map('trim', explode(',', $user['flags'])))) ? 1 : 0;
+            $user['inactive'] = (isset($user['flags']) && in_array('inactive', array_map('trim', explode(',', $user['flags'])))) ? 1 : 0;
+
+            $users[] = $user;
+        }
+
+        foreach ($users as $user) {
+            $this->pdo->exec(
+<<<SQL
+INSERT INTO
+    {$this->table_prefix}user
+(
+    username,
+    userjoin,
+    useremail,
+    userpassword,
+    groupids,
+    usernodelete,
+    useractivate,
+    userisadmin
+) VALUES (
+    '{$user['name']}',
+    UNIX_TIMESTAMP(),
+    '{$user['email']}',
+    MD5('{$user['password']}'),
+    ';{$user['groupid']};',
+    {$user['isadmin']},
+    {$user['inactive']},
+    {$user['isadmin']}
+)
+SQL
+            );
+        }
     }
 }

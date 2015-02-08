@@ -75,7 +75,12 @@ default:
                 - HTMLDumpContext:
                     context_name: CommonActionsContext
                     html_dump_path: /tmp/thwboard
-                - ThWboardModelFeatureContext
+                - ThWboardModelFeatureContext:
+                    database_hostname: ${database_hostname}
+                    database_username: ${database_username}
+                    database_password: ${database_password}
+                    database_name: ${database_name}
+                    table_prefix: ${table_prefix}
     formatters:
         progress:
     extensions:
