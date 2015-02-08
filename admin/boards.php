@@ -71,21 +71,21 @@ function BoardForm($board, $action)
     print '<form method="post" action="boards.php">
   <table width="100%" border="0" cellspacing="0" cellpadding="3">
     <tr>
-      <td>Forumname</td>
+      <td><label for="board-name">Name</label></td>
       <td>
-        <input class="tbinput" type="text" name="board[boardname]" value="'.htmlspecialchars($board[boardname]).'">
+        <input class="tbinput" id="board-name" type="text" name="board[boardname]" value="'.htmlspecialchars($board[boardname]).'">
       </td>
     </tr>
     <tr>
-      <td>Description</td>
+      <td><label for="board-description">Description</label></td>
       <td>
-        <input class="tbinput" type="text" name="board[boarddescription]" value="'.htmlspecialchars($board[boarddescription]).'">
+        <input class="tbinput" id="board-description" type="text" name="board[boarddescription]" value="'.htmlspecialchars($board[boarddescription]).'">
       </td>
     </tr>
     <tr>
-      <td>Category</td>
+      <td><label for="board-categoryid">Category</label></td>
       <td>
-        <select class="tbinput" name="board[categoryid]">';
+        <select class="tbinput" id="board-categoryid" name="board[categoryid]">';
     foreach ($categories as $category) {
         print '  <option value="'.$category['categoryid'].'"'.($category['categoryid'] == $board['categoryid'] ? ' selected="selected"' : '').'>'.$category['categoryname'].'</option>';
     }
@@ -93,11 +93,11 @@ function BoardForm($board, $action)
       </td>
     </tr>
     <tr>
-      <td>Style</td>
+      <td><label for="board-styleid">Style</label></td>
       <td>';
 
     print '
-<select class="tbinput" name="board[styleid]">
+<select class="tbinput" id="board-styleid" name="board[styleid]">
 <option value="0">( Use default )</option>';
     foreach ($styles as $style) {
         print '<option value="'.$style['styleid'].'">'.$style['stylename'].'</option>';
@@ -107,9 +107,9 @@ print '</select>';
     print '      </td>
     </tr>
     <tr>
-      <td><b>Status</b><br>
+      <td><b><label for="board-disabled">Status</label></b><br>
         <font size="1">Here you can deactivate<BR>this board temporarily</font></td>
-      <td align="top"><SELECT class="tbinput" name="board[boarddisabled]"><option value="1" ' . ( $board[boarddisabled] == 1 ? "selected" : "" ) . '>Disable board</option><option value="0" ' . ( $board[boarddisabled] == 0 ? " selected" : "" ) . '>Enable board</option></SELECT></td>
+      <td align="top"><SELECT class="tbinput" id="board-disabled" name="board[boarddisabled]"><option value="1" ' . ( $board[boarddisabled] == 1 ? "selected" : "" ) . '>Disable board</option><option value="0" ' . ( $board[boarddisabled] == 0 ? " selected" : "" ) . '>Enable board</option></SELECT></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
@@ -118,7 +118,7 @@ print '</select>';
         <input type="hidden" name="update" value="1">
         <input type="hidden" name="board[boardid]" value="'.$board['boardid'].'">
         <input type="hidden" name="session" value="' . $session . '">
-        <input type="submit" name="Send" value="Send">
+        <input type="submit" name="Send" value="Save">
       </td>
     </tr>
   </table>
@@ -378,11 +378,11 @@ elseif( $action == "newboard" )
             '$board[categoryid]', '$maxorder', '$board[styleid]',
             '$board[boarddisabled]')");
 
-        print 'Forum has been added. Please verify board order.';
+        echo "Board saved.";
     }
     else
     {
-        print '<b>Add Board</b><br><br>';
+        print '<b>New Board</b><br><br>';
         BoardForm(array(), 'newboard');
     }
 }
