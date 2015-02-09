@@ -477,24 +477,36 @@ SQL
 
 /*
  * ########################################################################################
- *        delcat
+ * Delete a category
  * ########################################################################################
  */
-elseif( $action == "delcat" ) {
-    $r_board = query("SELECT count(boardid) AS boardcount FROM ".$pref."board WHERE categoryid=$id");
+if ($_GET['action'] == 'delcat') {
+    $r_board = query(
+<<<SQL
+SELECT
+    COUNT(boardid) AS boardcount
+FROM
+    {$pref}board
+WHERE
+    categoryid = {$_GET['id']}
+SQL
+    );
     $board = mysql_fetch_array($r_board);
 
-    if( $board[boardcount] > 0 )
-    {
+    if ($board['boardcount'] > 0) {
         print 'Error: Cannot delete a category which contains boards!';
-    }
-    else
-    {
-        query("DELETE FROM ".$pref."category WHERE categoryid=$id");
+    } else {
+        query(
+<<<SQL
+DELETE FROM
+    {$pref}category
+WHERE
+    categoryid = {$_GET['id']}
+SQL
+        );
         print 'Category has been deleted.';
     }
 }
-
 
 
 /*
