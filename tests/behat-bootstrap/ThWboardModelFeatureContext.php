@@ -280,4 +280,24 @@ SQL
             );
         }
     }
+
+    /** Insert a flood entry for an attempted login.
+     *
+     * @Given /^the IP "(?P<ip>[^"]*)" tried to log in (?P<time>[0-9]+) minutes? ago$/
+     */
+    public function attemptLogin($ip, $time)
+    {
+        $this->pdo->exec(
+<<<SQL
+INSERT INTO
+    {$this->table_prefix}flood
+VALUES (
+    0,
+    0,
+    (NOW() - INTERVAL {$time} MINUTE),
+    '{$ip}'
+)
+SQL
+        );
+    }
 }
