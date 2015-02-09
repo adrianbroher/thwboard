@@ -154,7 +154,7 @@ if( $action == '' )
                 <ul class="actions">
                     <li><input type="text" name="catord['.$category['categoryid'].']" size="2" value="'.$category['categoryorder'].'"></li>
                     <li><a href="boards.php?action=category-edit&id='.$category['categoryid'].'&session='.$session.'" title="Edit category '.htmlspecialchars($category['categoryname']).'">edit</a></li>
-                    <li><a href="boards.php?action=delcat&id='.$category['categoryid'].'&session='.$session.'" title="Delete category '.htmlspecialchars($category['categoryname']).'">delete</a></li>
+                    <li><a href="boards.php?action=category-delete&id='.$category['categoryid'].'&session='.$session.'" title="Delete category '.htmlspecialchars($category['categoryname']).'">delete</a></li>
                 </ul>
         </div>
 ';
@@ -480,7 +480,7 @@ SQL
  * Delete a category
  * ########################################################################################
  */
-if ($_GET['action'] == 'delcat') {
+if ($_GET['action'] == 'category-delete') {
     print '<b>Delete category</b><br><br>';
 
     $r_board = query(
@@ -511,7 +511,7 @@ SQL
         print 'Category has been deleted.';
     } else {
         print '
-<form method="post" action="boards.php?action=delcat&amp;id='.$_GET['id'].'&amp;session='.$session.'">
+<form method="post" action="boards.php?action=category-delete&amp;id='.$_GET['id'].'&amp;session='.$session.'">
   Do you really want to delete the category?
   <input type="submit" name="submit" value="Delete">
 </form>';
