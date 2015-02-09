@@ -362,28 +362,49 @@ elseif( $action == "delete" ) {
  *        newboard
  * ########################################################################################
  */
-elseif( $action == "newboard" )
-{
-    if( isset($Send) )
-    {
-        // add forum
-        $result = query( "SELECT max(boardorder) FROM ".$pref."board WHERE categoryid=$board[categoryid]" );
+if ($action == "newboard") {
+    if (isset($Send)) {
+        // select highest available boardorder value
+        $result = query(
+<<<SQL
+SELECT
+    MAX(boardorder) AS maxorder
+FROM
+    {$pref}board
+WHERE
+    categoryid = {$_POST['board']['categoryid']}
+SQL
+        );
         list($maxorder) = mysql_fetch_row($result);
         $maxorder++;
-        $board['boardname'] = fix_umlauts($board['boardname']);
-        $board['boarddescription'] = fix_umlauts($board['boarddescription']);
-        query("INSERT INTO ".$pref."board (boardname, boarddescription, categoryid, boardorder, styleid,
-            boarddisabled) VALUES (
-            '" . addslashes($board[boardname]) . "', '" . addslashes($board[boarddescription]) . "',
-            '$board[categoryid]', '$maxorder', '$board[styleid]',
-            '$board[boarddisabled]')");
+        $board['boardname'] = addslashes(fix_umlauts($board['boardname']));
+        $board['boarddescription'] = addslashes(fix_umlauts($board['boarddescription']));
+        query(
+<<<SQL
+INSERT INTO
+    {$pref}board
+(
+    boardname,
+    boarddescription,
+    categoryid,
+    boardorder,
+    styleid,
+    boarddisabled
+) VALUES (
+    '{$board['boardname']}',
+    '{$board['boarddescription']}',
+    {$board['categoryid']},
+    {$maxorder},
+    {$board['styleid']},
+    {$board['boarddisabled']}
+)
+SQL
+        );
 
         echo "Board saved.";
-    }
-    else
-    {
+    } else {
         print '<b>New Board</b><br><br>';
-        BoardForm(array(), 'newboard');
+        BoardForm([], 'newboard');
     }
 }
 
