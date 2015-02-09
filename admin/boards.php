@@ -173,7 +173,7 @@ if( $action == '' )
                     <ul class="actions">
                         <li><input type="text" name="boardord['.$board['boardid'].']" size="2" value="'.$board['boardorder'].'"></li>
                         <li><a href="boards.php?action=board-edit&id='.$board['boardid'].'&session='.$session.'" title="Edit board '.htmlspecialchars($board['boardname']).'">edit</a></li>
-                        <li><a href="boards.php?action=delete&forumid='.$board['boardid'].'&session='.$session.'" title="Delete board '.htmlspecialchars($board['boardname']).'">delete</a></li>
+                        <li><a href="boards.php?action=board-delete&id='.$board['boardid'].'&session='.$session.'" title="Delete board '.htmlspecialchars($board['boardname']).'">delete</a></li>
                         <li><a href="groups.php?action=grouppermtable&boardid='.$board['boardid'].'&session='.$session.'">permissions</a></li>
                     </ul>
                 </li>';
@@ -382,7 +382,7 @@ SQL
  * Delete a board
  * ########################################################################################
  */
-if ($_GET['action'] == 'delete') {
+if ($_GET['action'] == 'board-delete') {
     print '<b>Delete board</b><br><br>';
 
     if (isset($_POST['submit'])) {
@@ -392,7 +392,7 @@ if ($_GET['action'] == 'delete') {
 DELETE FROM
     {$pref}board
 WHERE
-    boardid = {$_GET['forumid']}
+    boardid = {$_GET['id']}
 SQL
         );
 
@@ -404,7 +404,7 @@ SELECT
 FROM
     {$pref}thread
 WHERE
-    boardid = {$_GET['forumid']}
+    boardid = {$_GET['id']}
 SQL
         );
 
@@ -425,7 +425,7 @@ SQL
 DELETE FROM
     {$pref}thread
 WHERE
-    boardid = {$_GET['forumid']}
+    boardid = {$_GET['id']}
 SQL
         );
 
@@ -435,7 +435,7 @@ SQL
 DELETE FROM
     {$pref}groupboard
 WHERE
-    boardid = {$_GET['forumid']}
+    boardid = {$_GET['id']}
 SQL
         );
 
@@ -445,14 +445,14 @@ SQL
 DELETE FROM
     {$pref}lastvisited
 WHERE
-    boardid = {$_GET['forumid']}
+    boardid = {$_GET['id']}
 SQL
         );
 
         print 'Board has been deleted.';
     } else {
         print '
-<form method="post" action="boards.php?action=delete&amp;forumid='.$_GET['forumid'].'&amp;session='.$session.'">
+<form method="post" action="boards.php?action=board-delete&amp;id='.$_GET['id'].'&amp;session='.$session.'">
   Do you really want to delete the board?
   <input type="submit" name="submit" value="Delete">
 </form>';
