@@ -48,7 +48,7 @@ function fix_umlauts($str)
     return $str;
 }
 
-function BoardForm($board, $action)
+function BoardForm($board, $handler)
 {
     global $pref;
     global $session;
@@ -68,24 +68,24 @@ function BoardForm($board, $action)
         $categories[] = $category;
     }
 
-    print '<form method="post" action="boards.php">
+    print '<form method="post" action="'.htmlspecialchars($handler).'">
   <table width="100%" border="0" cellspacing="0" cellpadding="3">
     <tr>
       <td><label for="board-name">Name</label></td>
       <td>
-        <input class="tbinput" id="board-name" type="text" name="board[boardname]" value="'.htmlspecialchars($board[boardname]).'">
+        <input class="tbinput" id="board-name" type="text" name="board-name" value="'.htmlspecialchars($board[boardname]).'">
       </td>
     </tr>
     <tr>
       <td><label for="board-description">Description</label></td>
       <td>
-        <input class="tbinput" id="board-description" type="text" name="board[boarddescription]" value="'.htmlspecialchars($board[boarddescription]).'">
+        <input class="tbinput" id="board-description" type="text" name="board-description" value="'.htmlspecialchars($board[boarddescription]).'">
       </td>
     </tr>
     <tr>
       <td><label for="board-categoryid">Category</label></td>
       <td>
-        <select class="tbinput" id="board-categoryid" name="board[categoryid]">';
+        <select class="tbinput" id="board-categoryid" name="board-categoryid">';
     foreach ($categories as $category) {
         print '  <option value="'.$category['categoryid'].'"'.($category['categoryid'] == $board['categoryid'] ? ' selected="selected"' : '').'>'.$category['categoryname'].'</option>';
     }
@@ -97,7 +97,7 @@ function BoardForm($board, $action)
       <td>';
 
     print '
-<select class="tbinput" id="board-styleid" name="board[styleid]">
+<select class="tbinput" id="board-styleid" name="board-styleid">
 <option value="0">( Use default )</option>';
     foreach ($styles as $style) {
         print '<option value="'.$style['styleid'].'">'.$style['stylename'].'</option>';
@@ -109,16 +109,12 @@ print '</select>';
     <tr>
       <td><b><label for="board-disabled">Status</label></b><br>
         <font size="1">Here you can deactivate<BR>this board temporarily</font></td>
-      <td align="top"><SELECT class="tbinput" id="board-disabled" name="board[boarddisabled]"><option value="1" ' . ( $board[boarddisabled] == 1 ? "selected" : "" ) . '>Disable board</option><option value="0" ' . ( $board[boarddisabled] == 0 ? " selected" : "" ) . '>Enable board</option></SELECT></td>
+      <td align="top"><SELECT class="tbinput" id="board-disabled" name="board-disabled"><option value="1" ' . ( $board[boarddisabled] == 1 ? "selected" : "" ) . '>Disable board</option><option value="0" ' . ( $board[boarddisabled] == 0 ? " selected" : "" ) . '>Enable board</option></SELECT></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>
-        <input type="hidden" name="action" value="' . $action . '">
-        <input type="hidden" name="update" value="1">
-        <input type="hidden" name="board[boardid]" value="'.$board['boardid'].'">
-        <input type="hidden" name="session" value="' . $session . '">
-        <input type="submit" name="Send" value="Save">
+        <input type="submit" name="submit" value="Save">
       </td>
     </tr>
   </table>
@@ -176,7 +172,7 @@ if( $action == '' )
                     </dl>
                     <ul class="actions">
                         <li><input type="text" name="boardord['.$board['boardid'].']" size="2" value="'.$board['boardorder'].'"></li>
-                        <li><a href="boards.php?action=edit&id='.$board['boardid'].'&oldboardorder='.$board['boardorder'].'&session='.$session.'" title="Edit board '.htmlspecialchars($board['boardname']).'">edit</a></li>
+                        <li><a href="boards.php?action=board-edit&id='.$board['boardid'].'&session='.$session.'" title="Edit board '.htmlspecialchars($board['boardname']).'">edit</a></li>
                         <li><a href="boards.php?action=delete&forumid='.$board['boardid'].'&session='.$session.'">delete</a></li>
                         <li><a href="groups.php?action=grouppermtable&boardid='.$board['boardid'].'&session='.$session.'">permissions</a></li>
                     </ul>
@@ -223,12 +219,12 @@ elseif( $action=="updateorder" ) {
 
 /*
  * ########################################################################################
- *        edit
+ * Edit a board
  * ########################################################################################
  */
-if ($_REQUEST['action'] == "edit") {
-    if (isset($_POST['Send'])) {
-        if (empty($_POST['board']['boardname'])) {
+if ($_GET['action'] == 'board-edit') {
+    if (isset($_POST['submit'])) {
+        if (empty($_POST['board-name'])) {
             print "The board name can't be empty.";
         } else {
             $r_board = query(
@@ -239,12 +235,12 @@ SELECT
 FROM
     {$pref}board
 WHERE
-    boardid = {$_POST['board']['boardid']}
+    boardid = {$_GET['id']}
 SQL
             );
             $oldboard = mysql_fetch_array($r_board);
 
-            if ($oldboard['categoryid'] != $_POST['board']['categoryid']) {
+            if ($oldboard['categoryid'] != $_POST['board-categoryid']) {
                 $result = query(
 <<<SQL
 SELECT
@@ -252,7 +248,7 @@ SELECT
 FROM
     {$pref}board
 WHERE
-    categoryid = {$_POST['board']['boardid']}
+    categoryid = {$_POST['board-categoryid']}
 SQL
                 );
                 list($maxorder) = mysql_fetch_row($result);
@@ -261,8 +257,8 @@ SQL
                 $maxorder = $oldboard['boardorder'];
             }
 
-            $board['boardname'] = addslashes(fix_umlauts($_POST['board']['boardname']));
-            $board['boarddescription'] = addslashes(fix_umlauts($_POST['board']['boarddescription']));
+            $boardName = addslashes(fix_umlauts($_POST['board-name']));
+            $boardDescription = addslashes(fix_umlauts($_POST['board-description']));
 
             $result = mysql_query(
 <<<SQL
@@ -271,8 +267,8 @@ SELECT
 FROM
     {$pref}board
 WHERE
-    boardname = '{$board['boardname']}'
-    boardid <> {$_POST['board']['boardid']}
+    boardname = '{$boardName}' AND
+    boardid <> {$_GET['id']}
 SQL
             );
 
@@ -284,14 +280,14 @@ SQL
 UPDATE
     {$pref}board
 SET
-    boardname = '{$board['boardname']}',
-    boarddescription = '{$board['boarddescription']}',
-    categoryid = {$_POST['board']['categoryid']},
+    boardname = '{$boardName}',
+    boarddescription = '{$boardDescription}',
+    categoryid = {$_POST['board-categoryid']},
     boardorder = {$maxorder},
-    styleid = {$_POST['board']['styleid']},
-    boarddisabled = {$_POST['board']['boarddisabled']}
+    styleid = {$_POST['board-styleid']},
+    boarddisabled = {$_POST['board-disabled']}
 WHERE
-    boardid = {$_POST['board']['boardid']}
+    boardid = {$_GET['id']}
 SQL
                 );
 
@@ -314,15 +310,13 @@ SELECT
 FROM
     {$pref}board
 WHERE
-    boardid = {$id}
+    boardid = {$_GET['id']}
 SQL
         );
         $board = mysql_fetch_array($r_board);
-        $board['boardname'] = $board['boardname'];
-        $board['boarddescription'] = $board['boarddescription'];
 
         print '<b>Edit Board</b><br><br>';
-        BoardForm($board, 'edit');
+        BoardForm($board, 'boards.php?action=board-edit&id='.$_GET['id'].'&session='.$session);
     }
 }
 
@@ -420,17 +414,16 @@ elseif( $action == "delete" ) {
 
 /*
  * ########################################################################################
- *        newboard
+ * Add a new board
  * ########################################################################################
  */
-if ($_REQUEST['action'] == "newboard") {
-    if (isset($_POST['Send'])) {
-        if (empty($_POST['board']['boardname'])) {
+if ($_GET['action'] == 'board-new') {
+    if (isset($_POST['submit'])) {
+        if (empty($_POST['board-name'])) {
             print "The board name can't be empty.";
         } else {
-            $board['boardname'] = addslashes(fix_umlauts($_POST['board']['boardname']));
-            $board['boarddescription'] = addslashes(fix_umlauts($_POST['board']['boarddescription']));
-
+            $boardName = addslashes(fix_umlauts($_POST['board-name']));
+            $boardDescription = addslashes(fix_umlauts($_POST['board-description']));
 
             $result = mysql_query(
 <<<SQL
@@ -439,7 +432,7 @@ SELECT
 FROM
     {$pref}board
 WHERE
-    boardname = '{$board['boardname']}'
+    boardname = '{$boardName}'
 SQL
             );
 
@@ -459,16 +452,16 @@ INSERT INTO
     boardorder
 )
 SELECT
-    '{$board['boardname']}',
-    '{$board['boarddescription']}',
-    {$_POST['board']['categoryid']},
-    {$_POST['board']['styleid']},
-    {$_POST['board']['boarddisabled']},
+    '{$boardName}',
+    '{$boardDescription}',
+    {$_POST['board-categoryid']},
+    {$_POST['board-styleid']},
+    {$_POST['board-disabled']},
     MAX(boardorder) + 1
 FROM
     {$pref}board
 WHERE
-    categoryid = {$_POST['board']['categoryid']}
+    categoryid = {$_POST['board-categoryid']}
 SQL
                 );
 
@@ -477,7 +470,7 @@ SQL
         }
     } else {
         print '<b>New Board</b><br><br>';
-        BoardForm([], 'newboard');
+        BoardForm([], 'boards.php?action=board-new&session='.$session);
     }
 }
 
