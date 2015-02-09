@@ -364,9 +364,28 @@ elseif( $action == "delete" ) {
  */
 if ($_REQUEST['action'] == "newboard") {
     if (isset($_POST['Send'])) {
-        $board['boardname'] = addslashes(fix_umlauts($_POST['board']['boardname']));
-        $board['boarddescription'] = addslashes(fix_umlauts($_POST['board']['boarddescription']));
-        query(
+        if (empty($_POST['board']['boardname'])) {
+            print "The board name can't be empty.";
+        } else {
+            $board['boardname'] = addslashes(fix_umlauts($_POST['board']['boardname']));
+            $board['boarddescription'] = addslashes(fix_umlauts($_POST['board']['boarddescription']));
+
+
+            $result = mysql_query(
+<<<SQL
+SELECT
+    COUNT(boardid)
+FROM
+    {$pref}board
+WHERE
+    boardname = '{$board['boardname']}'
+SQL
+            );
+
+            if (mysql_result($result, 0) != 0) {
+                print "The board already exists";
+            } else {
+                query(
 <<<SQL
 INSERT INTO
     {$pref}board
@@ -390,9 +409,11 @@ FROM
 WHERE
     categoryid = {$_POST['board']['categoryid']}
 SQL
-        );
+                );
 
-        echo "Board saved.";
+                echo "Board saved.";
+            }
+        }
     } else {
         print '<b>New Board</b><br><br>';
         BoardForm([], 'newboard');
