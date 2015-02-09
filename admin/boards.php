@@ -226,43 +226,83 @@ elseif( $action=="updateorder" ) {
  *        edit
  * ########################################################################################
  */
-elseif( $action == "edit" ) {
-    if( $Send )
-    {
-        $r_board = query("SELECT categoryid, boardorder FROM ".$pref."board WHERE boardid=$board[boardid]");
+if ($_REQUEST['action'] == "edit") {
+    if (isset($_POST['Send'])) {
+        $r_board = query(
+<<<SQL
+SELECT
+    categoryid,
+    boardorder
+FROM
+    {$pref}board
+WHERE
+    boardid = {$_POST['board']['boardid']}
+SQL
+        );
         $oldboard = mysql_fetch_array($r_board);
 
-        if( $oldboard['categoryid'] != $board['categoryid'] )
-        {
-            $result = query( "SELECT max(boardorder) FROM ".$pref."board WHERE categoryid=$board[boardid]" );
+        if ($oldboard['categoryid'] != $_POST['board']['categoryid']) {
+            $result = query(
+<<<SQL
+SELECT
+    MAX(boardorder) AS maxorder
+FROM
+    {$pref}board
+WHERE
+    categoryid = {$_POST['board']['boardid']}
+SQL
+            );
             list($maxorder) = mysql_fetch_row($result);
             $maxorder++;
-        }
-        else
-        {
+        } else {
             $maxorder = $oldboard['boardorder'];
         }
-        $board['boardname'] = fix_umlauts($board['boardname']);
-        $board['boarddescription'] = fix_umlauts($board['boarddescription']);
 
-        query("UPDATE ".$pref."board SET boardname='". addslashes($board['boardname']) . "',
-        boarddescription='" . addslashes($board['boarddescription']) . "', categoryid='$board[categoryid]',
-        boardorder='$maxorder', styleid='$board[styleid]',
-        boarddisabled = '$board[boarddisabled]'
-         WHERE boardid=$board[boardid]");
+        $board['boardname'] = addslashes(fix_umlauts($_POST['board']['boardname']));
+        $board['boarddescription'] = addslashes(fix_umlauts($_POST['board']['boarddescription']));
+
+        query(
+<<<SQL
+UPDATE
+    {$pref}board
+SET
+    boardname = '{$board['boardname']}',
+    boarddescription = '{$board['boarddescription']}',
+    categoryid = {$_POST['board']['categoryid']},
+    boardorder = {$maxorder},
+    styleid = {$_POST['board']['styleid']},
+    boarddisabled = {$_POST['board']['boarddisabled']}
+WHERE
+    boardid = {$_POST['board']['boardid']}
+SQL
+        );
 
         echo "Board saved.";
-    }
-    else
-    {
-        $r_board = query("SELECT boardid, boardname, boardlastpost, boardthreads, boardposts, boarddescription,
-        categoryid, styleid, boarddisabled FROM ".$pref."board WHERE boardid=$id");
+    } else {
+        $r_board = query(
+<<<SQL
+SELECT
+    boardid,
+    boardname,
+    boardlastpost,
+    boardthreads,
+    boardposts,
+    boarddescription,
+    categoryid,
+    styleid,
+    boarddisabled
+FROM
+    {$pref}board
+WHERE
+    boardid = {$id}
+SQL
+        );
         $board = mysql_fetch_array($r_board);
         $board['boardname'] = $board['boardname'];
         $board['boarddescription'] = $board['boarddescription'];
+
         print '<b>Edit Board</b><br><br>';
         BoardForm($board, 'edit');
-
     }
 }
 
