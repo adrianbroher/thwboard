@@ -154,7 +154,7 @@ if( $action == '' )
                 <ul class="actions">
                     <li><input type="text" name="catord['.$category['categoryid'].']" size="2" value="'.$category['categoryorder'].'"></li>
                     <li><a href="boards.php?action=category-edit&id='.$category['categoryid'].'&session='.$session.'" title="Edit category '.htmlspecialchars($category['categoryname']).'">edit</a></li>
-                    <li><a href="boards.php?action=delcat&id='.$category['categoryid'].'&session='.$session.'">delete</a></li>
+                    <li><a href="boards.php?action=delcat&id='.$category['categoryid'].'&session='.$session.'" title="Delete category '.htmlspecialchars($category['categoryname']).'">delete</a></li>
                 </ul>
         </div>
 ';
@@ -481,6 +481,8 @@ SQL
  * ########################################################################################
  */
 if ($_GET['action'] == 'delcat') {
+    print '<b>Delete category</b><br><br>';
+
     $r_board = query(
 <<<SQL
 SELECT
@@ -494,7 +496,7 @@ SQL
     $board = mysql_fetch_array($r_board);
 
     if ($board['boardcount'] > 0) {
-        print 'Error: Cannot delete a category which contains boards!';
+        print "The category can't be deleted because it contains boards.";
     } else {
         query(
 <<<SQL
