@@ -173,7 +173,7 @@ if( $action == '' )
                     <ul class="actions">
                         <li><input type="text" name="boardord['.$board['boardid'].']" size="2" value="'.$board['boardorder'].'"></li>
                         <li><a href="boards.php?action=board-edit&id='.$board['boardid'].'&session='.$session.'" title="Edit board '.htmlspecialchars($board['boardname']).'">edit</a></li>
-                        <li><a href="boards.php?action=delete&forumid='.$board['boardid'].'&session='.$session.'">delete</a></li>
+                        <li><a href="boards.php?action=delete&forumid='.$board['boardid'].'&session='.$session.'" title="Delete board '.htmlspecialchars($board['boardname']).'">delete</a></li>
                         <li><a href="groups.php?action=grouppermtable&boardid='.$board['boardid'].'&session='.$session.'">permissions</a></li>
                     </ul>
                 </li>';
@@ -383,7 +383,9 @@ SQL
  * ########################################################################################
  */
 if ($_GET['action'] == 'delete') {
-    if ($_GET['confirm'] == 1) {
+    print '<b>Delete board</b><br><br>';
+
+    if (isset($_POST['submit'])) {
         // delete the board
         mysql_query(
 <<<SQL
@@ -447,10 +449,13 @@ WHERE
 SQL
         );
 
-        echo "Board has been deleted!<br>";
+        print 'Board has been deleted.';
     } else {
-        print '<font color=red><b>WARNING: You are going to DELETE a board!</b></font><br><br>';
-        print "click <a href=\"boards.php?action=delete&forumid=$forumid&confirm=1&session=$session\">here</a> to confirm";
+        print '
+<form method="post" action="boards.php?action=delete&amp;forumid='.$_GET['forumid'].'&amp;session='.$session.'">
+  Do you really want to delete the board?
+  <input type="submit" name="submit" value="Delete">
+</form>';
     }
 }
 
