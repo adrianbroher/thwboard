@@ -176,7 +176,7 @@ if( $action == '' )
                     </dl>
                     <ul class="actions">
                         <li><input type="text" name="boardord['.$board['boardid'].']" size="2" value="'.$board['boardorder'].'"></li>
-                        <li><a href="boards.php?action=edit&id='.$board['boardid'].'&oldboardorder='.$board['boardorder'].'&session='.$session.'">edit</a></li>
+                        <li><a href="boards.php?action=edit&id='.$board['boardid'].'&oldboardorder='.$board['boardorder'].'&session='.$session.'" title="Edit board '.htmlspecialchars($board['boardname']).'">edit</a></li>
                         <li><a href="boards.php?action=delete&forumid='.$board['boardid'].'&session='.$session.'">delete</a></li>
                         <li><a href="groups.php?action=grouppermtable&boardid='.$board['boardid'].'&session='.$session.'">permissions</a></li>
                     </ul>
@@ -251,7 +251,7 @@ elseif( $action == "edit" ) {
         boarddisabled = '$board[boarddisabled]'
          WHERE boardid=$board[boardid]");
 
-        echo "Board has been updated!";
+        echo "Board saved.";
     }
     else
     {
@@ -260,6 +260,7 @@ elseif( $action == "edit" ) {
         $board = mysql_fetch_array($r_board);
         $board['boardname'] = $board['boardname'];
         $board['boarddescription'] = $board['boarddescription'];
+        print '<b>Edit Board</b><br><br>';
         BoardForm($board, 'edit');
 
     }
