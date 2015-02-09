@@ -202,6 +202,121 @@ SQL
         );
     }
 
+    /** Set up the boards required for a scenario.
+     *
+     * @Given /^the following boards exist:$/
+     */
+    public function setUpBoards(TableNode $table)
+    {
+        $this->pdo->exec(
+<<<SQL
+DELETE FROM
+    {$this->table_prefix}board
+SQL
+        );
+        $this->pdo->exec(
+<<<SQL
+ALTER TABLE
+    {$this->table_prefix}board
+    AUTO_INCREMENT = 1
+SQL
+        );
+
+        if (0 !== count(array_diff(['name', 'description', 'category'], $table->getRow(0)))) {
+            throw new InvalidArgumentException("Table missing one of the required columns (name, description, category)");
+        }
+
+        $boards = [];
+
+        foreach ($table->getHash() as $board) {
+            $r_category = $this->pdo->query(
+<<<SQL
+SELECT
+    categoryid
+FROM
+    {$this->table_prefix}category
+WHERE
+    categoryname = '{$board['category']}'
+SQL
+            );
+
+            if (1 !== $r_category->rowCount()) {
+                throw new DomainException("Board '{$board['name']}' is assigned to the non existing category '{$board['category']}'");
+            }
+
+            $board['categoryid'] = $r_category->fetchColumn();
+
+            $boards[] = $board;
+        }
+
+        $order = 1;
+
+        foreach ($boards as $board) {
+            $this->pdo->exec(
+<<<SQL
+INSERT INTO
+    {$this->table_prefix}board
+(
+    boardname,
+    boarddescription,
+    categoryid,
+    boardorder
+) VALUES (
+    '{$board['name']}',
+    '{$board['description']}',
+    {$board['categoryid']},
+    {$order}
+)
+SQL
+            );
+            $order++;
+        }
+    }
+
+    /** Set up the categories required for a scenario.
+     *
+     * @Given /^the following categories exist:$/
+     */
+    public function setUpCategories(TableNode $table)
+    {
+        $this->pdo->exec(
+<<<SQL
+DELETE FROM
+    {$this->table_prefix}category
+SQL
+        );
+        $this->pdo->exec(
+<<<SQL
+ALTER TABLE
+    {$this->table_prefix}category
+    AUTO_INCREMENT = 1
+SQL
+        );
+
+        if (0 !== count(array_diff(['name'], $table->getRow(0)))) {
+            throw new InvalidArgumentException("Table missing one of the required columns (name)");
+        }
+
+        $order = 1;
+
+        foreach ($table->getHash() as $category) {
+            $this->pdo->exec(
+<<<SQL
+INSERT INTO
+    {$this->table_prefix}category
+(
+    categoryname,
+    categoryorder
+) VALUES (
+    '{$category['name']}',
+    {$order}
+)
+SQL
+            );
+            $order++;
+        }
+    }
+
     /** Set up the users required for a scenario.
      *
      * @Given /^the following users exist:$/
