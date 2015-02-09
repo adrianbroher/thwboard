@@ -364,19 +364,6 @@ elseif( $action == "delete" ) {
  */
 if ($action == "newboard") {
     if (isset($Send)) {
-        // select highest available boardorder value
-        $result = query(
-<<<SQL
-SELECT
-    MAX(boardorder) AS maxorder
-FROM
-    {$pref}board
-WHERE
-    categoryid = {$_POST['board']['categoryid']}
-SQL
-        );
-        list($maxorder) = mysql_fetch_row($result);
-        $maxorder++;
         $board['boardname'] = addslashes(fix_umlauts($board['boardname']));
         $board['boarddescription'] = addslashes(fix_umlauts($board['boarddescription']));
         query(
@@ -387,17 +374,21 @@ INSERT INTO
     boardname,
     boarddescription,
     categoryid,
-    boardorder,
     styleid,
-    boarddisabled
-) VALUES (
+    boarddisabled,
+    boardorder
+)
+SELECT
     '{$board['boardname']}',
     '{$board['boarddescription']}',
     {$board['categoryid']},
-    {$maxorder},
     {$board['styleid']},
-    {$board['boarddisabled']}
-)
+    {$board['boarddisabled']},
+    MAX(boardorder) + 1
+FROM
+    {$pref}board
+WHERE
+    categoryid = {$_POST['board']['categoryid']}
 SQL
         );
 
