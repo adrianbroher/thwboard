@@ -362,10 +362,10 @@ elseif( $action == "delete" ) {
  *        newboard
  * ########################################################################################
  */
-if ($action == "newboard") {
-    if (isset($Send)) {
-        $board['boardname'] = addslashes(fix_umlauts($board['boardname']));
-        $board['boarddescription'] = addslashes(fix_umlauts($board['boarddescription']));
+if ($_REQUEST['action'] == "newboard") {
+    if (isset($_POST['Send'])) {
+        $board['boardname'] = addslashes(fix_umlauts($_POST['board']['boardname']));
+        $board['boarddescription'] = addslashes(fix_umlauts($_POST['board']['boarddescription']));
         query(
 <<<SQL
 INSERT INTO
@@ -381,9 +381,9 @@ INSERT INTO
 SELECT
     '{$board['boardname']}',
     '{$board['boarddescription']}',
-    {$board['categoryid']},
-    {$board['styleid']},
-    {$board['boarddisabled']},
+    {$_POST['board']['categoryid']},
+    {$_POST['board']['styleid']},
+    {$_POST['board']['boarddisabled']},
     MAX(boardorder) + 1
 FROM
     {$pref}board
