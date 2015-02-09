@@ -379,36 +379,79 @@ SQL
 
 /*
  * ########################################################################################
- *           delete
+ * Delete a board
  * ########################################################################################
  */
-elseif( $action == "delete" ) {
-  if( $confirm == 1 ) {
+if ($_GET['action'] == 'delete') {
+    if ($_GET['confirm'] == 1) {
+        // delete the board
+        mysql_query(
+<<<SQL
+DELETE FROM
+    {$pref}board
+WHERE
+    boardid = {$_GET['forumid']}
+SQL
+        );
 
-    // delete the board
-    mysql_query("DELETE FROM ".$pref."board WHERE boardid=$forumid");
+        // delete messages
+        $result = mysql_query(
+<<<SQL
+SELECT
+    threadid
+FROM
+    {$pref}thread
+WHERE
+    boardid = {$_GET['forumid']}
+SQL
+        );
 
-    // delete messages
-    $result=mysql_query("SELECT threadid FROM ".$pref."thread WHERE boardid=$forumid");
-    while( $topic=mysql_fetch_array($result) ) {
-      mysql_query("DELETE FROM ".$pref."post WHERE threadid=$topic[threadid]");
+        while ($topic = mysql_fetch_array($result)) {
+            mysql_query(
+<<<SQL
+DELETE FROM
+    {$pref}post
+WHERE
+    threadid = {$topic['threadid']}
+SQL
+            );
+        }
+
+        // delete topics
+        mysql_query(
+<<<SQL
+DELETE FROM
+    {$pref}thread
+WHERE
+    boardid = {$_GET['forumid']}
+SQL
+        );
+
+        // delete permission
+        mysql_query(
+<<<SQL
+DELETE FROM
+    {$pref}groupboard
+WHERE
+    boardid = {$_GET['forumid']}
+SQL
+        );
+
+        // lastvisited
+        mysql_query(
+<<<SQL
+DELETE FROM
+    {$pref}lastvisited
+WHERE
+    boardid = {$_GET['forumid']}
+SQL
+        );
+
+        echo "Board has been deleted!<br>";
+    } else {
+        print '<font color=red><b>WARNING: You are going to DELETE a board!</b></font><br><br>';
+        print "click <a href=\"boards.php?action=delete&forumid=$forumid&confirm=1&session=$session\">here</a> to confirm";
     }
-
-    // delete topics
-    mysql_query("DELETE FROM ".$pref."thread WHERE boardid=$forumid");
-
-    // delete permission
-    mysql_query("DELETE FROM ".$pref."groupboard WHERE boardid=$forumid");
-
-    // lastvisited
-    mysql_query("DELETE FROM $pref"."lastvisited WHERE boardid=$forumid");
-
-    echo "Board has been deleted!<br>";
-
-  } else {
-    print '<font color=red><b>WARNING: You are going to DELETE a board!</b></font><br><br>';
-    print "click <a href=\"boards.php?action=delete&forumid=$forumid&confirm=1&session=$session\">here</a> to confirm";
-  }
 }
 
 
