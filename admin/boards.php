@@ -228,7 +228,10 @@ elseif( $action=="updateorder" ) {
  */
 if ($_REQUEST['action'] == "edit") {
     if (isset($_POST['Send'])) {
-        $r_board = query(
+        if (empty($_POST['board']['boardname'])) {
+            print "The board name can't be empty.";
+        } else {
+            $r_board = query(
 <<<SQL
 SELECT
     categoryid,
@@ -238,11 +241,11 @@ FROM
 WHERE
     boardid = {$_POST['board']['boardid']}
 SQL
-        );
-        $oldboard = mysql_fetch_array($r_board);
+            );
+            $oldboard = mysql_fetch_array($r_board);
 
-        if ($oldboard['categoryid'] != $_POST['board']['categoryid']) {
-            $result = query(
+            if ($oldboard['categoryid'] != $_POST['board']['categoryid']) {
+                $result = query(
 <<<SQL
 SELECT
     MAX(boardorder) AS maxorder
@@ -251,17 +254,32 @@ FROM
 WHERE
     categoryid = {$_POST['board']['boardid']}
 SQL
+                );
+                list($maxorder) = mysql_fetch_row($result);
+                $maxorder++;
+            } else {
+                $maxorder = $oldboard['boardorder'];
+            }
+
+            $board['boardname'] = addslashes(fix_umlauts($_POST['board']['boardname']));
+            $board['boarddescription'] = addslashes(fix_umlauts($_POST['board']['boarddescription']));
+
+            $result = mysql_query(
+<<<SQL
+SELECT
+    COUNT(boardid)
+FROM
+    {$pref}board
+WHERE
+    boardname = '{$board['boardname']}'
+    boardid <> {$_POST['board']['boardid']}
+SQL
             );
-            list($maxorder) = mysql_fetch_row($result);
-            $maxorder++;
-        } else {
-            $maxorder = $oldboard['boardorder'];
-        }
 
-        $board['boardname'] = addslashes(fix_umlauts($_POST['board']['boardname']));
-        $board['boarddescription'] = addslashes(fix_umlauts($_POST['board']['boarddescription']));
-
-        query(
+            if (mysql_result($result, 0) != 0) {
+                print "The board already exists";
+            } else {
+                query(
 <<<SQL
 UPDATE
     {$pref}board
@@ -275,9 +293,11 @@ SET
 WHERE
     boardid = {$_POST['board']['boardid']}
 SQL
-        );
+                );
 
-        echo "Board saved.";
+                echo "Board saved.";
+            }
+        }
     } else {
         $r_board = query(
 <<<SQL
