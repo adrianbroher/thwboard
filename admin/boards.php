@@ -497,7 +497,9 @@ SQL
 
     if ($board['boardcount'] > 0) {
         print "The category can't be deleted because it contains boards.";
-    } else {
+    }
+
+    if (isset($_POST['submit'])) {
         query(
 <<<SQL
 DELETE FROM
@@ -507,6 +509,12 @@ WHERE
 SQL
         );
         print 'Category has been deleted.';
+    } else {
+        print '
+<form method="post" action="boards.php?action=delcat&amp;id='.$_GET['id'].'&amp;session='.$session.'">
+  Do you really want to delete the category?
+  <input type="submit" name="submit" value="Delete">
+</form>';
     }
 }
 
