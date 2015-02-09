@@ -15,7 +15,7 @@
         ==============================================
 */
 
-require('./install_lang.php');
+require __DIR__.'/install_lang.php';
 
 /**
  * as of php5, $HTTP_*_VARS are disabled
@@ -49,8 +49,7 @@ $cfg['applogo'] = './images/thwboard_logo.gif';
 $cfg['installer_ver'] = 1.1;
 $cfg['updater_ver'] = 1.1;
 
-error_reporting(7); // E_ERROR | E_WARNING | E_PARSE
-set_magic_quotes_runtime(0);
+error_reporting(0); // E_ERROR | E_WARNING | E_PARSE
 
 if( isset($HTTP_GET_VARS) )
     extract($HTTP_GET_VARS, EXTR_SKIP);
