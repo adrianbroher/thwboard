@@ -22,6 +22,27 @@ You should have received a copy of the GNU General Public License along
 with this program;  If not, see <http://www.gnu.org/licenses/>.
 
 -->
-<project name="ThWboard" default="acceptance-test"
+<project name="ThWboard" default="test"
     description="The ThWboard is a free bulletin board system.">
+
+    <fileset dir="." id="sources">
+        <include name="**/*.php" />
+        <include name="admin/updates/*.update" />
+        <include name="templates/default/*.html" />
+        <include name="templates/mail/*.mail" />
+        <exclude name="admin/images/" />
+        <exclude name="avatar/" />
+        <exclude name="bin/" />
+        <exclude name="extras/" />
+        <exclude name="vendor/" />
+    </fileset>
+
+    <target name="lint" description="Runs the builtin PHP linter">
+        <phplint haltonfailure="true">
+            <fileset refid="sources" />
+        </phplint>
+    </target>
+
+    <target name="test" depends="lint"
+        description="Runs all implemented test suites"/>
 </project>
