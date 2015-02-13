@@ -27,6 +27,10 @@ with this program;  If not, see <http://www.gnu.org/licenses/>.
 
     <taskdef name="webserver" classname="phing.tasks.ext.ServerTask" />
 
+    <fileset dir="." id="auxillary-sources">
+        <include name="tests/**/*.php" />
+    </fileset>
+
     <fileset dir="." id="sources">
         <include name="**/*.php" />
         <include name="admin/updates/*.update" />
@@ -170,6 +174,7 @@ table_prefix=tb_
 
     <target name="lint" description="Runs the builtin PHP linter">
         <phplint haltonfailure="true">
+            <fileset refid="auxillary-sources" />
             <fileset refid="sources" />
         </phplint>
     </target>
