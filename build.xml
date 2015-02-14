@@ -37,6 +37,90 @@ with this program;  If not, see <http://www.gnu.org/licenses/>.
         <exclude name="vendor/" />
     </fileset>
 
+    <target name="init" description="Setting up the test environment">
+        <echo><![CDATA[
+Setting up the test environment.
+
+The test environment requires a MySQL database.
+
+To set up the database you need the credentials of a MySQL user that can
+CREATE DATABASEs, CREATE USERs and GRANT permissions.  The MySQL database
+root user for example has the required capabilities.
+        ]]></echo>
+
+        <input
+            propertyName="database.hostname"
+            defaultValue="localhost"
+            promptChar=":"><![CDATA[Test database host name]]></input>
+        <input
+            propertyName="database.username"
+            defaultValue="root"
+            promptChar=":"><![CDATA[Test database user name]]></input>
+        <input
+            propertyName="database.password"
+            promptChar=":"><![CDATA[Test database password (will be echoed)]]></input>
+        <input
+            propertyName="database.testprefix"
+            defaultValue="thwb"
+            promptChar=":"><![CDATA[Test database and user prefix]]></input>
+
+        <echo><![CDATA[
+This WILL DROP the database `${database.testprefix}test`@`${database.hostname}`.
+This WILL DROP the user `${database.testprefix}test`@`${database.hostname}`.
+        ]]></echo>
+
+        <input
+            propertyName="confirm-continue"
+            validArgs="yes,no"><![CDATA[Do you REALLY want to continue? ]]></input>
+
+        <if>
+            <equals arg1="${confirm-continue}" arg2="no" />
+            <then>
+                <fail message="Aborted test environment setup." />
+            </then>
+        </if>
+
+        <pdo
+            url="mysql:host=${database.hostname};"
+            userid="${database.username}"
+            password="${database.password}"><![CDATA[
+-- Drop the test database.
+DROP DATABASE IF EXISTS `${database.testprefix}test`;
+-- Because there is no conditional user dropping just grant the usage
+-- of the database to guarrantee that there is a user.
+GRANT USAGE ON *.* TO '${database.testprefix}test'@'${database.hostname}';
+-- Drop the test runner user.
+DROP USER '${database.testprefix}test'@'${database.hostname}';
+-- Create the test database.
+CREATE DATABASE `${database.testprefix}test`;
+-- Create the test runner user.
+CREATE USER '${database.testprefix}test'@'${database.hostname}' IDENTIFIED BY '${database.testprefix}test';
+-- Grant the test runner user to connect to the database.
+GRANT USAGE ON *.* TO '${database.testprefix}test'@'${database.hostname}';
+-- Grant the test runner user to access and manipulate the test database.
+GRANT ALL PRIVILEGES ON `${database.testprefix}test`.* TO '${database.testprefix}test'@'${database.hostname}';
+-- Apply permissions.
+FLUSH PRIVILEGES;
+        ]]></pdo>
+
+        <!-- Write a property file for some additional behat configuration -->
+        <echo file="build.properties"><![CDATA[
+# This file was created by `bin/phing init`. Please rerun the command to
+# change this configuration.
+
+# The database hostname hosting the test database
+database_hostname=${database.hostname}
+# The test runner user name to access the test database
+database_username=${database.testprefix}test
+# The test runner user password to access the test database
+database_password=${database.testprefix}test
+# The test database name
+database_name=${database.testprefix}test
+# The table prefix used in the test database
+table_prefix=tb_
+        ]]></echo>
+    </target>
+
     <target name="lint" description="Runs the builtin PHP linter">
         <phplint haltonfailure="true">
             <fileset refid="sources" />

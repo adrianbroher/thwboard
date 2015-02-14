@@ -5,6 +5,7 @@
 #See the end of the file for license conditions.
 
 bin/
+build.properties
 vendor/
 
 
