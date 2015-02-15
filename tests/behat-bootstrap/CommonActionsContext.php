@@ -25,7 +25,8 @@
 use Behat\Gherkin\Node\TableNode;
 
 use Behat\Mink\Exception\ElementNotFoundException,
-    Behat\Mink\Exception\ElementTextException;
+    Behat\Mink\Exception\ElementTextException,
+    Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\MinkContext;
 
 /**
@@ -33,6 +34,17 @@ use Behat\MinkExtension\Context\MinkContext;
  */
 class CommonActionsContext extends MinkContext
 {
+    private $substitutions = [];
+
+    /** Creates a new common actions context.
+     *
+     * @param array $substitutions An array containing the keyword as key and the substition as value.
+     */
+    public function __construct($substitutions)
+    {
+        $this->substitutions = $substitutions;
+    }
+
     /** Checks if an option is selected in a select
      *
      * @Then /^(?:|I )should see "(?P<value>[^"]*)" selected in the select "(?P<field>[^"]*)"$/
@@ -71,6 +83,10 @@ class CommonActionsContext extends MinkContext
     {
         $field = $this->fixStepArgument($field);
 
+        $tableData = $table->getRows();
+        array_walk_recursive($tableData, [$this, 'substituteKeywords']);
+        $table = new TableNode($tableData);
+
         $select = $this->assertSession()->fieldExists($field);
         $options = $select->findAll('xpath', '//option');
 
@@ -95,5 +111,58 @@ class CommonActionsContext extends MinkContext
         $value = $radioButton->getAttribute('value');
 
         $this->getSession()->getPage()->fillField($field, $value);
+    }
+
+    /**
+     * Checks, that form field with specified id|name|label|value has specified value.
+     *
+     * @Overrides /^the "(?P<field>(?:[^"]|\\")*)" field should contain "(?P<value>(?:[^"]|\\")*)"$/
+     */
+    public function assertFieldContains($field, $value)
+    {
+        $this->substituteKeywords($value);
+        parent::assertFieldContains($field, $value);
+    }
+
+    /**
+     * Fills in form fields with provided table.
+     *
+     * @Overrides /^(?:|I )fill in the following:$/
+     */
+    public function fillFields(TableNode $fields)
+    {
+        $data = $fields->getRows();
+        array_walk_recursive($data, [$this, 'substituteKeywords']);
+        parent::fillFields(new TableNode($data));
+    }
+
+    /**
+     * Selects option in select field with specified id|name|label|value.
+     *
+     * @Overrrides /^(?:|I )select "(?P<option>(?:[^"]|\\")*)" from "(?P<select>(?:[^"]|\\")*)"$/
+     */
+    public function selectOption($select, $option)
+    {
+        $this->substituteKeywords($option);
+        parent::selectOption($select, $option);
+    }
+
+    /**
+     * Substitutes keywords with the actual value.
+     *
+     * @param string value The string that should be substituted if it
+     *   is a keyword.
+     */
+    public function substituteKeywords(&$value)
+    {
+        if (substr($value, 0, 1) === '%' && substr($value, -1) === '%') {
+            $key = substr($value, 1, strlen($value) - 2);
+
+            if (!in_array($key, array_keys($this->substitutions))) {
+                throw new ExpectationException(sprintf("Unknown keyword %s to substitue.", $key), $this->getSession());
+            }
+
+            $value = $this->substitutions[$key];
+        }
     }
 }

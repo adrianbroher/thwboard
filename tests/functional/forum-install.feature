@@ -137,17 +137,17 @@ Feature: Forum install
         And the "MySQL username" field should contain ""
         And the "MySQL password" field should contain ""
         When I fill in the following:
-            | MySQL hostname/IP |          |
-            | MySQL username    | thwbtest |
-            | MySQL password    | thwbtest |
+            | MySQL hostname/IP |                     |
+            | MySQL username    | %DATABASE_USERNAME% |
+            | MySQL password    | %DATABASE_PASSWORD% |
         And I press "Next"
         Then I should see "No database host was given."
         When I follow "Back"
         And the "MySQL hostname/IP" field should contain "localhost"
         When I fill in the following:
-            | MySQL hostname/IP | notexisting |
-            | MySQL username    | thwbtest    |
-            | MySQL password    | thwbtest    |
+            | MySQL hostname/IP | notexisting         |
+            | MySQL username    | %DATABASE_USERNAME% |
+            | MySQL password    | %DATABASE_PASSWORD% |
         And I press "Next"
         Then I should see "Can't connect to the database host."
         When I follow "Back"
@@ -164,15 +164,15 @@ Feature: Forum install
         And I check "I accept the license agreement."
         And I press "Next"
         When I fill in the following:
-            | MySQL hostname/IP | localhost |
-            | MySQL username    | thwbtest  |
-            | MySQL password    | thwbtest  |
+            | MySQL hostname/IP | %DATABASE_HOSTNAME% |
+            | MySQL username    | %DATABASE_USERNAME% |
+            | MySQL password    | %DATABASE_PASSWORD% |
         And I press "Next"
         Then I should see "Select MySQL database"
         And the "mode_db" field should contain "use"
         And I should see the following <value> available in the select "existing database":
-            | value    |
-            | thwbtest |
+            | value           |
+            | %DATABASE_NAME% |
         And the "new database" field should contain ""
         When I check the "Create" radio button
         And I fill in "new database" with "anewdatabase"
@@ -182,8 +182,8 @@ Feature: Forum install
         Then I should see "Select MySQL database"
         And the "mode_db" field should contain "create"
         And I should see the following <value> available in the select "existing database":
-            | value    |
-            | thwbtest |
+            | value           |
+            | %DATABASE_NAME% |
         And the "new database" field should contain "anewdatabase"
         When I fill in "new database" with "an unescaped database name"
         And I press "Next"
@@ -192,8 +192,8 @@ Feature: Forum install
         Then I should see "Select MySQL database"
         And the "mode_db" field should contain "create"
         And I should see the following <value> available in the select "existing database":
-            | value    |
-            | thwbtest |
+            | value           |
+            | %DATABASE_NAME% |
         And the "new database" field should contain "an unescaped database name"
 
     Scenario: Set an invalid table prefix.
@@ -204,12 +204,12 @@ Feature: Forum install
         And I check "I accept the license agreement."
         And I press "Next"
         When I fill in the following:
-            | MySQL hostname/IP | localhost |
-            | MySQL username    | thwbtest  |
-            | MySQL password    | thwbtest  |
+            | MySQL hostname/IP | %DATABASE_HOSTNAME% |
+            | MySQL username    | %DATABASE_USERNAME% |
+            | MySQL password    | %DATABASE_PASSWORD% |
         And I press "Next"
         When I check the "Use" radio button
-        And I select "thwbtest" from "existing database"
+        And I select "%DATABASE_NAME%" from "existing database"
         And I press "Next"
         Then I should see "Choose MySQL table"
         And I should see "does not contain any tables."
@@ -240,12 +240,12 @@ Feature: Forum install
         And I check "I accept the license agreement."
         And I press "Next"
         When I fill in the following:
-            | MySQL hostname/IP | localhost |
-            | MySQL username    | thwbtest  |
-            | MySQL password    | thwbtest  |
+            | MySQL hostname/IP | %DATABASE_HOSTNAME% |
+            | MySQL username    | %DATABASE_USERNAME% |
+            | MySQL password    | %DATABASE_PASSWORD% |
         And I press "Next"
         When I check the "Use" radio button
-        And I select "thwbtest" from "existing database"
+        And I select "%DATABASE_NAME%" from "existing database"
         And I press "Next"
         When I check "Overwrite (delete) existing tables"
         And I press "Next"
@@ -279,12 +279,12 @@ Feature: Forum install
         And I check "I accept the license agreement."
         And I press "Next"
         When I fill in the following:
-            | MySQL hostname/IP | localhost |
-            | MySQL username    | thwbtest  |
-            | MySQL password    | thwbtest  |
+            | MySQL hostname/IP | %DATABASE_HOSTNAME% |
+            | MySQL username    | %DATABASE_USERNAME% |
+            | MySQL password    | %DATABASE_PASSWORD% |
         And I press "Next"
         When I check the "Use" radio button
-        And I select "thwbtest" from "existing database"
+        And I select "%DATABASE_NAME%" from "existing database"
         And I press "Next"
         When I check "Overwrite (delete) existing tables"
         And I press "Next"
@@ -312,12 +312,12 @@ Feature: Forum install
         And I check "I accept the license agreement."
         And I press "Next"
         When I fill in the following:
-            | MySQL hostname/IP | localhost |
-            | MySQL username    | thwbtest  |
-            | MySQL password    | thwbtest  |
+            | MySQL hostname/IP | %DATABASE_HOSTNAME% |
+            | MySQL username    | %DATABASE_USERNAME% |
+            | MySQL password    | %DATABASE_PASSWORD% |
         And I press "Next"
         When I check the "Use" radio button
-        And I select "thwbtest" from "existing database"
+        And I select "%DATABASE_NAME%" from "existing database"
         And I press "Next"
         When I check "Overwrite (delete) existing tables"
         And I press "Next"
