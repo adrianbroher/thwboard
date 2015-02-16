@@ -45,6 +45,48 @@ class CommonActionsContext extends MinkContext
         $this->substitutions = $substitutions;
     }
 
+    /** Checks if a list fulfills a list of relations
+     *
+     * @Then /^the list "(?P<list>[^"]*)" should fulfill the relations:$/
+     */
+    public function assertListFulfillsRelations($list, TableNode $relations)
+    {
+        $list = $this->fixStepArgument($list);
+
+        $listElement = $this->assertSession()->elementExists('xpath', sprintf('//ul[@id="%s"]', $list));
+
+        foreach ($relations->getRows() as $relation) {
+            $invert = false;
+
+            switch ($relation[1]) {
+                case 'is not child of':
+                    $invert = true;
+                case 'is child of':
+                    $query = ('<ROOT>' != $relation[2])
+                        ? sprintf('//text()[contains(concat(" ", normalize-space(.), " "), " %s ")]/ancestor::li[2][text()[contains(concat(" ", normalize-space(.), " "), " %s ")] or */text()[contains(concat(" ", normalize-space(.), " "), " %s ")]]', $relation[0], $relation[2], $relation[2])
+                        : sprintf('//text()[contains(concat(" ", normalize-space(.), " "), " %s ")]/ancestor::ul[1][@id="%s"]', $relation[0], $list);
+                    break;
+                case 'is before':
+                    $query = sprintf('//text()[contains(concat(" ", normalize-space(.), " "), " %s ")]/ancestor::li[1]/following-sibling::li[1][text()[contains(concat(" ", normalize-space(.), " "), " %s ")] or *//text()[(contains(concat(" ", normalize-space(.), " "), " %s "))]]', $relation[0], $relation[2], $relation[2]);
+                    break;
+                case 'number of children':
+                    $invert = (0 == $relation[2]);
+
+                    $query = ('<ROOT>' != $relation[0])
+                        ? sprintf('//text()[contains(concat(" ", normalize-space(.), " "), " %s ")]/ancestor::li[1]/ul[1][count(li) = %s]', $relation[0], $relation[2])
+                        : sprintf('../ul[@id = "%s" and count(li) = %s]', $list, $relation[2]);
+                    break;
+                default:
+                    throw new ExpectationException(sprintf("I don't know how to handle the relation '%s' between '%s' and '%s'", $relation[1], $relation[0], $relation[2]), $this->getSession());
+            }
+
+            if ($invert xor is_null($listElement->find('xpath', $query))) {
+                $message = sprintf('The relation \'"%s" %s "%s"\' wasn\'t fulfilled for the list %s.', $relation[0], $relation[1], $relation[2], $list);
+                throw new ExpectationException($message, $this->getSession());
+            }
+        }
+    }
+
     /** Checks if an option is selected in a select
      *
      * @Then /^(?:|I )should see "(?P<value>[^"]*)" selected in the select "(?P<field>[^"]*)"$/
