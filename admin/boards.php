@@ -112,6 +112,22 @@ Note: You can define the default style <a href="style.php?session=' . $session .
 
 if( $action == '' )
 {
+    $r_category = query("SELECT categoryid, categoryname, categoryorder from ".$pref."category order by categoryorder asc");
+
+    $categories = [];
+    $boards = [];
+    while ($category = mysql_fetch_array($r_category)) {
+        $categories[] = $category;
+
+        $boards[$category['categoryid']] = [];
+
+        $r_board = query("SELECT boardid, boardname, boardthreads, boardposts, boardlastpost, boarddescription, boardorder FROM ".$pref."board where categoryid='$category[categoryid]' order by boardorder asc");
+
+        while ($board = mysql_fetch_array($r_board)) {
+            $boards[$category['categoryid']][] = $board;
+        }
+    }
+
     print '<b>Change board and category order</b><br>';
 print '
 <form name="form1" method="post" action="boards.php">
@@ -122,10 +138,7 @@ print '
       <td>&nbsp;</td>
       <td>&nbsp;</td>
     </tr>';
-
-    $r_category = query("SELECT categoryid, categoryname, categoryorder from ".$pref."category order by categoryorder asc");
-    while( $category = mysql_fetch_array($r_category) )
-    {
+    foreach ($categories as $category) {
         print '
     <tr>
       <td align="center">
@@ -138,10 +151,7 @@ print '
       <td><b>'.$category['categoryname'].'</b></td>
     </tr>
 ';
-
-        $r_board = query("SELECT boardid, boardname, boardthreads, boardposts, boardlastpost, boarddescription, boardorder FROM ".$pref."board where categoryid='$category[categoryid]' order by boardorder asc");
-        while( $board = mysql_fetch_array($r_board) )
-        {
+        foreach ($boards[$category['categoryid']] as $board) {
             print '
     <tr>
       <td>&nbsp;</td>
