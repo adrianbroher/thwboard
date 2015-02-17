@@ -129,47 +129,53 @@ if( $action == '' )
     }
 
     print '<b>Change board and category order</b><br>';
-print '
+    print '
 <form name="form1" method="post" action="boards.php">
-  <table border="0" cellspacing="0" cellpadding="3">
-    <tr>
-      <td colspan="2"><i>Display order</i></td>
-      <td colspan="2" align="center"> <i>Options </i></td>
-      <td>&nbsp;</td>
-      <td>&nbsp;</td>
-    </tr>';
+    <ul id="board-order">';
+
     foreach ($categories as $category) {
         print '
-    <tr>
-      <td align="center">
-        <input type="text" name="catord['.$category['categoryid'].']" size="2" value="'.$category['categoryorder'].'">
-      </td>
-      <td>&nbsp;</td>
-      <td colspan="2"><a href="boards.php?action=RenameCategory&categoryid='.$category['categoryid'].'&session='.$session.'">edit</a>
-        | <a href="boards.php?action=delcat&id='.$category['categoryid'].'&session='.$session.'">delete</a></td>
-      <td>&nbsp;</td>
-      <td><b>'.$category['categoryname'].'</b></td>
-    </tr>
+        <li>
+            <div class="category">
+                '.$category['categoryname'].'
+                <ul class="actions">
+                    <li><input type="text" name="catord['.$category['categoryid'].']" size="2" value="'.$category['categoryorder'].'"></li>
+                    <li><a href="boards.php?action=RenameCategory&categoryid='.$category['categoryid'].'&session='.$session.'">edit</a></li>
+                    <li><a href="boards.php?action=delcat&id='.$category['categoryid'].'&session='.$session.'">delete</a></li>
+                </ul>
+        </div>
 ';
-        foreach ($boards[$category['categoryid']] as $board) {
+
+        if (!empty($boards[$category['categoryid']])) {
             print '
-    <tr>
-      <td>&nbsp;</td>
-      <td align="center">
-        <input type="text" name="boardord['.$board['boardid'].']" size="2" value="'.$board['boardorder'].'">
-      </td>
-      <td colspan="2"><a href="boards.php?action=edit&id='.$board['boardid'].'&oldboardorder='.$board['boardorder'].'&session='.$session.'">edit</a>
-        | <a href="boards.php?action=delete&forumid='.$board['boardid'].'&session='.$session.'">delete</a>
-        | <a href="groups.php?action=grouppermtable&boardid='.$board['boardid'].'&session='.$session.'">permissions</a></td>
-      <td>&nbsp;</td>
-      <td>'.$board['boardname'].'<br>
-        <font size="1">'.$board['boarddescription'].'</font></td>
-    </tr>';
+        <ul>';
+
+            foreach ($boards[$category['categoryid']] as $board) {
+                print '
+                <li class="board">
+                    <dl>
+                        <dt>'.$board['boardname'].'</dt>
+                        <dd>'.$board['boarddescription'].'</dd>
+                    </dl>
+                    <ul class="actions">
+                        <li><input type="text" name="boardord['.$board['boardid'].']" size="2" value="'.$board['boardorder'].'"></li>
+                        <li><a href="boards.php?action=edit&id='.$board['boardid'].'&oldboardorder='.$board['boardorder'].'&session='.$session.'">edit</a></li>
+                        <li><a href="boards.php?action=delete&forumid='.$board['boardid'].'&session='.$session.'">delete</a></li>
+                        <li><a href="groups.php?action=grouppermtable&boardid='.$board['boardid'].'&session='.$session.'">permissions</a></li>
+                    </ul>
+                </li>';
+            }
+
+            print '
+            </ul>';
         }
+
+        print '
+        </li>';
     }
+
     print '
-  </table>
-  <br>
+    </ul>
   <input type="hidden" name="session" value="'.$session.'">
   <input type="hidden" name="action" value="updateorder">
   <input type="submit" name="ehnet" value="Update board order">

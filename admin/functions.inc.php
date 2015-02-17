@@ -263,7 +263,45 @@ function tb_header($redir_url = '')
   select            { font-family: Verdana, Arial, Helvetica; font-size: 8pt }
   textarea          { font-family: Verdana, Arial, Helvetica; font-size: 8pt }
   input             { font-family: Verdana, Arial, Helvetica; font-size: 8pt }
-  .htmlsource       { font-family: "Verdana, Helvetica", Courier, mono; font-size: 8pt; color: #2255BB }';
+  .htmlsource       { font-family: "Verdana, Helvetica", Courier, mono; font-size: 8pt; color: #2255BB }
+#board-order {
+    padding-left: 0;
+    list-style-type: none;
+}
+
+#board-order .category {
+    font-size: small;
+    font-weight: bold;
+}
+
+#board-order .board {
+    font-size: small;
+    font-weight: bold;
+}
+
+#board-order dl {
+    margin: 0px;
+}
+
+#board-order dl dd {
+    font-size: small;
+    margin-left: 0;
+    font-weight: normal;
+}
+
+ul.actions {
+    margin: 0px;
+    padding: 0px;
+    margin-bottom: 1em;
+    margin-top: .2em;
+}
+
+ul.actions li {
+    display: inline;
+    font-size: small;
+    font-weight: normal;
+}';
+
     if( !preg_match('/opera/Ui', $HTTP_SERVER_VARS['HTTP_USER_AGENT']) )
     {
         print '
