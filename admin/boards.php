@@ -123,9 +123,19 @@ Note: You can define the default style <a href="style.php?session=' . $session .
 </form>';
 }
 
-if( $action == '' )
-{
-    $r_category = query("SELECT categoryid, categoryname, categoryorder from ".$pref."category order by categoryorder asc");
+if ($_REQUEST['action'] == '') {
+    $r_category = query(
+<<<SQL
+SELECT
+    categoryid,
+    categoryname,
+    categoryorder
+FROM
+    {$pref}category
+ORDER BY
+    categoryorder ASC
+SQL
+    );
 
     $categories = [];
     $boards = [];
@@ -134,15 +144,31 @@ if( $action == '' )
 
         $boards[$category['categoryid']] = [];
 
-        $r_board = query("SELECT boardid, boardname, boardthreads, boardposts, boardlastpost, boarddescription, boardorder FROM ".$pref."board where categoryid='$category[categoryid]' order by boardorder asc");
+        $r_board = query(
+<<<SQL
+SELECT
+    boardid,
+    boardname,
+    boardthreads,
+    boardposts,
+    boardlastpost,
+    boarddescription,
+    boardorder
+FROM
+    {$pref}board
+WHERE
+    categoryid = {$category['categoryid']}
+ORDER BY
+    boardorder ASC
+SQL
+        );
 
         while ($board = mysql_fetch_array($r_board)) {
             $boards[$category['categoryid']][] = $board;
         }
     }
 
-    print '<b>Change board and category order</b><br>';
-    print '
+    print '<b>Change board and category order</b><br>
 <form name="form1" method="post" action="boards.php">
     <ul id="board-order">';
 
@@ -193,7 +219,6 @@ if( $action == '' )
   <input type="hidden" name="action" value="updateorder">
   <input type="submit" name="ehnet" value="Update board order">
 </form>';
-
 }
 
 
@@ -202,18 +227,45 @@ if( $action == '' )
  *        updateorder
  * ########################################################################################
  */
-elseif( $action=="updateorder" ) {
+if ($_POST['action'] == 'updateorder') {
 
-  while( list($boardid, $boardorder)=each($boardord) ) {
-    intval($boardorder) && query("UPDATE ".$pref."board SET boardorder=".intval($boardorder)." WHERE boardid=".intval($boardid));
-  }
+    foreach ($_POST['boardord'] as $boardid => $boardorder) {
+        $boardorder = intval($boardorder);
+        $boardid = intval($boardid);
 
-  while( list($categoryid, $categoryorder)=each($catord) ) {
-    intval($categoryorder) && query("UPDATE ".$pref."category SET categoryorder=".intval($categoryorder)." WHERE categoryid=".intval($categoryid));
-  }
+        if ($boardorder) {
+            query(
+<<<SQL
+UPDATE
+    {$pref}board
+SET
+    boardorder = {$boardorder}
+WHERE
+    boardid = {$boardid}
+SQL
+            );
+        }
+    }
 
-  echo "Order has been updated!";
+    foreach ($_POST['catord'] as $categoryid => $categoryorder) {
+        $catgoryorder = intval($catgoryorder);
+        $categoryid = intval($categoryid);
 
+        if ($categoryorder) {
+            query(
+<<<SQL
+UPDATE
+    {$pref}category
+SET
+    categoryorder = {$categoryorder}
+WHERE
+    categoryid = {$categoryid}
+SQL
+            );
+        }
+    }
+
+    echo "Order updated.";
 }
 
 
