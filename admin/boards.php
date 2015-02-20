@@ -168,20 +168,32 @@ SQL
         }
     }
 
-    print '<b>Change board and category order</b><br>
-<form name="form1" method="post" action="boards.php">
-    <ul id="board-order">';
+    print '<b>Forum structure</b><br>
+<ul id="board-order">';
 
-    foreach ($categories as $category) {
+    foreach ($categories as $key => $category) {
         print '
-        <li>
-            <div class="category">
-                '.$category['categoryname'].'
-                <ul class="actions">
-                    <li><input type="text" name="catord['.$category['categoryid'].']" size="2" value="'.$category['categoryorder'].'"></li>
-                    <li><a href="boards.php?action=category-edit&id='.$category['categoryid'].'&session='.$session.'" title="Edit category '.htmlspecialchars($category['categoryname']).'">edit</a></li>
-                    <li><a href="boards.php?action=category-delete&id='.$category['categoryid'].'&session='.$session.'" title="Delete category '.htmlspecialchars($category['categoryname']).'">delete</a></li>
-                </ul>
+    <li>
+        <div class="category">
+            '.$category['categoryname'].'
+            <ul class="actions">
+                <li>
+                    <form method="post" action="boards.php?action=category-reorder&amp;id='.$category['categoryid'].'&amp;session='.$session.'">';
+
+        if ($key !== reset(array_keys($categories))) {
+            echo '<button type="submit" name="direction" title="Move category '.htmlspecialchars($category['categoryname']).' up" value="up">move up</button> ';
+        }
+
+        if ($key !== end(array_keys($categories))) {
+            echo '<button type="submit" name="direction" title="Move category '.htmlspecialchars($category['categoryname']).' down" value="down">move down</button>';
+        }
+
+        print '
+                    </form>
+                </li>
+                <li><a href="boards.php?action=category-edit&id='.$category['categoryid'].'&session='.$session.'" title="Edit category '.htmlspecialchars($category['categoryname']).'">edit</a></li>
+                <li><a href="boards.php?action=category-delete&id='.$category['categoryid'].'&session='.$session.'" title="Delete category '.htmlspecialchars($category['categoryname']).'">delete</a></li>
+            </ul>
         </div>
 ';
 
@@ -189,83 +201,164 @@ SQL
             print '
         <ul>';
 
-            foreach ($boards[$category['categoryid']] as $board) {
+            foreach ($boards[$category['categoryid']] as $key => $board) {
                 print '
-                <li class="board">
-                    <dl>
-                        <dt>'.$board['boardname'].'</dt>
-                        <dd>'.$board['boarddescription'].'</dd>
-                    </dl>
-                    <ul class="actions">
-                        <li><input type="text" name="boardord['.$board['boardid'].']" size="2" value="'.$board['boardorder'].'"></li>
-                        <li><a href="boards.php?action=board-edit&id='.$board['boardid'].'&session='.$session.'" title="Edit board '.htmlspecialchars($board['boardname']).'">edit</a></li>
-                        <li><a href="boards.php?action=board-delete&id='.$board['boardid'].'&session='.$session.'" title="Delete board '.htmlspecialchars($board['boardname']).'">delete</a></li>
-                        <li><a href="groups.php?action=grouppermtable&boardid='.$board['boardid'].'&session='.$session.'">permissions</a></li>
-                    </ul>
-                </li>';
+            <li class="board">
+                <dl>
+                    <dt>'.$board['boardname'].'</dt>
+                    <dd>'.$board['boarddescription'].'</dd>
+                </dl>
+                <ul class="actions">
+                    <li>
+                        <form method="post" action="boards.php?action=board-reorder&amp;id='.$board['boardid'].'&amp;session='.$session.'">';
+
+                if ($key !== reset(array_keys($boards[$category['categoryid']]))) {
+                    print '<button type="submit" name="direction" title="Move board '.htmlspecialchars($board['boardname']).' up" value="up">move up</button> ';
+                }
+
+                if ($key !== end(array_keys($boards[$category['categoryid']]))) {
+                    print '<button type="submit" name="direction" title="Move board '.htmlspecialchars($board['boardname']).' down" value="down">move down</button>';
+                }
+
+                print'
+                        </form>
+                    </li>
+                    <li><a href="boards.php?action=board-edit&id='.$board['boardid'].'&session='.$session.'" title="Edit board '.htmlspecialchars($board['boardname']).'">edit</a></li>
+                    <li><a href="boards.php?action=board-delete&id='.$board['boardid'].'&session='.$session.'" title="Delete board '.htmlspecialchars($board['boardname']).'">delete</a></li>
+                    <li><a href="groups.php?action=grouppermtable&boardid='.$board['boardid'].'&session='.$session.'">permissions</a></li>
+                </ul>
+            </li>';
             }
 
             print '
-            </ul>';
+        </ul>';
         }
 
         print '
-        </li>';
+    </li>';
     }
 
     print '
-    </ul>
-  <input type="hidden" name="session" value="'.$session.'">
-  <input type="hidden" name="action" value="updateorder">
-  <input type="submit" name="ehnet" value="Update board order">
-</form>';
+</ul>';
 }
 
 
 /*
  * ########################################################################################
- *        updateorder
+ * Reorder the boards
  * ########################################################################################
  */
-if ($_POST['action'] == 'updateorder') {
+if ($_GET['action'] == 'board-reorder') {
+    if (in_array($_POST['direction'], ['up', 'down'])) {
+        $direction = ['up' => '<=', 'down' => '>='][$_POST['direction']];
+        $ordering = ['up' => 'DESC', 'down' => 'ASC'][$_POST['direction']];
 
-    foreach ($_POST['boardord'] as $boardid => $boardorder) {
-        $boardorder = intval($boardorder);
-        $boardid = intval($boardid);
+        $r_board = query(
+<<<SQL
+SELECT
+    b.boardid AS id
+FROM
+    {$pref}board AS b
+JOIN
+    {$pref}board AS bn
+ON
+    b.categoryid = bn.categoryid AND
+    b.boardorder {$direction} bn.boardorder AND
+    bn.boardid = {$_GET['id']}
+ORDER BY
+    b.boardorder ${ordering}
+LIMIT
+    2
+SQL
+        );
 
-        if ($boardorder) {
+        $boards = [];
+        while ($board = mysql_fetch_assoc($r_board)) {
+            $boards[] = $board['id'];
+        }
+
+        if (2 == sizeof($boards)) {
             query(
 <<<SQL
 UPDATE
-    {$pref}board
+    {$pref}board AS l
+JOIN
+    {$pref}board AS r
+ON (
+    l.boardid = {$boards[0]} AND
+    r.boardid = {$boards[1]}
+) OR (
+    l.boardid = {$boards[1]} AND
+    r.boardid = {$boards[0]}
+)
 SET
-    boardorder = {$boardorder}
-WHERE
-    boardid = {$boardid}
+    l.boardorder = r.boardorder,
+    r.boardorder = l.boardorder
 SQL
             );
+
+            echo "Order updated.";
         }
     }
+}
 
-    foreach ($_POST['catord'] as $categoryid => $categoryorder) {
-        $catgoryorder = intval($catgoryorder);
-        $categoryid = intval($categoryid);
 
-        if ($categoryorder) {
+/*
+ * ########################################################################################
+ * Reorder the categories
+ * ########################################################################################
+ */
+if ($_GET['action'] == 'category-reorder') {
+    if (in_array($_POST['direction'], ['up', 'down'])) {
+        $direction = ['up' => '<=', 'down' => '>='][$_POST['direction']];
+        $ordering = ['up' => 'DESC', 'down' => 'ASC'][$_POST['direction']];
+
+        $r_category = query(
+<<<SQL
+SELECT
+    c.categoryid AS id
+FROM
+    {$pref}category AS c
+JOIN
+    {$pref}category AS cn
+ON
+    c.categoryorder {$direction} cn.categoryorder AND
+    cn.categoryid = {$_GET['id']}
+ORDER BY
+    c.categoryorder ${ordering}
+LIMIT
+    2
+SQL
+        );
+
+        $categories = [];
+        while ($category = mysql_fetch_assoc($r_category)) {
+            $categories[] = $category['id'];
+        }
+
+        if (2 == sizeof($categories)) {
             query(
 <<<SQL
 UPDATE
-    {$pref}category
+    {$pref}category AS l
+JOIN
+    {$pref}category AS r
+ON (
+    l.categoryid = {$categories[0]} AND
+    r.categoryid = {$categories[1]}
+) OR (
+    l.categoryid = {$categories[1]} AND
+    r.categoryid = {$categories[0]}
+)
 SET
-    categoryorder = {$categoryorder}
-WHERE
-    categoryid = {$categoryid}
+    l.categoryorder = r.categoryorder,
+    r.categoryorder = l.categoryorder
 SQL
             );
+
+            echo "Order updated.";
         }
     }
-
-    echo "Order updated.";
 }
 
 

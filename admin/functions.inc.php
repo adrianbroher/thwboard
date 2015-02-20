@@ -288,6 +288,29 @@ ul.actions li {
     display: inline;
     font-size: small;
     font-weight: normal;
+}
+
+.actions form {
+    display: inline;
+}
+
+.actions button {
+    background: none;
+    border: none;
+    color: #36C;
+    font-family: inherit;
+    font-size: small;
+    font-weight: normal;
+    cursor: pointer;
+    overflow: visible;
+    padding: 0;
+    text-align: left;
+    text-decoration: underline;
+    width: auto;
+}
+
+.actions button:hover {
+    text-decoration: none;
 }';
 
     if( !preg_match('/opera/Ui', $HTTP_SERVER_VARS['HTTP_USER_AGENT']) )
