@@ -45,6 +45,34 @@ class CommonActionsContext extends MinkContext
         $this->substitutions = $substitutions;
     }
 
+    /** Checks if a button with specified id|name|title|alt|value exists
+     *
+     * @Then /^(?:|I )should see the button "(?P<locator>(?:[^"]|\\")*)"$/
+     */
+    public function assertButtonExists($locator)
+    {
+        $locator = $this->fixStepArgument($locator);
+
+        if (!$this->getSession()->getPage()->hasButton($locator)) {
+            $message = sprintf("The button with the id|name|title|alt|value \"%s\" should appeared, but did not.");
+            throw new ExpectationException($message, $this->getSession());
+        }
+    }
+
+    /** Checks if a button with specified id|name|title|alt|value does not exists
+     *
+     * @Then /^(?:|I )should not see the button "(?P<locator>(?:[^"]|\\")*)"$/
+     */
+    public function assertButtonNotExists($locator)
+    {
+        $locator = $this->fixStepArgument($locator);
+
+        if ($this->getSession()->getPage()->hasButton($locator)) {
+            $message = sprintf("The button with the id|name|title|alt|value \"%s\" appeared, but should not.");
+            throw new ExpectationException($message, $this->getSession());
+        }
+    }
+
     /** Checks if a list fulfills a list of relations
      *
      * @Then /^the list "(?P<list>[^"]*)" should fulfill the relations:$/
