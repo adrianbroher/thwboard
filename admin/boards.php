@@ -140,6 +140,17 @@ Note: You can define the default style <a href="style.php?session=' . $session .
 </form>';
 }
 
+
+function CategoryForm($category, $handler)
+{
+    print '<form method="post" action="'.htmlspecialchars($handler).'">
+  <label for="category-name">Name</label>
+  <input id="category-name" class="tbinput" type="text" name="category-name" value="'.htmlspecialchars($category->name).'">
+  <input type="submit" name="submit" value="Save">
+</form>';
+}
+
+
 if ($_REQUEST['action'] == '') {
     $r_category = query(
 <<<SQL
@@ -520,13 +531,13 @@ SQL
             }
         }
     } else {
+        $category = (object)[
+            'ID' => 0,
+            'name' => ''
+        ];
+
         print '<b>New Category</b><br>';
-        print '<form method="post" action="boards.php?action=category-new">
-  <label for="category-name">Name</label>
-  <input id="category-name" class="tbinput" type="text" name="category-name">
-  <input type="hidden" name="session" value="' . $session . '">
-  <input type="submit" name="submit" value="Save">
-</form>';
+        CategoryForm($category, 'boards.php?action=category-new&session='.$session);
     }
 }
 
@@ -784,13 +795,8 @@ SQL
         );
         $category = mysql_fetch_object($r_category);
 
-        print '<b>Edit Category</b><br>
-<form method="post" action="boards.php?action=category-edit&amp;id='.htmlspecialchars($category->ID).'">
-  <label for="category-name">Name</label>
-  <input class="tbinput" id="category-name" type="text" name="category-name" value="' . $category->name . '">
-  <input type="hidden" name="session" value="' . $session . '">
-  <input type="submit" name="submit" value="Save">
-</form>';
+        print '<b>Edit Category</b><br>';
+        CategoryForm($category, 'boards.php?action=category-edit&id='.$category->ID.'&session='.$session);
     }
 }
 
