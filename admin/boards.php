@@ -54,17 +54,35 @@ function BoardForm($board, $handler)
     global $session;
 
 
-    $r_style = query("SELECT styleid, stylename FROM $pref"."style WHERE styleisdefault=0");
+    $r_style = query(
+<<<SQL
+SELECT
+    styleid AS ID,
+    stylename AS name
+FROM
+    {$pref}style
+WHERE
+    styleisdefault = 0
+SQL
+    );
 
     $styles = [];
-    while ($style = mysql_fetch_array($r_style)) {
+    while ($style = mysql_fetch_object($r_style)) {
         $styles[] = $style;
     }
 
-    $r_category = query("SELECT categoryid, categoryname FROM $pref"."category");
+    $r_category = query(
+<<<SQL
+SELECT
+    categoryid AS ID,
+    categoryname AS name
+FROM
+    {$pref}category
+SQL
+    );
 
     $categories = [];
-    while ($category = mysql_fetch_assoc($r_category)) {
+    while ($category = mysql_fetch_object($r_category)) {
         $categories[] = $category;
     }
 
@@ -73,13 +91,13 @@ function BoardForm($board, $handler)
     <tr>
       <td><label for="board-name">Name</label></td>
       <td>
-        <input class="tbinput" id="board-name" type="text" name="board-name" value="'.htmlspecialchars($board[boardname]).'">
+        <input class="tbinput" id="board-name" type="text" name="board-name" value="'.htmlspecialchars($board->name).'">
       </td>
     </tr>
     <tr>
       <td><label for="board-description">Description</label></td>
       <td>
-        <input class="tbinput" id="board-description" type="text" name="board-description" value="'.htmlspecialchars($board[boarddescription]).'">
+        <input class="tbinput" id="board-description" type="text" name="board-description" value="'.htmlspecialchars($board->description).'">
       </td>
     </tr>
     <tr>
@@ -87,7 +105,7 @@ function BoardForm($board, $handler)
       <td>
         <select class="tbinput" id="board-categoryid" name="board-categoryid">';
     foreach ($categories as $category) {
-        print '  <option value="'.$category['categoryid'].'"'.($category['categoryid'] == $board['categoryid'] ? ' selected="selected"' : '').'>'.$category['categoryname'].'</option>';
+        print '  <option value="'.$category->ID.'"'.($category->ID == $board->categoryID ? ' selected="selected"' : '').'>'.$category->name.'</option>';
     }
     print '</select>
       </td>
@@ -100,7 +118,7 @@ function BoardForm($board, $handler)
 <select class="tbinput" id="board-styleid" name="board-styleid">
 <option value="0">( Use default )</option>';
     foreach ($styles as $style) {
-        print '<option value="'.$style['styleid'].'">'.$style['stylename'].'</option>';
+        print '<option value="'.$style->ID.'">'.$style->name.'</option>';
     }
 print '</select>';
 
@@ -109,7 +127,7 @@ print '</select>';
     <tr>
       <td><b><label for="board-disabled">Status</label></b><br>
         <font size="1">Here you can deactivate<BR>this board temporarily</font></td>
-      <td align="top"><SELECT class="tbinput" id="board-disabled" name="board-disabled"><option value="1" ' . ( $board[boarddisabled] == 1 ? "selected" : "" ) . '>Disable board</option><option value="0" ' . ( $board[boarddisabled] == 0 ? " selected" : "" ) . '>Enable board</option></SELECT></td>
+      <td align="top"><SELECT class="tbinput" id="board-disabled" name="board-disabled"><option value="1" ' . ( $board->disabled == 1 ? "selected" : "" ) . '>Disable board</option><option value="0" ' . ( $board->disabled == 0 ? " selected" : "" ) . '>Enable board</option></SELECT></td>
     </tr>
     <tr>
       <td>&nbsp;</td>
@@ -127,9 +145,8 @@ if ($_REQUEST['action'] == '') {
     $r_category = query(
 <<<SQL
 SELECT
-    categoryid,
-    categoryname,
-    categoryorder
+    categoryid AS ID,
+    categoryname AS name
 FROM
     {$pref}category
 ORDER BY
@@ -139,32 +156,28 @@ SQL
 
     $categories = [];
     $boards = [];
-    while ($category = mysql_fetch_array($r_category)) {
+    while ($category = mysql_fetch_object($r_category)) {
         $categories[] = $category;
 
-        $boards[$category['categoryid']] = [];
+        $boards[$category->ID] = [];
 
         $r_board = query(
 <<<SQL
 SELECT
-    boardid,
-    boardname,
-    boardthreads,
-    boardposts,
-    boardlastpost,
-    boarddescription,
-    boardorder
+    boardid AS ID,
+    boardname AS name,
+    boarddescription AS description
 FROM
     {$pref}board
 WHERE
-    categoryid = {$category['categoryid']}
+    categoryid = {$category->ID}
 ORDER BY
     boardorder ASC
 SQL
         );
 
-        while ($board = mysql_fetch_array($r_board)) {
-            $boards[$category['categoryid']][] = $board;
+        while ($board = mysql_fetch_object($r_board)) {
+            $boards[$category->ID][] = $board;
         }
     }
 
@@ -175,57 +188,57 @@ SQL
         print '
     <li>
         <div class="category">
-            '.$category['categoryname'].'
+            '.$category->name.'
             <ul class="actions">
                 <li>
-                    <form method="post" action="boards.php?action=category-reorder&amp;id='.$category['categoryid'].'&amp;session='.$session.'">';
+                    <form method="post" action="boards.php?action=category-reorder&amp;id='.$category->ID.'&amp;session='.$session.'">';
 
         if ($key !== reset(array_keys($categories))) {
-            echo '<button type="submit" name="direction" title="Move category '.htmlspecialchars($category['categoryname']).' up" value="up">move up</button> ';
+            echo '<button type="submit" name="direction" title="Move category '.htmlspecialchars($category->name).' up" value="up">move up</button> ';
         }
 
         if ($key !== end(array_keys($categories))) {
-            echo '<button type="submit" name="direction" title="Move category '.htmlspecialchars($category['categoryname']).' down" value="down">move down</button>';
+            echo '<button type="submit" name="direction" title="Move category '.htmlspecialchars($category->name).' down" value="down">move down</button>';
         }
 
         print '
                     </form>
                 </li>
-                <li><a href="boards.php?action=category-edit&id='.$category['categoryid'].'&session='.$session.'" title="Edit category '.htmlspecialchars($category['categoryname']).'">edit</a></li>
-                <li><a href="boards.php?action=category-delete&id='.$category['categoryid'].'&session='.$session.'" title="Delete category '.htmlspecialchars($category['categoryname']).'">delete</a></li>
+                <li><a href="boards.php?action=category-edit&id='.$category->ID.'&session='.$session.'" title="Edit category '.htmlspecialchars($category->name).'">edit</a></li>
+                <li><a href="boards.php?action=category-delete&id='.$category->ID.'&session='.$session.'" title="Delete category '.htmlspecialchars($category->name).'">delete</a></li>
             </ul>
         </div>
 ';
 
-        if (!empty($boards[$category['categoryid']])) {
+        if (!empty($boards[$category->ID])) {
             print '
         <ul>';
 
-            foreach ($boards[$category['categoryid']] as $key => $board) {
+            foreach ($boards[$category->ID] as $key => $board) {
                 print '
             <li class="board">
                 <dl>
-                    <dt>'.$board['boardname'].'</dt>
-                    <dd>'.$board['boarddescription'].'</dd>
+                    <dt>'.$board->name.'</dt>
+                    <dd>'.$board->description.'</dd>
                 </dl>
                 <ul class="actions">
                     <li>
-                        <form method="post" action="boards.php?action=board-reorder&amp;id='.$board['boardid'].'&amp;session='.$session.'">';
+                        <form method="post" action="boards.php?action=board-reorder&amp;id='.$board->ID.'&amp;session='.$session.'">';
 
-                if ($key !== reset(array_keys($boards[$category['categoryid']]))) {
-                    print '<button type="submit" name="direction" title="Move board '.htmlspecialchars($board['boardname']).' up" value="up">move up</button> ';
+                if ($key !== reset(array_keys($boards[$category->ID]))) {
+                    print '<button type="submit" name="direction" title="Move board '.htmlspecialchars($board->name).' up" value="up">move up</button> ';
                 }
 
-                if ($key !== end(array_keys($boards[$category['categoryid']]))) {
-                    print '<button type="submit" name="direction" title="Move board '.htmlspecialchars($board['boardname']).' down" value="down">move down</button>';
+                if ($key !== end(array_keys($boards[$category->ID]))) {
+                    print '<button type="submit" name="direction" title="Move board '.htmlspecialchars($board->name).' down" value="down">move down</button>';
                 }
 
                 print'
                         </form>
                     </li>
-                    <li><a href="boards.php?action=board-edit&id='.$board['boardid'].'&session='.$session.'" title="Edit board '.htmlspecialchars($board['boardname']).'">edit</a></li>
-                    <li><a href="boards.php?action=board-delete&id='.$board['boardid'].'&session='.$session.'" title="Delete board '.htmlspecialchars($board['boardname']).'">delete</a></li>
-                    <li><a href="groups.php?action=grouppermtable&boardid='.$board['boardid'].'&session='.$session.'">permissions</a></li>
+                    <li><a href="boards.php?action=board-edit&id='.$board->ID.'&session='.$session.'" title="Edit board '.htmlspecialchars($board->name).'">edit</a></li>
+                    <li><a href="boards.php?action=board-delete&id='.$board->ID.'&session='.$session.'" title="Delete board '.htmlspecialchars($board->name).'">delete</a></li>
+                    <li><a href="groups.php?action=grouppermtable&boardid='.$board->ID.'&session='.$session.'">permissions</a></li>
                 </ul>
             </li>';
             }
@@ -256,7 +269,7 @@ if ($_GET['action'] == 'board-reorder') {
         $r_board = query(
 <<<SQL
 SELECT
-    b.boardid AS id
+    b.boardid AS ID
 FROM
     {$pref}board AS b
 JOIN
@@ -273,8 +286,8 @@ SQL
         );
 
         $boards = [];
-        while ($board = mysql_fetch_assoc($r_board)) {
-            $boards[] = $board['id'];
+        while ($board = mysql_fetch_object($r_board)) {
+            $boards[] = $board->ID;
         }
 
         if (2 == sizeof($boards)) {
@@ -316,7 +329,7 @@ if ($_GET['action'] == 'category-reorder') {
         $r_category = query(
 <<<SQL
 SELECT
-    c.categoryid AS id
+    c.categoryid AS ID
 FROM
     {$pref}category AS c
 JOIN
@@ -332,8 +345,8 @@ SQL
         );
 
         $categories = [];
-        while ($category = mysql_fetch_assoc($r_category)) {
-            $categories[] = $category['id'];
+        while ($category = mysql_fetch_object($r_category)) {
+            $categories[] = $category->ID;
         }
 
         if (2 == sizeof($categories)) {
@@ -375,17 +388,17 @@ if ($_GET['action'] == 'board-edit') {
             $r_board = query(
 <<<SQL
 SELECT
-    categoryid,
-    boardorder
+    categoryid AS categoryID,
+    boardorder AS `order`
 FROM
     {$pref}board
 WHERE
     boardid = {$_GET['id']}
 SQL
             );
-            $oldboard = mysql_fetch_array($r_board);
+            $oldboard = mysql_fetch_object($r_board);
 
-            if ($oldboard['categoryid'] != $_POST['board-categoryid']) {
+            if ($oldboard->categoryID != $_POST['board-categoryid']) {
                 $result = query(
 <<<SQL
 SELECT
@@ -399,7 +412,7 @@ SQL
                 list($maxorder) = mysql_fetch_row($result);
                 $maxorder++;
             } else {
-                $maxorder = $oldboard['boardorder'];
+                $maxorder = $oldboard->order;
             }
 
             $boardName = addslashes(fix_umlauts($_POST['board-name']));
@@ -443,25 +456,22 @@ SQL
         $r_board = query(
 <<<SQL
 SELECT
-    boardid,
-    boardname,
-    boardlastpost,
-    boardthreads,
-    boardposts,
-    boarddescription,
-    categoryid,
-    styleid,
-    boarddisabled
+    boardid AS ID,
+    boardname AS name,
+    boarddescription AS description,
+    categoryid AS categoryID,
+    styleid AS styleID,
+    boarddisabled AS disabled
 FROM
     {$pref}board
 WHERE
     boardid = {$_GET['id']}
 SQL
         );
-        $board = mysql_fetch_array($r_board);
+        $board = mysql_fetch_object($r_board);
 
         print '<b>Edit Board</b><br><br>';
-        BoardForm($board, 'boards.php?action=board-edit&id='.$_GET['id'].'&session='.$session);
+        BoardForm($board, 'boards.php?action=board-edit&id='.$board->ID.'&session='.$session);
     }
 }
 
@@ -756,20 +766,20 @@ SQL
         $r_category = query(
 <<<SQL
 SELECT
-    categoryid,
-    categoryname
+    categoryid AS ID,
+    categoryname AS name
 FROM
     {$pref}category
 WHERE
     categoryid = {$_GET['id']}
 SQL
         );
-        $category = mysql_fetch_array($r_category);
+        $category = mysql_fetch_object($r_category);
 
         print '<b>Edit Category</b><br>
-<form method="post" action="boards.php?action=category-edit&amp;id='.htmlspecialchars($_GET['id']).'">
+<form method="post" action="boards.php?action=category-edit&amp;id='.htmlspecialchars($category->ID).'">
   <label for="category-name">Name</label>
-  <input class="tbinput" id="category-name" type="text" name="category-name" value="' . $category['categoryname'] . '">
+  <input class="tbinput" id="category-name" type="text" name="category-name" value="' . $category->name . '">
   <input type="hidden" name="session" value="' . $session . '">
   <input type="submit" name="submit" value="Save">
 </form>';
