@@ -66,7 +66,7 @@ WHERE
 SQL
     );
 
-    $styles = [];
+    $styles = [(object)['ID' => 0, 'name' => '( Use default )']];
     while ($style = mysql_fetch_object($r_style)) {
         $styles[] = $style;
     }
@@ -115,8 +115,7 @@ SQL
       <td>';
 
     print '
-<select class="tbinput" id="board-styleid" name="board-styleid">
-<option value="0">( Use default )</option>';
+<select class="tbinput" id="board-styleid" name="board-styleid">';
     foreach ($styles as $style) {
         print '<option value="'.$style->ID.'">'.$style->name.'</option>';
     }
