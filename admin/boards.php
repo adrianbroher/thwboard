@@ -671,8 +671,17 @@ SQL
             }
         }
     } else {
+        $board = (object)[
+            'ID' => 0,
+            'name' => '',
+            'description' => '',
+            'categoryID' => 0,
+            'styleID' => 0,
+            'disabled' => 0
+        ];
+
         print '<b>New Board</b><br><br>';
-        BoardForm([], 'boards.php?action=board-new&session='.$session);
+        BoardForm($board, 'boards.php?action=board-new&session='.$session);
     }
 }
 
