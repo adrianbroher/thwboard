@@ -85,69 +85,72 @@ SQL
     while ($category = mysql_fetch_object($r_category)) {
         $categories[] = $category;
     }
-
-    print '<form method="post" action="'.htmlspecialchars($handler).'">
-  <table width="100%" border="0" cellspacing="0" cellpadding="3">
-    <tr>
-      <td><label for="board-name">Name</label></td>
-      <td>
-        <input class="tbinput" id="board-name" type="text" name="board-name" value="'.htmlspecialchars($board->name).'">
-      </td>
-    </tr>
-    <tr>
-      <td><label for="board-description">Description</label></td>
-      <td>
-        <input class="tbinput" id="board-description" type="text" name="board-description" value="'.htmlspecialchars($board->description).'">
-      </td>
-    </tr>
-    <tr>
-      <td><label for="board-categoryid">Category</label></td>
-      <td>
-        <select class="tbinput" id="board-categoryid" name="board-categoryid">';
-    foreach ($categories as $category) {
-        print '  <option value="'.$category->ID.'"'.($category->ID == $board->categoryID ? ' selected="selected"' : '').'>'.$category->name.'</option>';
-    }
-    print '</select>
-      </td>
-    </tr>
-    <tr>
-      <td><label for="board-styleid">Style</label></td>
-      <td>';
-
-    print '
-<select class="tbinput" id="board-styleid" name="board-styleid">';
-    foreach ($styles as $style) {
-        print '<option value="'.$style->ID.'">'.$style->name.'</option>';
-    }
-print '</select>';
-
-    print '      </td>
-    </tr>
-    <tr>
-      <td><b><label for="board-disabled">Status</label></b><br>
-        <font size="1">Here you can deactivate<BR>this board temporarily</font></td>
-      <td align="top"><SELECT class="tbinput" id="board-disabled" name="board-disabled"><option value="1" ' . ( $board->disabled == 1 ? "selected" : "" ) . '>Disable board</option><option value="0" ' . ( $board->disabled == 0 ? " selected" : "" ) . '>Enable board</option></SELECT></td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td>
-        <input type="submit" name="submit" value="Save">
-      </td>
-    </tr>
-  </table>
-<br><br><br>
-Note: You can define the default style <a href="style.php?session=' . $session . '&action=ListStyles">here</a>.
-</form>';
+?>
+<form method="post" action="<?= htmlspecialchars($handler) ?>">
+    <table width="100%" border="0" cellspacing="0" cellpadding="3">
+        <tr>
+            <td><label for="board-name">Name</label></td>
+            <td><input class="tbinput" id="board-name" type="text" name="board-name" value="<?= htmlspecialchars($board->name) ?>"></td>
+        </tr>
+        <tr>
+            <td><label for="board-description">Description</label></td>
+            <td><input class="tbinput" id="board-description" type="text" name="board-description" value="<?= htmlspecialchars($board->description) ?>"></td>
+        </tr>
+        <tr>
+            <td><label for="board-categoryid">Category</label></td>
+            <td>
+                <select class="tbinput" id="board-categoryid" name="board-categoryid">
+<?php foreach ($categories as $category): ?>
+                    <option value="<?= htmlspecialchars($category->ID) ?>"<?= ($category->ID == $board->categoryID ? ' selected="selected"' : '') ?>><?= htmlspecialchars($category->name) ?></option>
+<?php endforeach ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><label for="board-styleid">Style</label></td>
+            <td>
+                <select class="tbinput" id="board-styleid" name="board-styleid">
+<?php foreach ($styles as $style): ?>
+                    <option value="<?= htmlspecialchars($style->ID) ?>"><?= htmlspecialchars($style->name) ?></option>
+<?php endforeach ?>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <b><label for="board-disabled">Status</label></b><br>
+                <font size="1">Here you can deactivate this board temporarily</font>
+            </td>
+            <td align="top">
+                <select class="tbinput" id="board-disabled" name="board-disabled">
+                    <option value="1"<?= ($board->disabled == 1 ? ' selected="selected"' : '') ?>>Disable board</option>
+                    <option value="0"<?= ($board->disabled == 0 ? ' selected="selected"' : '') ?>>Enable board</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td><input type="submit" name="submit" value="Save"></td>
+        </tr>
+    </table>
+</form>
+<br>
+<br>
+<br>
+Note: You can define the default style <a href="style.php?session=<?= htmlspecialchars($session) ?>&amp;action=ListStyles">here</a>.
+<?php
 }
 
 
 function CategoryForm($category, $handler)
 {
-    print '<form method="post" action="'.htmlspecialchars($handler).'">
-  <label for="category-name">Name</label>
-  <input id="category-name" class="tbinput" type="text" name="category-name" value="'.htmlspecialchars($category->name).'">
-  <input type="submit" name="submit" value="Save">
-</form>';
+?>
+<form method="post" action="<?= htmlspecialchars($handler) ?>">
+    <label for="category-name">Name</label>
+    <input id="category-name" class="tbinput" type="text" name="category-name" value="<?= htmlspecialchars($category->name) ?>">
+    <input type="submit" name="submit" value="Save">
+</form>
+<?php
 }
 
 function NavigationBar($currentAction)
@@ -169,13 +172,13 @@ function NavigationBar($currentAction)
     }
 
     if (!empty($actions)) {
-        echo '<ul class="actions">';
-
-        foreach ($actions as $label => $uri) {
-            echo '<li><a href="'.htmlspecialchars($uri).'">'.htmlspecialchars($label).'</a></li> ';
-        }
-
-        echo '</ul>';
+?>
+<ul class="actions">
+<?php foreach ($actions as $label => $uri): ?>
+    <li><a href="<?= htmlspecialchars($uri) ?>"><?= htmlspecialchars($label) ?></a></li>
+<?php endforeach ?>
+</ul>
+<?php
     }
 }
 
@@ -225,78 +228,59 @@ SQL
 
     NavigationBar($action);
 
-    print "<h3>Forum Structure</h3>";
-    print '<ul id="board-order">';
-
-    foreach ($categories as $key => $category) {
-        print '
+?>
+<h3>Forum Structure</h3>
+<ul id="board-order">
+<?php foreach ($categories as $key => $category): ?>
     <li>
         <div class="category">
-            '.$category->name.'
+            <?= htmlspecialchars($category->name) ?>
             <ul class="actions">
                 <li>
-                    <form method="post" action="boards.php?action=category-reorder&amp;id='.$category->ID.'&amp;session='.$session.'">';
-
-        if ($key !== reset(array_keys($categories))) {
-            echo '<button type="submit" name="direction" title="Move category '.htmlspecialchars($category->name).' up" value="up">move up</button> ';
-        }
-
-        if ($key !== end(array_keys($categories))) {
-            echo '<button type="submit" name="direction" title="Move category '.htmlspecialchars($category->name).' down" value="down">move down</button>';
-        }
-
-        print '
+                    <form method="post" action="boards.php?action=category-reorder&amp;id=<?= htmlspecialchars($category->ID) ?>&amp;session=<?= htmlspecialchars($session) ?>">
+<?php if ($key !== reset(array_keys($categories))): ?>
+                        <button type="submit" name="direction" title="Move category <?= htmlspecialchars($category->name) ?> up" value="up">move up</button>
+<?php endif ?>
+<?php if ($key !== end(array_keys($categories))): ?>
+                        <button type="submit" name="direction" title="Move category <?= htmlspecialchars($category->name) ?> down" value="down">move down</button>
+<?php endif ?>
                     </form>
                 </li>
-                <li><a href="boards.php?action=category-edit&id='.$category->ID.'&session='.$session.'" title="Edit category '.htmlspecialchars($category->name).'">edit</a></li>
-                <li><a href="boards.php?action=category-delete&id='.$category->ID.'&session='.$session.'" title="Delete category '.htmlspecialchars($category->name).'">delete</a></li>
+                <li><a href="boards.php?action=category-edit&amp;id=<?= htmlspecialchars($category->ID) ?>&amp;session=<?= htmlspecialchars($session) ?>" title="Edit category <?= htmlspecialchars($category->name) ?>">edit</a></li>
+                <li><a href="boards.php?action=category-delete&amp;id=<?= htmlspecialchars($category->ID) ?>&amp;session=<?= htmlspecialchars($session) ?>" title="Delete category <?= htmlspecialchars($category->name) ?>">delete</a></li>
             </ul>
         </div>
-';
-
-        if (!empty($boards[$category->ID])) {
-            print '
-        <ul>';
-
-            foreach ($boards[$category->ID] as $key => $board) {
-                print '
+<?php if (!empty($boards[$category->ID])): ?>
+        <ul>
+<?php foreach ($boards[$category->ID] as $key => $board): ?>
             <li class="board">
                 <dl>
-                    <dt>'.$board->name.'</dt>
-                    <dd>'.$board->description.'</dd>
+                    <dt><?= htmlspecialchars($board->name) ?></dt>
+                    <dd><?= htmlspecialchars($board->description) ?></dd>
                 </dl>
                 <ul class="actions">
                     <li>
-                        <form method="post" action="boards.php?action=board-reorder&amp;id='.$board->ID.'&amp;session='.$session.'">';
-
-                if ($key !== reset(array_keys($boards[$category->ID]))) {
-                    print '<button type="submit" name="direction" title="Move board '.htmlspecialchars($board->name).' up" value="up">move up</button> ';
-                }
-
-                if ($key !== end(array_keys($boards[$category->ID]))) {
-                    print '<button type="submit" name="direction" title="Move board '.htmlspecialchars($board->name).' down" value="down">move down</button>';
-                }
-
-                print'
+                        <form method="post" action="boards.php?action=board-reorder&amp;id=<?= htmlspecialchars($board->ID) ?>&amp;session=<?= htmlspecialchars($session) ?>">
+<?php if ($key !== reset(array_keys($boards[$category->ID]))): ?>
+                            <button type="submit" name="direction" title="Move board <?= htmlspecialchars($board->name) ?> up" value="up">move up</button>
+<?php endif ?>
+<?php if ($key !== end(array_keys($boards[$category->ID]))): ?>
+                            <button type="submit" name="direction" title="Move board <?= htmlspecialchars($board->name) ?> down" value="down">move down</button>
+<?php endif ?>
                         </form>
                     </li>
-                    <li><a href="boards.php?action=board-edit&id='.$board->ID.'&session='.$session.'" title="Edit board '.htmlspecialchars($board->name).'">edit</a></li>
-                    <li><a href="boards.php?action=board-delete&id='.$board->ID.'&session='.$session.'" title="Delete board '.htmlspecialchars($board->name).'">delete</a></li>
-                    <li><a href="groups.php?action=grouppermtable&boardid='.$board->ID.'&session='.$session.'">permissions</a></li>
+                    <li><a href="boards.php?action=board-edit&amp;id=<?= htmlspecialchars($board->ID) ?>&amp;session=<?= htmlspecialchars($session) ?>" title="Edit board <?= htmlspecialchars($board->name) ?>">edit</a></li>
+                    <li><a href="boards.php?action=board-delete&amp;id=<?= htmlspecialchars($board->ID) ?>&amp;session=<?= htmlspecialchars($session) ?>" title="Delete board <?= htmlspecialchars($board->name) ?>">delete</a></li>
+                    <li><a href="groups.php?action=grouppermtable&amp;boardid=<?= htmlspecialchars($board->ID) ?>&amp;session=<?= htmlspecialchars($session) ?>">permissions</a></li>
                 </ul>
-            </li>';
-            }
-
-            print '
-        </ul>';
-        }
-
-        print '
-    </li>';
-    }
-
-    print '
-</ul>';
+            </li>
+<?php endforeach ?>
+        </ul>
+<?php endif ?>
+    </li>
+<?php endforeach ?>
+</ul>
+<?php
 }
 
 
@@ -666,11 +650,12 @@ SQL
 
         print 'Board has been deleted.';
     } else {
-        print '
-<form method="post" action="boards.php?action=board-delete&amp;id='.$_GET['id'].'&amp;session='.$session.'">
-  Do you really want to delete the board?
-  <input type="submit" name="submit" value="Delete">
-</form>';
+?>
+<form method="post" action="boards.php?action=board-delete&amp;id=<?= htmlspecialchars($_GET['id']) ?>&amp;session=<?= htmlspecialchars($session) ?>">
+    Do you really want to delete the board?
+    <input type="submit" name="submit" value="Delete">
+</form>
+<?php
     }
 }
 
@@ -787,11 +772,12 @@ SQL
         );
         print 'Category has been deleted.';
     } else {
-        print '
-<form method="post" action="boards.php?action=category-delete&amp;id='.$_GET['id'].'&amp;session='.$session.'">
-  Do you really want to delete the category?
-  <input type="submit" name="submit" value="Delete">
-</form>';
+?>
+<form method="post" action="boards.php?action=category-delete&amp;id=<?= htmlspecialchars($_GET['id']) ?>&amp;session=<?= htmlspecialchars($session) ?>">
+    Do you really want to delete the category?
+    <input type="submit" name="submit" value="Delete">
+</form>
+<?php
     }
 }
 
