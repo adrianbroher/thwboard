@@ -89,13 +89,14 @@ SQL
 <?php
 }
 
+$action = isset($_GET['action']) ? $_GET['action'] : 'list';
 
 /*
  * ########################################################################################
  * List announcements
  * ########################################################################################
  */
-if ('ListNews' == $_GET['action']) {
+if ('list' == $action) {
     $r_announcement = query(
 <<<SQL
 SELECT
@@ -138,9 +139,9 @@ SQL
  * Edit an announcement
  * ########################################################################################
  */
-if ('edit' == $_GET['action']) {
+if ('edit' == $action) {
     print "<a href=\"announcements.php?action=new&amp;session=" . $session . "\">Add announcement</a> ";
-    print "<a href=\"announcements.php?action=ListNews&amp;session=" . $session . "\">List announcements</a>";
+    print "<a href=\"announcements.php?session=" . $session . "\">List announcements</a>";
     print "<h3>Edit Announcement</h3>";
 
     if (isset($_POST['submit'])) {
@@ -218,8 +219,8 @@ SQL
  * Add an announcement
  * ########################################################################################
  */
-if ('new' == $_GET['action']) {
-    print "<a href=\"announcements.php?action=ListNews&session=" . $session . "\">List announcements</a>";
+if ('new' == $action) {
+    print "<a href=\"announcements.php?session=" . $session . "\">List announcements</a>";
     print "<h3>New Announcement</h3>";
 
     if (isset($_POST['submit'])) {
@@ -294,9 +295,9 @@ SQL
  * Delete an announcement
  * ########################################################################################
  */
-if ('delete' == $_GET['action']) {
+if ('delete' == $action) {
     print "<a href=\"announcements.php?action=new&amp;session=" . $session . "\">Add announcement</a> ";
-    print "<a href=\"announcements.php?action=ListNews&amp;session=" . $session . "\">List announcements</a>";
+    print "<a href=\"announcements.php?session=" . $session . "\">List announcements</a>";
     print "<h3>Delete Announcement</h3>";
 
     if ($_POST['submit']) {

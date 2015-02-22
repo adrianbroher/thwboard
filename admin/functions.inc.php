@@ -359,7 +359,7 @@ ul.actions li {
         navbox_element('documents.php?session=' . $session . '&action=ListDocs', 'Documentation');
         navbox_element('index.php?session=' . $session . '&action=EditSettings', 'Basic settings');
         navbox_element('rank.php?session=' . $session . '&action=ViewRanks', 'Ranks');
-        navbox_element('announcements.php?session=' . $session . '&action=ListNews', 'Announcements');
+        navbox_element('announcements.php?session=' . $session, 'Announcements');
         navbox_element('links.php?session=' . $session . '&action=ListLinks', 'Quicklinks');
     navgroupbox_close();
 
