@@ -181,6 +181,8 @@ function NavigationBar($currentAction)
 
 $action = isset($_GET['action']) ? $_GET['action'] : 'list';
 
+print "<h2>Boards and Categories</h2>";
+
 if ('list' == $action) {
     $r_category = query(
 <<<SQL
@@ -223,8 +225,8 @@ SQL
 
     NavigationBar($action);
 
-    print '<b>Forum structure</b><br>
-<ul id="board-order">';
+    print "<h3>Forum Structure</h3>";
+    print '<ul id="board-order">';
 
     foreach ($categories as $key => $category) {
         print '
@@ -306,6 +308,8 @@ SQL
 if ('board-reorder' == $action) {
     NavigationBar($action);
 
+    print "<h3>Reorder Boards</h3>";
+
     if (in_array($_POST['direction'], ['up', 'down'])) {
         $direction = ['up' => '<=', 'down' => '>='][$_POST['direction']];
         $ordering = ['up' => 'DESC', 'down' => 'ASC'][$_POST['direction']];
@@ -368,6 +372,8 @@ SQL
 if ('category-reorder' == $action) {
     NavigationBar($action);
 
+    print "<h3>Reorder Categories</h3>";
+
     if (in_array($_POST['direction'], ['up', 'down'])) {
         $direction = ['up' => '<=', 'down' => '>='][$_POST['direction']];
         $ordering = ['up' => 'DESC', 'down' => 'ASC'][$_POST['direction']];
@@ -428,6 +434,8 @@ SQL
  */
 if ('board-edit' == $action) {
     NavigationBar($action);
+
+    print "<h3>Edit Board</h3>";
 
     if (isset($_POST['submit'])) {
         if (empty($_POST['board-name'])) {
@@ -518,7 +526,6 @@ SQL
         );
         $board = mysql_fetch_object($r_board);
 
-        print '<b>Edit Board</b><br><br>';
         BoardForm($board, 'boards.php?action=board-edit&id='.$board->ID.'&session='.$session);
     }
 }
@@ -531,6 +538,8 @@ SQL
  */
 if ('category-new' == $action) {
     NavigationBar($action);
+
+    print "<h3>New Category</h3>";
 
     if (isset($_POST['submit'])) {
         if (empty($_POST['category-name'])) {
@@ -576,7 +585,6 @@ SQL
             'name' => ''
         ];
 
-        print '<b>New Category</b><br>';
         CategoryForm($category, 'boards.php?action=category-new&session='.$session);
     }
 }
@@ -590,7 +598,7 @@ SQL
 if ('board-delete' == $action) {
     NavigationBar($action);
 
-    print '<b>Delete board</b><br><br>';
+    print "<h3>Delete Board</h3>";
 
     if (isset($_POST['submit'])) {
         // delete the board
@@ -675,6 +683,8 @@ SQL
 if ('board-new' == $action) {
     NavigationBar($action);
 
+    print "<h3>New Board</h3>";
+
     if (isset($_POST['submit'])) {
         if (empty($_POST['board-name'])) {
             print "The board name can't be empty.";
@@ -735,7 +745,6 @@ SQL
             'disabled' => 0
         ];
 
-        print '<b>New Board</b><br><br>';
         BoardForm($board, 'boards.php?action=board-new&session='.$session);
     }
 }
@@ -749,7 +758,7 @@ SQL
 if ('category-delete' == $action) {
     NavigationBar($action);
 
-    print '<b>Delete category</b><br><br>';
+    print "<h3>Delete Category</h3>";
 
     $r_board = query(
 <<<SQL
@@ -794,6 +803,8 @@ SQL
  */
 if ('category-edit' == $action) {
     NavigationBar($action);
+
+    print "<h3>Edit Category</h3>";
 
     if (isset($_POST['submit'])) {
         if (empty($_POST['category-name'])) {
@@ -843,7 +854,6 @@ SQL
         );
         $category = mysql_fetch_object($r_category);
 
-        print '<b>Edit Category</b><br>';
         CategoryForm($category, 'boards.php?action=category-edit&id='.$category->ID.'&session='.$session);
     }
 }
