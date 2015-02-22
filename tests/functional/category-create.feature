@@ -25,8 +25,8 @@ Feature: Category create
             | Username | root     |
             | Password | rootroot |
         And I press "Login"
-        Then I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        Then I should see "Categories and Boards"
+        When I follow "Categories and Boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 1          |
             | Category 1 | is child of        | <ROOT>     |
@@ -36,12 +36,15 @@ Feature: Category create
     Scenario: Create a category with an empty name.
         When I follow "Add category"
         Then I should see "New Category"
+        And I should see "Add board"
+        And I should not see "Add category"
+        And I should see "List categories and boards"
         And the "Name" field should contain ""
         When I fill in "Name" with ""
         And I press "Save"
         Then I should see "The category name can't be empty"
-        And I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        And I should see "Categories and Boards"
+        When I follow "List categories and boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 1          |
             | Category 1 | is child of        | <ROOT>     |
@@ -50,12 +53,15 @@ Feature: Category create
     Scenario: Create a duplicate category.
         When I follow "Add category"
         Then I should see "New Category"
+        And I should see "Add board"
+        And I should not see "Add category"
+        And I should see "List categories and boards"
         And the "Name" field should contain ""
         When I fill in "Name" with "Category 1"
         And I press "Save"
         Then I should see "The category already exists"
-        And I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        And I should see "Categories and Boards"
+        When I follow "List categories and boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 1          |
             | Category 1 | is child of        | <ROOT>     |
@@ -64,12 +70,15 @@ Feature: Category create
     Scenario: Successfully create a category.
         When I follow "Add category"
         Then I should see "New Category"
+        And I should see "Add board"
+        And I should not see "Add category"
+        And I should see "List categories and boards"
         And the "Name" field should contain ""
         When I fill in "Name" with "Category 2"
         And I press "Save"
         Then I should see "Category saved"
-        And I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        And I should see "Categories and Boards"
+        When I follow "List categories and boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | is child of        | <ROOT>     |

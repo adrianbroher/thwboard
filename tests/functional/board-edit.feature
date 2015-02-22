@@ -29,8 +29,8 @@ Feature: Board edit
             | Username | root     |
             | Password | rootroot |
         And I press "Login"
-        Then I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        Then I should see "Categories and Boards"
+        When I follow "Categories and Boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | number of children | 1          |
@@ -44,11 +44,14 @@ Feature: Board edit
             | Board 2    | is before          | Board 3    |
 
     Scenario: Edit a board with an empty name.
-        When I follow "Edit boards/categories"
+        When I follow "Categories and Boards"
         Then I should see "Board 2"
         And I should see "edit"
         When I follow "Edit board Board 2"
         Then I should see "Edit Board"
+        And I should see "Add board"
+        And I should see "Add category"
+        And I should see "List categories and boards"
         And the "Name" field should contain "Board 2"
         And the "Description" field should contain "Description of Board 2"
         And I should see "Category 2" selected in the select "Category"
@@ -68,8 +71,8 @@ Feature: Board edit
         When I fill in "Name" with ""
         And I press "Save"
         Then I should see "The board name can't be empty"
-        And I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        And I should see "Categories and Boards"
+        When I follow "List categories and boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | number of children | 1          |
@@ -83,11 +86,14 @@ Feature: Board edit
             | Board 2    | is before          | Board 3    |
 
     Scenario: Edit a duplicate board.
-        When I follow "Edit boards/categories"
+        When I follow "Categories and Boards"
         Then I should see "Board 2"
         And I should see "edit"
         When I follow "Edit board Board 2"
         Then I should see "Edit Board"
+        And I should see "Add board"
+        And I should see "Add category"
+        And I should see "List categories and boards"
         And the "Name" field should contain "Board 2"
         And the "Description" field should contain "Description of Board 2"
         And I should see "Category 2" selected in the select "Category"
@@ -107,8 +113,8 @@ Feature: Board edit
         When I fill in "Name" with "Board 3"
         And I press "Save"
         Then I should see "The board already exists"
-        And I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        And I should see "Categories and Boards"
+        When I follow "List categories and boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | number of children | 1          |
@@ -122,11 +128,14 @@ Feature: Board edit
             | Board 2    | is before          | Board 3    |
 
     Scenario: Successfully rename a board.
-        When I follow "Edit boards/categories"
+        When I follow "Categories and Boards"
         Then I should see "Board 2"
         And I should see "edit"
         When I follow "Edit board Board 2"
         Then I should see "Edit Board"
+        And I should see "Add board"
+        And I should see "Add category"
+        And I should see "List categories and boards"
         And the "Name" field should contain "Board 2"
         And the "Description" field should contain "Description of Board 2"
         And I should see "Category 2" selected in the select "Category"
@@ -146,8 +155,8 @@ Feature: Board edit
         When I fill in "Name" with "Board B"
         And I press "Save"
         Then I should see "Board saved"
-        And I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        And I should see "Categories and Boards"
+        When I follow "List categories and boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | number of children | 1          |
@@ -161,11 +170,14 @@ Feature: Board edit
             | Board B    | is before          | Board 3    |
 
     Scenario: Successfully move a board.
-        When I follow "Edit boards/categories"
+        When I follow "Categories and Boards"
         Then I should see "Board 2"
         And I should see "edit"
         When I follow "Edit board Board 2"
         Then I should see "Edit Board"
+        And I should see "Add board"
+        And I should see "Add category"
+        And I should see "List categories and boards"
         And the "Name" field should contain "Board 2"
         And the "Description" field should contain "Description of Board 2"
         And I should see "Category 2" selected in the select "Category"
@@ -185,8 +197,8 @@ Feature: Board edit
         When I select "Category 1" from "Category"
         And I press "Save"
         Then I should see "Board saved"
-        And I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        And I should see "Categories and Boards"
+        When I follow "List categories and boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | number of children | 2          |

@@ -27,9 +27,8 @@ Feature: Board create
             | Username | root     |
             | Password | rootroot |
         And I press "Login"
-        Then I should see "Add board"
-        And I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        Then I should see "Categories and Boards"
+        When I follow "Categories and Boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | number of children | 1          |
@@ -42,6 +41,9 @@ Feature: Board create
     Scenario: Create a board with an empty name.
         When I follow "Add board"
         Then I should see "New Board"
+        And I should not see "Add board"
+        And I should see "Add category"
+        And I should see "List categories and boards"
         And the "Name" field should contain ""
         And the "Description" field should contain ""
         And I should see "Category 1" selected in the select "Category"
@@ -66,8 +68,8 @@ Feature: Board create
         And I select "Enable board" from "Status"
         And I press "Save"
         Then I should see "The board name can't be empty"
-        And I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        And I should see "Categories and Boards"
+        When I follow "List categories and boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | number of children | 1          |
@@ -80,6 +82,9 @@ Feature: Board create
     Scenario: Create a duplicate board.
         When I follow "Add board"
         Then I should see "New Board"
+        And I should not see "Add board"
+        And I should see "Add category"
+        And I should see "List categories and boards"
         And the "Name" field should contain ""
         And the "Description" field should contain ""
         And I should see "Category 1" selected in the select "Category"
@@ -104,8 +109,8 @@ Feature: Board create
         And I select "Enable board" from "Status"
         And I press "Save"
         Then I should see "The board already exists"
-        And I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        And I should see "Categories and Boards"
+        When I follow "List categories and boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | number of children | 1          |
@@ -118,6 +123,9 @@ Feature: Board create
     Scenario: Successfully create a board in the first category.
         When I follow "Add board"
         Then I should see "New Board"
+        And I should not see "Add board"
+        And I should see "Add category"
+        And I should see "List categories and boards"
         And the "Name" field should contain ""
         And the "Description" field should contain ""
         And I should see "Category 1" selected in the select "Category"
@@ -142,8 +150,8 @@ Feature: Board create
         And I select "Enable board" from "Status"
         And I press "Save"
         Then I should see "Board saved"
-        And I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        And I should see "Categories and Boards"
+        When I follow "List categories and boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | number of children | 2          |
@@ -157,6 +165,9 @@ Feature: Board create
     Scenario: Successfully create a board in the second category.
         When I follow "Add board"
         Then I should see "New Board"
+        And I should not see "Add board"
+        And I should see "Add category"
+        And I should see "List categories and boards"
         And the "Name" field should contain ""
         And the "Description" field should contain ""
         And I should see "Category 1" selected in the select "Category"
@@ -181,8 +192,8 @@ Feature: Board create
         And I select "Enable board" from "Status"
         And I press "Save"
         Then I should see "Board saved"
-        And I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        And I should see "Categories and Boards"
+        When I follow "List categories and boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | number of children | 1          |

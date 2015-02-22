@@ -28,8 +28,8 @@ Feature: Board delete
             | Username | root     |
             | Password | rootroot |
         And I press "Login"
-        Then I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        Then I should see "Categories and Boards"
+        When I follow "Categories and Boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 3          |
             | Category 1 | number of children | 1          |
@@ -44,15 +44,18 @@ Feature: Board delete
             | Board 2    | is child of        | Category 2 |
 
     Scenario: Successfully delete a board.
-        When I follow "Edit boards/categories"
+        When I follow "Categories and Boards"
         Then I should see "Board 2"
         And I should see "delete"
         When I follow "Delete board Board 2"
         Then I should see "Delete Board"
+        And I should see "Add board"
+        And I should see "Add category"
+        And I should see "List categories and boards"
         And I should see "Do you really want to delete the board?"
         When I press "Delete"
         Then I should see "Board has been deleted"
-        When I follow "Edit boards/categories"
+        When I follow "List categories and boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 3          |
             | Category 1 | number of children | 1          |

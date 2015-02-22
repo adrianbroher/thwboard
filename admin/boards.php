@@ -150,6 +150,35 @@ function CategoryForm($category, $handler)
 </form>';
 }
 
+function NavigationBar($currentAction)
+{
+    global $session;
+
+    $actions = [];
+
+    if ('' != $currentAction) {
+        $actions['List categories and boards'] = 'boards.php?session='.$session;
+    }
+
+    if ('category-new' != $currentAction) {
+        $actions['Add category'] = 'boards.php?action=category-new&session='.$session;
+    }
+
+    if ('board-new' != $currentAction) {
+        $actions['Add board'] = 'boards.php?action=board-new&session='.$session;
+    }
+
+    if (!empty($actions)) {
+        echo '<ul class="actions">';
+
+        foreach ($actions as $label => $uri) {
+            echo '<li><a href="'.htmlspecialchars($uri).'">'.htmlspecialchars($label).'</a></li> ';
+        }
+
+        echo '</ul>';
+    }
+}
+
 
 if ($_REQUEST['action'] == '') {
     $r_category = query(
@@ -190,6 +219,8 @@ SQL
             $boards[$category->ID][] = $board;
         }
     }
+
+    NavigationBar($_REQUEST['action']);
 
     print '<b>Forum structure</b><br>
 <ul id="board-order">';
@@ -272,6 +303,8 @@ SQL
  * ########################################################################################
  */
 if ($_GET['action'] == 'board-reorder') {
+    NavigationBar($_GET['action']);
+
     if (in_array($_POST['direction'], ['up', 'down'])) {
         $direction = ['up' => '<=', 'down' => '>='][$_POST['direction']];
         $ordering = ['up' => 'DESC', 'down' => 'ASC'][$_POST['direction']];
@@ -332,6 +365,8 @@ SQL
  * ########################################################################################
  */
 if ($_GET['action'] == 'category-reorder') {
+    NavigationBar($_GET['action']);
+
     if (in_array($_POST['direction'], ['up', 'down'])) {
         $direction = ['up' => '<=', 'down' => '>='][$_POST['direction']];
         $ordering = ['up' => 'DESC', 'down' => 'ASC'][$_POST['direction']];
@@ -391,6 +426,8 @@ SQL
  * ########################################################################################
  */
 if ($_GET['action'] == 'board-edit') {
+    NavigationBar($_GET['action']);
+
     if (isset($_POST['submit'])) {
         if (empty($_POST['board-name'])) {
             print "The board name can't be empty.";
@@ -492,6 +529,8 @@ SQL
  * ########################################################################################
  */
 if ($_GET['action'] == 'category-new') {
+    NavigationBar($_GET['action']);
+
     if (isset($_POST['submit'])) {
         if (empty($_POST['category-name'])) {
             print "The category name can't be empty";
@@ -548,6 +587,8 @@ SQL
  * ########################################################################################
  */
 if ($_GET['action'] == 'board-delete') {
+    NavigationBar($_GET['action']);
+
     print '<b>Delete board</b><br><br>';
 
     if (isset($_POST['submit'])) {
@@ -631,6 +672,8 @@ SQL
  * ########################################################################################
  */
 if ($_GET['action'] == 'board-new') {
+    NavigationBar($_GET['action']);
+
     if (isset($_POST['submit'])) {
         if (empty($_POST['board-name'])) {
             print "The board name can't be empty.";
@@ -703,6 +746,8 @@ SQL
  * ########################################################################################
  */
 if ($_GET['action'] == 'category-delete') {
+    NavigationBar($_GET['action']);
+
     print '<b>Delete category</b><br><br>';
 
     $r_board = query(
@@ -747,6 +792,8 @@ SQL
  * ########################################################################################
  */
 if ($_GET['action'] == 'category-edit') {
+    NavigationBar($_GET['action']);
+
     if (isset($_POST['submit'])) {
         if (empty($_POST['category-name'])) {
             print "The category name can't be empty";

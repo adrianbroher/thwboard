@@ -32,9 +32,8 @@ Feature: Board reorder
             | Username | root     |
             | Password | rootroot |
         And I press "Login"
-        Then I should see "Add board"
-        And I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        And I should see "Categories and Boards"
+        When I follow "Categories and Boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 3          |
             | Category 1 | number of children | 3          |
@@ -55,8 +54,11 @@ Feature: Board reorder
             | Board 2    | is before          | Board 3    |
 
     Scenario: Move board down
-        When I follow "Edit boards/categories"
+        When I follow "Categories and Boards"
         Then I should see "Forum structure"
+        And I should see "Add board"
+        And I should see "Add category"
+        And I should not see "List categories and boards"
         And I should not see the button "Move category Category 1 up"
         And I should see the button "Move category Category 1 down"
         And I should not see the button "Move board Board 1 up"
@@ -75,9 +77,12 @@ Feature: Board reorder
         And I should not see the button "Move category Category 3 down"
         When I press "Move board Board 4 down"
         Then I should see "Order updated"
-        And I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        And I should see "Categories and Boards"
+        When I follow "List categories and boards"
         Then I should see "Forum structure"
+        And I should see "Add board"
+        And I should see "Add category"
+        And I should not see "List categories and boards"
         And the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 3          |
             | Category 1 | number of children | 3          |
@@ -114,8 +119,11 @@ Feature: Board reorder
         And I should not see the button "Move category Category 3 down"
 
     Scenario: Move board up
-        When I follow "Edit boards/categories"
+        When I follow "Categories and Boards"
         Then I should see "Forum structure"
+        And I should see "Add board"
+        And I should see "Add category"
+        And I should not see "List categories and boards"
         And I should not see the button "Move category Category 1 up"
         And I should see the button "Move category Category 1 down"
         And I should not see the button "Move board Board 1 up"
@@ -134,9 +142,12 @@ Feature: Board reorder
         And I should not see the button "Move category Category 3 down"
         When I press "Move board Board 4 up"
         Then I should see "Order updated"
-        And I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        And I should see "Categories and Boards"
+        When I follow "List categories and boards"
         Then I should see "Forum structure"
+        And I should see "Add board"
+        And I should see "Add category"
+        And I should not see "List categories and boards"
         And the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 3          |
             | Category 1 | number of children | 3          |
@@ -173,8 +184,11 @@ Feature: Board reorder
         And I should not see the button "Move category Category 3 down"
 
     Scenario: Move category down
-        When I follow "Edit boards/categories"
+        When I follow "Categories and Boards"
         Then I should see "Forum structure"
+        And I should see "Add board"
+        And I should see "Add category"
+        And I should not see "List categories and boards"
         And I should not see the button "Move category Category 1 up"
         And I should see the button "Move category Category 1 down"
         And I should not see the button "Move board Board 1 up"
@@ -193,9 +207,12 @@ Feature: Board reorder
         And I should not see the button "Move category Category 3 down"
         When I press "Move category Category 2 down"
         Then I should see "Order updated"
-        And I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        And I should see "Categories and Boards"
+        When I follow "List categories and boards"
         Then I should see "Forum structure"
+        And I should see "Add board"
+        And I should see "Add category"
+        And I should not see "List categories and boards"
         And the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 3          |
             | Category 1 | number of children | 3          |
@@ -232,8 +249,11 @@ Feature: Board reorder
         And I should not see the button "Move board Board 3 down"
 
     Scenario: Move category up
-        When I follow "Edit boards/categories"
+        When I follow "Categories and Boards"
         Then I should see "Forum structure"
+        And I should see "Add board"
+        And I should see "Add category"
+        And I should not see "List categories and boards"
         And I should not see the button "Move category Category 1 up"
         And I should see the button "Move category Category 1 down"
         And I should not see the button "Move board Board 1 up"
@@ -252,9 +272,12 @@ Feature: Board reorder
         And I should not see the button "Move category Category 3 down"
         When I press "Move category Category 3 up"
         Then I should see "Order updated"
-        And I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        And I should see "Categories and Boards"
+        When I follow "List categories and boards"
         Then I should see "Forum structure"
+        And I should see "Add board"
+        And I should see "Add category"
+        And I should not see "List categories and boards"
         And the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 3          |
             | Category 1 | number of children | 3          |

@@ -23,8 +23,8 @@ Feature: Category edit
             | Username | root     |
             | Password | rootroot |
         And I press "Login"
-        Then I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        Then I should see "Categories and Boards"
+        When I follow "Categories and Boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | is child of        | <ROOT>     |
@@ -32,17 +32,20 @@ Feature: Category edit
             | Category 1 | is before          | Category 2 |
 
     Scenario: Rename a category with an empty name.
-        When I follow "Edit boards/categories"
+        When I follow "Categories and Boards"
         Then I should see "Category 2"
         And I should see "edit"
         When I follow "Edit category Category 2"
         Then I should see "Edit Category"
+        And I should see "Add board"
+        And I should see "Add category"
+        And I should see "List categories and boards"
         And the "Name" field should contain "Category 2"
         When I fill in "Name" with ""
         And press "Save"
         Then I should see "The category name can't be empty"
-        And I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        And I should see "Categories and Boards"
+        When I follow "List categories and boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | is child of        | <ROOT>     |
@@ -50,17 +53,20 @@ Feature: Category edit
             | Category 1 | is before          | Category 2 |
 
     Scenario: Change category name to an already existing one.
-        When I follow "Edit boards/categories"
+        When I follow "Categories and Boards"
         Then I should see "Category 2"
         And I should see "edit"
         When I follow "Edit category Category 2"
         Then I should see "Edit Category"
+        And I should see "Add board"
+        And I should see "Add category"
+        And I should see "List categories and boards"
         And the "Name" field should contain "Category 2"
         When I fill in "Name" with "Category 1"
         And press "Save"
         Then I should see "The category already exists"
-        And I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        And I should see "Categories and Boards"
+        When I follow "List categories and boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | is child of        | <ROOT>     |
@@ -68,17 +74,20 @@ Feature: Category edit
             | Category 1 | is before          | Category 2 |
 
     Scenario: Successfully edit a category.
-        When I follow "Edit boards/categories"
+        When I follow "Categories and Boards"
         Then I should see "Category 2"
         And I should see "edit"
         When I follow "Edit category Category 2"
         Then I should see "Edit Category"
+        And I should see "Add board"
+        And I should see "Add category"
+        And I should see "List categories and boards"
         And the "Name" field should contain "Category 2"
         When I fill in "Name" with "Category B"
         And press "Save"
         Then I should see "Category saved"
-        And I should see "Edit boards/categories"
-        When I follow "Edit boards/categories"
+        And I should see "Categories and Boards"
+        When I follow "List categories and boards"
         Then the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | is child of        | <ROOT>     |
