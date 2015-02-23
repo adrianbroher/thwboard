@@ -202,6 +202,85 @@ SQL
         );
     }
 
+    /** Set up the announcements required for a scenario.
+     *
+     * @Given /^the following announcements exist:$/
+     */
+    public function setUpAnnouncements(TableNode $table)
+    {
+        $this->pdo->exec(
+<<<SQL
+DELETE FROM
+    {$this->table_prefix}news
+SQL
+        );
+        $this->pdo->exec(
+<<<SQL
+ALTER TABLE
+    {$this->table_prefix}news
+    AUTO_INCREMENT = 1
+SQL
+        );
+
+        if (0 !== count(array_diff(['topic', 'body', 'scope'], $table->getRow(0)))) {
+            throw new InvalidArgumentException("Table missing one of the required columns (topic, body, scope)");
+        }
+
+        $timestamp = new DateTime('2014-03-15');
+
+        foreach ($table->getHash() as $announcement) {
+            $announcement['boards'] = explode(';', $announcement['scope']);
+
+            $announcement['sqlboards'] = array_map(function ($v) { return $this->pdo->quote($v); }, $announcement['boards']);
+            $announcement['sqlboards'] = implode(',', $announcement['sqlboards']);
+
+            $r_board = $this->pdo->query(
+<<<SQL
+SELECT
+    boardid
+FROM
+    {$this->table_prefix}board
+WHERE
+    boardname IN ({$announcement['sqlboards']})
+SQL
+            );
+
+            unset($announcement['sqlboards']);
+
+            if (sizeof($announcement['boards']) !== $r_board->rowCount()) {
+                throw new DomainException("Announcement '{$announcement['topic']}' is assigned to a non existing board");
+            }
+
+            $announcement['boardids'] = [];
+
+            foreach ($r_board as $board) {
+                $announcement['boardids'][] = $board['boardid'];
+            }
+
+            $announcement['sqlboards'] = ';'.implode(';', $announcement['boardids']).';';
+
+            $this->pdo->exec(
+<<<SQL
+INSERT INTO
+    {$this->table_prefix}news
+(
+    newstopic,
+    boardid,
+    newstext,
+    newstime
+) VALUES (
+    '{$announcement['topic']}',
+    '{$announcement['sqlboards']}',
+    '{$announcement['body']}',
+    {$timestamp->getTimestamp()}
+)
+SQL
+            );
+
+            $timestamp->add(new DateInterval('P2DT4H7M33S'));
+        }
+    }
+
     /** Set up the boards required for a scenario.
      *
      * @Given /^the following boards exist:$/
