@@ -63,27 +63,28 @@ function NewsForm($action, $news)
     print '<form name="announcements" method="post" action="announcements.php">
   <table border="0" cellspacing="1" cellpadding="2">
     <tr>
-      <td>Subject</td>
+      <td><label for="announcement-title">Title</label></td>
       <td>
-        <input class="tbinput" type="text" name="news[newstopic]" size="45" value="' . EditboxEncode($news[newstopic]) . '">
+        <input class="tbinput" id="announcement-title" type="text" name="news[newstopic]" size="45" value="' . EditboxEncode($news[newstopic]) . '">
       </td>
     </tr>
     <tr>
-      <td valign="top">Text</td>
+      <td valign="top"><label for="announcement-body">Body</label></td>
       <td>
-        <textarea class="tbinput" name="news[newstext]" cols="60" rows="8">' . $news[newstext] . '</textarea>
+        <textarea class="tbinput" id="announcement-body" name="news[newstext]" cols="60" rows="8">' . $news[newstext] . '</textarea>
+        Note: You can use ThWboard Code in announcements.
       </td>
     </tr>
     <tr>
-      <td valign="top">Boards</td>
+      <td valign="top"><label for="announcement-boardids">Boards</label></</td>
       <td>
-        <SELECT class="tbinput" name="boardids[]" size="8" multiple>' . selectbox_board($news[boardid]) . '</select>
+        <SELECT class="tbinput" id="announcement-boardids" name="boardids[]" size="8" multiple>' . selectbox_board($news[boardid]) . '</select>
       </td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>
-        <input type="submit" name="Submit" value="Submit">
+        <input type="submit" name="Submit" value="Save">
         <input type="hidden" name="newsid" value="' . $news[newsid] . '">
         <input type="hidden" name="action" value="' . $action . '">
         <input type="hidden" name="session" value="' . $session . '">
@@ -99,14 +100,20 @@ function NewsForm($action, $news)
 // ===================================================
 if( $action == "ListNews" )
 {
-    print '<b>Current Announcements</b><br><a href="announcements.php?action=AddNews&session=' . $session . '">Add</a> an announcement<br><br>Note: You can use ThWboard Code in announcements.<br><br>';
+    print '<a href="announcements.php?action=AddNews&session=' . $session . '">Add announcement</a>';
+    print '<h3>Announcements</h3>';
 
     $r_news = query("SELECT newsid, newstopic, newstext, newstime FROM ".$pref."news ORDER BY newstime DESC");
     echo mysql_error();
+
+    print '<ul id="announcements">';
     while( $news = mysql_fetch_array($r_news) )
     {
+        print '<li>';
         print date('d.m.Y H:i: ', $news[newstime]) . "$news[newstopic] [ <a href=\"announcements.php?action=EditNews&session=$session&newsid=$news[newsid]\">edit</a> ] [ <a href=\"announcements.php?action=DeleteNews&session=$session&newsid=$news[newsid]\">delete</a> ]</a><br>";
+        print '</li>';
     }
+    print '</ul>';
 }
 
 
@@ -144,7 +151,8 @@ elseif( $action == "UpdateNews" )
 // ===================================================
 elseif( $action == "AddNews" )
 {
-    print '<b>Add Announcement</b><br><br>';
+    print "<a href=\"announcements.php?action=ListNews&session=" . $session . "\">List announcements</a>";
+    print "<h3>New Announcement</h3>";
 
     NewsForm("InsertNews", array());
 
@@ -156,13 +164,17 @@ elseif( $action == "AddNews" )
 // ===================================================
 elseif( $action == "InsertNews" )
 {
+    print "<a href=\"announcements.php?action=ListNews&session=" . $session . "\">List announcements</a>";
+    print "<h3>New Announcement</h3>";
+
     while( list(, $boardids2) = @each($boardids) )
     {
         $add_board = $add_board.$boardids2.";";
     }
 
     query("INSERT INTO ".$pref."news (newstopic,boardid, newstext, newstime) VALUES ('" . addslashes($news[newstopic]) . "', ';$add_board', '" . addslashes($news[newstext]) . "', " . time() . ")");
-    print 'Announcement has been added!';
+
+    print "Announcement saved.";
 }
 
 
