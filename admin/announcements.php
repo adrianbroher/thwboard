@@ -155,11 +155,41 @@ if ('UpdateNews' == $_POST['action']) {
     print "<a href=\"announcements.php?action=ListNews&session=" . $session . "\">List announcements</a>";
     print "<h3>Edit Announcement</h3>";
 
-    $newsTopic = addslashes(EditboxDecode($_POST['news']['newstopic']));
-    $newsBody = addslashes($_POST['news']['newsbody']);
-    $boardIDs = ';' . implode(';', $_POST['boardids']) . ';';
+    if (empty($_POST['news']['newstopic'])) {
+        print "The announcement title can't be empty.";
+    } elseif (empty($_POST['news']['newstext'])) {
+        print "The announcement body can't be empty.";
+    } elseif (empty($_POST['boardids'])) {
+        print "The announcement needs to visible in at least one board.";
+    } else {
+        $boardIDs = array_map('intval', $_POST['boardids']);
+        $boardIDs = implode(',', $boardIDs);
 
-    query(
+        $r_boards = query(
+<<<SQL
+SELECT
+    boardid
+FROM
+    {$pref}board
+WHERE
+    boardid IN ({$boardIDs})
+SQL
+        );
+
+        $boardIDs = [];
+        while ($board = mysql_fetch_assoc($r_boards)) {
+            $boardIDs[] = $board['boardid'];
+        }
+
+        if (empty($boardIDs)) {
+            print "The announcement needs to visible in at least one board.";
+        } else {
+            $newsTopic = addslashes(EditboxDecode($_POST['news']['newstopic']));
+            $newsBody = addslashes($_POST['news']['newsbody']);
+
+            $boardIDs = ';' . implode(';', $boardIDs) . ';';
+
+            query(
 <<<SQL
 UPDATE
     {$pref}news
@@ -170,8 +200,11 @@ SET
 WHERE
     newsid = {$_POST['newsid']}
 SQL
-    );
-    print "Announcement saved.";
+            );
+
+            print "Announcement saved.";
+        }
+    }
 }
 
 
