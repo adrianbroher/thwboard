@@ -115,6 +115,27 @@ class CommonActionsContext extends MinkContext
         }
     }
 
+    /** Checks if no option is selected in a select
+     *
+     * @Then /^(?:|I )should see nothing selected in the select "(?P<field>[^"]*)"$/
+     *
+     * @param $field The select widget field selector.
+     */
+    public function assertSelectHasNoOptionSelected($field)
+    {
+        $field = $this->fixStepArgument($field);
+
+        $select = $this->assertSession()->fieldExists($field);
+
+        $selectedOption = $select->findAll('xpath', '//option[@selected="selected"]');
+
+        if (!empty($selectedOption)) {
+            $selectedOption = array_map(function ($v) { return "\"".$v->getText()."\""; }, $selectedOption);
+            $message = sprintf('Expected that no option in the select "%s" was select, but the option %s was selected.', $field, implode(", ", $selectedOption));
+            throw new ExpectationException($message, $this->getSession());
+        }
+    }
+
     /** Checks if an option is selected in a select
      *
      * @Then /^(?:|I )should see "(?P<value>[^"]*)" selected in the select "(?P<field>[^"]*)"$/
