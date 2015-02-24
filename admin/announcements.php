@@ -117,37 +117,60 @@ if( $action == "ListNews" )
 }
 
 
-// ===================================================
-// ===================================================
-// ===================================================
-elseif( $action == "EditNews" )
-{
-    print '<a href="announcements.php?action=AddNews&session=' . $session . '">Add announcement</a> ';
-    print "<a href=\"announcements.php?action=ListNews&session=" . $session . "\">List announcements</a>";
-    print '<b>Edit Announcement</b><br><br>';
+/*
+ * ########################################################################################
+ * Edit an announcement
+ * ########################################################################################
+ */
+if ('EditNews' == $_GET['action']) {
+    print "<a href=\"announcements.php?action=AddNews&amp;session=" . $session . "\">Add announcement</a> ";
+    print "<a href=\"announcements.php?action=ListNews&amp;session=" . $session . "\">List announcements</a>";
+    print "<h3>Edit Announcement</h3>";
 
-    $r_news = query("SELECT newsid, boardid, newstopic, newstext, newstime FROM ".$pref."news WHERE newsid=$newsid");
+    $r_news = query(
+<<<SQL
+SELECT
+    newsid,
+    boardid,
+    newstopic,
+    newstext,
+    newstime
+FROM
+    {$pref}news
+WHERE
+    newsid = {$_GET['newsid']}
+SQL
+    );
     $news = mysql_fetch_array($r_news);
-    NewsForm("UpdateNews", $news);
+    NewsForm('UpdateNews', $news);
 }
 
-
-// ===================================================
-// ===================================================
-// ===================================================
-elseif( $action == "UpdateNews" )
-{
-    print '<a href="announcements.php?action=AddNews&session=' . $session . '">Add announcement</a> ';
+/*
+ * ########################################################################################
+ * Do edit an announcement
+ * ########################################################################################
+ */
+if ('UpdateNews' == $_POST['action']) {
+    print "<a href=\"announcements.php?action=AddNews&session=" . $session . "\">Add announcement</a> ";
     print "<a href=\"announcements.php?action=ListNews&session=" . $session . "\">List announcements</a>";
-    print '<b>Edit Announcement</b><br><br>';
+    print "<h3>Edit Announcement</h3>";
 
-    $news[newstopic] = EditboxDecode($news[newstopic]);
+    $newsTopic = addslashes(EditboxDecode($_POST['news']['newstopic']));
+    $newsBody = addslashes($_POST['news']['newsbody']);
+    $boardIDs = ';' . implode(';', $_POST['boardids']) . ';';
 
-    while( list(, $boardids2) = @each($boardids) )
-    {
-        $add_board = $add_board.$boardids2.";";
-    }
-    query("UPDATE ".$pref."news SET newstext='" . addslashes($news[newstext]) . "', newstopic='" . addslashes($news[newstopic]) . "', boardid=';$add_board' WHERE newsid=$newsid");
+    query(
+<<<SQL
+UPDATE
+    {$pref}news
+SET
+    newstext  = '{$newsBody}',
+    newstopic = '{$newsTopic}',
+    boardid   = '{$boardIDs}'
+WHERE
+    newsid = {$_POST['newsid']}
+SQL
+    );
     print "Announcement saved.";
 }
 
