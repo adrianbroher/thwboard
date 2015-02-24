@@ -166,6 +166,39 @@ class CommonActionsContext extends MinkContext
         }
     }
 
+
+    /** Checks if multiple options are selected in a select
+     *
+     * @Then /^(?:|I )should see <value> selected in the select "(?P<field>[^"]*)":$/
+     *
+     * @param $field The select widget field selector.
+     * @param TableNode $options The options that should be selected.
+     */
+    public function assertSelectHasMultipleOptionsSelected($field, TableNode $options)
+    {
+        $field = $this->fixStepArgument($field);
+
+        $select = $this->assertSession()->fieldExists($field);
+
+        $selectedOptions = $select->findAll('xpath', '//option[@selected="selected"]');
+
+        $expectedOptions = array_map(function ($e) { return $e['value']; }, $options->getHash());
+
+        foreach ($selectedOptions as $selectOption) {
+            if (!in_array($selectOption->getText(), $expectedOptions)) {
+                $message = sprintf('The option "%s" should not be selected in the select element matching id|name|label|value "%s", but it was.', $selectedOption->getText(), $field);
+                throw new ElementTextException($message, $this->getSession(), $select);
+            }
+
+            unset($expectedOptions[array_search($selectOption->getText(), $expectedOptions)]);
+        }
+
+        if (!empty($expectedOptions)) {
+            $message = sprintf('The option "%s" should be selected in the select element matching id|name|label|value "%s", but was not.', implode(', ', $expectedOptions), $field);
+            throw new ElementTextException($message, $this->getSession(), $select);
+        }
+    }
+
     /** Checks if all given options can be found within a select
      *
      * @Then /^(?:|I )should see the following <value> available in the select "(?P<field>[^"]*)":$/
