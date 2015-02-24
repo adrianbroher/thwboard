@@ -84,7 +84,7 @@ function NewsForm($action, $news)
     <tr>
       <td>&nbsp;</td>
       <td>
-        <input type="submit" name="Submit" value="Save">
+        <input type="submit" name="submit" value="Save">
         <input type="hidden" name="newsid" value="' . $news[newsid] . '">
         <input type="hidden" name="action" value="' . $action . '">
         <input type="hidden" name="session" value="' . $session . '">
@@ -151,34 +151,22 @@ elseif( $action == "UpdateNews" )
  * Add an announcement
  * ########################################################################################
  */
-if ('AddNews' == $_GET['action']) {
+if ('AddNews' == $_REQUEST['action']) {
     print "<a href=\"announcements.php?action=ListNews&session=" . $session . "\">List announcements</a>";
     print "<h3>New Announcement</h3>";
 
-    NewsForm('InsertNews', []);
-}
+    if (isset($_POST['submit'])) {
+        if (empty($_POST['news']['newstopic'])) {
+            print "The announcement title can't be empty.";
+        } elseif (empty($_POST['news']['newstext'])) {
+            print "The announcement body can't be empty.";
+        } elseif (empty($_POST['boardids'])) {
+            print "The announcement needs to visible in at least one board.";
+        } else {
+            $boardIDs = array_map('intval', $_POST['boardids']);
+            $boardIDs = implode(',', $boardIDs);
 
-
-/*
- * ########################################################################################
- * Do add an announcement
- * ########################################################################################
- */
-if ('InsertNews' == $_POST['action']) {
-    print "<a href=\"announcements.php?action=ListNews&session=" . $session . "\">List announcements</a>";
-    print "<h3>New Announcement</h3>";
-
-    if (empty($_POST['news']['newstopic'])) {
-        print "The announcement title can't be empty.";
-    } elseif (empty($_POST['news']['newstext'])) {
-        print "The announcement body can't be empty.";
-    } elseif (empty($_POST['boardids'])) {
-        print "The announcement needs to visible in at least one board.";
-    } else {
-        $boardIDs = array_map('intval', $_POST['boardids']);
-        $boardIDs = implode(',', $boardIDs);
-
-        $r_boards = query(
+            $r_boards = query(
 <<<SQL
 SELECT
     boardid
@@ -187,22 +175,22 @@ FROM
 WHERE
     boardid IN ({$boardIDs})
 SQL
-        );
+            );
 
-        $boardIDs = [];
-        while ($board = mysql_fetch_assoc($r_boards)) {
-            $boardIDs[] = $board['boardid'];
-        }
+            $boardIDs = [];
+            while ($board = mysql_fetch_assoc($r_boards)) {
+                $boardIDs[] = $board['boardid'];
+            }
 
-        if (empty($boardIDs)) {
-            print "The announcement needs to visible in at least one board.";
-        } else {
-            $newsTopic = addslashes($_POST['news']['newstopic']);
-            $newsBody = addslashes($_POST['news']['newsbody']);
+            if (empty($boardIDs)) {
+                print "The announcement needs to visible in at least one board.";
+            } else {
+                $newsTopic = addslashes($_POST['news']['newstopic']);
+                $newsBody = addslashes($_POST['news']['newsbody']);
 
-            $boardIDs = ';' . implode(';', $boardIDs) . ';';
+                $boardIDs = ';' . implode(';', $boardIDs) . ';';
 
-            query(
+                query(
 <<<SQL
 INSERT INTO
     {$pref}news
@@ -218,13 +206,15 @@ INSERT INTO
     UNIX_TIMESTAMP()
 )
 SQL
-            );
+                );
 
-            print "Announcement saved.";
+                print "Announcement saved.";
+            }
         }
+    } else {
+        NewsForm('AddNews', []);
     }
 }
-
 
 // ===================================================
 // ===================================================
