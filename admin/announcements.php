@@ -57,37 +57,33 @@ function selectbox_board($boardids)
     return($selectbox);
 }
 
-function NewsForm($action, $news)
+function NewsForm($handler, $news)
 {
-    global $session;
-    print '<form name="announcements" method="post" action="announcements.php">
+    print '<form name="announcements" method="post" action="'.htmlspecialchars($handler).'">
   <table border="0" cellspacing="1" cellpadding="2">
     <tr>
       <td><label for="announcement-title">Title</label></td>
       <td>
-        <input class="tbinput" id="announcement-title" type="text" name="news[newstopic]" size="45" value="' . EditboxEncode($news[newstopic]) . '">
+        <input class="tbinput" id="announcement-title" type="text" name="announcement-title" size="45" value="' . EditboxEncode($news[newstopic]) . '">
       </td>
     </tr>
     <tr>
       <td valign="top"><label for="announcement-body">Body</label></td>
       <td>
-        <textarea class="tbinput" id="announcement-body" name="news[newstext]" cols="60" rows="8">' . $news[newstext] . '</textarea>
+        <textarea class="tbinput" id="announcement-body" name="announcement-body" cols="60" rows="8">' . $news[newstext] . '</textarea>
         Note: You can use ThWboard Code in announcements.
       </td>
     </tr>
     <tr>
       <td valign="top"><label for="announcement-boardids">Boards</label></</td>
       <td>
-        <SELECT class="tbinput" id="announcement-boardids" name="boardids[]" size="8" multiple>' . selectbox_board($news[boardid]) . '</select>
+        <SELECT class="tbinput" id="announcement-boardids" name="announcement-boardids[]" size="8" multiple>' . selectbox_board($news[boardid]) . '</select>
       </td>
     </tr>
     <tr>
       <td>&nbsp;</td>
       <td>
         <input type="submit" name="submit" value="Save">
-        <input type="hidden" name="newsid" value="' . $news[newsid] . '">
-        <input type="hidden" name="action" value="' . $action . '">
-        <input type="hidden" name="session" value="' . $session . '">
       </td>
     </tr>
   </table>
@@ -100,7 +96,7 @@ function NewsForm($action, $news)
 // ===================================================
 if( $action == "ListNews" )
 {
-    print '<a href="announcements.php?action=AddNews&session=' . $session . '">Add announcement</a>';
+    print '<a href="announcements.php?action=new&session=' . $session . '">Add announcement</a>';
     print '<h3>Announcements</h3>';
 
     $r_news = query("SELECT newsid, newstopic, newstext, newstime FROM ".$pref."news ORDER BY newstime DESC");
@@ -110,7 +106,7 @@ if( $action == "ListNews" )
     while( $news = mysql_fetch_array($r_news) )
     {
         print '<li>';
-        print date('d.m.Y H:i: ', $news[newstime]) . "$news[newstopic] [ <a href=\"announcements.php?action=EditNews&session=$session&newsid=$news[newsid]\" title=\"Edit announcement ".htmlspecialchars($news['newstopic'])."\">edit</a> ] [ <a href=\"announcements.php?action=DeleteNews&session=$session&newsid=$news[newsid]\">delete</a> ]</a><br>";
+        print date('d.m.Y H:i: ', $news[newstime]) . "$news[newstopic] [ <a href=\"announcements.php?action=edit&session=$session&id=$news[newsid]\" title=\"Edit announcement ".htmlspecialchars($news['newstopic'])."\">edit</a> ] [ <a href=\"announcements.php?action=DeleteNews&session=$session&newsid=$news[newsid]\">delete</a> ]</a><br>";
         print '</li>';
     }
     print '</ul>';
@@ -122,20 +118,20 @@ if( $action == "ListNews" )
  * Edit an announcement
  * ########################################################################################
  */
-if ('EditNews' == $_REQUEST['action']) {
-    print "<a href=\"announcements.php?action=AddNews&amp;session=" . $session . "\">Add announcement</a> ";
+if ('edit' == $_GET['action']) {
+    print "<a href=\"announcements.php?action=new&amp;session=" . $session . "\">Add announcement</a> ";
     print "<a href=\"announcements.php?action=ListNews&amp;session=" . $session . "\">List announcements</a>";
     print "<h3>Edit Announcement</h3>";
 
     if (isset($_POST['submit'])) {
-        if (empty($_POST['news']['newstopic'])) {
+        if (empty($_POST['announcement-title'])) {
             print "The announcement title can't be empty.";
-        } elseif (empty($_POST['news']['newstext'])) {
+        } elseif (empty($_POST['announcement-body'])) {
             print "The announcement body can't be empty.";
-        } elseif (empty($_POST['boardids'])) {
+        } elseif (empty($_POST['announcement-boardids'])) {
             print "The announcement needs to visible in at least one board.";
         } else {
-            $boardIDs = array_map('intval', $_POST['boardids']);
+            $boardIDs = array_map('intval', $_POST['announcement-boardids']);
             $boardIDs = implode(',', $boardIDs);
 
             $r_boards = query(
@@ -157,8 +153,8 @@ SQL
             if (empty($boardIDs)) {
                 print "The announcement needs to visible in at least one board.";
             } else {
-                $newsTopic = addslashes(EditboxDecode($_POST['news']['newstopic']));
-                $newsBody = addslashes($_POST['news']['newsbody']);
+                $newsTopic = addslashes(EditboxDecode($_POST['announcement-title']));
+                $newsBody = addslashes($_POST['announcement-body']);
 
                 $boardIDs = ';' . implode(';', $boardIDs) . ';';
 
@@ -171,7 +167,7 @@ SET
     newstopic = '{$newsTopic}',
     boardid   = '{$boardIDs}'
 WHERE
-    newsid = {$_POST['newsid']}
+    newsid = {$_GET['id']}
 SQL
                 );
 
@@ -190,11 +186,11 @@ SELECT
 FROM
     {$pref}news
 WHERE
-    newsid = {$_GET['newsid']}
+    newsid = {$_GET['id']}
 SQL
         );
         $news = mysql_fetch_array($r_news);
-        NewsForm('EditNews', $news);
+        NewsForm('announcements.php?action=edit&id='.$news['newsid'].'&session='.$session, $news);
     }
 }
 
@@ -203,19 +199,19 @@ SQL
  * Add an announcement
  * ########################################################################################
  */
-if ('AddNews' == $_REQUEST['action']) {
+if ('new' == $_GET['action']) {
     print "<a href=\"announcements.php?action=ListNews&session=" . $session . "\">List announcements</a>";
     print "<h3>New Announcement</h3>";
 
     if (isset($_POST['submit'])) {
-        if (empty($_POST['news']['newstopic'])) {
+        if (empty($_POST['announcement-title'])) {
             print "The announcement title can't be empty.";
-        } elseif (empty($_POST['news']['newstext'])) {
+        } elseif (empty($_POST['announcement-body'])) {
             print "The announcement body can't be empty.";
-        } elseif (empty($_POST['boardids'])) {
+        } elseif (empty($_POST['announcement-boardids'])) {
             print "The announcement needs to visible in at least one board.";
         } else {
-            $boardIDs = array_map('intval', $_POST['boardids']);
+            $boardIDs = array_map('intval', $_POST['announcement-boardids']);
             $boardIDs = implode(',', $boardIDs);
 
             $r_boards = query(
@@ -237,8 +233,8 @@ SQL
             if (empty($boardIDs)) {
                 print "The announcement needs to visible in at least one board.";
             } else {
-                $newsTopic = addslashes($_POST['news']['newstopic']);
-                $newsBody = addslashes($_POST['news']['newsbody']);
+                $newsTopic = addslashes($_POST['announcement-title']);
+                $newsBody = addslashes($_POST['announcement-body']);
 
                 $boardIDs = ';' . implode(';', $boardIDs) . ';';
 
@@ -264,7 +260,7 @@ SQL
             }
         }
     } else {
-        NewsForm('AddNews', []);
+        NewsForm('announcements.php?action=new&session='.$session, []);
     }
 }
 
