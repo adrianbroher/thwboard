@@ -110,7 +110,7 @@ if( $action == "ListNews" )
     while( $news = mysql_fetch_array($r_news) )
     {
         print '<li>';
-        print date('d.m.Y H:i: ', $news[newstime]) . "$news[newstopic] [ <a href=\"announcements.php?action=EditNews&session=$session&newsid=$news[newsid]\">edit</a> ] [ <a href=\"announcements.php?action=DeleteNews&session=$session&newsid=$news[newsid]\">delete</a> ]</a><br>";
+        print date('d.m.Y H:i: ', $news[newstime]) . "$news[newstopic] [ <a href=\"announcements.php?action=EditNews&session=$session&newsid=$news[newsid]\" title=\"Edit announcement ".htmlspecialchars($news['newstopic'])."\">edit</a> ] [ <a href=\"announcements.php?action=DeleteNews&session=$session&newsid=$news[newsid]\">delete</a> ]</a><br>";
         print '</li>';
     }
     print '</ul>';
@@ -122,6 +122,8 @@ if( $action == "ListNews" )
 // ===================================================
 elseif( $action == "EditNews" )
 {
+    print '<a href="announcements.php?action=AddNews&session=' . $session . '">Add announcement</a> ';
+    print "<a href=\"announcements.php?action=ListNews&session=" . $session . "\">List announcements</a>";
     print '<b>Edit Announcement</b><br><br>';
 
     $r_news = query("SELECT newsid, boardid, newstopic, newstext, newstime FROM ".$pref."news WHERE newsid=$newsid");
@@ -135,6 +137,10 @@ elseif( $action == "EditNews" )
 // ===================================================
 elseif( $action == "UpdateNews" )
 {
+    print '<a href="announcements.php?action=AddNews&session=' . $session . '">Add announcement</a> ';
+    print "<a href=\"announcements.php?action=ListNews&session=" . $session . "\">List announcements</a>";
+    print '<b>Edit Announcement</b><br><br>';
+
     $news[newstopic] = EditboxDecode($news[newstopic]);
 
     while( list(, $boardids2) = @each($boardids) )
@@ -142,7 +148,7 @@ elseif( $action == "UpdateNews" )
         $add_board = $add_board.$boardids2.";";
     }
     query("UPDATE ".$pref."news SET newstext='" . addslashes($news[newstext]) . "', newstopic='" . addslashes($news[newstopic]) . "', boardid=';$add_board' WHERE newsid=$newsid");
-    print 'Announcement has been updated!';
+    print "Announcement saved.";
 }
 
 
