@@ -333,7 +333,7 @@ ul.actions li {
                 <ul>
                     <li><a href="users.php?session='.$session.'&amp;action=bans">User bans</a></li>
                     <li><a href="useredit.php?session='.$session.'&amp;action=Filter">List users</a></li>
-                    <li><a href="useredit.php?session='.$session.'&amp;action=AddUser">Add user</a></li>
+                    <li><a href="useredit.php?session='.$session.'&amp;action=new">Add user</a></li>
                     <li><a href="useredit.php?session='.$session.'&amp;action=DeleteUser">Delete user</a></li>
                 </ul>
             </li>

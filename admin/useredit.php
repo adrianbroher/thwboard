@@ -103,19 +103,19 @@ function in_group($groupids, $groupid)
  * Add an user
  * ########################################################################################
  */
-if ('AddUser' == $_REQUEST['action']) {
+if ('new' == $_GET['action']) {
     if (isset($_POST['submit'])) {
-        if (empty($_POST['username'])) {
+        if (empty($_POST['user-name'])) {
             print "The user name can't be empty.";
-        } elseif (empty($_POST['useremail'])) {
+        } elseif (empty($_POST['user-email'])) {
             print "The user email can't be empty.";
-        } elseif (empty($_POST['userpassword']) || empty($_POST['userpassword2'])) {
+        } elseif (empty($_POST['user-password']) || empty($_POST['user-password-verify'])) {
             print "The user passwords can't be empty.";
-        } elseif ($_POST['userpassword'] != $_POST['userpassword2']) {
+        } elseif ($_POST['user-password'] != $_POST['user-password-verify']) {
             print "The given passwords did not match.";
         } else {
-            $userName = addslashes($_POST['username']);
-            $userEmail = addslashes($_POST['useremail']);
+            $userName = addslashes($_POST['user-name']);
+            $userEmail = addslashes($_POST['user-email']);
 
             $r_user = query(
 <<<SQL
@@ -144,7 +144,7 @@ SQL
             } elseif (mysql_num_rows($r_mail) > 0) {
                 print "The user email is already registered.";
             } else {
-                $userPassword = addslashes($_POST['userpassword']);
+                $userPassword = addslashes($_POST['user-password']);
 
                 query(
 <<<SQL
@@ -172,26 +172,24 @@ SQL
     } else {
         print '<b>New user</b><br>
 <br>
-<form class="entity-form" name="user" method="post" action="./useredit.php">
+<form class="entity-form" name="user" method="post" action="./useredit.php?action=new&amp;session='.htmlspecialchars($session).'">
     <div>
         <label for="user-name">Name</label>
-        <input id="user-name" type="text" name="username">
+        <input id="user-name" type="text" name="user-name">
     </div>
     <div>
         <label for="user-email">Email</label>
-        <input id="user-email" type="text" name="useremail">
+        <input id="user-email" type="text" name="user-email">
     </div>
     <div>
         <label for="user-password">Password</label>
-        <input id="user-password" type="password" name="userpassword">
+        <input id="user-password" type="password" name="user-password">
     </div>
     <div>
         <label for="user-password-verify">Verify password</label>
-        <input id="user-password-verify" type="password" name="userpassword2">
+        <input id="user-password-verify" type="password" name="user-password-verify">
     </div>
     <div>
-        <input type="hidden" name="action" value="AddUser">
-        <input type="hidden" name="session" value="' . $session . '">
         <input type="submit" name="submit" value="Save">
     </div>
 </form>';
