@@ -146,33 +146,53 @@ elseif( $action == "UpdateNews" )
 }
 
 
-// ===================================================
-// ===================================================
-// ===================================================
-elseif( $action == "AddNews" )
-{
+/*
+ * ########################################################################################
+ * Add an announcement
+ * ########################################################################################
+ */
+if ('AddNews' == $_GET['action']) {
     print "<a href=\"announcements.php?action=ListNews&session=" . $session . "\">List announcements</a>";
     print "<h3>New Announcement</h3>";
 
-    NewsForm("InsertNews", array());
-
+    NewsForm('InsertNews', []);
 }
 
 
-// ===================================================
-// ===================================================
-// ===================================================
-elseif( $action == "InsertNews" )
-{
+/*
+ * ########################################################################################
+ * Do add an announcement
+ * ########################################################################################
+ */
+if ('InsertNews' == $_POST['action']) {
     print "<a href=\"announcements.php?action=ListNews&session=" . $session . "\">List announcements</a>";
     print "<h3>New Announcement</h3>";
 
-    while( list(, $boardids2) = @each($boardids) )
-    {
-        $add_board = $add_board.$boardids2.";";
+    $newsTopic = addslashes($_POST['news']['newstopic']);
+    $newsBody = addslashes($_POST['news']['newsbody']);
+
+    $boardIDs = ';';
+    while (list(, $boardID) = @each($_POST['boardids'])) {
+        $boardIDs = $boardIDs . $boardID . ';';
     }
 
-    query("INSERT INTO ".$pref."news (newstopic,boardid, newstext, newstime) VALUES ('" . addslashes($news[newstopic]) . "', ';$add_board', '" . addslashes($news[newstext]) . "', " . time() . ")");
+    query(
+<<<SQL
+INSERT INTO
+    {$pref}news
+(
+    newstopic,
+    boardid,
+    newstext,
+    newstime
+) VALUES (
+    '{$newsTopic}',
+    '{$boardIDs}',
+    '{$newsBody}',
+    UNIX_TIMESTAMP()
+)
+SQL
+    );
 
     print "Announcement saved.";
 }
