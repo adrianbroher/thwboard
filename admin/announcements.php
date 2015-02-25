@@ -24,16 +24,6 @@ include "common.inc.php";
 
 tb_header();
 
-function EditboxEncode($string)
-{
-    $string = str_replace('&', '&amp;', $string);
-    $string = str_replace('"', '&quot;', $string);
-    $string = str_replace('<', '&lt;', $string);
-    $string = str_replace('>', '&gt;', $string);
-
-    return $string;
-}
-
 function EditboxDecode($string)
 {
     $string = str_replace('&amp;', '&', $string);
@@ -44,40 +34,50 @@ function EditboxDecode($string)
     return $string;
 }
 
-function selectbox_board($boardids)
-{
-    global $pref;
-    global $config;
-    global $session;
-    $r_board = query("SELECT boardid, boardname FROM " . $pref . "board");
-    while ( $board = mysql_fetch_array($r_board) )
-    {
-    $selectbox .= "<option value=\"$board[boardid]\" " . ( stristr($boardids,";" . $board[boardid] . ";") != false ? "selected" : "" ) . ">$board[boardname]</option>";
-    }
-    return($selectbox);
-}
-
 function NewsForm($handler, $news)
 {
+    global $pref;
+
+    $r_board = query(
+<<<SQL
+SELECT
+    boardid AS ID,
+    boardname AS name
+FROM
+    {$pref}board
+SQL
+    );
+
+    $boards = [];
+    while ($board = mysql_fetch_object($r_board)) {
+        $boards[] = $board;
+    }
+
     print '<form name="announcements" method="post" action="'.htmlspecialchars($handler).'">
   <table border="0" cellspacing="1" cellpadding="2">
     <tr>
       <td><label for="announcement-title">Title</label></td>
       <td>
-        <input class="tbinput" id="announcement-title" type="text" name="announcement-title" size="45" value="' . EditboxEncode($news[newstopic]) . '">
+        <input class="tbinput" id="announcement-title" type="text" name="announcement-title" size="45" value="' . htmlspecialchars($news['newstopic']) . '">
       </td>
     </tr>
     <tr>
       <td valign="top"><label for="announcement-body">Body</label></td>
       <td>
-        <textarea class="tbinput" id="announcement-body" name="announcement-body" cols="60" rows="8">' . $news[newstext] . '</textarea>
+        <textarea class="tbinput" id="announcement-body" name="announcement-body" cols="60" rows="8">' . htmlspecialchars($news['newstext']) . '</textarea>
         Note: You can use ThWboard Code in announcements.
       </td>
     </tr>
     <tr>
       <td valign="top"><label for="announcement-boardids">Boards</label></</td>
       <td>
-        <SELECT class="tbinput" id="announcement-boardids" name="announcement-boardids[]" size="8" multiple>' . selectbox_board($news[boardid]) . '</select>
+        <SELECT class="tbinput" id="announcement-boardids" name="announcement-boardids[]" size="8" multiple>';
+
+    foreach ($boards as $board) {
+        print "<option value=\"".htmlspecialchars($board->ID)."\" " . (stristr($news['boardid'], ";".$board->ID.";") != false ? 'selected="selected"' : '') . ">".htmlspecialchars($board->name)."</option>";
+    }
+
+    print '</select>
       </td>
     </tr>
     <tr>
