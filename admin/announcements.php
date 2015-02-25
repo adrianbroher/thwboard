@@ -264,24 +264,30 @@ SQL
     }
 }
 
-// ===================================================
-// ===================================================
-// ===================================================
-elseif( $action == "DeleteNews" )
-{
+/*
+ * ########################################################################################
+ * Delete an announcement
+ * ########################################################################################
+ */
+if ('DeleteNews' == $_GET['action']) {
     print "<a href=\"announcements.php?action=new&amp;session=" . $session . "\">Add announcement</a> ";
     print "<a href=\"announcements.php?action=ListNews&amp;session=" . $session . "\">List announcements</a>";
     print "<h3>Delete Announcement</h3>";
 
     if ($_POST['submit']) {
-        query("DELETE FROM ".$pref."news WHERE newsid=$newsid");
+        query(
+<<<SQL
+DELETE FROM
+    {$pref}news
+WHERE
+    newsid = {$_GET['newsid']}
+SQL
+        );
 
-        print 'Announcement has been deleted!';
-    }
-    else
-    {
+        print "Announcement has been deleted!";
+    } else {
 ?>
-<form method="post" action="announcements.php?action=DeleteNews&amp;newsid=<?= $newsid ?>&amp;session=<?= $session ?>">
+<form method="post" action="announcements.php?action=DeleteNews&amp;newsid=<?= $_GET['newsid'] ?>&amp;session=<?= $session ?>">
     Do you really want to delete the announcement?
     <input type="submit" name="submit" value="Delete">
 </form>
