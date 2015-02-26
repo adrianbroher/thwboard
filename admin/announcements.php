@@ -91,25 +91,38 @@ SQL
 }
 
 
-// ===================================================
-// ===================================================
-// ===================================================
-if( $action == "ListNews" )
-{
-    print '<a href="announcements.php?action=new&session=' . $session . '">Add announcement</a>';
-    print '<h3>Announcements</h3>';
+/*
+ * ########################################################################################
+ * List announcements
+ * ########################################################################################
+ */
+if ('ListNews' == $_GET['action']) {
+    print "<a href=\"announcements.php?action=new&session=".$session."\">Add announcement</a>";
+    print "<h3>Announcements</h3>";
 
-    $r_news = query("SELECT newsid, newstopic, newstext, newstime FROM ".$pref."news ORDER BY newstime DESC");
-    echo mysql_error();
+    $r_news = query(
+<<<SQL
+SELECT
+    newsid,
+    newstopic,
+    newstext,
+    newstime
+FROM
+    {$pref}news
+ORDER BY
+    newstime DESC
+SQL
+    );
 
-    print '<ul id="announcements">';
-    while( $news = mysql_fetch_array($r_news) )
-    {
-        print '<li>';
-        print date('d.m.Y H:i: ', $news[newstime]) . "$news[newstopic] [ <a href=\"announcements.php?action=edit&session=$session&id=$news[newsid]\" title=\"Edit announcement ".htmlspecialchars($news['newstopic'])."\">edit</a> ] [ <a href=\"announcements.php?action=delete&session=$session&id=$news[newsid]\" title=\"Delete announcement ".htmlspecialchars($news['newstopic'])."\">delete</a> ]</a><br>";
-        print '</li>';
+    print "<ul id=\"announcements\">";
+
+    while ($news = mysql_fetch_array($r_news)) {
+        print "<li>";
+        print date("d.m.Y H:i: ", $news['newstime']) . $news['newstopic'] . " [ <a href=\"announcements.php?action=edit&session=".$session."&amp;id=".$news['newsid']."\" title=\"Edit announcement ".htmlspecialchars($news['newstopic'])."\">edit</a> ] [ <a href=\"announcements.php?action=delete&session=".$session."&amp;id=".$news['newsid']."\" title=\"Delete announcement ".htmlspecialchars($news['newstopic'])."\">delete</a> ]</a><br>";
+        print "</li>";
     }
-    print '</ul>';
+
+    print "</ul>";
 }
 
 
