@@ -106,7 +106,7 @@ if( $action == "ListNews" )
     while( $news = mysql_fetch_array($r_news) )
     {
         print '<li>';
-        print date('d.m.Y H:i: ', $news[newstime]) . "$news[newstopic] [ <a href=\"announcements.php?action=edit&session=$session&id=$news[newsid]\" title=\"Edit announcement ".htmlspecialchars($news['newstopic'])."\">edit</a> ] [ <a href=\"announcements.php?action=DeleteNews&session=$session&newsid=$news[newsid]\" title=\"Delete announcement ".htmlspecialchars($news['newstopic'])."\">delete</a> ]</a><br>";
+        print date('d.m.Y H:i: ', $news[newstime]) . "$news[newstopic] [ <a href=\"announcements.php?action=edit&session=$session&id=$news[newsid]\" title=\"Edit announcement ".htmlspecialchars($news['newstopic'])."\">edit</a> ] [ <a href=\"announcements.php?action=delete&session=$session&id=$news[newsid]\" title=\"Delete announcement ".htmlspecialchars($news['newstopic'])."\">delete</a> ]</a><br>";
         print '</li>';
     }
     print '</ul>';
@@ -269,7 +269,7 @@ SQL
  * Delete an announcement
  * ########################################################################################
  */
-if ('DeleteNews' == $_GET['action']) {
+if ('delete' == $_GET['action']) {
     print "<a href=\"announcements.php?action=new&amp;session=" . $session . "\">Add announcement</a> ";
     print "<a href=\"announcements.php?action=ListNews&amp;session=" . $session . "\">List announcements</a>";
     print "<h3>Delete Announcement</h3>";
@@ -280,14 +280,14 @@ if ('DeleteNews' == $_GET['action']) {
 DELETE FROM
     {$pref}news
 WHERE
-    newsid = {$_GET['newsid']}
+    newsid = {$_GET['id']}
 SQL
         );
 
         print "Announcement has been deleted!";
     } else {
 ?>
-<form method="post" action="announcements.php?action=DeleteNews&amp;newsid=<?= $_GET['newsid'] ?>&amp;session=<?= $session ?>">
+<form method="post" action="announcements.php?action=delete&amp;id=<?= $_GET['id'] ?>&amp;session=<?= $session ?>">
     Do you really want to delete the announcement?
     <input type="submit" name="submit" value="Delete">
 </form>
