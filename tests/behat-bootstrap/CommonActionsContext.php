@@ -223,6 +223,52 @@ class CommonActionsContext extends MinkContext
         }
     }
 
+    /** Check if table contains data.
+     *
+     * @Then /^the table "(?P<table>[^”]*)" should contain:$/
+     */
+    public function assertTableContains($table, TableNode $data)
+    {
+        $table = $this->fixStepArgument($table);
+        $tableElement = $this->assertSession()->elementExists('xpath', sprintf('//table[@id="%s"]', $table));
+
+        $actualData = [];
+
+        foreach ($tableElement->findAll('xpath', '/tr') as $row) {
+            $rowData = [];
+
+            foreach ($row->findAll('xpath', '/th | /td') as $cell) {
+                $rowData[] = $cell->getText();
+            }
+
+            $actualData[] = $rowData;
+        }
+
+        $expectedData = $data->getRows();
+
+        if (sizeof($expectedData) != sizeof($actualData)) {
+            $message = sprintf("The table with the id|name|title|alt|value \"%s\" expects to have %d rows, but had %d rows.", $table, sizeof($expectedData), sizeof($actualData));
+            throw new ExpectationException($message, $this->getSession());
+        }
+
+        for ($curRow = 0; $curRow < sizeof($expectedData); ++$curRow) {
+            if (sizeof($expectedData[$curRow]) != sizeof($actualData[$curRow])) {
+                $message = sprintf("Row %d in table with the id|name|title|alt|value \"%s\" expects to have %d cells, but had %d cells.", $curRow, $table, sizeof($expectedData[$curRow]), sizeof($actualData[$curRow]));
+                throw new ExpectationException($message, $this->getSession());
+            }
+
+            for ($curCell = 0; $curCell < sizeof($expectedData[$curRow]); ++$curCell) {
+                $expected = trim($expectedData[$curRow][$curCell]);
+                $actual   = trim($actualData[$curRow][$curCell]);
+                $actual   = trim($actual, chr(0xC2).chr(0xA0));
+                if ($expected != $actual) {
+                    $message = sprintf("Cell value at (%d, %d) in table with the id|name|title|alt|value \"%s\" should be \"%s\", but was \"%s\".", $curRow, $curCell, $table, $expected, $actual);
+                    throw new ExpectationException($message, $this->getSession());
+                }
+            }
+        }
+    }
+
     /** Check a radio button by label.
      *
      * @When /^(?:|I )check the "(?P<field>[^”]*)" radio button$/
