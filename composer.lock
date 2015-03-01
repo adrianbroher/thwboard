@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9591713039ba8be47c6d1b09affbc81e",
+    "hash": "a97989e9368da023651584c46a8313ee",
     "packages": [
         {
             "name": "league/plates",
@@ -1400,5 +1400,7 @@
         "php": ">=5.4.0",
         "ext-mysql": "*"
     },
-    "platform-dev": []
+    "platform-dev": {
+        "ext-tidy": "*"
+    }
 }

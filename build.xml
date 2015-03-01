@@ -75,6 +75,8 @@ default:
                 - HTMLDumpContext:
                     context_name: CommonActionsContext
                     html_dump_path: /tmp/thwboard
+                - HTMLValidateContext:
+                    context_name: CommonActionsContext
                 - ThWboardModelFeatureContext:
                     database_hostname: ${database_hostname}
                     database_username: ${database_username}
