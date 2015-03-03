@@ -12,7 +12,7 @@ td {  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 8pt
         <form name="theform" method="post" action="<?= (isset($step) ? ('?step=' . $step) : '') ?>">
             <table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
                 <tr>
-                    <td bgcolor="#D4D0C8" height="1" width="1"><img src="./images/space.gif" width="1" height="1"></td>
+                    <td bgcolor="#D4D0C8" height="1" width="1"></td>
                     <td bgcolor="#D4D0C8" height="1" width="1"></td>
                     <td bgcolor="#D4D0C8" height="1"></td>
                     <td bgcolor="#D4D0C8" height="1" width="1"></td>
@@ -20,7 +20,7 @@ td {  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 8pt
                 </tr>
                 <tr>
                     <td bgcolor="#D4D0C8" height="1" width="1"></td>
-                    <td bgcolor="#FFFFFF" height="1" width="1"><img src="./images/space.gif" width="1" height="1"></td>
+                    <td bgcolor="#FFFFFF" height="1" width="1"></td>
                     <td bgcolor="#FFFFFF" height="1"></td>
                     <td bgcolor="#FFFFFF" height="1" width="1"></td>
                     <td bgcolor="#000000" height="1" width="1"></td>
@@ -43,10 +43,10 @@ td {  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 8pt
                                     </table>
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tr>
-                                            <td bgcolor="#808080" height="1"><img src="./images/space.gif" width="1" height="1"></td>
+                                            <td bgcolor="#808080" height="1"></td>
                                         </tr>
                                         <tr>
-                                            <td bgcolor="#FFFFFF" height="1"><img src="./images/space.gif" width="1" height="1"></td>
+                                            <td bgcolor="#FFFFFF" height="1"></td>
                                         </tr>
                                     </table>
                                 </td>
@@ -66,10 +66,10 @@ td {  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 8pt
                                 <td>
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                         <tr>
-                                            <td bgcolor="#808080" height="1"><img src="./images/space.gif" width="1" height="1"></td>
+                                            <td bgcolor="#808080" height="1"></td>
                                         </tr>
                                         <tr>
-                                            <td bgcolor="#FFFFFF" height="1"><img src="./images/space.gif" width="1" height="1"></td>
+                                            <td bgcolor="#FFFFFF" height="1"></td>
                                         </tr>
                                     </table>
                                     <br>
@@ -93,7 +93,7 @@ td {  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 8pt
                     <td bgcolor="#D4D0C8" height="1" width="1"></td>
                     <td bgcolor="#FFFFFF" height="1" width="1"></td>
                     <td bgcolor="#808080" height="1"></td>
-                    <td bgcolor="#808080" height="1" width="1"><img src="./images/space.gif" width="1" height="1"></td>
+                    <td bgcolor="#808080" height="1" width="1"></td>
                     <td bgcolor="#000000" height="1" width="1"></td>
                 </tr>
                 <tr bgcolor="#000000">
@@ -101,7 +101,7 @@ td {  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 8pt
                     <td height="1" width="1"></td>
                     <td height="1"></td>
                     <td height="1" width="1"></td>
-                    <td height="1" width="1"><img src="./images/space.gif" width="1" height="1"></td>
+                    <td height="1" width="1"></td>
                 </tr>
             </table>
         </form>

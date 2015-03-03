@@ -150,13 +150,13 @@ function navgroupbox_open($caption, $noline = 0)
     print '
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td height="1" bgcolor="#FFFFFF"><img src="images/space.gif" width="1" height="1"></td>
+    <td height="1" bgcolor="#FFFFFF"></td>
   </tr>
   <tr>
     <td bgcolor="#E9EFF5"><font size="1" color="#4E7DB1"><b>&nbsp;'.$caption.'</b></font></td>
   </tr>
   <tr>
-    <td height="1" bgcolor="#C0D1E3"><img src="images/space.gif" width="1" height="1"></td>
+    <td height="1" bgcolor="#C0D1E3"></td>
   </tr>
 </table>
 <table width="100%" border="0" cellspacing="1" cellpadding="2">';
@@ -344,7 +344,7 @@ ul.actions li {
   </tr>
   <tr bgcolor="#000000">
     <td height="1" width="160"></td>
-    <td height="1" width="1"><img src="./images/space.gif" width="1" height="1"></td>
+    <td height="1" width="1"></td>
     <td height="1"></td>
   </tr>
   <tr>
@@ -416,7 +416,7 @@ ul.actions li {
         </tr>
       </table> -->
     </td>
-    <td bgcolor="#000000" width="1"><img src="./images/space.gif" width="1" height="1"></td>
+    <td bgcolor="#000000" width="1"></td>
     <td valign="top">
       <table width="100%" border="0" cellspacing="0" cellpadding="8">
         <tr>
@@ -433,7 +433,7 @@ function tb_footer()
   </tr>
   <tr bgcolor="#000000">
     <td height="1" width="160"></td>
-    <td height="1" width="1"><img src="./images/space.gif" width="1" height="1"></td>
+    <td height="1" width="1"></td>
     <td height="1"></td>
   </tr>
   <tr>
@@ -559,9 +559,9 @@ function loginform()
         <br>
         <table border="0" cellspacing="0" cellpadding="0" align="center">
           <tr>
-            <td bgcolor="#DBDBDB" width="1" height="1"><img src="images/space.gif" width="1" height="1"></td>
+            <td bgcolor="#DBDBDB" width="1" height="1"></td>
             <td bgcolor="#DBDBDB" height="1"></td>
-            <td bgcolor="#DBDBDB" width="1" height="1"><img src="images/space.gif" width="1" height="1"></td>
+            <td bgcolor="#DBDBDB" width="1" height="1"></td>
           </tr>
           <tr>
             <td bgcolor="#DBDBDB" width="1"></td>
@@ -597,9 +597,9 @@ function loginform()
             <td bgcolor="#FFFFFF" width="1"></td>
           </tr>
           <tr>
-            <td bgcolor="#DBDBDB" width="1" height="1"><img src="images/space.gif" width="1" height="1"></td>
+            <td bgcolor="#DBDBDB" width="1" height="1"></td>
             <td bgcolor="#FFFFFF" height="1"></td>
-            <td bgcolor="#FFFFFF" width="1" height="1"><img src="images/space.gif" width="1" height="1"></td>
+            <td bgcolor="#FFFFFF" width="1" height="1"></td>
           </tr>
         </table>
       </form>
