@@ -29,7 +29,8 @@ Feature: Board create
         And I press "Login"
         Then I should see "Categories and Boards"
         When I follow "Categories and Boards"
-        Then the list "board-order" should fulfill the relations:
+        Then the returned HTML document should be valid
+        And the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | number of children | 1          |
             | Category 2 | number of children | 0          |
@@ -40,7 +41,8 @@ Feature: Board create
 
     Scenario: Create a board with an empty name.
         When I follow "Add board"
-        Then I should see "New Board"
+        Then the returned HTML document should be valid
+        And I should see "New Board"
         And I should not see "Add board"
         And I should see "Add category"
         And I should see "List categories and boards"
@@ -67,10 +69,12 @@ Feature: Board create
         And I select "( Use default )" from "Style"
         And I select "Enable board" from "Status"
         And I press "Save"
-        Then I should see "The board name can't be empty"
+        Then the returned HTML document should be valid
+        And I should see "The board name can't be empty"
         And I should see "Categories and Boards"
         When I follow "List categories and boards"
-        Then the list "board-order" should fulfill the relations:
+        Then the returned HTML document should be valid
+        And the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | number of children | 1          |
             | Category 2 | number of children | 0          |
@@ -81,7 +85,8 @@ Feature: Board create
 
     Scenario: Create a duplicate board.
         When I follow "Add board"
-        Then I should see "New Board"
+        Then the returned HTML document should be valid
+        And I should see "New Board"
         And I should not see "Add board"
         And I should see "Add category"
         And I should see "List categories and boards"
@@ -108,10 +113,12 @@ Feature: Board create
         And I select "( Use default )" from "Style"
         And I select "Enable board" from "Status"
         And I press "Save"
-        Then I should see "The board already exists"
+        Then the returned HTML document should be valid
+        And I should see "The board already exists"
         And I should see "Categories and Boards"
         When I follow "List categories and boards"
-        Then the list "board-order" should fulfill the relations:
+        Then the returned HTML document should be valid
+        And the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | number of children | 1          |
             | Category 2 | number of children | 0          |
@@ -122,7 +129,8 @@ Feature: Board create
 
     Scenario: Successfully create a board in the first category.
         When I follow "Add board"
-        Then I should see "New Board"
+        Then the returned HTML document should be valid
+        And I should see "New Board"
         And I should not see "Add board"
         And I should see "Add category"
         And I should see "List categories and boards"
@@ -149,10 +157,12 @@ Feature: Board create
         And I select "( Use default )" from "Style"
         And I select "Enable board" from "Status"
         And I press "Save"
-        Then I should see "Board saved"
+        Then the returned HTML document should be valid
+        And I should see "Board saved"
         And I should see "Categories and Boards"
         When I follow "List categories and boards"
-        Then the list "board-order" should fulfill the relations:
+        Then the returned HTML document should be valid
+        And the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | number of children | 2          |
             | Category 2 | number of children | 0          |
@@ -164,7 +174,8 @@ Feature: Board create
 
     Scenario: Successfully create a board in the second category.
         When I follow "Add board"
-        Then I should see "New Board"
+        Then the returned HTML document should be valid
+        And I should see "New Board"
         And I should not see "Add board"
         And I should see "Add category"
         And I should see "List categories and boards"
@@ -191,10 +202,12 @@ Feature: Board create
         And I select "( Use default )" from "Style"
         And I select "Enable board" from "Status"
         And I press "Save"
-        Then I should see "Board saved"
+        Then the returned HTML document should be valid
+        And I should see "Board saved"
         And I should see "Categories and Boards"
         When I follow "List categories and boards"
-        Then the list "board-order" should fulfill the relations:
+        Then the returned HTML document should be valid
+        And the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | number of children | 1          |
             | Category 2 | number of children | 1          |

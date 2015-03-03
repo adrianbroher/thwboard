@@ -34,7 +34,8 @@ Feature: Board reorder
         And I press "Login"
         And I should see "Categories and Boards"
         When I follow "Categories and Boards"
-        Then the list "board-order" should fulfill the relations:
+        Then the returned HTML document should be valid
+        And the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 3          |
             | Category 1 | number of children | 3          |
             | Category 2 | number of children | 2          |
@@ -55,7 +56,8 @@ Feature: Board reorder
 
     Scenario: Move board down
         When I follow "Categories and Boards"
-        Then I should see "Forum structure"
+        Then the returned HTML document should be valid
+        And I should see "Forum structure"
         And I should see "Add board"
         And I should see "Add category"
         And I should not see "List categories and boards"
@@ -76,10 +78,12 @@ Feature: Board reorder
         And I should see the button "Move category Category 3 up"
         And I should not see the button "Move category Category 3 down"
         When I press "Move board Board 4 down"
-        Then I should see "Order updated"
+        Then the returned HTML document should be valid
+        And I should see "Order updated"
         And I should see "Categories and Boards"
         When I follow "List categories and boards"
-        Then I should see "Forum structure"
+        Then the returned HTML document should be valid
+        And I should see "Forum structure"
         And I should see "Add board"
         And I should see "Add category"
         And I should not see "List categories and boards"
@@ -120,7 +124,8 @@ Feature: Board reorder
 
     Scenario: Move board up
         When I follow "Categories and Boards"
-        Then I should see "Forum structure"
+        Then the returned HTML document should be valid
+        And I should see "Forum structure"
         And I should see "Add board"
         And I should see "Add category"
         And I should not see "List categories and boards"
@@ -141,10 +146,12 @@ Feature: Board reorder
         And I should see the button "Move category Category 3 up"
         And I should not see the button "Move category Category 3 down"
         When I press "Move board Board 4 up"
-        Then I should see "Order updated"
+        Then the returned HTML document should be valid
+        And I should see "Order updated"
         And I should see "Categories and Boards"
         When I follow "List categories and boards"
-        Then I should see "Forum structure"
+        Then the returned HTML document should be valid
+        And I should see "Forum structure"
         And I should see "Add board"
         And I should see "Add category"
         And I should not see "List categories and boards"
@@ -185,7 +192,8 @@ Feature: Board reorder
 
     Scenario: Move category down
         When I follow "Categories and Boards"
-        Then I should see "Forum structure"
+        Then the returned HTML document should be valid
+        And I should see "Forum structure"
         And I should see "Add board"
         And I should see "Add category"
         And I should not see "List categories and boards"
@@ -206,10 +214,12 @@ Feature: Board reorder
         And I should see the button "Move category Category 3 up"
         And I should not see the button "Move category Category 3 down"
         When I press "Move category Category 2 down"
-        Then I should see "Order updated"
+        Then the returned HTML document should be valid
+        And I should see "Order updated"
         And I should see "Categories and Boards"
         When I follow "List categories and boards"
-        Then I should see "Forum structure"
+        Then the returned HTML document should be valid
+        And I should see "Forum structure"
         And I should see "Add board"
         And I should see "Add category"
         And I should not see "List categories and boards"
@@ -250,7 +260,8 @@ Feature: Board reorder
 
     Scenario: Move category up
         When I follow "Categories and Boards"
-        Then I should see "Forum structure"
+        Then the returned HTML document should be valid
+        And I should see "Forum structure"
         And I should see "Add board"
         And I should see "Add category"
         And I should not see "List categories and boards"
@@ -271,10 +282,12 @@ Feature: Board reorder
         And I should see the button "Move category Category 3 up"
         And I should not see the button "Move category Category 3 down"
         When I press "Move category Category 3 up"
-        Then I should see "Order updated"
+        Then the returned HTML document should be valid
+        And I should see "Order updated"
         And I should see "Categories and Boards"
         When I follow "List categories and boards"
-        Then I should see "Forum structure"
+        Then the returned HTML document should be valid
+        And I should see "Forum structure"
         And I should see "Add board"
         And I should see "Add category"
         And I should not see "List categories and boards"

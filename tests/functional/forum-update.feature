@@ -18,7 +18,8 @@ Feature: Forum update
 
     Scenario: Enter invalid database credentials.
         Given I am on "/admin/update.php"
-        Then I should see "Login"
+        Then the returned HTML document should be valid
+        And I should see "Login"
         And the "Username" field should contain ""
         And the "Password" field should contain ""
         And I should see "English" selected in the select "Language"
@@ -27,9 +28,11 @@ Feature: Forum update
             | Deutsch |
             | English |
         And I press "Next"
-        Then I should see "No administrator credentials were given."
+        Then the returned HTML document should be valid
+        And I should see "No administrator credentials were given."
         When I follow "Back"
-        Then I should see "Login"
+        Then the returned HTML document should be valid
+        And I should see "Login"
         And the "Username" field should contain ""
         And the "Password" field should contain ""
         And I should see "English" selected in the select "Language"
@@ -41,11 +44,13 @@ Feature: Forum update
             | Username | invalid |
             | Password | invalid |
         And I press "Next"
-        Then I should see "Invalid administrator credentials were given."
+        Then the returned HTML document should be valid
+        And I should see "Invalid administrator credentials were given."
 
     Scenario: Select another language.
         Given I am on "/admin/update.php"
-        Then I should see "Login"
+        Then the returned HTML document should be valid
+        And I should see "Login"
         And the "Username" field should contain ""
         And the "Password" field should contain ""
         And I should see "English" selected in the select "Language"
@@ -58,11 +63,13 @@ Feature: Forum update
             | Password | rootroot |
         And I select "Deutsch" from "Language"
         And I press "Next"
-        Then I should see "Bitte wählen Sie die Aktualisierung, welche sie ausführen möchten, aus."
+        Then the returned HTML document should be valid
+        And I should see "Bitte wählen Sie die Aktualisierung, welche sie ausführen möchten, aus."
 
     Scenario: Select an already applied update.
         Given I am on "/admin/update.php"
-        Then I should see "Login"
+        Then the returned HTML document should be valid
+        And I should see "Login"
         And the "Username" field should contain ""
         And the "Password" field should contain ""
         And I should see "English" selected in the select "Language"
@@ -74,7 +81,8 @@ Feature: Forum update
             | Username | root     |
             | Password | rootroot |
         And I press "Next"
-        Then I should see "Updates"
+        Then the returned HTML document should be valid
+        And I should see "Updates"
         And I should see "Please select the update you want to run."
         And I should see the following <value> available in the select "Available updates":
             | value               |
@@ -85,7 +93,8 @@ Feature: Forum update
             | thwb_284_285.update |
         When I select "thwb_283_284.update" from "Available updates"
         And I press "Next"
-        Then I should see "Update information"
+        Then the returned HTML document should be valid
+        And I should see "Update information"
         And I should see "Required version 2.83"
         And I should see "Version after update 2.84"
         And I should see "Author ThWboard Development Team"
@@ -93,11 +102,13 @@ Feature: Forum update
         And I should see "Executable? No"
         And I should see "Notes N/A"
         When I press "Next"
-        Then I should see "The update cannot be executed. (Version mismatch)"
+        Then the returned HTML document should be valid
+        And I should see "The update cannot be executed. (Version mismatch)"
 
     Scenario: Successfully finish the update.
         Given I am on "/admin/update.php"
-        Then I should see "Login"
+        Then the returned HTML document should be valid
+        And I should see "Login"
         And the "Username" field should contain ""
         And the "Password" field should contain ""
         And I should see "English" selected in the select "Language"
@@ -109,7 +120,8 @@ Feature: Forum update
             | Username | root     |
             | Password | rootroot |
         And I press "Next"
-        Then I should see "Updates"
+        Then the returned HTML document should be valid
+        And I should see "Updates"
         And I should see "Please select the update you want to run."
         And I should see the following <value> available in the select "Available updates":
             | value               |
@@ -120,7 +132,8 @@ Feature: Forum update
             | thwb_284_285.update |
         When I select "thwb_284_285.update" from "Available updates"
         And I press "Next"
-        Then I should see "Update information"
+        Then the returned HTML document should be valid
+        And I should see "Update information"
         And I should see "Required version 2.84"
         And I should see "Version after update 2.85"
         And I should see "Author ThWboard Development Team"
@@ -128,7 +141,8 @@ Feature: Forum update
         And I should see "Executable? Yes"
         And I should see "Notes N/A"
         When I press "Next"
-        Then I should see "Update successful"
+        Then the returned HTML document should be valid
+        And I should see "Update successful"
 
 
 # ----------------------------------------------------------------------

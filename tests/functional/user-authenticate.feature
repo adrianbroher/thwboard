@@ -257,14 +257,16 @@ Feature: User authenticate
 
     Scenario: Login as a regular user without pre login on the administrator panel.
         Given I am on "/admin/"
-        Then I should see "Login"
+        Then the returned HTML document should be valid
+        And I should see "Login"
         And the "Username" field should contain ""
         And the "Password" field should contain ""
         When I fill in the following:
             | Username | regular        |
             | Password | regularregular |
         And I press "Login"
-        Then I should see "Login"
+        Then the returned HTML document should be valid
+        And I should see "Login"
         And the "Username" field should contain ""
         And the "Password" field should contain ""
         And I should not see "Welcome to the administrative center of your ThWboard."
@@ -277,30 +279,35 @@ Feature: User authenticate
             | Passwort     | regularregular |
         And I press "Einloggen"
         Given I am on "/admin/"
-        Then I should see "Login"
+        Then the returned HTML document should be valid
+        And I should see "Login"
         And the "Username" field should contain ""
         And the "Password" field should contain ""
         When I fill in the following:
             | Username | regular        |
             | Password | regularregular |
         And I press "Login"
-        Then I should see "Login"
+        Then the returned HTML document should be valid
+        And I should see "Login"
         And the "Username" field should contain ""
         And the "Password" field should contain ""
         And I should not see "Welcome to the administrative center of your ThWboard."
 
     Scenario: Login as an administrator without pre login on the administrator panel.
         Given I am on "/admin/"
-        Then I should see "Login"
+        Then the returned HTML document should be valid
+        And I should see "Login"
         And the "Username" field should contain ""
         And the "Password" field should contain ""
         When I fill in the following:
             | Username | root     |
             | Password | rootroot |
         And I press "Login"
-        Then I should see "Welcome to the administrative center of your ThWboard."
+        Then the returned HTML document should be valid
+        And I should see "Welcome to the administrative center of your ThWboard."
         When I follow "Logout"
-        Then I should see "Login"
+        Then the returned HTML document should be valid
+        And I should see "Login"
         And the "Username" field should contain ""
         And the "Password" field should contain ""
 
@@ -312,16 +319,19 @@ Feature: User authenticate
             | Passwort     | rootroot |
         And I press "Einloggen"
         And I follow "Admincenter"
-        Then I should see "Login"
+        Then the returned HTML document should be valid
+        And I should see "Login"
         And the "Username" field should contain ""
         And the "Password" field should contain ""
         When I fill in the following:
             | Username | root     |
             | Password | rootroot |
         And I press "Login"
-        Then I should see "Welcome to the administrative center of your ThWboard."
+        Then the returned HTML document should be valid
+        And I should see "Welcome to the administrative center of your ThWboard."
         When I follow "Logout"
-        Then I should see "Login"
+        Then the returned HTML document should be valid
+        And I should see "Login"
         And the "Username" field should contain ""
         And the "Password" field should contain ""
 

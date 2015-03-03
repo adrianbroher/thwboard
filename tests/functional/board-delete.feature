@@ -30,7 +30,8 @@ Feature: Board delete
         And I press "Login"
         Then I should see "Categories and Boards"
         When I follow "Categories and Boards"
-        Then the list "board-order" should fulfill the relations:
+        Then the returned HTML document should be valid
+        And the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 3          |
             | Category 1 | number of children | 1          |
             | Category 2 | number of children | 1          |
@@ -45,18 +46,22 @@ Feature: Board delete
 
     Scenario: Successfully delete a board.
         When I follow "Categories and Boards"
-        Then I should see "Board 2"
+        Then the returned HTML document should be valid
+        And I should see "Board 2"
         And I should see "delete"
         When I follow "Delete board Board 2"
-        Then I should see "Delete Board"
+        Then the returned HTML document should be valid
+        And I should see "Delete Board"
         And I should see "Add board"
         And I should see "Add category"
         And I should see "List categories and boards"
         And I should see "Do you really want to delete the board?"
         When I press "Delete"
-        Then I should see "Board has been deleted"
+        Then the returned HTML document should be valid
+        And I should see "Board has been deleted"
         When I follow "List categories and boards"
-        Then the list "board-order" should fulfill the relations:
+        Then the returned HTML document should be valid
+        And the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 3          |
             | Category 1 | number of children | 1          |
             | Category 2 | number of children | 0          |

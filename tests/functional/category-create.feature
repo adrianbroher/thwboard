@@ -35,51 +35,60 @@ Feature: Category create
 
     Scenario: Create a category with an empty name.
         When I follow "Add category"
-        Then I should see "New Category"
+        Then the returned HTML document should be valid
+        And I should see "New Category"
         And I should see "Add board"
         And I should not see "Add category"
         And I should see "List categories and boards"
         And the "Name" field should contain ""
         When I fill in "Name" with ""
         And I press "Save"
-        Then I should see "The category name can't be empty"
+        Then the returned HTML document should be valid
+        And I should see "The category name can't be empty"
         And I should see "Categories and Boards"
         When I follow "List categories and boards"
-        Then the list "board-order" should fulfill the relations:
+        Then the returned HTML document should be valid
+        And the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 1          |
             | Category 1 | is child of        | <ROOT>     |
             | Board 1    | is child of        | Category 1 |
 
     Scenario: Create a duplicate category.
         When I follow "Add category"
-        Then I should see "New Category"
+        Then the returned HTML document should be valid
+        And I should see "New Category"
         And I should see "Add board"
         And I should not see "Add category"
         And I should see "List categories and boards"
         And the "Name" field should contain ""
         When I fill in "Name" with "Category 1"
         And I press "Save"
-        Then I should see "The category already exists"
+        Then the returned HTML document should be valid
+        And I should see "The category already exists"
         And I should see "Categories and Boards"
         When I follow "List categories and boards"
-        Then the list "board-order" should fulfill the relations:
+        Then the returned HTML document should be valid
+        And the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 1          |
             | Category 1 | is child of        | <ROOT>     |
             | Board 1    | is child of        | Category 1 |
 
     Scenario: Successfully create a category.
         When I follow "Add category"
-        Then I should see "New Category"
+        Then the returned HTML document should be valid
+        And I should see "New Category"
         And I should see "Add board"
         And I should not see "Add category"
         And I should see "List categories and boards"
         And the "Name" field should contain ""
         When I fill in "Name" with "Category 2"
         And I press "Save"
-        Then I should see "Category saved"
+        Then the returned HTML document should be valid
+        And I should see "Category saved"
         And I should see "Categories and Boards"
         When I follow "List categories and boards"
-        Then the list "board-order" should fulfill the relations:
+        Then the returned HTML document should be valid
+        And the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | is child of        | <ROOT>     |
             | Category 2 | is child of        | <ROOT>     |

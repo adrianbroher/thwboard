@@ -33,7 +33,8 @@ Feature: Announcement delete
         And I press "Login"
         Then I should see "Announcements"
         When I follow "Announcements"
-        Then I should see "Add announcement"
+        Then the returned HTML document should be valid
+        And I should see "Add announcement"
         And I should not see "List announcements"
         And the list "announcements" should fulfill the relations:
             | <ROOT>              | number of children | 2 |
@@ -43,16 +44,19 @@ Feature: Announcement delete
 
     Scenario: Successfully delete an announcement.
         When I follow "Delete announcement Local Announcement"
-        Then I should see "Delete Announcement"
+        Then the returned HTML document should be valid
+        And I should see "Delete Announcement"
         And I should see "Add announcement"
         And I should see "List announcements"
         And I should see "Do you really want to delete the announcement?"
         When I press "Delete"
-        Then I should see "Delete Announcement"
+        Then the returned HTML document should be valid
+        And I should see "Delete Announcement"
         And I should see "Add announcement"
         And I should see "List announcements"
         And I should see "Announcement has been deleted"
         When I follow "List announcements"
+        Then the returned HTML document should be valid
         And the list "announcements" should fulfill the relations:
             | <ROOT>              | number of children | 1 |
             | Global Announcement | is child of        | <ROOT> |

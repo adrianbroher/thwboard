@@ -35,7 +35,8 @@ Feature: Announcement create
         And I press "Login"
         Then I should see "Announcements"
         When I follow "Announcements"
-        Then I should see "Add announcement"
+        Then the returned HTML document should be valid
+        And I should see "Add announcement"
         And I should not see "List announcements"
         And the list "announcements" should fulfill the relations:
             | <ROOT>              | number of children | 2 |
@@ -45,7 +46,8 @@ Feature: Announcement create
 
     Scenario: Create an announcement with an empty title.
         When I follow "Add announcement"
-        Then I should see "New Announcement"
+        Then the returned HTML document should be valid
+        And I should see "New Announcement"
         And I should see "List announcements"
         And I should not see "Add announcement"
         And the "Title" field should contain ""
@@ -59,11 +61,13 @@ Feature: Announcement create
             | Body | This announcement message should never be created |
         And I select "Board 1" from "Boards"
         And I press "Save"
-        Then I should see "The announcement title can't be empty"
+        Then the returned HTML document should be valid
+        And I should see "The announcement title can't be empty"
         And I should not see "Add announcement"
         And I should see "List announcements"
         When I follow "List announcements"
-        Then I should see "Add announcement"
+        Then the returned HTML document should be valid
+        And I should see "Add announcement"
         And I should not see "List announcements"
         And the list "announcements" should fulfill the relations:
             | <ROOT>              | number of children | 2 |
@@ -73,7 +77,8 @@ Feature: Announcement create
 
     Scenario: Create an announcement with an empty body.
         When I follow "Add announcement"
-        Then I should see "New Announcement"
+        Then the returned HTML document should be valid
+        And I should see "New Announcement"
         And I should see "List announcements"
         And I should not see "Add announcement"
         And the "Title" field should contain ""
@@ -87,11 +92,13 @@ Feature: Announcement create
             | Title | Announcement never created |
         And I select "Board 2" from "Boards"
         And I press "Save"
-        Then I should see "The announcement body can't be empty"
+        Then the returned HTML document should be valid
+        And I should see "The announcement body can't be empty"
         And I should not see "Add announcement"
         And I should see "List announcements"
         When I follow "List announcements"
-        Then I should see "Add announcement"
+        Then the returned HTML document should be valid
+        And I should see "Add announcement"
         And I should not see "List announcements"
         And the list "announcements" should fulfill the relations:
             | <ROOT>              | number of children | 2 |
@@ -101,7 +108,8 @@ Feature: Announcement create
 
     Scenario: Create an announcement with no board selected.
         When I follow "Add announcement"
-        Then I should see "New Announcement"
+        Then the returned HTML document should be valid
+        And I should see "New Announcement"
         And I should see "List announcements"
         And I should not see "Add announcement"
         And the "Title" field should contain ""
@@ -115,11 +123,13 @@ Feature: Announcement create
             | Title | Announcement never created |
             | Body  | This announcement message should never be created |
         And I press "Save"
-        Then I should see "The announcement needs to visible in at least one board"
+        Then the returned HTML document should be valid
+        And I should see "The announcement needs to visible in at least one board"
         And I should not see "Add announcement"
         And I should see "List announcements"
         When I follow "List announcements"
-        Then I should see "Add announcement"
+        Then the returned HTML document should be valid
+        And I should see "Add announcement"
         And I should not see "List announcements"
         And the list "announcements" should fulfill the relations:
             | <ROOT>              | number of children | 2 |
@@ -129,7 +139,8 @@ Feature: Announcement create
 
     Scenario: Create an announcement with a board selected.
         When I follow "Add announcement"
-        Then I should see "New Announcement"
+        Then the returned HTML document should be valid
+        And I should see "New Announcement"
         And I should see "List announcements"
         And I should not see "Add announcement"
         And the "Title" field should contain ""
@@ -144,11 +155,13 @@ Feature: Announcement create
             | Body  | This is another local announcement, only for Board 2 |
         And I select "Board 2" from "Boards"
         And I press "Save"
-        Then I should see "Announcement saved"
+        Then the returned HTML document should be valid
+        And I should see "Announcement saved"
         And I should not see "Add announcement"
         And I should see "List announcements"
         When I follow "List announcements"
-        Then I should see "Add announcement"
+        Then the returned HTML document should be valid
+        And I should see "Add announcement"
         And I should not see "List announcements"
         And the list "announcements" should fulfill the relations:
             | <ROOT>                     | number of children | 3 |
@@ -160,7 +173,8 @@ Feature: Announcement create
 
     Scenario: Create an announcement with all boards selected.
         When I follow "Add announcement"
-        Then I should see "New Announcement"
+        Then the returned HTML document should be valid
+        And I should see "New Announcement"
         And I should not see "Add announcement"
         And I should see "List announcements"
         And the "Title" field should contain ""
@@ -176,11 +190,13 @@ Feature: Announcement create
         And I select "Board 1" from "Boards"
         And I additionally select "Board 2" from "Boards"
         And I press "Save"
-        Then I should see "Announcement saved"
+        Then the returned HTML document should be valid
+        And I should see "Announcement saved"
         And I should not see "Add announcement"
         And I should see "List announcements"
         When I follow "List announcements"
-        Then I should see "Add announcement"
+        Then the returned HTML document should be valid
+        And I should see "Add announcement"
         And I should not see "List announcements"
         And the list "announcements" should fulfill the relations:
             | <ROOT>                      | number of children | 3 |

@@ -16,7 +16,8 @@ Feature: Forum install
 
     Scenario Outline: Visit a not yet installed instance of the forum.
         Given I am on "<page>"
-        Then I should see "Das Forum ist noch nicht eingerichtet!"
+        Then the returned HTML document should be valid
+        And I should see "Das Forum ist noch nicht eingerichtet!"
 
         Examples:
             | page                  |
@@ -62,37 +63,45 @@ Feature: Forum install
     Scenario: Visit the about page.
         Given I am on the homepage
         When I follow "installieren"
-        Then I should see "Welcome to phpInstaller!"
+        Then the returned HTML document should be valid
+        And I should see "Welcome to phpInstaller!"
         When I follow "About phpInstaller"
-        Then I should see "About phpInstaller"
+        Then the returned HTML document should be valid
+        And I should see "About phpInstaller"
         And I should see "GPL"
         And I should see "Credits"
 
     Scenario: Select another language.
         Given I am on the homepage
         When I follow "installieren"
-        Then I should see "English" selected in the select "Please select your language:"
+        Then the returned HTML document should be valid
+        And I should see "English" selected in the select "Please select your language:"
         And I should see the following <value> available in the select "Please select your language:":
             | value   |
             | Deutsch |
             | English |
         When I select "Deutsch" from "Please select your language:"
         And I press "Next"
-        Then I should see "Willkommen zum ThWboard Installationsassistent."
+        Then the returned HTML document should be valid
+        And I should see "Willkommen zum ThWboard Installationsassistent."
 
     Scenario: Reject the license agreement.
         Given I am on the homepage
         When I follow "installieren"
         And I press "Next"
-        Then I should see "Welcome to the ThWboard installation assistant."
+        Then the returned HTML document should be valid
+        And I should see "Welcome to the ThWboard installation assistant."
         When I press "Next"
+        Then the returned HTML document should be valid
         Then I should see "License agreement"
         And I should see "GNU GENERAL PUBLIC LICENSE VERSION 2"
         And the checkbox "I accept the license agreement." should be unchecked
         When I press "Next"
-        Then I should see "You must agree to the license agreement in order to continue."
+        Then the returned HTML document should be valid
+        And I should see "You must agree to the license agreement in order to continue."
         When I follow "Back"
-        Then I should see "License agreement"
+        Then the returned HTML document should be valid
+        And I should see "License agreement"
         And I should see "GNU GENERAL PUBLIC LICENSE VERSION 2"
         And the checkbox "I accept the license agreement." should be unchecked
 
@@ -103,14 +112,17 @@ Feature: Forum install
         And I press "Next"
         And I check "I accept the license agreement."
         And I press "Next"
-        Then I should see "Please provide your MySQL data."
+        Then the returned HTML document should be valid
+        And I should see "Please provide your MySQL data."
         And the "MySQL hostname/IP" field should contain "localhost"
         And the "MySQL username" field should contain ""
         And the "MySQL password" field should contain ""
         When I press "Next"
-        Then I should see "No database credentials were given."
+        Then the returned HTML document should be valid
+        And I should see "No database credentials were given."
         When I follow "Back"
-        Then I should see "Please provide your MySQL data."
+        Then the returned HTML document should be valid
+        And I should see "Please provide your MySQL data."
         And the "MySQL hostname/IP" field should contain "localhost"
         And the "MySQL username" field should contain ""
         And the "MySQL password" field should contain ""
@@ -118,9 +130,11 @@ Feature: Forum install
             | MySQL username | notexisting |
             | MySQL password | invalid     |
         When I press "Next"
-        Then I should see "Invalid credentials were given."
+        Then the returned HTML document should be valid
+        And I should see "Invalid credentials were given."
         When I follow "Back"
-        Then I should see "Please provide your MySQL data."
+        Then the returned HTML document should be valid
+        And I should see "Please provide your MySQL data."
         And the "MySQL hostname/IP" field should contain "localhost"
         And the "MySQL username" field should contain "notexisting"
         And the "MySQL password" field should contain ""
@@ -132,7 +146,8 @@ Feature: Forum install
         And I press "Next"
         And I check "I accept the license agreement."
         And I press "Next"
-        Then I should see "Please provide your MySQL data."
+        Then the returned HTML document should be valid
+        And I should see "Please provide your MySQL data."
         And the "MySQL hostname/IP" field should contain "localhost"
         And the "MySQL username" field should contain ""
         And the "MySQL password" field should contain ""
@@ -141,7 +156,8 @@ Feature: Forum install
             | MySQL username    | %DATABASE_USERNAME% |
             | MySQL password    | %DATABASE_PASSWORD% |
         And I press "Next"
-        Then I should see "No database host was given."
+        Then the returned HTML document should be valid
+        And I should see "No database host was given."
         When I follow "Back"
         And the "MySQL hostname/IP" field should contain "localhost"
         When I fill in the following:
@@ -149,9 +165,11 @@ Feature: Forum install
             | MySQL username    | %DATABASE_USERNAME% |
             | MySQL password    | %DATABASE_PASSWORD% |
         And I press "Next"
-        Then I should see "Can't connect to the database host."
+        Then the returned HTML document should be valid
+        And I should see "Can't connect to the database host."
         When I follow "Back"
-        Then I should see "Please provide your MySQL data."
+        Then the returned HTML document should be valid
+        And I should see "Please provide your MySQL data."
         And the "MySQL hostname/IP" field should contain "notexisting"
         And the "MySQL username" field should contain "%DATABASE_USERNAME%"
         And the "MySQL password" field should contain ""
@@ -168,7 +186,8 @@ Feature: Forum install
             | MySQL username    | %DATABASE_USERNAME% |
             | MySQL password    | %DATABASE_PASSWORD% |
         And I press "Next"
-        Then I should see "Select MySQL database"
+        Then the returned HTML document should be valid
+        And I should see "Select MySQL database"
         And the "database-allocation" field should contain "use"
         And I should see the following <value> available in the select "existing database":
             | value           |
@@ -177,9 +196,11 @@ Feature: Forum install
         When I check the "Create" radio button
         And I fill in "new database" with "anewdatabase"
         And I press "Next"
-        Then I should see "The credentials given have no permissions to create a database."
+        Then the returned HTML document should be valid
+        And I should see "The credentials given have no permissions to create a database."
         When I follow "Back"
-        Then I should see "Select MySQL database"
+        Then the returned HTML document should be valid
+        And I should see "Select MySQL database"
         And the "database-allocation" field should contain "new"
         And I should see the following <value> available in the select "existing database":
             | value           |
@@ -187,9 +208,11 @@ Feature: Forum install
         And the "new database" field should contain "anewdatabase"
         When I fill in "new database" with "an unescaped database name"
         And I press "Next"
-        Then I should see "The database name should only consist of lowercase characters, uppercase characters, digits and underscore."
+        Then the returned HTML document should be valid
+        And I should see "The database name should only consist of lowercase characters, uppercase characters, digits and underscore."
         When I follow "Back"
-        Then I should see "Select MySQL database"
+        Then the returned HTML document should be valid
+        And I should see "Select MySQL database"
         And the "database-allocation" field should contain "new"
         And I should see the following <value> available in the select "existing database":
             | value           |
@@ -211,23 +234,28 @@ Feature: Forum install
         When I check the "Use" radio button
         And I select "%DATABASE_NAME%" from "existing database"
         And I press "Next"
-        Then I should see "Choose MySQL table"
+        Then the returned HTML document should be valid
+        And I should see "Choose MySQL table"
         And I should see "does not contain any tables."
         And the "Table prefix" field should contain "tb_"
         And the checkbox "Overwrite (delete) existing tables" should be unchecked
         When I fill in "Table prefix" with "invalid prefix_"
         And I press "Next"
-        Then I should see "The table prefix should only consist lowercase characters, uppercase characters, digits and underscore."
+        Then the returned HTML document should be valid
+        And I should see "The table prefix should only consist lowercase characters, uppercase characters, digits and underscore."
         When I follow "Back"
-        Then I should see "Choose MySQL table"
+        Then the returned HTML document should be valid
+        And I should see "Choose MySQL table"
         And I should see "does not contain any tables."
         And the "Table prefix" field should contain "invalid prefix_"
         And the checkbox "Overwrite (delete) existing tables" should be unchecked
         When I check "Overwrite (delete) existing tables"
         And I press "Next"
-        Then I should see "The table prefix should only consist lowercase characters, uppercase characters, digits and underscore."
+        Then the returned HTML document should be valid
+        And I should see "The table prefix should only consist lowercase characters, uppercase characters, digits and underscore."
         When I follow "Back"
-        Then I should see "Choose MySQL table"
+        Then the returned HTML document should be valid
+        And I should see "Choose MySQL table"
         And I should see "does not contain any tables."
         And the "Table prefix" field should contain "invalid prefix_"
         And the checkbox "Overwrite (delete) existing tables" should be checked
@@ -249,7 +277,8 @@ Feature: Forum install
         And I press "Next"
         When I check "Overwrite (delete) existing tables"
         And I press "Next"
-        Then I should see "Create administrator profile"
+        Then the returned HTML document should be valid
+        And I should see "Create administrator profile"
         And the "Username" field should contain "root"
         And the "Email" field should contain ""
         And the "Password" field should contain ""
@@ -258,9 +287,11 @@ Feature: Forum install
             | Email    | root@localhost |
             | Password |                |
         And I press "Next"
-        Then I should see "The administrator password is too short (min. 5 chars)!"
+        Then the returned HTML document should be valid
+        And I should see "The administrator password is too short (min. 5 chars)!"
         When I follow "Back"
-        Then I should see "Create administrator profile"
+        Then the returned HTML document should be valid
+        And I should see "Create administrator profile"
         And the "Username" field should contain "root"
         And the "Email" field should contain "root@localhost"
         And the "Password" field should contain ""
@@ -269,7 +300,8 @@ Feature: Forum install
             | Email    | root@localhost |
             | Password | root           |
         And I press "Next"
-        Then I should see "The administrator password is too short (min. 5 chars)!"
+        Then the returned HTML document should be valid
+        And I should see "The administrator password is too short (min. 5 chars)!"
 
     Scenario: Set an empty admin name.
         Given I am on the homepage
@@ -288,7 +320,8 @@ Feature: Forum install
         And I press "Next"
         When I check "Overwrite (delete) existing tables"
         And I press "Next"
-        Then I should see "Create administrator profile"
+        Then the returned HTML document should be valid
+        And I should see "Create administrator profile"
         And the "Username" field should contain "root"
         And the "Email" field should contain ""
         And the "Password" field should contain ""
@@ -297,9 +330,11 @@ Feature: Forum install
             | Email    | root@localhost |
             | Password | rootroot       |
         And I press "Next"
-        Then I should see "The administrator name can't be empty!"
+        Then the returned HTML document should be valid
+        And I should see "The administrator name can't be empty!"
         When I follow "Back"
-        Then I should see "Create administrator profile"
+        Then the returned HTML document should be valid
+        And I should see "Create administrator profile"
         And the "Username" field should contain ""
         And the "Email" field should contain "root@localhost"
         And the "Password" field should contain ""
@@ -326,10 +361,12 @@ Feature: Forum install
             | Email    | root@localhost |
             | Password | rootroot       |
         And I press "Next"
-        Then I should see "Completing the installation"
+        Then the returned HTML document should be valid
+        And I should see "Completing the installation"
         And I should see "Download configuration file"
         When I press "Next"
-        Then I should see "Installation completed!"
+        Then the returned HTML document should be valid
+        And I should see "Installation completed!"
         When I go to "/"
         Then I should not see "Das Forum ist noch nicht eingerichtet!"
 
@@ -337,7 +374,8 @@ Feature: Forum install
         Given the forum is installed
         And I am on "/admin/install.php"
         When I press "Next"
-        Then I should see "The forum is already installed!"
+        Then the returned HTML document should be valid
+        And I should see "The forum is already installed!"
 
 
 # ----------------------------------------------------------------------

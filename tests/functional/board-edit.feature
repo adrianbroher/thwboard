@@ -171,10 +171,12 @@ Feature: Board edit
 
     Scenario: Successfully move a board.
         When I follow "Categories and Boards"
-        Then I should see "Board 2"
+        Then the returned HTML document should be valid
+        And I should see "Board 2"
         And I should see "edit"
         When I follow "Edit board Board 2"
-        Then I should see "Edit Board"
+        Then the returned HTML document should be valid
+        And I should see "Edit Board"
         And I should see "Add board"
         And I should see "Add category"
         And I should see "List categories and boards"
@@ -196,10 +198,12 @@ Feature: Board edit
             | Enable board  |
         When I select "Category 1" from "Category"
         And I press "Save"
-        Then I should see "Board saved"
+        Then the returned HTML document should be valid
+        And I should see "Board saved"
         And I should see "Categories and Boards"
         When I follow "List categories and boards"
-        Then the list "board-order" should fulfill the relations:
+        Then the returned HTML document should be valid
+        And the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | number of children | 2          |
             | Category 2 | number of children | 1          |

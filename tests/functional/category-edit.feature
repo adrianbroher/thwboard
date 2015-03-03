@@ -25,7 +25,8 @@ Feature: Category edit
         And I press "Login"
         Then I should see "Categories and Boards"
         When I follow "Categories and Boards"
-        Then the list "board-order" should fulfill the relations:
+        Then the returned HTML document should be valid
+        And the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | is child of        | <ROOT>     |
             | Category 2 | is child of        | <ROOT>     |
@@ -33,20 +34,24 @@ Feature: Category edit
 
     Scenario: Rename a category with an empty name.
         When I follow "Categories and Boards"
-        Then I should see "Category 2"
+        Then the returned HTML document should be valid
+        And I should see "Category 2"
         And I should see "edit"
         When I follow "Edit category Category 2"
-        Then I should see "Edit Category"
+        Then the returned HTML document should be valid
+        And I should see "Edit Category"
         And I should see "Add board"
         And I should see "Add category"
         And I should see "List categories and boards"
         And the "Name" field should contain "Category 2"
         When I fill in "Name" with ""
         And press "Save"
-        Then I should see "The category name can't be empty"
+        Then the returned HTML document should be valid
+        And I should see "The category name can't be empty"
         And I should see "Categories and Boards"
         When I follow "List categories and boards"
-        Then the list "board-order" should fulfill the relations:
+        Then the returned HTML document should be valid
+        And the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | is child of        | <ROOT>     |
             | Category 2 | is child of        | <ROOT>     |
@@ -54,20 +59,24 @@ Feature: Category edit
 
     Scenario: Change category name to an already existing one.
         When I follow "Categories and Boards"
-        Then I should see "Category 2"
+        Then the returned HTML document should be valid
+        And I should see "Category 2"
         And I should see "edit"
         When I follow "Edit category Category 2"
-        Then I should see "Edit Category"
+        Then the returned HTML document should be valid
+        And I should see "Edit Category"
         And I should see "Add board"
         And I should see "Add category"
         And I should see "List categories and boards"
         And the "Name" field should contain "Category 2"
         When I fill in "Name" with "Category 1"
         And press "Save"
-        Then I should see "The category already exists"
+        Then the returned HTML document should be valid
+        And I should see "The category already exists"
         And I should see "Categories and Boards"
         When I follow "List categories and boards"
-        Then the list "board-order" should fulfill the relations:
+        Then the returned HTML document should be valid
+        And the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | is child of        | <ROOT>     |
             | Category 2 | is child of        | <ROOT>     |
@@ -75,20 +84,24 @@ Feature: Category edit
 
     Scenario: Successfully edit a category.
         When I follow "Categories and Boards"
-        Then I should see "Category 2"
+        Then the returned HTML document should be valid
+        And I should see "Category 2"
         And I should see "edit"
         When I follow "Edit category Category 2"
-        Then I should see "Edit Category"
+        Then the returned HTML document should be valid
+        And I should see "Edit Category"
         And I should see "Add board"
         And I should see "Add category"
         And I should see "List categories and boards"
         And the "Name" field should contain "Category 2"
         When I fill in "Name" with "Category B"
         And press "Save"
-        Then I should see "Category saved"
+        Then the returned HTML document should be valid
+        And I should see "Category saved"
         And I should see "Categories and Boards"
         When I follow "List categories and boards"
-        Then the list "board-order" should fulfill the relations:
+        Then the returned HTML document should be valid
+        And the list "board-order" should fulfill the relations:
             | <ROOT>     | number of children | 2          |
             | Category 1 | is child of        | <ROOT>     |
             | Category B | is child of        | <ROOT>     |

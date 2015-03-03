@@ -35,7 +35,8 @@ Feature: Announcement edit
         And I press "Login"
         Then I should see "Announcements"
         When I follow "Announcements"
-        Then I should see "Add announcement"
+        Then the returned HTML document should be valid
+        And I should see "Add announcement"
         And I should not see "List announcements"
         And the list "announcements" should fulfill the relations:
             | <ROOT>              | number of children | 2                  |
@@ -45,7 +46,8 @@ Feature: Announcement edit
 
     Scenario: Edit an announcement with an empty title.
         When I follow "Edit announcement Local Announcement"
-        Then I should see "Edit Announcement"
+        Then the returned HTML document should be valid
+        And I should see "Edit Announcement"
         And I should see "List announcements"
         And I should see "Add announcement"
         And the "Title" field should contain "Local Announcement"
@@ -57,11 +59,13 @@ Feature: Announcement edit
             | Board 2 |
         When I fill in "Title" with ""
         And I press "Save"
-        Then I should see "The announcement title can't be empty"
+        Then the returned HTML document should be valid
+        And I should see "The announcement title can't be empty"
         And I should see "Add announcement"
         And I should see "List announcements"
         When I follow "List announcements"
-        Then I should see "Add announcement"
+        Then the returned HTML document should be valid
+        And I should see "Add announcement"
         And I should not see "List announcements"
         And the list "announcements" should fulfill the relations:
             | <ROOT>              | number of children | 2                  |
@@ -71,7 +75,8 @@ Feature: Announcement edit
 
     Scenario: Edit an announcement with an empty body.
         When I follow "Edit announcement Global Announcement"
-        Then I should see "Edit Announcement"
+        Then the returned HTML document should be valid
+        And I should see "Edit Announcement"
         And I should see "List announcements"
         And I should see "Add announcement"
         And the "Title" field should contain "Global Announcement"
@@ -86,11 +91,13 @@ Feature: Announcement edit
             | Board 2 |
         When I fill in "Body" with ""
         And I press "Save"
-        Then I should see "The announcement body can't be empty"
+        Then the returned HTML document should be valid
+        And I should see "The announcement body can't be empty"
         And I should see "Add announcement"
         And I should see "List announcements"
         When I follow "List announcements"
-        Then I should see "Add announcement"
+        Then the returned HTML document should be valid
+        And I should see "Add announcement"
         And I should not see "List announcements"
         And the list "announcements" should fulfill the relations:
             | <ROOT>              | number of children | 2                  |
@@ -100,7 +107,8 @@ Feature: Announcement edit
 
     Scenario: Edit an announcement by changing the board selected.
         When I follow "Edit announcement Local Announcement"
-        Then I should see "Edit Announcement"
+        Then the returned HTML document should be valid
+        And I should see "Edit Announcement"
         And I should see "List announcements"
         And I should see "Add announcement"
         And the "Title" field should contain "Local Announcement"
@@ -112,11 +120,13 @@ Feature: Announcement edit
             | Board 2 |
         When I select "Board 2" from "Boards"
         And I press "Save"
-        Then I should see "Announcement saved"
+        Then the returned HTML document should be valid
+        And I should see "Announcement saved"
         And I should see "Add announcement"
         And I should see "List announcements"
         When I follow "List announcements"
-        Then I should see "Add announcement"
+        Then the returned HTML document should be valid
+        And I should see "Add announcement"
         And I should not see "List announcements"
         And the list "announcements" should fulfill the relations:
             | <ROOT>                     | number of children | 2                  |
@@ -126,7 +136,8 @@ Feature: Announcement edit
 
     Scenario: Edit an announcement by selecting all boards.
         When I follow "Edit announcement Local Announcement"
-        Then I should see "Edit Announcement"
+        Then the returned HTML document should be valid
+        And I should see "Edit Announcement"
         And I should see "List announcements"
         And I should see "Add announcement"
         And the "Title" field should contain "Local Announcement"
@@ -139,11 +150,13 @@ Feature: Announcement edit
         When I select "Board 1" from "Boards"
         And I additionally select "Board 2" from "Boards"
         And I press "Save"
-        Then I should see "Announcement saved"
+        Then the returned HTML document should be valid
+        And I should see "Announcement saved"
         And I should see "Add announcement"
         And I should see "List announcements"
         When I follow "List announcements"
-        Then I should see "Add announcement"
+        Then the returned HTML document should be valid
+        And I should see "Add announcement"
         And I should not see "List announcements"
         And the list "announcements" should fulfill the relations:
             | <ROOT>                      | number of children | 2                  |
