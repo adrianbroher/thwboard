@@ -176,6 +176,8 @@ function first_cut($tag, $str)
 $incpref = ((defined('THWB_NEWS_INCLUDED')) ? THWB_NEWS_PATH : '.');
 
 if (!@include($incpref.'/inc/config.inc.php')) {
+    print '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+    ';
     print 'Das Forum ist noch nicht eingerichtet! Bitte <a href="./admin/install.php">installieren</a> Sie zuerst die Forensoftware um das Forum nutzen zu k&ouml;nnen.';
     exit;
 }
