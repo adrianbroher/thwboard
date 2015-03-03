@@ -132,6 +132,14 @@ textarea { font-family: Verdana, Arial, Helvetica; font-size: 8pt }
 input { font-family: Verdana, Arial, Helvetica; font-size: 8pt }
 .htmlsource { font-family: "Verdana, Helvetica", Courier, mono; font-size: 8pt; color: #2255BB }
 
+h1 {
+    background-color: #000;
+    color: #FFF;
+    font-size: x-small;
+    margin: 0;
+    padding: .5em;
+}
+
 #navigation div {
     background-color: #E9EFF5;
     border-top: 1px solid #FFFFFF;
@@ -235,24 +243,8 @@ ul.actions li {
         </style>
     </head>
     <body bgcolor="#FCFCFC" text="#575757">
+        <h1>ThWboard admin center</h1>
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
-            <tr bgcolor="#000000">
-                <td width="160">
-                    <table width="100%" border="0" cellspacing="0" cellpadding="5">
-                        <tr>
-                            <td><font size="1" color="#ffffff">ThWboard admin center</font></td>
-                        </tr>
-                    </table>
-                </td>
-                <td width="1"></td>
-                <td align="right">
-                </td>
-            </tr>
-            <tr bgcolor="#000000">
-                <td height="1" width="160"></td>
-                <td height="1" width="1"></td>
-                <td height="1"></td>
-            </tr>
             <tr id="navigation">
                 <td bgcolor="#E0E8F1" width="160" valign="top">
                     <div>Links</div>
