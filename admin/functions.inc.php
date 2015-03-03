@@ -125,10 +125,6 @@ a:link { color:#3366CC; text-decoration: underline}
 a:visited { color:#3366CC; text-decoration: underline}
 a:active { color:#A63600; text-decoration: underline}
 a:hover { color:#4477DD; text-decoration: none }
-a.blackbg:link { color:#ffffff; text-decoration: none }
-a.blackbg:visited { color:#ffffff; text-decoration: none }
-a.blackbg:active { color:#ffffff; text-decoration: none }
-a.blackbg:hover { color:#ffffff; text-decoration: underline}
 body { font-family: Verdana, Arial, Helvetica; font-size: 10pt; margin: 0; }
 td { font-family: Verdana, Arial, Helvetica; font-size: 10pt }
 select { font-family: Verdana, Arial, Helvetica; font-size: 8pt }
@@ -250,11 +246,6 @@ ul.actions li {
                 </td>
                 <td width="1"></td>
                 <td align="right">
-                    <table width="100%" border="0" cellspacing="0" cellpadding="5">
-                        <tr>
-                            <td align="right"><font size="1" color="#ffffff"><a href=".." target="_blank" class="blackbg">Your forums</a> | <a href="http://www.thwboard.de" class="blackbg" target="_blank">ThWboard homepage</a></font></td>
-                        </tr>
-                    </table>
                 </td>
             </tr>
             <tr bgcolor="#000000">
@@ -264,9 +255,14 @@ ul.actions li {
             </tr>
             <tr id="navigation">
                 <td bgcolor="#E0E8F1" width="160" valign="top">
-                    <div>General</div>
+                    <div>Links</div>
                     <ul>
                         <li><a href="index.php?session='.$session.'">Home</a></li>
+                        <li><a href=".." target="_blank">Your forums</a></li>
+                        <li><a href="http://www.thwboard.de" target="_blank">ThWboard homepage</a></li>
+                    </ul>
+                    <div>General</div>
+                    <ul>
                         <li><a href="documents.php?session='.$session.'&amp;action=ListDocs">Documentation</a></li>
                         <li><a href="index.php?session='.$session.'&amp;action=EditSettings">Basic settings</a></li>
                         <li><a href="rank.php?session='.$session.'&amp;action=ViewRanks">Ranks</a></li>
