@@ -38,7 +38,7 @@ td {  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 8pt
                                                 <b>ThWboard <?= $this->_('installation') ?></b><br>
                                                 <a href="<?= $about_handler ?>">About phpInstaller</a> v1.1
                                             </td>
-                                            <td align="right"><img src="./images/thwboard_logo.gif"></td>
+                                            <td align="right"><img alt="ThWboard Logo" src="./images/thwboard_logo.gif"></td>
                                         </tr>
                                     </table>
                                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
