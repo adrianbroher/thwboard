@@ -246,7 +246,7 @@ function tb_header($redir_url = '')
   a.blackbg:visited { color:#ffffff; text-decoration: none }
   a.blackbg:active  { color:#ffffff; text-decoration: none }
   a.blackbg:hover   { color:#ffffff; text-decoration: underline}
-  body              { font-family: Verdana, Arial, Helvetica; font-size: 10pt }
+  body              { font-family: Verdana, Arial, Helvetica; font-size: 10pt; margin: 0; }
   td                { font-family: Verdana, Arial, Helvetica; font-size: 10pt }
   select            { font-family: Verdana, Arial, Helvetica; font-size: 8pt }
   textarea          { font-family: Verdana, Arial, Helvetica; font-size: 8pt }
@@ -322,7 +322,7 @@ ul.actions li {
     print '
 </style>
 </head>
-<body bgcolor="#FCFCFC" text="#575757" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<body bgcolor="#FCFCFC" text="#575757">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr bgcolor="#000000">
     <td width="160">
@@ -538,10 +538,11 @@ function loginform()
 <title>ThWboard Admin Center</title>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <style type="text/css">
-  input          { font-family: Verdana, Arial; font-size: 8pt }
+body { margin: 0; padding: 0; }
+input          { font-family: Verdana, Arial; font-size: 8pt }
 </style>
 </head>
-<body bgcolor="#F2F2F2" text="#575757" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<body bgcolor="#F2F2F2" text="#575757">
 <table width="100%" border="0" cellspacing="0" cellpadding="5">
   <tr>
     <td bgcolor="#000000"><font color="#FFFFFF" face="Verdana, Arial" size="1">ThWboard
