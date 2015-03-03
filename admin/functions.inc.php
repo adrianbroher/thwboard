@@ -607,7 +607,7 @@ input          { font-family: Verdana, Arial; font-size: 8pt }
     </td>
   </tr>
 </table>
-<script language="JavaScript">
+<script type="text/javascript">
 <!--
 if (document.login) document.login.l_username.focus();
 // -->
