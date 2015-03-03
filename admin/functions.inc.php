@@ -186,7 +186,7 @@ function navbox_element($link, $caption)
 {
     print '
         <tr>
-          <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="'.$link.'">'.$caption.'</a></font></td>
+          <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="'.htmlspecialchars($link).'">'.htmlspecialchars($caption).'</a></font></td>
         </tr>';
 }
 
