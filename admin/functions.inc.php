@@ -125,10 +125,6 @@ a:link { color:#3366CC; text-decoration: underline}
 a:visited { color:#3366CC; text-decoration: underline}
 a:active { color:#A63600; text-decoration: underline}
 a:hover { color:#4477DD; text-decoration: none }
-a.menu:link { color:#3F648E; text-decoration: none }
-a.menu:visited { color:#3F648E; text-decoration: none }
-a.menu:active { color:#3F648E; text-decoration: none }
-a.menu:hover { color:#3F648E; text-decoration: underline}
 a.blackbg:link { color:#ffffff; text-decoration: none }
 a.blackbg:visited { color:#ffffff; text-decoration: none }
 a.blackbg:active { color:#ffffff; text-decoration: none }
@@ -139,6 +135,38 @@ select { font-family: Verdana, Arial, Helvetica; font-size: 8pt }
 textarea { font-family: Verdana, Arial, Helvetica; font-size: 8pt }
 input { font-family: Verdana, Arial, Helvetica; font-size: 8pt }
 .htmlsource { font-family: "Verdana, Helvetica", Courier, mono; font-size: 8pt; color: #2255BB }
+
+#navigation div {
+    background-color: #E9EFF5;
+    border-top: 1px solid #FFFFFF;
+    border-bottom: 1px solid #C0D1E3;
+    color: #4E7DB1;
+    font-size: 10px;
+    font-weight: bold;
+    padding: .3em;
+}
+
+#navigation ul {
+    font-size: 10px;
+    list-style-position: inside;
+    margin: 0;
+    padding-left: .3em;
+}
+
+#navigation li {
+    padding: .3em;
+    padding-bottom: .6em;
+}
+
+#navigation a:link, #navigation a:visited, #navigation a:active {
+    color:#3F648E;
+    text-decoration: none;
+}
+
+#navigation a:hover {
+    color:#3F648E;
+    text-decoration: underline;
+}
 
 #board-order {
     padding-left: 0;
@@ -234,212 +262,64 @@ ul.actions li {
                 <td height="1" width="1"></td>
                 <td height="1"></td>
             </tr>
-            <tr>
+            <tr id="navigation">
                 <td bgcolor="#E0E8F1" width="160" valign="top">
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td height="1" bgcolor="#FFFFFF"></td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="#E9EFF5"><font size="1" color="#4E7DB1"><b>&nbsp;General</b></font></td>
-                        </tr>
-                        <tr>
-                            <td height="1" bgcolor="#C0D1E3"></td>
-                        </tr>
-                    </table>
-                    <table width="100%" border="0" cellspacing="1" cellpadding="2">
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="index.php?session='.$session.'">Home</a></font></td>
-                        </tr>
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="documents.php?session='.$session.'&amp;action=ListDocs">Documentation</a></font></td>
-                        </tr>
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="index.php?session='.$session.'&amp;action=EditSettings">Basic settings</a></font></td>
-                        </tr>
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="rank.php?session='.$session.'&amp;action=ViewRanks">Ranks</a></font></td>
-                        </tr>
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="announcements.php?session='.$session.'">Announcements</a></font></td>
-                        </tr>
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="links.php?session='.$session.'&amp;action=ListLinks">Quicklinks</a></font></td>
-                        </tr>
-                    </table>
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td height="1" bgcolor="#FFFFFF"></td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="#E9EFF5"><font size="1" color="#4E7DB1"><b>&nbsp;Structure</b></font></td>
-                        </tr>
-                        <tr>
-                            <td height="1" bgcolor="#C0D1E3"></td>
-                        </tr>
-                    </table>
-                    <table width="100%" border="0" cellspacing="1" cellpadding="2">
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="boards.php?session='.$session.'">Categories and Boards</a></font></td>
-                        </tr>
-                    </table>
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td height="1" bgcolor="#FFFFFF"></td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="#E9EFF5"><font size="1" color="#4E7DB1"><b>&nbsp;Extensions</b></font></td>
-                        </tr>
-                        <tr>
-                            <td height="1" bgcolor="#C0D1E3"></td>
-                        </tr>
-                    </table>
-                    <table width="100%" border="0" cellspacing="1" cellpadding="2">
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="calendar.php?session='.$session.'">Calendar</a></font></td>
-                        </tr>
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="newsletter.php?session='.$session.'">Newsletter</a></font></td>
-                        </tr>
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="bwords.php?session='.$session.'">Badwords protection</a></font></td>
-                        </tr>
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="avatar.php?session='.$session.'&amp;action=ListAvatars">List avatars</a></font></td>
-                        </tr>
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="avatar.php?session='.$session.'&amp;action=ListImportAvatars">Import avatars</a></font></td>
-                        </tr>
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="index.php?session='.$session.'&amp;action=EditSettings#avatar">Avatar settings</a></font></td>
-                        </tr>
-                    </table>
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td height="1" bgcolor="#FFFFFF"></td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="#E9EFF5"><font size="1" color="#4E7DB1"><b>&nbsp;Group management</b></font></td>
-                        </tr>
-                        <tr>
-                            <td height="1" bgcolor="#C0D1E3"></td>
-                        </tr>
-                    </table>
-                    <table width="100%" border="0" cellspacing="1" cellpadding="2">
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="groups.php?session='.$session.'&amp;action=list">View / edit groups</a></font></td>
-                        </tr>
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="groups.php?session='.$session.'&amp;action=create">Create group</a></font></td>
-                        </tr>
-                    </table>
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                           <td height="1" bgcolor="#FFFFFF"></td>
-                        </tr>
-                        <tr>
-                           <td bgcolor="#E9EFF5"><font size="1" color="#4E7DB1"><b>&nbsp;User management</b></font></td>
-                        </tr>
-                        <tr>
-                           <td height="1" bgcolor="#C0D1E3"></td>
-                        </tr>
-                    </table>
-                    <table width="100%" border="0" cellspacing="1" cellpadding="2">
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="users.php?session='.$session.'&amp;action=bans">User bans</a></font></td>
-                        </tr>
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="useredit.php?session='.$session.'&amp;action=Filter">Search / edit users</a></font></td>
-                        </tr>
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="useredit.php?session='.$session.'&amp;action=AddUser">Add user</a></font></td>
-                        </tr>
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="useredit.php?session='.$session.'&amp;action=DeleteUser">Delete user</a></font></td>
-                        </tr>
-                    </table>
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td height="1" bgcolor="#FFFFFF"></td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="#E9EFF5"><font size="1" color="#4E7DB1"><b>&nbsp;Appearance</b></font></td>
-                        </tr>
-                        <tr>
-                            <td height="1" bgcolor="#C0D1E3"></td>
-                        </tr>
-                    </table>
-                    <table width="100%" border="0" cellspacing="1" cellpadding="2">
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="style.php?session='.$session.'&amp;action=ListStyles">View / edit styles</a></font></td>
-                        </tr>
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="style.php?session='.$session.'&amp;action=NewStyle">Create style</a></font></td>
-                        </tr>
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="style.php?session='.$session.'&amp;action=ImportStyle">Import style</a></font></td>
-                        </tr>
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="dynx.php">Download styles</a></font></td>
-                        </tr>
-                    </table>
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td height="1" bgcolor="#FFFFFF"></td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="#E9EFF5"><font size="1" color="#4E7DB1"><b>&nbsp;Templates</b></font></td>
-                        </tr>
-                        <tr>
-                            <td height="1" bgcolor="#C0D1E3"></td>
-                        </tr>
-                    </table>
-                    <table width="100%" border="0" cellspacing="1" cellpadding="2">
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="t-editor.php?session='.$session.'&amp;action=ListTemplateSets">Template editor</a></font></td>
-                        </tr>
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="mails.php?session='.$session.'&amp;action=ListMails">Email editor</a></font></td>
-                        </tr>
-                    </table>
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td height="1" bgcolor="#FFFFFF"></td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="#E9EFF5"><font size="1" color="#4E7DB1"><b>&nbsp;Misc</b></font></td>
-                        </tr>
-                        <tr>
-                            <td height="1" bgcolor="#C0D1E3"></td>
-                        </tr>
-                    </table>
-                    <table width="100%" border="0" cellspacing="1" cellpadding="2">
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="versioninfo.php?session='.$session.'">Version info</a></font></td>
-                        </tr>
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="query.php?session='.$session.'">thwbMyAdmin</a></font></td>
-                        </tr>
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="mysql.php?session='.$session.'">Mysql-Clean</a></font></td>
-                        </tr>
-                    </table>
-                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td height="1" bgcolor="#FFFFFF"></td>
-                        </tr>
-                        <tr>
-                            <td bgcolor="#E9EFF5"><font size="1" color="#4E7DB1"><b>&nbsp;Logout</b></font></td>
-                        </tr>
-                        <tr>
-                            <td height="1" bgcolor="#C0D1E3"></td>
-                        </tr>
-                    </table>
-                    <table width="100%" border="0" cellspacing="1" cellpadding="2">
-                        <tr>
-                            <td><font color="#666666" size="1"><font color="#3F648E">-&gt;</font> <a class="menu" href="index.php?action=logout&amp;session='.$session.'">Logout</a></font></td>
-                        </tr>
-                      </table>
+                    <div>General</div>
+                    <ul>
+                        <li><a href="index.php?session='.$session.'">Home</a></li>
+                        <li><a href="documents.php?session='.$session.'&amp;action=ListDocs">Documentation</a></li>
+                        <li><a href="index.php?session='.$session.'&amp;action=EditSettings">Basic settings</a></li>
+                        <li><a href="rank.php?session='.$session.'&amp;action=ViewRanks">Ranks</a></li>
+                        <li><a href="announcements.php?session='.$session.'">Announcements</a></li>
+                        <li><a href="links.php?session='.$session.'&amp;action=ListLinks">Quicklinks</a></li>
+                    </ul>
+                    <div>Structure</div>
+                    <ul>
+                        <li><a href="boards.php?session='.$session.'">Categories and Boards</a></li>
+                    </ul>
+                    <div>Extensions</div>
+                    <ul>
+                        <li><a href="calendar.php?session='.$session.'">Calendar</a></li>
+                        <li><a href="newsletter.php?session='.$session.'">Newsletter</a></li>
+                        <li><a href="bwords.php?session='.$session.'">Badwords protection</a></li>
+                        <li><a href="avatar.php?session='.$session.'&amp;action=ListAvatars">List avatars</a></li>
+                        <li><a href="avatar.php?session='.$session.'&amp;action=ListImportAvatars">Import avatars</a></li>
+                        <li><a href="index.php?session='.$session.'&amp;action=EditSettings#avatar">Avatar settings</a></li>
+                    </ul>
+                    <div>Group management</div>
+                    <ul>
+                        <li><a href="groups.php?session='.$session.'&amp;action=list">View / edit groups</a></li>
+                        <li><a href="groups.php?session='.$session.'&amp;action=create">Create group</a></li>
+                    </ul>
+                    <div>User management</div>
+                    <ul>
+                        <li><a href="users.php?session='.$session.'&amp;action=bans">User bans</a></li>
+                        <li><a href="useredit.php?session='.$session.'&amp;action=Filter">Search / edit users</a></li>
+                        <li><a href="useredit.php?session='.$session.'&amp;action=AddUser">Add user</a></li>
+                        <li><a href="useredit.php?session='.$session.'&amp;action=DeleteUser">Delete user</a></li>
+                    </ul>
+                    <div>Appearance</div>
+                    <ul>
+                        <li><a href="style.php?session='.$session.'&amp;action=ListStyles">View / edit styles</a></li>
+                        <li><a href="style.php?session='.$session.'&amp;action=NewStyle">Create style</a></li>
+                        <li><a href="style.php?session='.$session.'&amp;action=ImportStyle">Import style</a></li>
+                        <li><a href="dynx.php">Download styles</a></li>
+                    </ul>
+                    <div>Templates</div>
+                    <ul>
+                        <li><a href="t-editor.php?session='.$session.'&amp;action=ListTemplateSets">Template editor</a></li>
+                        <li><a href="mails.php?session='.$session.'&amp;action=ListMails">Email editor</a></li>
+                    </ul>
+                    <div>Misc</div>
+                    <ul>
+                        <li><a href="versioninfo.php?session='.$session.'">Version info</a></li>
+                        <li><a href="query.php?session='.$session.'">thwbMyAdmin</a></li>
+                        <li><a href="mysql.php?session='.$session.'">Mysql-Clean</a></li>
+                    </ul>
+                    <div>Logout</div>
+                    <ul>
+                        <li><a href="index.php?action=logout&amp;session='.$session.'">Logout</a></li>
+                    </ul>
                 </td>
                 <td bgcolor="#000000" width="1"></td>
                 <td valign="top">
