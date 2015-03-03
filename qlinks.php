@@ -23,7 +23,14 @@
 if (!@include('./inc/config.inc.php')) {
     print '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
     ';
+    print '<html>';
+    print '<head>';
+    print '<title>ThWboard wurde noch nicht installiert</title>';
+    print '</head>';
+    print '<body>';
     print 'Das Forum ist noch nicht eingerichtet! Bitte <a href="./admin/install.php">installieren</a> Sie zuerst die Forensoftware um das Forum nutzen zu k&ouml;nnen.';
+    print '</body>';
+    print '</html>';
     exit;
 }
 
