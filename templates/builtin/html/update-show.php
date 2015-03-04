@@ -4,29 +4,29 @@
 ]) ?>
 <b><?= $this->_('updateinfo') ?></b><br>
 <br>
-<table width="100%" border="0" cellspacing="0" cellpadding="3">
+<table summary="Attributes of the update to be installed" width="100%" border="0" cellspacing="0" cellpadding="3">
     <tr>
-        <td><?= $this->_('reqver') ?></td>
-        <td><b><?= $this->e($update->OldVersion) ?></b></td>
+        <th><?= $this->_('reqver') ?></th>
+        <td><?= $this->e($update->OldVersion) ?></td>
     </tr>
     <tr>
-        <td><?= $this->_('newver') ?></td>
-        <td><b><?= $this->e($update->NewVersion) ?></b></td>
+        <th><?= $this->_('newver') ?></th>
+        <td><?= $this->e($update->NewVersion) ?></td>
     </tr>
     <tr>
-        <td><?= $this->_('author') ?></td>
-        <td><b><?= $this->e($update->Author) ?></b></td>
+        <th><?= $this->_('author') ?></th>
+        <td><?= $this->e($update->Author) ?></td>
     </tr>
     <tr>
-        <td><?= $this->_('date') ?></td>
-        <td><b><?= $this->e($update->Date) ?></b></td>
+        <th><?= $this->_('date') ?></th>
+        <td><?= $this->e($update->Date) ?></td>
     </tr>
     <tr>
-        <td><?= $this->_('executable') ?></td>
-        <td><b><?= ($update->AllowUpdate() ? $this->_('yes') : $this->_('no')) ?></b></td>
+        <th><?= $this->_('executable') ?></th>
+        <td><?= ($update->AllowUpdate() ? $this->_('yes') : $this->_('no')) ?></td>
     </tr>
     <tr>
-        <td><?= $this->_('notes') ?></td>
-        <td><b><?= ($update->Notes ? $update->Notes : $this->_('na')) ?></b></td>
+        <th><?= $this->_('notes') ?></th>
+        <td><?= ($update->Notes ? $update->Notes : $this->_('na')) ?></td>
     </tr>
 </table>

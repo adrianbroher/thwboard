@@ -75,12 +75,12 @@ Feature: Forum install
         Given I am on the homepage
         When I follow "installieren"
         Then the returned HTML document should be valid
-        And I should see "English" selected in the select "Please select your language:"
-        And I should see the following <value> available in the select "Please select your language:":
+        And I should see "English" selected in the select "Language"
+        And I should see the following <value> available in the select "Language":
             | value   |
             | Deutsch |
             | English |
-        When I select "Deutsch" from "Please select your language:"
+        When I select "Deutsch" from "Language"
         And I press "Next"
         Then the returned HTML document should be valid
         And I should see "Willkommen zum ThWboard Installationsassistent."

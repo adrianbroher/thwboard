@@ -4,10 +4,12 @@
 ]) ?>
 <b>Welcome to phpInstaller!</b><br>
 <br>
-<label for="language">Please select your language:</label><br>
-<br>
-<select id="language" name="lang" class="inst_button">
+<p>Please select your language.</p>
+<div>
+    <label for="language">Language</label>
+    <select id="language" name="lang">
 <?php foreach ($languages as $key => $language): ?>
-    <option <?= (($key === 'en') ? 'selected="selected" ': '') ?>value="<?= $this->e($key) ?>"><?= $this->e($language['desc']) ?></option>
+        <option <?= (($key === 'en') ? 'selected="selected" ': '') ?>value="<?= $this->e($key) ?>"><?= $this->e($language['desc']) ?></option>
 <?php endforeach ?>
-</select>
+    </select>
+</div>

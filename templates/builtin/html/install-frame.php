@@ -22,6 +22,13 @@ hr {
     border-bottom: 1px solid #FFF;
     clear: both;
 }
+input, select, textarea {
+    font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+}
+th {
+    text-align: left;
+}
 #content {
     background-color: #D4D0C8;
     border-left: 1px solid #FFF;
@@ -32,6 +39,21 @@ hr {
     margin-right: auto;
     margin-top: 2em;
     width: 600px;
+}
+#installer-form div div {
+    margin-bottom: .5em;
+}
+#installer-form label {
+    display: inline-block;
+    vertical-align: top;
+    width: 9em;
+}
+#installer-form input[type=text],
+#installer-form input[type=password],
+#installer-form select,
+#installer-form textarea {
+    box-sizing: border-box;
+    width: 20em;
 }
 #links {
     margin-left: .5em;
@@ -45,7 +67,6 @@ hr {
     float: right;
     margin: 1em;
 }
-.inst_button {  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 8pt}
         </style>
     </head>
     <body>
@@ -54,7 +75,7 @@ hr {
             <h1>ThWboard <?= $this->_('installation') ?></h1>
             <div id="links"><a href="<?= $about_handler ?>">About phpInstaller</a> v1.1</div>
             <hr>
-            <form name="theform" method="post" action="<?= (isset($step) ? ('?step=' . $step) : '') ?>">
+            <form id="installer-form" name="theform" method="post" action="<?= (isset($step) ? ('?step=' . $step) : '') ?>">
                 <div style="padding: 1em">
 <?= $this->section('content') ?>
                 </div>
