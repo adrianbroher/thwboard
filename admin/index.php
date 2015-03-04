@@ -57,24 +57,24 @@ if( $action == "" )
     print '<br><br><br>Visit the <a href="http://www.thwboard.de">ThWboard-Page</a> for new versions and updates.<br>
         ThWboard is copyright 2004 by the ThWboard Development Group<br><br>';
 
-    print '<font color="darkblue">ThWboard version information</font><font size="1"><br>';
+    print '<font style="color: #008;">ThWboard version information</font><font size="1"><br>';
     print 'Your version: <b>'.$config['version'].'</b>';
     if( $current_version )
     {
         print 'Latest stable version available: <b>'.$current_version.'</b> [ <a href="http://www.thwboard.de/">Info ..</a> ]<br>';
         if( $current_version != $config['version'] )
         {
-            print '<br><font color="darkred">Your version might be outdated.</font><br>';
+            print '<br><font style="color: #800;">Your version might be outdated.</font><br>';
         }
     }
     else
     {
-        print ' <font color="darkred">[ CVS / Subversion Source Tree ]</font><br>';
+        print ' <font style="color: #800;">[ CVS / Subversion Source Tree ]</font><br>';
     }
     print '</font><br>';
 
     print '
-<font color="darkblue">System version information</font><font size="1"><br>
+<font style="color: #008;">System version information</font><font size="1"><br>
 PHP: <b>'.phpversion().'</b><br>
 MySQL: <b>'.mysql_get_server_info().'</b><br>
 </font><br>
@@ -85,7 +85,7 @@ MySQL: <b>'.mysql_get_server_info().'</b><br>
     {
         $load = explode(' ', $loadavg[0]);
         print '
-<font color="darkblue">Average system load</font><font size="1"><br>
+<font style="color: #008;">Average system load</font><font size="1"><br>
 Last minute: <b>'.$load[0].'</b><br>
 Last 5 minutes: <b>'.$load[1].'</b><br>
 Last 15 minutes: <b>'.$load[2].'</b><br>
