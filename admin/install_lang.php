@@ -98,6 +98,7 @@ $a_lang['de']['na'] = '(keine)';
 $a_lang['de']['infotxt'] = '
                     <b>Willkommen!</b><br>
                       <br>
+                    <p>
                       Willkommen zum ThWboard Installationsassistent. Dieser Assistent
                       wird Ihnen dabei helfen, Ihr ThWboard zu installieren. Bevor
                       Sie mit der Installation starten, legen Sie bitte folgende
@@ -205,7 +206,8 @@ $a_lang['en']['no'] = 'No';
 $a_lang['en']['na'] = 'N/A';
 $a_lang['en']['infotxt'] = '
                     <b>Welcome!</b><br>
-                      <br>
+                    <br>
+                    <p>
                       Welcome to the ThWboard Installation assistant. This install assistant will
                       guide you through the installation process of your ThWboard. Before you start, make
                       sure you have the following information:</p>
@@ -228,9 +230,11 @@ You should set the <b>../inc/</b> directory to CHMOD 755.<br>
 Remember that you need to set the <b>../templates/css/</b> directory and all css files inide to CHMOD 777.
 <br>
 The installation process was successfully completed. Your ThWboard should be working now.<br>
+<ul>
 <li><a target="_blank" href="../">Your ThWboard</a></li>
 <li><a target="_blank" href="./index.php">The Admin-Center of your ThWboard</a></li>
-<li><a target="_blank" href="http://www.thwboard.de/forum/">The ThWboard Support Forums</a> (Comments, questions etc)</li>';
+<li><a target="_blank" href="http://www.thwboard.de/forum/">The ThWboard Support Forums</a> (Comments, questions etc)</li>
+</ul>';
 $a_lang['en']['noupdates'] = '
 There are currently no updates<br>
 Visit the <a href="http://www.thwboard.de/">ThWboard Homepage</a> in order to download updates.';
