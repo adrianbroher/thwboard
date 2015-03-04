@@ -86,53 +86,43 @@ SQL
         $categories[] = $category;
     }
 ?>
-<form method="post" action="<?= htmlspecialchars($handler) ?>">
-    <table width="100%" border="0" cellspacing="0" cellpadding="3">
-        <tr>
-            <td><label for="board-name">Name</label></td>
-            <td><input class="tbinput" id="board-name" type="text" name="board-name" value="<?= htmlspecialchars($board->name) ?>"></td>
-        </tr>
-        <tr>
-            <td><label for="board-description">Description</label></td>
-            <td><input class="tbinput" id="board-description" type="text" name="board-description" value="<?= htmlspecialchars($board->description) ?>"></td>
-        </tr>
-        <tr>
-            <td><label for="board-categoryid">Category</label></td>
-            <td>
-                <select class="tbinput" id="board-categoryid" name="board-categoryid">
+<form class="entity-form" method="post" action="<?= htmlspecialchars($handler) ?>">
+    <div>
+        <label for="board-name">Name</label>
+        <input id="board-name" type="text" name="board-name" value="<?= htmlspecialchars($board->name) ?>">
+    </div>
+    <div>
+        <label for="board-description">Description</label>
+        <input id="board-description" type="text" name="board-description" value="<?= htmlspecialchars($board->description) ?>">
+    </div>
+    <div>
+        <label for="board-categoryid">Category</label>
+        <select id="board-categoryid" name="board-categoryid">
 <?php foreach ($categories as $category): ?>
-                    <option value="<?= htmlspecialchars($category->ID) ?>"<?= ($category->ID == $board->categoryID ? ' selected="selected"' : '') ?>><?= htmlspecialchars($category->name) ?></option>
+            <option value="<?= htmlspecialchars($category->ID) ?>"<?= ($category->ID == $board->categoryID ? ' selected="selected"' : '') ?>><?= htmlspecialchars($category->name) ?></option>
 <?php endforeach ?>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td><label for="board-styleid">Style</label></td>
-            <td>
-                <select class="tbinput" id="board-styleid" name="board-styleid">
+        </select>
+    </div>
+    <div>
+        <label for="board-styleid">Style</label>
+        <select id="board-styleid" name="board-styleid">
 <?php foreach ($styles as $style): ?>
-                    <option value="<?= htmlspecialchars($style->ID) ?>"><?= htmlspecialchars($style->name) ?></option>
+            <option value="<?= htmlspecialchars($style->ID) ?>"><?= htmlspecialchars($style->name) ?></option>
 <?php endforeach ?>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <b><label for="board-disabled">Status</label></b><br>
-                <font size="1">Here you can deactivate this board temporarily</font>
-            </td>
-            <td align="top">
-                <select class="tbinput" id="board-disabled" name="board-disabled">
-                    <option value="1"<?= ($board->disabled == 1 ? ' selected="selected"' : '') ?>>Disable board</option>
-                    <option value="0"<?= ($board->disabled == 0 ? ' selected="selected"' : '') ?>>Enable board</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td><input type="submit" name="submit" value="Save"></td>
-        </tr>
-    </table>
+        </select>
+    </div>
+    <div>
+        <label for="board-disabled">Status</label>
+        <select id="board-disabled" name="board-disabled">
+            <option value="1"<?= ($board->disabled == 1 ? ' selected="selected"' : '') ?>>Disable board</option>
+            <option value="0"<?= ($board->disabled == 0 ? ' selected="selected"' : '') ?>>Enable board</option>
+        </select>
+        <br>
+        <font size="1">Here you can deactivate this board temporarily</font>
+    </div>
+    <div>
+        <input type="submit" name="submit" value="Save">
+    </div>
 </form>
 <br>
 <br>
