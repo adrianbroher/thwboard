@@ -4,106 +4,66 @@
         <title>ThWboard - phpInstaller v1.1</title>
         <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
         <style type="text/css">
+body {
+    background-color: #3A6EA5;
+    color: #000;
+    font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+    margin: 0;
+    padding: 0;
+}
+h1 {
+    font-size: 8pt;
+    margin: .5em;
+}
+hr {
+    border: none;
+    border-top: 1px solid #808080;
+    border-bottom: 1px solid #FFF;
+    clear: both;
+}
+#content {
+    background-color: #D4D0C8;
+    border-left: 1px solid #FFF;
+    border-top: 1px solid #FFF;
+    border-right: 1px solid #808080;
+    border-bottom: 1px solid #808080;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2em;
+    width: 600px;
+}
+#links {
+    margin-left: .5em;
+    margin-bottom: .5em;
+}
+#logo {
+    margin: .5em;
+    float: right;
+}
+#submit {
+    float: right;
+    margin: 1em;
+}
 .inst_button {  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 8pt}
-td {  font-family: Tahoma, Verdana, Arial, Helvetica, sans-serif; font-size: 8pt}
         </style>
     </head>
-    <body bgcolor="#3A6EA5" text="#000000" link="#0000FF" vlink="#0033FF" alink="#0000FF">
-        <form name="theform" method="post" action="<?= (isset($step) ? ('?step=' . $step) : '') ?>">
-            <table width="600" border="0" cellspacing="0" cellpadding="0" align="center">
-                <tr>
-                    <td bgcolor="#D4D0C8" height="1" width="1"></td>
-                    <td bgcolor="#D4D0C8" height="1" width="1"></td>
-                    <td bgcolor="#D4D0C8" height="1"></td>
-                    <td bgcolor="#D4D0C8" height="1" width="1"></td>
-                    <td bgcolor="#000000" height="1" width="1"></td>
-                </tr>
-                <tr>
-                    <td bgcolor="#D4D0C8" height="1" width="1"></td>
-                    <td bgcolor="#FFFFFF" height="1" width="1"></td>
-                    <td bgcolor="#FFFFFF" height="1"></td>
-                    <td bgcolor="#FFFFFF" height="1" width="1"></td>
-                    <td bgcolor="#000000" height="1" width="1"></td>
-                </tr>
-                <tr>
-                    <td bgcolor="#D4D0C8" width="1"></td>
-                    <td bgcolor="#FFFFFF" width="1"></td>
-                    <td bgcolor="#D4D0C8">
-                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                            <tr>
-                                <td>
-                                    <table width="100%" border="0" cellspacing="0" cellpadding="6">
-                                        <tr>
-                                            <td>
-                                                <b>ThWboard <?= $this->_('installation') ?></b><br>
-                                                <a href="<?= $about_handler ?>">About phpInstaller</a> v1.1
-                                            </td>
-                                            <td align="right"><img alt="ThWboard Logo" src="./images/thwboard_logo.gif"></td>
-                                        </tr>
-                                    </table>
-                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                        <tr>
-                                            <td bgcolor="#808080" height="1"></td>
-                                        </tr>
-                                        <tr>
-                                            <td bgcolor="#FFFFFF" height="1"></td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <table width="100%" border="0" cellspacing="0" cellpadding="16">
-                                        <tr>
-                                            <td>
+    <body>
+        <div id="content">
+            <img alt="ThWboard Logo" id="logo" src="./images/thwboard_logo.gif">
+            <h1>ThWboard <?= $this->_('installation') ?></h1>
+            <div id="links"><a href="<?= $about_handler ?>">About phpInstaller</a> v1.1</div>
+            <hr>
+            <form name="theform" method="post" action="<?= (isset($step) ? ('?step=' . $step) : '') ?>">
+                <div style="padding: 1em">
 <?= $this->section('content') ?>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                        <tr>
-                                            <td bgcolor="#808080" height="1"></td>
-                                        </tr>
-                                        <tr>
-                                            <td bgcolor="#FFFFFF" height="1"></td>
-                                        </tr>
-                                    </table>
-                                    <br>
-                                    <table width="100%" border="0" cellspacing="0" cellpadding="16">
-                                        <tr>
-                                            <td align="right">
+                </div>
 <?php if (isset($step)): ?>
-                                                <input type="submit" name="submit" value="<?= $this->_('next') ?> &gt;" class="inst_button">
+                <hr>
+                <input id="submit" type="submit" name="submit" value="<?= $this->_('next') ?> &gt;" class="inst_button">
+                <div style="clear:both"></div>
 <?php endif ?>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td bgcolor="#808080" width="1"></td>
-                    <td bgcolor="#000000" width="1"></td>
-                </tr>
-                <tr>
-                    <td bgcolor="#D4D0C8" height="1" width="1"></td>
-                    <td bgcolor="#FFFFFF" height="1" width="1"></td>
-                    <td bgcolor="#808080" height="1"></td>
-                    <td bgcolor="#808080" height="1" width="1"></td>
-                    <td bgcolor="#000000" height="1" width="1"></td>
-                </tr>
-                <tr bgcolor="#000000">
-                    <td height="1" width="1"></td>
-                    <td height="1" width="1"></td>
-                    <td height="1"></td>
-                    <td height="1" width="1"></td>
-                    <td height="1" width="1"></td>
-                </tr>
-            </table>
-        </form>
+            </form>
+        </div>
     </body>
 </html>
