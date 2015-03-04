@@ -57,34 +57,27 @@ SQL
     }
 
 ?>
-<form name="announcements" method="post" action="<?= htmlspecialchars($handler) ?>">
-    <table border="0" cellspacing="1" cellpadding="2">
-        <tr>
-            <td><label for="announcement-title">Title</label></td>
-            <td><input class="tbinput" id="announcement-title" type="text" name="announcement-title" size="45" value="<?= htmlspecialchars($announcement->title) ?>"></td>
-        </tr>
-        <tr>
-            <td valign="top"><label for="announcement-body">Body</label></td>
-            <td>
-                <textarea class="tbinput" id="announcement-body" name="announcement-body" cols="60" rows="8"><?= htmlspecialchars($announcement->body) ?></textarea><br>
+<form class="entity-form" name="announcements" method="post" action="<?= htmlspecialchars($handler) ?>">
+    <div>
+        <label for="announcement-title">Title</label>
+        <input id="announcement-title" type="text" name="announcement-title" size="45" value="<?= htmlspecialchars($announcement->title) ?>">
+    </div>
+    <div>
+        <label for="announcement-body">Body</label>
+        <textarea id="announcement-body" name="announcement-body" cols="60" rows="8"><?= htmlspecialchars($announcement->body) ?></textarea><br>
                 Note: You can use ThWboard Code in announcements.
-            </td>
-        </tr>
-        <tr>
-            <td valign="top"><label for="announcement-boardids">Boards</label></td>
-            <td>
-                <select class="tbinput" id="announcement-boardids" name="announcement-boardids[]" size="8" multiple>
+    </div>
+    <div>
+        <label for="announcement-boardids">Boards</label>
+        <select id="announcement-boardids" name="announcement-boardids[]" size="8" multiple>
 <?php foreach ($boards as $board): ?>
-                    <option value="<?= htmlspecialchars($board->ID) ?>"<?= (stristr($announcement->boardIDs, ";".$board->ID.";") != false ? ' selected="selected"' : '') ?>><?= htmlspecialchars($board->name) ?></option>
+            <option value="<?= htmlspecialchars($board->ID) ?>"<?= (stristr($announcement->boardIDs, ";".$board->ID.";") != false ? ' selected="selected"' : '') ?>><?= htmlspecialchars($board->name) ?></option>
 <?php endforeach ?>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td><input type="submit" name="submit" value="Save"></td>
-        </tr>
-    </table>
+        </select>
+    </div>
+    <div>
+        <input type="submit" name="submit" value="Save">
+    </div>
 </form>
 <?php
 }
