@@ -449,84 +449,85 @@ function loginform()
     print '
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
-<head>
-<title>ThWboard Admin Center</title>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<style type="text/css">
-body { margin: 0; padding: 0; }
-input          { font-family: Verdana, Arial; font-size: 8pt }
-</style>
-</head>
-<body bgcolor="#F2F2F2" text="#575757">
-<table width="100%" border="0" cellspacing="0" cellpadding="5">
-  <tr>
-    <td bgcolor="#000000"><font color="#FFFFFF" face="Verdana, Arial" size="1">ThWboard
-      Admin Center :: Login</font></td>
-  </tr>
-  <tr>
-    <td>
-      <form name="login" method="post" action="index.php">
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <table border="0" cellspacing="0" cellpadding="0" align="center">
-          <tr>
-            <td bgcolor="#DBDBDB" width="1" height="1"></td>
-            <td bgcolor="#DBDBDB" height="1"></td>
-            <td bgcolor="#DBDBDB" width="1" height="1"></td>
-          </tr>
-          <tr>
-            <td bgcolor="#DBDBDB" width="1"></td>
-            <td>
-              <table border="0" cellspacing="0" cellpadding="4">
-                <tr>
-                  <td><font size="1"><b><font face="Verdana, Arial, Helvetica, sans-serif" color="#3366CC">Login</font></b></font>
-                    <table border="0" cellspacing="0" cellpadding="2">
-                      <tr>
-                        <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">-&gt;
-                          <label for="login-username">Username</label>&nbsp;&nbsp;&nbsp;</font></td>
-                        <td>
-                          <input id="login-username" type="text" name="l_username" size="12">
-                        </td>
-                      </tr>
-                      <tr>
-                        <td><font size="1" face="Verdana, Arial, Helvetica, sans-serif">-&gt;
-                          <label for="login-password">Password</label>&nbsp;&nbsp;&nbsp;</font></td>
-                        <td>
-                          <input id="login-password" type="password" name="l_password" size="12">
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-                <tr>
-                  <td align="right">
+    <head>
+        <title>ThWboard Admin Center</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+        <style type="text/css">
+body {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 10pt;
+    margin: 0;
+}
+input {
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 8pt;
+}
+h1 {
+    background-color: #000;
+    color: #FFF;
+    font-size: x-small;
+    margin: 0;
+    padding: .5em;
+}
+fieldset {
+    border-left: 1px solid #DBDBDB;
+    border-top: 1px solid #DBDBDB;
+    border-right: 1px solid #FFF;
+    border-bottom: 1px solid #FFF;
+}
+legend {
+    color: #36C;
+    font-size: x-small;
+}
+#login-form {
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 10em;
+    width: 16em;
+}
+#login-form div {
+    margin-bottom: .5em;
+}
+#login-form div:last-child {
+    margin-bottom: 0;
+}
+#login-form label {
+    font-size: x-small;
+    display: inline-block;
+}
+#login-form input {
+    box-sizing: border-box;
+    width: 100%;
+}
+        </style>
+    </head>
+    <body bgcolor="#F2F2F2" text="#575757">
+        <h1>ThWboard admin center :: Login</h1>
+        <form id="login-form" name="login" method="post" action="index.php">
+            <fieldset>
+                <legend>Login</legend>
+                <div>
+                    <label for="login-username">Username</label>
+                    <input id="login-username" type="text" name="l_username" size="12">
+                </div>
+                <div>
+                    <label for="login-password">Password</label>
+                    <input id="login-password" type="password" name="l_password" size="12">
+                </div>
+                <div align="right">
                     <input type="submit" name="go" value="Login">
-                  </td>
-                </tr>
-              </table>
-            </td>
-            <td bgcolor="#FFFFFF" width="1"></td>
-          </tr>
-          <tr>
-            <td bgcolor="#DBDBDB" width="1" height="1"></td>
-            <td bgcolor="#FFFFFF" height="1"></td>
-            <td bgcolor="#FFFFFF" width="1" height="1"></td>
-          </tr>
-        </table>
-      </form>
-    </td>
-  </tr>
-</table>
-<script type="text/javascript">
+                </div>
+            </fieldset>
+        </form>
+        <script type="text/javascript">
 <!--
 if (document.login) document.login.l_username.focus();
 // -->
-</script>
-</body>
+        </script>
+    </body>
 </html>';
 }
