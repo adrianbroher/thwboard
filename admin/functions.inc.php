@@ -251,7 +251,23 @@ ul.actions li {
 
 .actions button:hover {
     text-decoration: none;
-}';
+}
+
+.entity-form div {
+    margin-bottom: .5em;
+}
+
+.entity-form label {
+    display: block;
+    margin-bottom: .1em;
+}
+
+.entity-form input, .entity-form select, .entity-form textarea {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+';
 
     if( !preg_match('/opera/Ui', $HTTP_SERVER_VARS['HTTP_USER_AGENT']) )
     {
