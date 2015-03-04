@@ -93,7 +93,8 @@ Last 15 minutes: <b>'.$load[2].'</b><br>
 ';
     }
 
-    print '<br><br>Last 50 Admin-actions:<br><table width="100%" border="0" cellspacing="0" cellpadding="3">
+    print '<br><br><table summary="The 50 most recent actions done in the administrator interface" width="100%" border="0" cellspacing="0" cellpadding="3">
+  <caption>Last 50 Admin-actions</caption>
   <tr>
     <td><b>Date/Time</b></td>
     <td><b>Logtype</b></td>
