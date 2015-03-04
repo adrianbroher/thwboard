@@ -135,10 +135,14 @@ Note: You can define the default style <a href="style.php?session=<?= htmlspecia
 function CategoryForm($category, $handler)
 {
 ?>
-<form method="post" action="<?= htmlspecialchars($handler) ?>">
-    <label for="category-name">Name</label>
-    <input id="category-name" class="tbinput" type="text" name="category-name" value="<?= htmlspecialchars($category->name) ?>">
-    <input type="submit" name="submit" value="Save">
+<form class="entity-form" method="post" action="<?= htmlspecialchars($handler) ?>">
+    <div>
+        <label for="category-name">Name</label>
+        <input id="category-name" name="category-name" type="text" value="<?= htmlspecialchars($category->name) ?>">
+    </div>
+    <div>
+        <input name="submit" type="submit" value="Save">
+    </div>
 </form>
 <?php
 }
