@@ -125,12 +125,17 @@ a:link { color:#3366CC; text-decoration: underline}
 a:visited { color:#3366CC; text-decoration: underline}
 a:active { color:#A63600; text-decoration: underline}
 a:hover { color:#4477DD; text-decoration: none }
-body { font-family: Verdana, Arial, Helvetica; font-size: 10pt; margin: 0; }
 td { font-family: Verdana, Arial, Helvetica; font-size: 10pt }
 select { font-family: Verdana, Arial, Helvetica; font-size: 8pt }
 textarea { font-family: Verdana, Arial, Helvetica; font-size: 8pt }
 input { font-family: Verdana, Arial, Helvetica; font-size: 8pt }
 .htmlsource { font-family: "Verdana, Helvetica", Courier, mono; font-size: 8pt; color: #2255BB }
+
+body {
+    font-family: Verdana, Arial, Helvetica;
+    font-size: 10pt;
+    margin: 0;
+}
 
 h1 {
     background-color: #000;
@@ -140,29 +145,33 @@ h1 {
     padding: .5em;
 }
 
+#navigation {
+    background-color: #E0E8F1;
+    color: #4E7DB1;
+    float: left;
+    font-size: 10px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 160px;
+}
+
 #navigation div {
     background-color: #E9EFF5;
     border-top: 1px solid #FFFFFF;
     border-bottom: 1px solid #C0D1E3;
-    color: #4E7DB1;
-    font-size: 10px;
     font-weight: bold;
     padding: .3em;
 }
 
 #navigation ul {
-    font-size: 10px;
     list-style-position: inside;
-    margin: 0;
-    padding-left: .3em;
+    margin-top: .2em;
+    margin-bottom: .5em;
+    padding-left: 1em;
 }
 
-#navigation li {
-    padding: .3em;
-    padding-bottom: .6em;
-}
-
-#navigation a:link, #navigation a:visited, #navigation a:active {
+#navigation a {
     color:#3F648E;
     text-decoration: none;
 }
@@ -170,6 +179,17 @@ h1 {
 #navigation a:hover {
     color:#3F648E;
     text-decoration: underline;
+}
+
+#content {
+    margin-left: 160px;
+    padding: .4em;
+}
+
+#footer {
+    clear: both;
+    border-top: 1px solid black;
+    text-align: right;
 }
 
 #board-order {
@@ -244,98 +264,100 @@ ul.actions li {
     </head>
     <body bgcolor="#FCFCFC" text="#575757">
         <h1>ThWboard admin center</h1>
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-            <tr id="navigation">
-                <td bgcolor="#E0E8F1" width="160" valign="top">
-                    <div>Links</div>
-                    <ul>
-                        <li><a href="index.php?session='.$session.'">Home</a></li>
-                        <li><a href=".." target="_blank">Your forums</a></li>
-                        <li><a href="http://www.thwboard.de" target="_blank">ThWboard homepage</a></li>
-                    </ul>
-                    <div>General</div>
-                    <ul>
-                        <li><a href="documents.php?session='.$session.'&amp;action=ListDocs">Documentation</a></li>
-                        <li><a href="index.php?session='.$session.'&amp;action=EditSettings">Basic settings</a></li>
-                        <li><a href="rank.php?session='.$session.'&amp;action=ViewRanks">Ranks</a></li>
-                        <li><a href="announcements.php?session='.$session.'">Announcements</a></li>
-                        <li><a href="links.php?session='.$session.'&amp;action=ListLinks">Quicklinks</a></li>
-                    </ul>
-                    <div>Structure</div>
-                    <ul>
-                        <li><a href="boards.php?session='.$session.'">Categories and Boards</a></li>
-                    </ul>
-                    <div>Extensions</div>
-                    <ul>
-                        <li><a href="calendar.php?session='.$session.'">Calendar</a></li>
-                        <li><a href="newsletter.php?session='.$session.'">Newsletter</a></li>
-                        <li><a href="bwords.php?session='.$session.'">Badwords protection</a></li>
-                        <li><a href="avatar.php?session='.$session.'&amp;action=ListAvatars">List avatars</a></li>
-                        <li><a href="avatar.php?session='.$session.'&amp;action=ListImportAvatars">Import avatars</a></li>
-                        <li><a href="index.php?session='.$session.'&amp;action=EditSettings#avatar">Avatar settings</a></li>
-                    </ul>
-                    <div>Group management</div>
-                    <ul>
-                        <li><a href="groups.php?session='.$session.'&amp;action=list">View / edit groups</a></li>
-                        <li><a href="groups.php?session='.$session.'&amp;action=create">Create group</a></li>
-                    </ul>
-                    <div>User management</div>
-                    <ul>
-                        <li><a href="users.php?session='.$session.'&amp;action=bans">User bans</a></li>
-                        <li><a href="useredit.php?session='.$session.'&amp;action=Filter">Search / edit users</a></li>
-                        <li><a href="useredit.php?session='.$session.'&amp;action=AddUser">Add user</a></li>
-                        <li><a href="useredit.php?session='.$session.'&amp;action=DeleteUser">Delete user</a></li>
-                    </ul>
-                    <div>Appearance</div>
-                    <ul>
-                        <li><a href="style.php?session='.$session.'&amp;action=ListStyles">View / edit styles</a></li>
-                        <li><a href="style.php?session='.$session.'&amp;action=NewStyle">Create style</a></li>
-                        <li><a href="style.php?session='.$session.'&amp;action=ImportStyle">Import style</a></li>
-                        <li><a href="dynx.php">Download styles</a></li>
-                    </ul>
-                    <div>Templates</div>
-                    <ul>
-                        <li><a href="t-editor.php?session='.$session.'&amp;action=ListTemplateSets">Template editor</a></li>
-                        <li><a href="mails.php?session='.$session.'&amp;action=ListMails">Email editor</a></li>
-                    </ul>
-                    <div>Misc</div>
-                    <ul>
-                        <li><a href="versioninfo.php?session='.$session.'">Version info</a></li>
-                        <li><a href="query.php?session='.$session.'">thwbMyAdmin</a></li>
-                        <li><a href="mysql.php?session='.$session.'">Mysql-Clean</a></li>
-                    </ul>
-                    <div>Logout</div>
-                    <ul>
-                        <li><a href="index.php?action=logout&amp;session='.$session.'">Logout</a></li>
-                    </ul>
-                </td>
-                <td bgcolor="#000000" width="1"></td>
-                <td valign="top">
-                    <table width="100%" border="0" cellspacing="0" cellpadding="8">
-                        <tr>
-                            <td>';
+        <ul id="navigation">
+            <li>
+                <div>Links</div>
+                <ul>
+                    <li><a href="index.php?session='.$session.'">Home</a></li>
+                    <li><a href=".." target="_blank">Your forums</a></li>
+                    <li><a href="http://www.thwboard.de" target="_blank">ThWboard homepage</a></li>
+                </ul>
+            </li>
+            <li>
+                <div>General</div>
+                <ul>
+                    <li><a href="documents.php?session='.$session.'&amp;action=ListDocs">Documentation</a></li>
+                    <li><a href="index.php?session='.$session.'&amp;action=EditSettings">Basic settings</a></li>
+                    <li><a href="rank.php?session='.$session.'&amp;action=ViewRanks">Ranks</a></li>
+                    <li><a href="announcements.php?session='.$session.'">Announcements</a></li>
+                    <li><a href="links.php?session='.$session.'&amp;action=ListLinks">Quicklinks</a></li>
+                </ul>
+            </li>
+            <li>
+                <div>Structure</div>
+                <ul>
+                    <li><a href="boards.php?session='.$session.'">Categories and Boards</a></li>
+                </ul>
+            </li>
+            <li>
+                <div>Extensions</div>
+                <ul>
+                    <li><a href="calendar.php?session='.$session.'">Calendar</a></li>
+                    <li><a href="newsletter.php?session='.$session.'">Newsletter</a></li>
+                    <li><a href="bwords.php?session='.$session.'">Badwords protection</a></li>
+                    <li><a href="avatar.php?session='.$session.'&amp;action=ListAvatars">List avatars</a></li>
+                    <li><a href="avatar.php?session='.$session.'&amp;action=ListImportAvatars">Import avatars</a></li>
+                    <li><a href="index.php?session='.$session.'&amp;action=EditSettings#avatar">Avatar settings</a></li>
+                </ul>
+            </li>
+            <li>
+                <div>Group management</div>
+                <ul>
+                    <li><a href="groups.php?session='.$session.'&amp;action=list">View / edit groups</a></li>
+                    <li><a href="groups.php?session='.$session.'&amp;action=create">Create group</a></li>
+                </ul>
+            </li>
+            <li>
+                <div>User management</div>
+                <ul>
+                    <li><a href="users.php?session='.$session.'&amp;action=bans">User bans</a></li>
+                    <li><a href="useredit.php?session='.$session.'&amp;action=Filter">Search / edit users</a></li>
+                    <li><a href="useredit.php?session='.$session.'&amp;action=AddUser">Add user</a></li>
+                    <li><a href="useredit.php?session='.$session.'&amp;action=DeleteUser">Delete user</a></li>
+                </ul>
+            </li>
+            <li>
+                <div>Appearance</div>
+                <ul>
+                    <li><a href="style.php?session='.$session.'&amp;action=ListStyles">View / edit styles</a></li>
+                    <li><a href="style.php?session='.$session.'&amp;action=NewStyle">Create style</a></li>
+                    <li><a href="style.php?session='.$session.'&amp;action=ImportStyle">Import style</a></li>
+                    <li><a href="dynx.php">Download styles</a></li>
+                </ul>
+            </li>
+            <li>
+                <div>Templates</div>
+                <ul>
+                    <li><a href="t-editor.php?session='.$session.'&amp;action=ListTemplateSets">Template editor</a></li>
+                    <li><a href="mails.php?session='.$session.'&amp;action=ListMails">Email editor</a></li>
+                </ul>
+            </li>
+            <li>
+                <div>Misc</div>
+                <ul>
+                    <li><a href="versioninfo.php?session='.$session.'">Version info</a></li>
+                    <li><a href="query.php?session='.$session.'">thwbMyAdmin</a></li>
+                    <li><a href="mysql.php?session='.$session.'">Mysql-Clean</a></li>
+                </ul>
+            </li>
+            <li>
+                <div>Logout</div>
+                <ul>
+                    <li><a href="index.php?action=logout&amp;session='.$session.'">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div id="content">';
 }
 
 function tb_footer()
 {
     print '
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr bgcolor="#000000">
-    <td height="1" width="160"></td>
-    <td height="1" width="1"></td>
-    <td height="1"></td>
-  </tr>
-  <tr>
-    <td width="160">&nbsp;</td>
-    <td width="1"></td>
-    <td align="right"><font size="1">--&gt; ThWboard (c) 2000-2004 ThWboard Development Group&nbsp;&nbsp;&nbsp;</font></td>
-  </tr>
-</table>
-</body>
+        </div>
+        <div id="footer">
+            <font size="1">--&gt; ThWboard (c) 2000-2004 ThWboard Development Group&nbsp;&nbsp;&nbsp;</font>
+        </div>
+    </body>
 </html>
 ';
 }
