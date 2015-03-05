@@ -114,30 +114,30 @@ Feature: Forum install
         And I press "Next"
         Then the returned HTML document should be valid
         And I should see "Please provide your MySQL data."
-        And the "MySQL hostname/IP" field should contain "localhost"
-        And the "MySQL username" field should contain ""
-        And the "MySQL password" field should contain ""
+        And the "Hostname" field should contain "localhost"
+        And the "Username" field should contain ""
+        And the "Password" field should contain ""
         When I press "Next"
         Then the returned HTML document should be valid
         And I should see "No database credentials were given."
         When I follow "Back"
         Then the returned HTML document should be valid
         And I should see "Please provide your MySQL data."
-        And the "MySQL hostname/IP" field should contain "localhost"
-        And the "MySQL username" field should contain ""
-        And the "MySQL password" field should contain ""
+        And the "Hostname" field should contain "localhost"
+        And the "Username" field should contain ""
+        And the "Password" field should contain ""
         When I fill in the following:
-            | MySQL username | notexisting |
-            | MySQL password | invalid     |
+            | Username | notexisting |
+            | Password | invalid     |
         When I press "Next"
         Then the returned HTML document should be valid
         And I should see "Invalid credentials were given."
         When I follow "Back"
         Then the returned HTML document should be valid
         And I should see "Please provide your MySQL data."
-        And the "MySQL hostname/IP" field should contain "localhost"
-        And the "MySQL username" field should contain "notexisting"
-        And the "MySQL password" field should contain ""
+        And the "Hostname" field should contain "localhost"
+        And the "Username" field should contain "notexisting"
+        And the "Password" field should contain ""
 
     Scenario: Enter invalid database host.
         Given I am on the homepage
@@ -148,31 +148,31 @@ Feature: Forum install
         And I press "Next"
         Then the returned HTML document should be valid
         And I should see "Please provide your MySQL data."
-        And the "MySQL hostname/IP" field should contain "localhost"
-        And the "MySQL username" field should contain ""
-        And the "MySQL password" field should contain ""
+        And the "Hostname" field should contain "localhost"
+        And the "Username" field should contain ""
+        And the "Password" field should contain ""
         When I fill in the following:
-            | MySQL hostname/IP |                     |
-            | MySQL username    | %DATABASE_USERNAME% |
-            | MySQL password    | %DATABASE_PASSWORD% |
+            | Hostname |                     |
+            | Username | %DATABASE_USERNAME% |
+            | Password | %DATABASE_PASSWORD% |
         And I press "Next"
         Then the returned HTML document should be valid
         And I should see "No database host was given."
         When I follow "Back"
-        And the "MySQL hostname/IP" field should contain "localhost"
+        And the "Hostname" field should contain "localhost"
         When I fill in the following:
-            | MySQL hostname/IP | notexisting         |
-            | MySQL username    | %DATABASE_USERNAME% |
-            | MySQL password    | %DATABASE_PASSWORD% |
+            | Hostname | notexisting         |
+            | Username | %DATABASE_USERNAME% |
+            | Password | %DATABASE_PASSWORD% |
         And I press "Next"
         Then the returned HTML document should be valid
         And I should see "Can't connect to the database host."
         When I follow "Back"
         Then the returned HTML document should be valid
         And I should see "Please provide your MySQL data."
-        And the "MySQL hostname/IP" field should contain "notexisting"
-        And the "MySQL username" field should contain "%DATABASE_USERNAME%"
-        And the "MySQL password" field should contain ""
+        And the "Hostname" field should contain "notexisting"
+        And the "Username" field should contain "%DATABASE_USERNAME%"
+        And the "Password" field should contain ""
 
     Scenario: Create a database with insufficient permissions.
         Given I am on the homepage
@@ -182,9 +182,9 @@ Feature: Forum install
         And I check "I accept the license agreement."
         And I press "Next"
         When I fill in the following:
-            | MySQL hostname/IP | %DATABASE_HOSTNAME% |
-            | MySQL username    | %DATABASE_USERNAME% |
-            | MySQL password    | %DATABASE_PASSWORD% |
+            | Hostname | %DATABASE_HOSTNAME% |
+            | Username | %DATABASE_USERNAME% |
+            | Password | %DATABASE_PASSWORD% |
         And I press "Next"
         Then the returned HTML document should be valid
         And I should see "Select MySQL database"
@@ -227,9 +227,9 @@ Feature: Forum install
         And I check "I accept the license agreement."
         And I press "Next"
         When I fill in the following:
-            | MySQL hostname/IP | %DATABASE_HOSTNAME% |
-            | MySQL username    | %DATABASE_USERNAME% |
-            | MySQL password    | %DATABASE_PASSWORD% |
+            | Hostname | %DATABASE_HOSTNAME% |
+            | Username | %DATABASE_USERNAME% |
+            | Password | %DATABASE_PASSWORD% |
         And I press "Next"
         When I check the "Use" radio button
         And I select "%DATABASE_NAME%" from "existing database"
@@ -268,9 +268,9 @@ Feature: Forum install
         And I check "I accept the license agreement."
         And I press "Next"
         When I fill in the following:
-            | MySQL hostname/IP | %DATABASE_HOSTNAME% |
-            | MySQL username    | %DATABASE_USERNAME% |
-            | MySQL password    | %DATABASE_PASSWORD% |
+            | Hostname | %DATABASE_HOSTNAME% |
+            | Username | %DATABASE_USERNAME% |
+            | Password | %DATABASE_PASSWORD% |
         And I press "Next"
         When I check the "Use" radio button
         And I select "%DATABASE_NAME%" from "existing database"
@@ -311,9 +311,9 @@ Feature: Forum install
         And I check "I accept the license agreement."
         And I press "Next"
         When I fill in the following:
-            | MySQL hostname/IP | %DATABASE_HOSTNAME% |
-            | MySQL username    | %DATABASE_USERNAME% |
-            | MySQL password    | %DATABASE_PASSWORD% |
+            | Hostname | %DATABASE_HOSTNAME% |
+            | Username | %DATABASE_USERNAME% |
+            | Password | %DATABASE_PASSWORD% |
         And I press "Next"
         When I check the "Use" radio button
         And I select "%DATABASE_NAME%" from "existing database"
@@ -347,9 +347,9 @@ Feature: Forum install
         And I check "I accept the license agreement."
         And I press "Next"
         When I fill in the following:
-            | MySQL hostname/IP | %DATABASE_HOSTNAME% |
-            | MySQL username    | %DATABASE_USERNAME% |
-            | MySQL password    | %DATABASE_PASSWORD% |
+            | Hostname | %DATABASE_HOSTNAME% |
+            | Username | %DATABASE_USERNAME% |
+            | Password | %DATABASE_PASSWORD% |
         And I press "Next"
         When I check the "Use" radio button
         And I select "%DATABASE_NAME%" from "existing database"
