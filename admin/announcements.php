@@ -82,6 +82,31 @@ SQL
 <?php
 }
 
+function NavigationBar($currentAction)
+{
+    global $session;
+
+    $actions = [];
+
+    if ('list' != $currentAction) {
+        $actions['List announcements'] = 'announcements.php?session='.$session;
+    }
+
+    if ('new' != $currentAction) {
+        $actions['Add announcement'] = 'announcements.php?action=new&session='.$session;
+    }
+
+    if (!empty($actions)) {
+?>
+<ul class="actions">
+<?php foreach ($actions as $label => $uri): ?>
+    <li><a href="<?= htmlspecialchars($uri) ?>"><?= htmlspecialchars($label) ?></a></li>
+<?php endforeach ?>
+</ul>
+<?php
+    }
+}
+
 $action = isset($_GET['action']) ? $_GET['action'] : 'list';
 
 /*
@@ -108,8 +133,10 @@ SQL
     while ($announcement = mysql_fetch_object($r_announcement)) {
         $announcements[] = $announcement;
     }
+
+    NavigationBar($action);
+
 ?>
-<a href="announcements.php?action=new&amp;session=<?= htmlspecialchars($session) ?>">Add announcement</a>
 <h3>Announcements</h3>
 <ul id="announcements">
 <?php foreach ($announcements as $announcement): ?>
@@ -133,8 +160,8 @@ SQL
  * ########################################################################################
  */
 if ('edit' == $action) {
-    print "<a href=\"announcements.php?action=new&amp;session=" . $session . "\">Add announcement</a> ";
-    print "<a href=\"announcements.php?session=" . $session . "\">List announcements</a>";
+    NavigationBar($action);
+
     print "<h3>Edit Announcement</h3>";
 
     if (isset($_POST['submit'])) {
@@ -213,7 +240,8 @@ SQL
  * ########################################################################################
  */
 if ('new' == $action) {
-    print "<a href=\"announcements.php?session=" . $session . "\">List announcements</a>";
+    NavigationBar($action);
+
     print "<h3>New Announcement</h3>";
 
     if (isset($_POST['submit'])) {
@@ -289,8 +317,8 @@ SQL
  * ########################################################################################
  */
 if ('delete' == $action) {
-    print "<a href=\"announcements.php?action=new&amp;session=" . $session . "\">Add announcement</a> ";
-    print "<a href=\"announcements.php?session=" . $session . "\">List announcements</a>";
+    NavigationBar($action);
+
     print "<h3>Delete Announcement</h3>";
 
     if ($_POST['submit']) {
