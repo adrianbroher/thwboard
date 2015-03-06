@@ -99,46 +99,62 @@ function in_group($groupids, $groupid)
 
 
 /*
- * ==========================================================
- *              AddUser
- * ==========================================================
+ * ########################################################################################
+ * Add an user
+ * ########################################################################################
  */
-if( $action == 'AddUser' )
-{
-    if( $username )
-    {
-        if( !$useremail || !$userpassword )
-        {
-            print 'Please specify username, email and password.';
-        }
-        else
-        {
-            $r_user = query("SELECT userid FROM ".$pref."user WHERE username='" . addslashes($username) . "'");
-            if( mysql_num_rows($r_user) > 0 )
-            {
-                print 'Sorry, this username already exists.';
-            }
-            else
-            {
-                if( $userpassword != $userpassword2 )
-                {
-                    print 'Sorry, the passwords do not match.';
+if ('AddUser' == $_REQUEST['action']) {
+    if ($_POST['username']) {
+        if (!$_POST['username'] || !$_POST['userpassword']) {
+            print "Please specify username, email and password.";
+        } else {
+            $userName = addslashes($_POST['username']);
+
+            $r_user = query(
+<<<SQL
+SELECT
+    userid
+FROM
+    {$pref}user
+WHERE
+    username = '{$userName}'
+SQL
+            );
+
+            if (mysql_num_rows($r_user) > 0) {
+                print "Sorry, this username already exists.";
+            } else {
+                if ($_POST['userpassword'] != $_POST['userpassword2']) {
+                    print "Sorry, the passwords do not match.";
+                } else {
+                    $userEmail = addslashes($_POST['useremail']);
+                    $userPassword = addslashes($_POST['userpassword']);
+
+                    query(
+<<<SQL
+INSERT INTO
+    {$pref}user
+(
+    username,
+    useremail,
+    userpassword,
+    userjoin,
+    groupids
+) VALUES (
+    '{$userName}',
+    '{$userEmail}',
+    MD5('{$userPassword}'),
+    UNIX_TIMESTAMP(),
+    ',{$config['default_groupid']},'
+)
+SQL
+                    );
+
+                    print "User saved.";
                 }
-                else
-                {
-                    query("INSERT INTO ".$pref."user (username, useremail, userpassword, userjoin, groupids) VALUES
-                        ('" . addslashes($username) . "',
-                        '" . addslashes($useremail) . "',
-                        '" . addslashes(md5($userpassword)) . "',
-                        " . time() . ",
-                        ',".$config['default_groupid'].",')");
-                    print 'User saved.';
-                }
             }
         }
-    }
-    else
-    {
+    } else {
         print '<b>New user</b><br>
 <br>
 <form class="entity-form" name="user" method="post" action="./useredit.php">
