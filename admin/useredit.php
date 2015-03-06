@@ -132,50 +132,37 @@ if( $action == 'AddUser' )
                         '" . addslashes(md5($userpassword)) . "',
                         " . time() . ",
                         ',".$config['default_groupid'].",')");
-                    print 'User added to database.';
+                    print 'User saved.';
                 }
             }
         }
     }
     else
     {
-        print '<b>Add user</b><br>
+        print '<b>New user</b><br>
 <br>
-<form name="theform" method="post" action="./useredit.php">
-  <table width="100%" border="0" cellspacing="0" cellpadding="3">
-    <tr>
-      <td>Username</td>
-      <td>
-        <input class="tbinput" type="text" name="username">
-      </td>
-    </tr>
-    <tr>
-      <td>Email</td>
-      <td>
-        <input class="tbinput" type="text" name="useremail">
-      </td>
-    </tr>
-    <tr>
-      <td>Password</td>
-      <td>
-        <input class="tbinput" type="password" name="userpassword">
-      </td>
-    </tr>
-    <tr>
-      <td>Password (re-enter)</td>
-      <td>
-        <input class="tbinput" type="password" name="userpassword2">
-      </td>
-    </tr>
-    <tr>
-      <td>&nbsp;</td>
-      <td>
+<form class="entity-form" name="user" method="post" action="./useredit.php">
+    <div>
+        <label for="user-name">Name</label>
+        <input id="user-name" type="text" name="username">
+    </div>
+    <div>
+        <label for="user-email">Email</label>
+        <input id="user-email" type="text" name="useremail">
+    </div>
+    <div>
+        <label for="user-password">Password</label>
+        <input id="user-password" type="password" name="userpassword">
+    </div>
+    <div>
+        <label for="user-password-verify">Verify password</label>
+        <input id="user-password-verify" type="password" name="userpassword2">
+    </div>
+    <div>
         <input type="hidden" name="action" value="AddUser">
         <input type="hidden" name="session" value="' . $session . '">
-        <input type="submit" name="submit" value="Add User &gt;&gt;">
-      </td>
-    </tr>
-  </table>
+        <input type="submit" name="submit" value="Save">
+    </div>
 </form>';
     }
 }
@@ -420,8 +407,8 @@ elseif( $action == "ListUsers" )
         else
         {
             print '
-<form name="form1" method="post" action="useredit.php">
-  <table width="600" border="0" cellspacing="1" cellpadding="3">
+<form class="entity-form" name="form1" method="post" action="useredit.php">
+  <table id="users" summary="List of forum users" width="600" border="0" cellspacing="1" cellpadding="3">
     <tr>
       <td>&nbsp;</td>
       <td><i>User ID</i></td>
@@ -441,91 +428,40 @@ elseif( $action == "ListUsers" )
       <td><b>'.$user['userid'].'</b></td>
       <td>'.htmlspecialchars($user['username']).'</td>
       <td>'.$user['useremail'].'</td>
-      <td><a href="useredit.php?action=EditUser&userid='.$user['userid'].'&session='.$session.'">Edit</a> |
-          <a href="useredit.php?action=DeleteUser&username='.$user['username'].'&session='.$session.'">Delete</a></td>
+      <td><a href="useredit.php?action=EditUser&amp;userid='.$user['userid'].'&amp;session='.$session.'">edit</a> |
+          <a href="useredit.php?action=DeleteUser&amp;username='.$user['username'].'&amp;session='.$session.'">delete</a></td>
     </tr>';
                 $i++;
             }
 
             print '
-  </table><br><br>
+  </table>
   <input type="hidden" name="session" value="'.$session.'">
-<!--
-  <input type="hidden" name="action" value="mass_delete">
-  <input type="submit" name="del" value="Delete selected users">
--->
-<table width="100%" border="0" cellspacing="1" cellpadding="3">
-  <tr>
-    <td colspan="2"><b>Selected users:</b></td>
-  </tr>
-  <tr>
-    <td colspan="2">
-      <hr size="1">
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <input type="submit" name="mass_delete" value="Delete">
-    </td>
-    <td>
-      <input type="checkbox" name="sure" value="1">
-      I\'m sure</td>
-  </tr>
-<!--
-  <tr>
-    <td colspan="2">
-      <hr size="1">
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <input type="submit" name="move_into_group" value="Move into group:">
-    </td>
-    <td>
-      <select name="groupid">';
-            $r_group = query("SELECT name, groupid FROM $pref"."group ORDER BY groupid ASC");
-            while( $group = mysql_fetch_array($r_group) )
-            {// net hier!
-                print '<option value="'.$group['groupid'].'">'.$group['name'].'</option>';
-            }
-
-            print '
-      </select>
-    </td>
-  </tr>
--->
-  <tr>
-    <td valign="top" colspan="2">
-      <hr size="1">
-    </td>
-  </tr>
-  <tr>
-    <td valign="top">
-      <input type="submit" name="mass_pm" value="Send private message:">
-    </td>
-    <td>
-      <table width="100%" border="0" cellspacing="1" cellpadding="3">
-        <tr>
-          <td>Subject</td>
-          <td>
-            <input type="text" name="pmtopic">
-          </td>
-        </tr>
-        <tr>
-          <td valign="top">Text</td>
-          <td>
-            <textarea name="pmtext" rows="5" cols="50"></textarea>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr>
-    <td valign="top" colspan="2">
-      <hr size="1">
-    </td>
-  </tr>
-</table></form>';
+    <fieldset>
+        <legend>Delete selected users</legend>
+        <div>
+            <input id="sure" type="checkbox" name="sure" style="width:auto; display:inline" value="1">
+            <label for="sure" style="display:inline">I want to delete the selected users</label>
+        </div>
+        <div>
+            <input type="submit" name="mass_delete" value="Delete">
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Send private message to selected users</legend>
+        <div>
+            <label for="pmtopic">Subject</label>
+            <input id="pmtopic" type="text" name="pmtopic">
+        </div>
+        <div>
+            <label for="pmtext">Text</label>
+            <textarea id="pmtext" name="pmtext" rows="5" cols="50"></textarea>
+        </div>
+        <div>
+            <input type="submit" name="mass_pm" value="Send">
+        </div>
+    </fieldset>
+</form>';
         }
     }
     elseif( $subaction == 'count' )

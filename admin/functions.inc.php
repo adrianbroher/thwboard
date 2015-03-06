@@ -257,6 +257,11 @@ ul.actions li {
     margin-bottom: .5em;
 }
 
+.entity-form fieldset {
+    margin-top: 1em;
+    border: 1px solid #E5E5E5;
+}
+
 .entity-form label {
     display: block;
     margin-bottom: .1em;
@@ -327,7 +332,7 @@ ul.actions li {
                 <div>User management</div>
                 <ul>
                     <li><a href="users.php?session='.$session.'&amp;action=bans">User bans</a></li>
-                    <li><a href="useredit.php?session='.$session.'&amp;action=Filter">Search / edit users</a></li>
+                    <li><a href="useredit.php?session='.$session.'&amp;action=Filter">List users</a></li>
                     <li><a href="useredit.php?session='.$session.'&amp;action=AddUser">Add user</a></li>
                     <li><a href="useredit.php?session='.$session.'&amp;action=DeleteUser">Delete user</a></li>
                 </ul>
