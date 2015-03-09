@@ -104,11 +104,18 @@ function in_group($groupids, $groupid)
  * ########################################################################################
  */
 if ('AddUser' == $_REQUEST['action']) {
-    if ($_POST['username']) {
-        if (!$_POST['username'] || !$_POST['userpassword']) {
-            print "Please specify username, email and password.";
+    if (isset($_POST['submit'])) {
+        if (empty($_POST['username'])) {
+            print "The user name can't be empty.";
+        } elseif (empty($_POST['useremail'])) {
+            print "The user email can't be empty.";
+        } elseif (empty($_POST['userpassword']) || empty($_POST['userpassword2'])) {
+            print "The user passwords can't be empty.";
+        } elseif ($_POST['userpassword'] != $_POST['userpassword2']) {
+            print "The given passwords did not match.";
         } else {
             $userName = addslashes($_POST['username']);
+            $userEmail = addslashes($_POST['useremail']);
 
             $r_user = query(
 <<<SQL
@@ -121,16 +128,25 @@ WHERE
 SQL
             );
 
-            if (mysql_num_rows($r_user) > 0) {
-                print "Sorry, this username already exists.";
-            } else {
-                if ($_POST['userpassword'] != $_POST['userpassword2']) {
-                    print "Sorry, the passwords do not match.";
-                } else {
-                    $userEmail = addslashes($_POST['useremail']);
-                    $userPassword = addslashes($_POST['userpassword']);
+            $r_mail = query(
+<<<SQL
+SELECT
+    userid
+FROM
+    {$pref}user
+WHERE
+    useremail = '{$userEmail}'
+SQL
+            );
 
-                    query(
+            if (mysql_num_rows($r_user) > 0) {
+                print "The user name already exists.";
+            } elseif (mysql_num_rows($r_mail) > 0) {
+                print "The user email is already registered.";
+            } else {
+                $userPassword = addslashes($_POST['userpassword']);
+
+                query(
 <<<SQL
 INSERT INTO
     {$pref}user
@@ -148,10 +164,9 @@ INSERT INTO
     ',{$config['default_groupid']},'
 )
 SQL
-                    );
+                );
 
-                    print "User saved.";
-                }
+                print "User saved.";
             }
         }
     } else {
