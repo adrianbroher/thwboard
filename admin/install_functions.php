@@ -350,7 +350,7 @@ INSERT INTO $pref"."registry VALUES ('timeoffset','','integer','Time offset','Ti
 INSERT INTO $pref"."registry VALUES ('closedmsg','Sorry\r\n\r\nDas Forum ist momentan leider nicht verf&uuml;gbar.','array','Forum closed message','This message appears if users try to access the closed forum.',5,2);
 INSERT INTO $pref"."registry VALUES ('bannednames','','array','Nick register protection','Allows you to specify invalid nicks. Users will be unable to register these nicks, one name per line. Example: \"adm\" disallows Admin as well as fooadmbar...',5,4);
 INSERT INTO $pref"."registry VALUES ('bannedemails','','array','Email register protection','Allows you to specify invalid email addresses. Use one eMail per line, eg @aol bans dude@aol.com as well as notme@aol.net',5,3);
-INSERT INTO $pref"."registry VALUES ('version','2.84','string','Version','The internal version, please do not change.','','');
+INSERT INTO $pref"."registry VALUES ('version','2.85','string','Version','The internal version, please do not change.','','');
 INSERT INTO $pref"."registry VALUES ('sig_maxlen','600','integer','Max. signature length','The maximum length of a signature, in bytes (chars).',6,1);
 INSERT INTO $pref"."registry VALUES ('max_privmsg','30','integer','Max PM count','The maximum amount of private messages per user. Users will be unable to recieve PMs if their box is full.',3,11);
 INSERT INTO $pref"."registry VALUES ('pmalive','','integer','PM max life','Set the maximum age of private messages, in days. Set to 0 to disable life check.',3,12);
