@@ -92,17 +92,19 @@ default:
         ]]></echo>
 
         <webserver>
-            <if>
-                <not><isset property="test.functional.feature" /></not>
-                <then>
-                    <exec executable="bin/behat" passthru="true" checkreturn="true" />
-                </then>
-                <else>
-                    <exec executable="bin/behat" passthru="true" checkreturn="true">
-                        <arg value="${test.functional.feature}" />
-                    </exec>
-                </else>
-            </if>
+            <tasks>
+                <if>
+                    <not><isset property="test.functional.feature" /></not>
+                    <then>
+                        <exec executable="bin/behat" passthru="true" checkreturn="true" />
+                    </then>
+                    <else>
+                        <exec executable="bin/behat" passthru="true" checkreturn="true">
+                            <arg value="${test.functional.feature}" />
+                        </exec>
+                    </else>
+                </if>
+            </tasks>
         </webserver>
     </target>
 
