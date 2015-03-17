@@ -95,6 +95,7 @@ default:
         ]]></echo>
 
         <webserver>
+            <config name="auto_prepend_file" value="${project.basedir}/tests/code-coverage-bootstrap/coverage.php" />
             <tasks>
                 <if>
                     <not><isset property="test.functional.feature" /></not>
@@ -109,6 +110,58 @@ default:
                 </if>
             </tasks>
         </webserver>
+    </target>
+
+    <target name="functional-coverage">
+        <mkdir dir="tests/functional-coverage/" />
+
+        <coverage-setup database="tests/functional-coverage/functional-coverage.db">
+            <fileset refid="sources" />
+        </coverage-setup>
+
+        <php function="putenv">
+            <param value="PHP_CODE_COVERAGE=${coverage.database}" />
+        </php>
+
+        <phingcall target="functional-test" />
+
+        <adhoc-task name="coverage-result"><![CDATA[
+            class CoverageResultTask extends Task
+            {
+                private $toDir;
+
+                public function setTodir($toDir)
+                {
+                    $this->toDir = $toDir;
+                }
+
+                public function main()
+                {
+                    $db = file($this->project->getProperty('coverage.database'), FILE_IGNORE_NEW_LINES);
+
+                    $data = [];
+                    $whitelist = [];
+
+                    foreach($db as $entry) {
+                        $entry = explode('=', $entry, 2);
+                        $entry = unserialize($entry[1]);
+
+                        $data[$entry['fullname']] = $entry['coverage'];
+                        $whitelist[] = $entry['fullname'];
+                    }
+
+                    $coverage = new PHP_CodeCoverage();
+                    $coverage->setTests([basename($this->project->getProperty('coverage.database')) => null]);
+                    $coverage->setData($data);
+                    $coverage->filter()->setWhitelistedFiles($whitelist);
+
+                    $writer = new PHP_CodeCoverage_Report_HTML();
+                    $writer->process($coverage, $this->toDir);
+                }
+            }
+        ]]></adhoc-task>
+
+        <coverage-result todir="tests/functional-coverage" />
     </target>
 
     <target name="init" description="Setting up the test environment">

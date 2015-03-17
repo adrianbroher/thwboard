@@ -8,6 +8,7 @@ behat.yml
 bin/
 build.properties
 inc/config.inc.php
+tests/functional-coverage/
 vendor/
 
 
