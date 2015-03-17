@@ -28,6 +28,7 @@ with this program;  If not, see <http://www.gnu.org/licenses/>.
     <taskdef name="webserver" classname="phing.tasks.ext.ServerTask" />
 
     <fileset dir="." id="auxillary-sources">
+        <include name="phing/" />
         <include name="tests/**/*.php" />
     </fileset>
 
@@ -40,6 +41,8 @@ with this program;  If not, see <http://www.gnu.org/licenses/>.
         <exclude name="avatar/" />
         <exclude name="bin/" />
         <exclude name="extras/" />
+        <exclude name="phing/" />
+        <exclude name="tests/" />
         <exclude name="vendor/" />
     </fileset>
 
