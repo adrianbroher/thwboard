@@ -60,6 +60,7 @@ $version = (float)($version);
 
 if ($version < 2.8) {
     p_errormsg(lng('error'), lng('installationtooold'));
+    exit;
 }
 
 switch ($_GET['step']) {
@@ -72,13 +73,16 @@ switch ($_GET['step']) {
 
         if (!$update->AllowUpdate()) {
             p_errormsg(lng('error'), lng('cantexec'), 'JavaScript:history.back(0)');
+            exit;
         }
 
         if ($update->RunUpdate()) {
             p_errormsg(lng('error'), $update->GetError(), 'JavaScript:history.back(0)');
+            exit;
         }
 
         p_errormsg(lng('updatesuccess'), lng('updatesuccesstxt'));
+        exit;
         break;
 
     case 'update-show':
@@ -90,6 +94,7 @@ switch ($_GET['step']) {
 
         if ($update->UpdaterVer > $cfg['updater_ver']) {
             p_errormsg(lng('error'), lng('tooold'), 'JavaScript:history.back(0)');
+            exit;
         }
 
         echo $template->render('update-show', [
@@ -112,6 +117,7 @@ switch ($_GET['step']) {
         if (isset($_POST['submit'])) {
             if (empty($_POST['update-selected']) || !in_array($_POST['update-selected'], $a_file)) {
                 p_errormsg(lng('error'), lng('notfound'), 'JavaScript:history.back(0)');
+                exit;
             }
 
             $_SESSION['update'] = $_POST['update-selected'];
@@ -134,6 +140,7 @@ switch ($_GET['step']) {
 
             if (empty($_POST['login-username']) && empty($_POST['login-password'])) {
                 p_errormsg(lng('error'), lng('noadmincredentialserror'), '?step=login');
+                exit;
             }
 
             $loginUsername = addslashes($_POST['login-username']);
@@ -152,12 +159,14 @@ SQL
 
             if (mysql_num_rows($r_user) === 0) {
                 p_errormsg(lng('error'), lng('wrongadmincredentialserror'), '?step=login');
+                exit;
             }
 
             $user = mysql_fetch_array($r_user);
 
             if ($user['userpassword'] != md5($_POST['login-password'])) {
                 p_errormsg(lng('error'), lng('wrongadmincredentialserror'), '?step=login');
+                exit;
             }
 
             $_SESSION['authenticated'] = true;

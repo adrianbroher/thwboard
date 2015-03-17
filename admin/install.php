@@ -59,6 +59,7 @@ switch ($_GET['step']) {
         if (isset($_POST['submit'])) {
             if (!WriteAccess('../inc/config.inc.php')) {
                 p_errormsg(lng('error'), lng('chmoderror'), 'JavaScript:history.back(0)');
+                exit;
             } else {
                 $fp = @fopen('../inc/config.inc.php', 'w');
                 p_configuration($fp, $_SESSION);
@@ -93,10 +94,12 @@ switch ($_GET['step']) {
 
             if (empty($_SESSION['administrator-username'])) {
                 p_errormsg(lng('error'), lng('adminnameempty'), '?step=administrator-create');
+                exit;
             }
 
             if (strlen($_SESSION['administrator-password']) < 5) {
                 p_errormsg(lng('error'), lng('adminpwtooshort'), '?step=administrator-create');
+                exit;
             }
 
             mysql_connect($_SESSION['database-hostname'], $_SESSION['database-username'], $_SESSION['database-password']);
@@ -158,6 +161,7 @@ SQL
 
             if (preg_match('/[^a-zA-Z1-9_]/', $_POST['table-prefix'])) {
                 p_errormsg(lng('error'), lng('invalidtableprefixerror'), '?step=table-create');
+                exit;
             }
 
             create_tables($_SESSION['table-prefix'], $_SESSION['database-clear']);
@@ -202,6 +206,7 @@ SQL
 
             if (preg_match('/[^a-zA-Z0-9_]/', $_SESSION['database-name'])) {
                 p_errormsg(lng('error'), lng('invaliddatabasenameerror'), '?step=database-select');
+                exit;
             }
 
             if ($_SESSION['database-allocation'] == 'new') {
@@ -213,9 +218,11 @@ SQL
                         break;
                     case 1044:
                         p_errormsg(lng('error'), lng('cantcreatedatabaseerror'), '?step=database-select');
+                        exit;
                         break;
                     default:
                         p_errormsg(lng('error'), sprintf(lng('queryerror'), $query, mysql_error()));
+                        exit;
                 }
 
                 $_SESSION['database-allocation'] = 'use';
@@ -269,10 +276,12 @@ SQL
         if (isset($_POST['submit'])) {
             if (empty($_POST['database-hostname'])) {
                 p_errormsg(lng('error'), sprintf(lng('nodatabasehosterror')), '?step=database-credentials');
+                exit;
             }
 
             if (empty($_POST['database-username']) && empty($_POST['database-password'])) {
                 p_errormsg(lng('error'), sprintf(lng('nocredentialserror')), '?step=database-credentials');
+                exit;
             }
 
             $_SESSION['database-hostname'] = $_POST['database-hostname'];
@@ -301,6 +310,7 @@ SQL
                 }
 
                 p_errormsg(lng('error'), $message, $backlink);
+                exit;
             }
 
             header('Location: '.$_SERVER['PHP_SELF'].'?step=database-select');
@@ -325,6 +335,7 @@ SQL
 
             if (!$_SESSION['license-accept']) {
                 p_errormsg(lng('error'), lng('licaccept'), '?step=license');
+                exit;
             }
 
             header('Location: '.$_SERVER['PHP_SELF'].'?step=database-credentials');
@@ -347,6 +358,7 @@ SQL
 
     case 'deny':
         p_errormsg(lng('denied'), lng('deniedtxt'));
+        exit;
         break;
 
     case 'welcome':

@@ -546,6 +546,7 @@ function thwb_query($query)
 
     if (mysql_error()) {
         p_errormsg(lng('error'), sprintf(lng('queryerror'), $query, mysql_error()));
+        exit;
     }
 
     return $result;
@@ -607,5 +608,4 @@ function p_errormsg($title, $message, $back_url = null)
         'message' => $message,
         'title' => $title
     ]);
-    exit;
 }
