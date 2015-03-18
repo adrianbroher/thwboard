@@ -10,20 +10,32 @@ class CUpdate
     var        $Author            = 'ThWboard Development Team';
     var        $Date            = '';
     var        $Notes            = '';
+    private $pdo = null;
 
-    function CUpdate()
-      {
+    public function __construct(PDO $pdo)
+    {
+        $this->pdo = $pdo;
         // this is a little hack so that we always get the correct date.
 
         $this->Date = preg_replace('/^\$'.'Date: ([0-9]{4})\/([0-9]{2})\/([0-9]{2}) [0-9]{2}:[0-9]{2}:[0-9]{2} \$$/', '\3.\2.\1', '$Date: 2004-11-07 01:19:15 +0100 (Sun, 07 Nov 2004) $');
-      }
+    }
 
     function AllowUpdate()
     {
-        $r_registry = thwb_query("SELECT keyvalue FROM $this->Prefix"."registry WHERE keyname='version'");
-        $registry = mysql_fetch_array($r_registry);
+        $stmt = $this->pdo->query(
+<<<SQL
+SELECT
+    keyvalue
+FROM
+    {$this->Prefix}registry
+WHERE
+    keyname = 'version'
+SQL
+        );
 
-        return ($registry['keyvalue'] == $this->OldVersion);
+        $version = $stmt->fetch(PDO::FETCH_COLUMN, 0);
+
+        return ($version == $this->OldVersion);
     }
 
     function SetError($errmsg)
@@ -45,31 +57,60 @@ class CUpdate
     {
         $pref = $this->Prefix;
 
-        /* flood protection foo */
+        $this->pdo->exec(
+<<<SQL
+CREATE TABLE
+    ${pref}flood
+(
+    userid INT(10) NOT NULL DEFAULT 0,
+    type TINYINT(1) DEFAULT NULL,
+    time TIMESTAMP(6) NOT NULL,
+    ip VARCHAR(16) NOT NULL DEFAULT ''
+) ENGINE = HEAP
+SQL
+        );
 
-        thwb_query("CREATE TABLE ${pref}flood (userid int(10) NOT NULL default '0',type tinyint(1) default NULL,time timestamp(6) NOT NULL,ip varchar(16) NOT NULL default '') ENGINE=HEAP;");
+        $this->pdo->exec(
+<<<SQL
+INSERT INTO
+    ${pref}registrygroup
+VALUES
+    (8, 'Flood Protection', 7),
+    (9, 'Error Reporting', 8)
+SQL
+        );
 
-        thwb_query("INSERT INTO ${pref}registrygroup VALUES (8,'Flood Protection',7);");
+        $this->pdo->exec(
+<<<SQL
+INSERT INTO
+    ${pref}registry
+VALUES
+    ('flood_login_count', '3', 'integer', 'Login failure count', 'Number of failed logins before the account gets locked for specific IP.<br>(0 to disable)', 8, 1),
+    ('flood_login_timeout', '15', 'integer', 'Login failure timeout', 'Time (in minutes) for which an account gets locked after several failed logins.', 8, 2),
+    ('flood_register_count', '5', 'integer', 'Registration count', 'Number of registrations before register gets locked for specific IP.<br>(0 to disable)', 8, 3),
+    ('flood_register_timeout', '15', 'integer', 'Registration timeout', 'Time (in minutes) for which an IP gets locked after several registrations.', 8, 4),
+    ('flood_mail_count', '3', 'integer', 'Mail count', 'Number of sent mails before mail function gets locked for specific user.<br>(0 to disable)', 8, 5),
+    ('flood_mail_timeout', '15', 'integer', 'Mail timeout', 'Time (in minutes) for which mail function gets locked after several sent mails.', 8, 6),
+    ('debug_what', '0', 'integer', 'Error Reporting', '0 - Disabled<br>1 - PHP only<br>2 - SQL only<br>3 - both', 9, 0),
+    ('debug_mail', '0', 'boolean', 'Error Mails', 'Send error reports as email? This requires &quot;Use eMail Functions&quot; and &quot;Board Admin/Tech eMail&quot;.', 9, 1),
+    ('debug_do_log', '0', 'boolean', 'Log errors?', 'Log errors to file?<br>In order to use this feature, you must create a directory with the correct permissions and set the path below.<br><strong>It is highly recommended that this directory be secured by a .htaccess</strong>.', 9, 2),
+    ('debug_log_path', 'logs/thwb_err', 'string', 'Log file path', 'path to the log file and log file prefix.<br><strong>See above</strong>.', 9, 3)
+SQL
+        );
 
-        thwb_query("INSERT INTO ${pref}registry VALUES ('flood_login_count', '3', 'integer', 'Login failure count', 'Number of failed logins before the account gets locked for specific IP.<br>(0 to disable)', '8', '1' );");
-        thwb_query("INSERT INTO ${pref}registry VALUES ('flood_login_timeout', '15', 'integer', 'Login failure timeout', 'Time (in minutes) for which an account gets locked after several failed logins.', '8', '2');");
-        thwb_query("INSERT INTO ${pref}registry VALUES ('flood_register_count', '5', 'integer', 'Registration count', 'Number of registrations before register gets locked for specific IP.<br>(0 to disable)', '8', '3' );");
-        thwb_query("INSERT INTO ${pref}registry VALUES ('flood_register_timeout', '15', 'integer', 'Registration timeout', 'Time (in minutes) for which an IP gets locked after several registrations.', '8', '4');");
-        thwb_query("INSERT INTO ${pref}registry VALUES ('flood_mail_count', '3', 'integer', 'Mail count', 'Number of sent mails before mail function gets locked for specific user.<br>(0 to disable)', '8', '5' );");
-        thwb_query("INSERT INTO ${pref}registry VALUES ('flood_mail_timeout', '15', 'integer', 'Mail timeout', 'Time (in minutes) for which mail function gets locked after several sent mails.', '8', '6');");
+        $stmt = $this->pdo->prepare(
+<<<SQL
+UPDATE
+    {$pref}registry
+SET
+    keyvalue = :version
+WHERE
+    keyname = 'version'
+SQL
+        );
 
-        /* error reporting foo */
-
-        thwb_query("INSERT INTO ${pref}registrygroup VALUES (9,'Error Reporting',8);");
-
-        thwb_query("INSERT INTO ${pref}registry VALUES ('debug_what', '0', 'integer', 'Error Reporting', '0 - Disabled<br>1 - PHP only<br>2 - SQL only<br>3 - both', '9', '0')");
-        thwb_query("INSERT INTO ${pref}registry VALUES ('debug_mail', '0', 'boolean', 'Error Mails', 'Send error reports as email? This requires &quot;Use eMail Functions&quot; and &quot;Board Admin/Tech eMail&quot;.', '9', '1')");
-        thwb_query("INSERT INTO ${pref}registry VALUES ('debug_do_log', '0', 'boolean', 'Log errors?', 'Log errors to file?<br>In order to use this feature, you must create a directory with the correct permissions and set the path below.<br><strong>It is highly recommended that this directory be secured by a .htaccess</strong>.', '9', '2')");
-        thwb_query("INSERT INTO ${pref}registry VALUES ('debug_log_path', 'logs/thwb_err', 'string', 'Log file path', 'path to the log file and log file prefix.<br><strong>See above</strong>.', '9', '3')");
-
-        /* board version */
-
-        thwb_query("UPDATE $this->Prefix"."registry SET keyvalue='".$this->NewVersion."' WHERE keyname='version'");
+        $stmt->bindValue(':version', $this->NewVersion, PDO::PARAM_STR);
+        $stmt->execute();
 
         return 0;
     }

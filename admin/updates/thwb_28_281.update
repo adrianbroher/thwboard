@@ -10,16 +10,32 @@ class CUpdate
     var        $Author            = 'ThWboard Development Team';
     var        $Date            = '30.12.2002';
     var        $Notes            = '';
+    private $pdo = null;
+
+    public function __construct(PDO $pdo)
+    {
+        $this->pdo = $pdo;
+        // this is a little hack so that we always get the correct date.
+
+        $this->Date = preg_replace('/^\$'.'Date: ([0-9]{4})\/([0-9]{2})\/([0-9]{2}) [0-9]{2}:[0-9]{2}:[0-9]{2} \$$/', '\3.\2.\1', '$Date: 2004-11-07 01:19:15 +0100 (Sun, 07 Nov 2004) $');
+    }
 
     function AllowUpdate()
     {
-        $r_registry = thwb_query("SELECT keyvalue FROM $this->Prefix"."registry WHERE keyname='version'");
-        $registry = mysql_fetch_array($r_registry);
+        $stmt = $this->pdo->query(
+<<<SQL
+SELECT
+    keyvalue
+FROM
+    {$this->Prefix}registry
+WHERE
+    keyname = 'version'
+SQL
+        );
 
-        if( $registry['keyvalue'] != $this->OldVersion )
-            return 0;
-        else
-            return 1;
+        $version = $stmt->fetch(PDO::FETCH_COLUMN, 0);
+
+        return ($version == $this->OldVersion);
     }
 
     function SetError($errmsg)
@@ -39,9 +55,30 @@ class CUpdate
      */
     function RunUpdate()
     {
-        /* Board-Version */
-        thwb_query("UPDATE $this->Prefix"."registry SET keyvalue='".$this->NewVersion."' WHERE keyname='version'");
-        thwb_query("ALTER TABLE $this->Prefix"."calendar ADD userid INT(10) UNSIGNED NOT NULL");
+        $pref = $this->Prefix;
+
+        $this->pdo->exec(
+<<<SQL
+ALTER TABLE
+    {$pref}calendar
+ADD COLUMN
+    userid INT(10) UNSIGNED NOT NULL
+SQL
+        );
+
+        $stmt = $this->pdo->prepare(
+<<<SQL
+UPDATE
+    {$pref}registry
+SET
+    keyvalue = :version
+WHERE
+    keyname = 'version'
+SQL
+        );
+
+        $stmt->bindValue(':version', $this->NewVersion, PDO::PARAM_STR);
+        $stmt->execute();
 
         return 0;
     }

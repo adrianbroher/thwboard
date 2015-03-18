@@ -10,20 +10,32 @@ class CUpdate
     var        $Author            = 'ThWboard Development Team';
     var        $Date            = '';
     var        $Notes            = '';
+    private $pdo = null;
 
-    function CUpdate()
-      {
+    public function __construct(PDO $pdo)
+    {
+        $this->pdo = $pdo;
         // this is a little hack so that we always get the correct date.
 
         $this->Date = preg_replace('/^\$'.'Date: ([0-9]{4})\/([0-9]{2})\/([0-9]{2}) [0-9]{2}:[0-9]{2}:[0-9]{2} \$$/', '\3.\2.\1', '$Date: 2004-11-07 01:19:15 +0100 (Sun, 07 Nov 2004) $');
-      }
+    }
 
     function AllowUpdate()
     {
-        $r_registry = thwb_query("SELECT keyvalue FROM $this->Prefix"."registry WHERE keyname='version'");
-        $registry = mysql_fetch_array($r_registry);
+        $stmt = $this->pdo->query(
+<<<SQL
+SELECT
+    keyvalue
+FROM
+    {$this->Prefix}registry
+WHERE
+    keyname = 'version'
+SQL
+        );
 
-        return ($registry['keyvalue'] == $this->OldVersion);
+        $version = $stmt->fetch(PDO::FETCH_COLUMN, 0);
+
+        return ($version == $this->OldVersion);
     }
 
     function SetError($errmsg)
@@ -43,16 +55,61 @@ class CUpdate
      */
     function RunUpdate()
     {
-        /* board version */
-        thwb_query("UPDATE $this->Prefix"."registry SET keyvalue='".$this->NewVersion."' WHERE keyname='version'");
+        $this->pdo->exec(
+<<<SQL
+ALTER TABLE
+    {$pref}user
+ADD COLUMN
+    usernoipcheck TINYINT(1) UNSIGNED NOT NULL DEFAULT 0
+SQL
+        );
 
-        /* ip check */
+        $this->pdo->exec(
+<<<SQL
+UPDATE
+    {$pref}style
+SET
+    boardimage = './templates/default/images/space.png'
+WHERE
+    boardimage = './templates/default/images/space.gif'
+SQL
+        );
 
-        thwb_query("ALTER TABLE $this->Prefix"."user ADD usernoipcheck tinyint(1) unsigned NOT NULL default '0'");
+        $pdo->exec(
+<<<SQL
+UPDATE
+    {$pdo->prefix}style
+SET
+    boardimage = './templates/default/images/newtopic.png'
+WHERE
+    boardimage = './templates/default/images/newtopic.gif'
+SQL
+        );
 
-         /* style / boardimage fix */
+        $pdo->exec(
+<<<SQL
+UPDATE
+    {$pdo->prefix}style
+SET
+    stdfont = 'Verdana, Helevetica'
+WHERE
+    stdfont = 'Verdana'
+SQL
+        );
 
-        thwb_query("UPDATE $this->Prefix"."style SET boardimage='./templates/default/images/space.png' WHERE boardimage='./templates/default/images/space.gif'");
+        $stmt = $this->pdo->prepare(
+<<<SQL
+UPDATE
+    {$pref}registry
+SET
+    keyvalue = :version
+WHERE
+    keyname = 'version'
+SQL
+        );
+
+        $stmt->bindValue(':version', $this->NewVersion, PDO::PARAM_STR);
+        $stmt->execute();
 
         return 0;
     }

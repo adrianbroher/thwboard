@@ -10,14 +10,39 @@ class CUpdate
     var        $Author            = 'ThWboard Development Team';
     var        $Date            = '';
     var        $Notes            = '';
+    private $pdo = null;
 
     function writestyle($id)
       {
-        global $pref;
+        $pref = $this->Prefix;
 
-        $r_style = thwb_query("SELECT colorbg, colorbgfont, color4, col_he_fo_font, color1, CellA, CellB, border_col, color_err, col_link, col_link_v, col_link_hover, stdfont FROM $this->Prefix"."style WHERE styleid=$id");
+        $stmt = $this->pdo->prepare(
+<<<SQL
+SELECT
+    colorbg,
+    colorbgfont,
+    color4,
+    col_he_fo_font,
+    color1,
+    CellA,
+    CellB,
+    border_col,
+    color_err,
+    col_link,
+    col_link_v,
+    col_link_hover,
+    stdfont
+FROM
+    {$pref}style
+WHERE
+    styleid = :id
+SQL
+        );
 
-        $style = mysql_fetch_array($r_style);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $style = $style->fetch();
 
         $str = "a:link { color: $style[col_link]; text-decoration: none; }\n".
           "a:visited { color: $style[col_link_v]; text-decoration: none; }\n".
@@ -53,52 +78,97 @@ class CUpdate
 
     function updateboard($boardid)
       {
-        $r_thread = thwb_query("SELECT threadid, threadtopic, threadtime, threadlastreplyby FROM ".$this->Prefix."thread WHERE threadlink='0' AND boardid='".intval($boardid)."'  GROUP BY threadid ORDER BY threadtime DESC LIMIT 1");
+        $pref = $this->Prefix;
 
-        if( mysql_num_rows($r_thread) < 1 )
-          {
-        thwb_query("UPDATE ".$this->Prefix."board SET
-            boardlastpost='0',
-            boardthreadid='0',
-            boardthreadtopic='',
-            boardlastpostby='',
-                        boardposts='0',
-                        boardthreads='0'
-        WHERE boardid='".intval($boardid)."'");
-          }
-        else
-          {
-        $thread = mysql_fetch_array($r_thread);
+        $thread_stmt = $this->pdo->prepare(
+<<<SQL
+SELECT
+    threadid,
+    threadtopic,
+    threadtime,
+    threadlastreplyby,
+    COUNT(threadid) AS threadcount,
+    SUM(threadreplies) + COUNT(threadid) AS postcount
+FROM
+    {$pref}thread
+WHERE
+    threadlink = 0 AND
+    boardid = :boardid
+GROUP BY
+    threadid
+ORDER BY
+    threadtime DESC
+LIMIT
+    1
+SQL
+        );
 
-        $r_thread = thwb_query("SELECT COUNT(threadid) AS threadcount, SUM(threadreplies) AS postcount FROM ".$this->Prefix."thread WHERE boardid=$boardid");
-        $thread = array_merge($thread, mysql_fetch_array($r_thread));
+        $thread_stmt->bindValue(':boardid', $boardid, PDO::PARAM_INT);
+        $thread_stmt->execute();
 
-        $thread['postcount'] += $thread['threadcount']; // threads without replies.
+        $board_stmt = $this->pdo->prepare(
+<<<SQL
+UPDATE
+    {$pref}board
+SET
+    boardlastpost = :lastpost,
+    boardthreadid = :threadid,
+    boardthreadtopic = :threadtopic,
+    boardlastpostby = :lastpostby,
+    boardposts = :postcount,
+    boardthreads = :threadcount
+WHERE
+    boardid = :boardid
+SQL
+        );
 
-        thwb_query("UPDATE ".$this->Prefix."board SET
-            boardlastpost='$thread[threadtime]',
-            boardthreadid='$thread[threadid]',
-            boardthreadtopic='" . addslashes($thread['threadtopic']) . "',
-            boardlastpostby='" . addslashes($thread['threadlastreplyby']) . "',
-                        boardposts='".addslashes($thread['postcount'])."',
-                        boardthreads='".addslashes($thread['threadcount'])."'
-        WHERE boardid='".intval($boardid)."'");
-          }
+        $board_stmt->bindValue(':boardid', $boardid, PDO::PARAM_INT);
+
+        if ($thread_stmt->rowCount()) {
+            $board_stmt->bindValue(':lastpost', 0, PDO::PARAM_INT);
+            $board_stmt->bindValue(':threadid', 0, PDO::PARAM_INT);
+            $board_stmt->bindValue(':threadtopic', "", PDO::PARAM_STR);
+            $board_stmt->bindValue(':lastpostby', "", PDO::PARAM_STR);
+            $board_stmt->bindValue(':postcount', 0, PDO::PARAM_INT);
+            $board_stmt->bindValue(':threadcount', 0, PDO::PARAM_INT);
+        } else {
+            $thread = $thread_stmt->fetch();
+
+            $board_stmt->bindValue(':lastpost', $thread['threadtime'], PDO::PARAM_INT);
+            $board_stmt->bindValue(':threadid', $thread['threadid'], PDO::PARAM_INT);
+            $board_stmt->bindValue(':threadtopic', $thread['threadtopic'], PDO::PARAM_STR);
+            $board_stmt->bindValue(':lastpostby', $thread['threadlastreplyby'], PDO::PARAM_STR);
+            $board_stmt->bindValue(':postcount', $thread['postcount'], PDO::PARAM_INT);
+            $board_stmt->bindValue(':threadcount', $thread['threadcount'], PDO::PARAM_INT);
+        }
+
+        $board_stmt->execute();
       }
 
-    function CUpdate()
-      {
+    public function __construct(PDO $pdo)
+    {
+        $this->pdo = $pdo;
         // this is a little hack so that we always get the correct date.
 
         $this->Date = preg_replace('/^\$'.'Date: ([0-9]{4})\/([0-9]{2})\/([0-9]{2}) [0-9]{2}:[0-9]{2}:[0-9]{2} \$$/', '\3.\2.\1', '$Date: 2004-11-07 01:19:15 +0100 (Sun, 07 Nov 2004) $');
-      }
+    }
 
     function AllowUpdate()
     {
-        $r_registry = thwb_query("SELECT keyvalue FROM $this->Prefix"."registry WHERE keyname='version'");
-        $registry = mysql_fetch_array($r_registry);
+        $stmt = $this->pdo->query(
+<<<SQL
+SELECT
+    keyvalue
+FROM
+    {$this->Prefix}registry
+WHERE
+    keyname = 'version'
+SQL
+        );
 
-        return ($registry['keyvalue'] == $this->OldVersion);
+        $version = $stmt->fetch(PDO::FETCH_COLUMN, 0);
+
+        return ($version == $this->OldVersion);
     }
 
     function SetError($errmsg)
@@ -118,6 +188,7 @@ class CUpdate
      */
     function RunUpdate()
     {
+        $pref = $this->Prefix;
 
             /* no update if templates/css/ does not exist */
 
@@ -127,65 +198,67 @@ class CUpdate
             return 1;
           }
 
-        /* board version */
+        $this->pdo->exec(
+<<<SQL
+ALTER TABLE
+    {$pref}user
+DROP COLUMN
+    usernoipcheck
+SQL
+        );
 
-        thwb_query("UPDATE $this->Prefix"."registry SET keyvalue='".$this->NewVersion."' WHERE keyname='version'");
+        $this->pdo->exec(
+<<<SQL
+UPDATE
+    {$pref}registry
+SET
+    keydescription = 'Used in eMails &amp; some board features<br>It is vital to set this correctly! '
+WHERE
+    keyname = 'board_baseurl'
+SQL
+        );
 
-        /* ip check */
+        $styles = $this->pdo->query(
+<<<SQL
+SELECT
+    styleid
+FROM
+    {$pref}style
+WHERE
+    styleid != 1
+SQL
+        )->fetchAll(PDO::FETCH_COLUMN, 0);
 
-
-        if(column_exists($this->Prefix."user", "usernoipcheck"))
-        {
-            thwb_query("ALTER TABLE $this->Prefix"."user DROP usernoipcheck");
-        }
-
-        /* board_baseurl description */
-
-        thwb_query("UPDATE $this->Prefix"."registry SET keydescription = 'Used in eMails &amp; some board features<br>It is vital to set this correctly! ' WHERE keyname = 'board_baseurl'");
-
-         /* session_timeout */
-
-        if(!column_exists($this->Prefix."registry", "session_timeout"))
-        {
-            thwb_query("INSERT INTO $this->Prefix"."registry VALUES ('session_timeout', '1800', 'integer', 'Session Timeout', 'Time for Sessions to expire.', 3, 13)");
-        }
-
-        /* css cache */
-
-        $a_style = array();
-        $a_styles = array();
-
-        $r_styles = thwb_query("SELECT styleid FROM $this->Prefix"."style WHERE styleid != 1");
-
-        while($a_style = mysql_fetch_array($r_styles))
-          {
-            $a_styles[] = $a_style['styleid'];
-          }
-
-        foreach($a_styles as $k => $v)
-          {
+        foreach ($styles as $styleid) {
             $this->writestyle($v);
-          }
+        }
 
-        /* correct threadcounts */
+        $boards = $this->pdo->query(
+<<<SQL
+SELECT
+    boardid
+FROM
+    {$pref}board
+SQL
+        )->fetchAll(PDO::FETCH_COLUMN, 0);
 
-        $a_board = array();
-        $a_boards = array();
+        foreach ($boards as $boardid) {
+            $this->updateboard($boardid);
+        }
 
-        $r_board = thwb_query("SELECT boardid FROM $this->Prefix"."board");
+        $stmt = $this->pdo->prepare(
+<<<SQL
+UPDATE
+    {$pref}registry
+SET
+    keyvalue = :version
+WHERE
+    keyname = 'version'
+SQL
+        );
 
-        if(mysql_num_rows($r_board) >= 1)
-          {
-            while($a_board = mysql_fetch_array($r_board))
-              {
-            $a_boards[] = $a_board['boardid'];
-              }
-
-            foreach($a_boards as $k => $v)
-              {
-            $this->updateboard($v);
-              }
-          }
+        $stmt->bindValue(':version', $this->NewVersion, PDO::PARAM_STR);
+        $stmt->execute();
 
         return 0;
     }

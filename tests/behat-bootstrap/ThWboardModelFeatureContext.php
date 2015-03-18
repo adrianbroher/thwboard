@@ -74,12 +74,7 @@ class ThWboardModelFeatureContext implements Context
     {
         require_once __DIR__.'/../../admin/install_common.inc.php';
 
-        $dbh = mysql_connect($this->database_hostname, $this->database_username, $this->database_password);
-        mysql_select_db($this->database_name, $dbh);
-
-        create_tables($this->table_prefix, true);
-
-        mysql_close($dbh);
+        create_tables($this->pdo, $this->table_prefix, true);
 
         $fp = @fopen(__DIR__.'/../../inc/config.inc.php', 'w');
         p_configuration($fp, [

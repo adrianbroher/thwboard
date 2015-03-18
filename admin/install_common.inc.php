@@ -32,7 +32,7 @@ $cfg['updater_ver'] = 1.1;
 
 error_reporting(0); // E_ERROR | E_WARNING | E_PARSE
 
-function create_tables($prefix, $delete_existing)
+function create_tables(PDO $pdo, $prefix, $delete_existing)
 {
     $pref = $prefix;
 
@@ -476,10 +476,15 @@ CREATE TABLE $pref"."user (
         if ($query) {
             if (strstr($query, 'CREATE TABLE') && $delete_existing) {
                 ereg('CREATE TABLE ([^ ]*)', $query, $regs);
-                thwb_query("DROP TABLE IF EXISTS $regs[1]");
+                $pdo->exec(
+<<<SQL
+DROP TABLE IF EXISTS
+    {$regs[1]}
+SQL
+                );
             }
 
-            thwb_query($query);
+            $pdo->exec($query);
         }
     }
 }
@@ -497,59 +502,36 @@ function WriteAccess($file)
     }
 }
 
-function db_exists($dbname)
+/**
+ * Checks if a column in the given table exists
+ *
+ * @param PDO $pdo A database connection. This connection needs to have
+ *   a database selected.
+ * @param string $table The name of the table, which should contain the
+ *   given column.
+ * @param string $column The name of the column, that should exists
+ *   within the given table.
+ */
+function column_exists(PDO $pdo, $table, $column)
 {
-    $r_database = thwb_query(
+    $stmt = $pdo->prepare(
 <<<SQL
-SHOW
-    DATABASES
+SELECT
+    *
+FROM
+    INFORMATION_SCHEMA.COLUMNS
 WHERE
-    `Database`
-NOT IN (
-    'information_schema',
-    'mysql',
-    'performance_schema',
-    'test'
-)
+    TABLE_SCHEMA = DATABASE() AND
+    TABLE_NAME = :tablename AND
+    COLUMN_NAME = :columnname
 SQL
     );
 
-    $i = 0;
+    $stmt->bindValue(':tablename', $table, PDO::PARAM_STR);
+    $stmt->bindValue(':columnname', $column, PDO::PARAM_STR);
+    $stmt->execute();
 
-    while ($i < mysql_num_rows($r_database)) {
-        if (strtolower($dbname) == strtolower(mysql_tablename($r_database, $i))) {
-            return 1;
-        }
-
-        $i++;
-    }
-
-    return 0;
-}
-
-function column_exists($table, $column)
-{
-    $r_query = thwb_query("DESCRIBE $table");
-
-    while ($query = mysql_fetch_array($r_query)) {
-        if ($query['Field']== $column) {
-            return 1;
-        }
-    }
-
-    return 0;
-}
-
-function thwb_query($query)
-{
-    $result = mysql_query($query);
-
-    if (mysql_error()) {
-        p_errormsg(lng('error'), sprintf(lng('queryerror'), $query, mysql_error()));
-        exit;
-    }
-
-    return $result;
+    return (0 != $stmt->rowCount());
 }
 
 function install_allowed()

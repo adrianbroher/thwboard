@@ -102,10 +102,19 @@ switch ($_GET['step']) {
                 exit;
             }
 
-            mysql_connect($_SESSION['database-hostname'], $_SESSION['database-username'], $_SESSION['database-password']);
-            mysql_select_db($_SESSION['database-name']);
+            try {
+                $pdo = new PDO(
+                    sprintf(
+                        'mysql:host=%s;dbname=%s',
+                        $_SESSION['database-hostname'],
+                        $_SESSION['database-name']
+                    ),
+                    $_SESSION['database-username'],
+                    $_SESSION['database-password']
+                );
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            thwb_query(
+                $stmt = $pdo->prepare(
 <<<SQL
 INSERT INTO
     {$_SESSION['table-prefix']}user
@@ -117,21 +126,29 @@ INSERT INTO
     userjoin,
     groupids,
     usernodelete
-)
-VALUES
-(
-    '{$_SESSION['administrator-username']}',
-    '{$_SESSION['administrator-email']}',
-    MD5('{$_SESSION['administrator-password']}'),
-    '1',
+) VALUES (
+    :username,
+    :email,
+    MD5(:password),
+    1,
     UNIX_TIMESTAMP(),
-    ',3,',
-    '1'
+    :groups,
+    1
 )
 SQL
-           );
+                );
 
-            header('Location: '.$_SERVER['PHP_SELF'].'?step=configuration-write');
+                $stmt->bindValue(':username', $_SESSION['administrator-username'], PDO::PARAM_STR);
+                $stmt->bindValue(':email', $_SESSION['administrator-email'], PDO::PARAM_STR);
+                $stmt->bindValue(':password', $_SESSION['administrator-password'], PDO::PARAM_STR);
+                $stmt->bindValue(':groups', ',3,', PDO::PARAM_STR);
+                $stmt->execute();
+
+                header('Location: '.$_SERVER['PHP_SELF'].'?step=configuration-write');
+            } catch (PDOException $e) {
+                p_errormsg(lng('error'), sprintf(lng('queryerror'), '', $e->getMessage()));
+            }
+
             exit();
         }
 
@@ -144,9 +161,6 @@ SQL
         break;
 
     case 'table-create':
-        mysql_connect($_SESSION['database-hostname'], $_SESSION['database-username'], $_SESSION['database-password']);
-        mysql_select_db($_SESSION['database-name']);
-
         if (!isset($_SESSION['table-prefix'])) {
             $_SESSION['table-prefix'] = 'tb_';
         }
@@ -155,38 +169,60 @@ SQL
             $_SESSION['database-clear'] = false;
         }
 
-        if (isset($_POST['submit'])) {
-            $_SESSION['table-prefix'] = $_POST['table-prefix'];
-            $_SESSION['database-clear'] = (isset($_POST['database-clear']) && $_POST['database-clear'] == 'true');
+        try {
+            $pdo = new PDO(
+                sprintf(
+                    'mysql:host=%s;dbname=%s',
+                    $_SESSION['database-hostname'],
+                    $_SESSION['database-name']
+                ),
+                $_SESSION['database-username'],
+                $_SESSION['database-password']
+            );
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            if (preg_match('/[^a-zA-Z1-9_]/', $_POST['table-prefix'])) {
-                p_errormsg(lng('error'), lng('invalidtableprefixerror'), '?step=table-create');
-                exit;
+            if (isset($_POST['submit'])) {
+                $_SESSION['table-prefix'] = $_POST['table-prefix'];
+                $_SESSION['database-clear'] = (isset($_POST['database-clear']) && $_POST['database-clear'] == 'true');
+
+                if (preg_match('/[^a-zA-Z1-9_]/', $_POST['table-prefix'])) {
+                    p_errormsg(lng('error'), lng('invalidtableprefixerror'), '?step=table-create');
+                    exit;
+                }
+
+                create_tables($pdo, $_SESSION['table-prefix'], $_SESSION['database-clear']);
+
+                header('Location: '.$_SERVER['PHP_SELF'].'?step=administrator-create');
+                exit();
             }
 
-            create_tables($_SESSION['table-prefix'], $_SESSION['database-clear']);
+            $stmt = $pdo->prepare(
+<<<SQL
+SELECT
+    TABLE_NAME
+FROM
+    INFORMATION_SCHEMA.TABLES
+WHERE
+    TABLE_SCHEMA = :database
+SQL
+            );
 
-            header('Location: '.$_SERVER['PHP_SELF'].'?step=administrator-create');
-            exit();
+            $stmt->bindValue(':database', $_SESSION['database-name']);
+            $stmt->execute();
+
+            $tables = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
+
+            echo $template->render('install-table-prefix', [
+                'about_handler' => 'install.php?step=about',
+                'database_name' => $_SESSION['database-name'],
+                'database_overwrite' => $_SESSION['database-clear'],
+                'step' => 'table-create',
+                'table_prefix' => $_SESSION['table-prefix'],
+                'tables' => $tables
+            ]);
+        } catch (PDOException $e) {
+            p_errormsg(lng('error'), sprintf(lng('queryerror'), '', $e->getMessage()));
         }
-
-        $r_table = mysql_list_tables($_SESSION['database-name']);
-        $a_tables = [];
-        $i = 0;
-
-        while ($i < mysql_num_rows($r_table)) {
-            $tables[] = mysql_tablename($r_table, $i);
-            $i++;
-        }
-
-        echo $template->render('install-table-prefix', [
-            'about_handler' => 'install.php?step=about',
-            'database_name' => $_SESSION['database-name'],
-            'database_overwrite' => $_SESSION['database-clear'],
-            'step' => 'table-create',
-            'table_prefix' => $_SESSION['table-prefix'],
-            'tables' => $tables
-        ]);
         break;
 
     case 'database-select':
@@ -198,46 +234,49 @@ SQL
             $_SESSION['database-name'] = '';
         }
 
-        mysql_connect($_SESSION['database-hostname'], $_SESSION['database-username'], $_SESSION['database-password']);
+        try {
+            $pdo = new PDO(
+                sprintf(
+                    'mysql:host=%s',
+                    $_SESSION['database-hostname']
+                ),
+                $_SESSION['database-username'],
+                $_SESSION['database-password']
+            );
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        if (isset($_POST['submit'])) {
-            $_SESSION['database-allocation'] = $_POST['database-allocation'];
-            $_SESSION['database-name'] = ($_SESSION['database-allocation'] == 'use') ? $_POST['database-name-use'] : $_POST['database-name-new'];
+            if (isset($_POST['submit'])) {
+                $_SESSION['database-allocation'] = $_POST['database-allocation'];
+                $_SESSION['database-name'] = ($_SESSION['database-allocation'] == 'use') ? $_POST['database-name-use'] : $_POST['database-name-new'];
 
-            if (preg_match('/[^a-zA-Z0-9_]/', $_SESSION['database-name'])) {
-                p_errormsg(lng('error'), lng('invaliddatabasenameerror'), '?step=database-select');
-                exit;
-            }
-
-            if ($_SESSION['database-allocation'] == 'new') {
-                $query = "CREATE DATABASE ".$_SESSION['database-name'];
-                mysql_query($query);
-
-                switch (mysql_errno()) {
-                    case 0:
-                        break;
-                    case 1044:
-                        p_errormsg(lng('error'), lng('cantcreatedatabaseerror'), '?step=database-select');
-                        exit;
-                        break;
-                    default:
-                        p_errormsg(lng('error'), sprintf(lng('queryerror'), $query, mysql_error()));
-                        exit;
+                if (preg_match('/[^a-zA-Z0-9_]/', $_SESSION['database-name'])) {
+                    p_errormsg(lng('error'), lng('invaliddatabasenameerror'), '?step=database-select');
+                    exit;
                 }
 
-                $_SESSION['database-allocation'] = 'use';
+                if ($_SESSION['database-allocation'] == 'new') {
+                    $pdo->exec(
+<<<SQL
+CREATE DATABASE
+    {$_SESSION['database-name']}
+SQL
+                    );
+
+                    $_SESSION['database-allocation'] = 'use';
+                }
+
+                header('Location: '.$_SERVER['PHP_SELF'].'?step=table-create');
+                exit();
             }
 
-            header('Location: '.$_SERVER['PHP_SELF'].'?step=table-create');
-            exit();
-        }
-
-        $r_database = thwb_query(
+            $stmt = $pdo->query(
 <<<SQL
-SHOW
-    DATABASES
+SELECT
+    SCHEMA_NAME
+FROM
+    INFORMATION_SCHEMA.SCHEMATA
 WHERE
-    `Database`
+    SCHEMA_NAME
 NOT IN (
     'information_schema',
     'mysql',
@@ -245,23 +284,30 @@ NOT IN (
     'test'
 )
 SQL
-        );
+            );
 
-        $databases = [];
-        $i = 0;
+            $databases = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);
 
-        while ($i < mysql_num_rows($r_database)) {
-            $databases[] = mysql_tablename($r_database, $i);
-            $i++;
+            echo $template->render('install-database-select', [
+                'about_handler' => 'install.php?step=about',
+                'allocation' => $_SESSION['database-allocation'],
+                'database_name' => $_SESSION['database-name'],
+                'databases' => $databases,
+                'step' => 'database-select'
+            ]);
+        } catch (PDOException $e) {
+            switch ($e->errorInfo[1]) {
+                case 0:
+                    break;
+                case 1044:
+                    p_errormsg(lng('error'), lng('cantcreatedatabaseerror'), '?step=database-select');
+                    break;
+                default:
+                    p_errormsg(lng('error'), sprintf(lng('queryerror'), '', $e->getMessage()));
+            }
+
+            exit;
         }
-
-        echo $template->render('install-database-select', [
-            'about_handler' => 'install.php?step=about',
-            'allocation' => $_SESSION['database-allocation'],
-            'database_name' => $_SESSION['database-name'],
-            'databases' => $databases,
-            'step' => 'database-select'
-        ]);
         break;
 
     case 'database-credentials':
@@ -288,13 +334,22 @@ SQL
             $_SESSION['database-username'] = $_POST['database-username'];
             $_SESSION['database-password'] = $_POST['database-password'];
 
-            $dbhandle = @mysql_connect($_SESSION['database-hostname'], $_SESSION['database-username'], $_SESSION['database-password']);
+            try {
+                $pdo = new PDO(
+                    sprintf('mysql:host=%s', $_SESSION['database-hostname']),
+                    $_SESSION['database-username'],
+                    $_SESSION['database-password']
+                );
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            if (!$dbhandle) {
+                header('Location: '.$_SERVER['PHP_SELF'].'?step=database-select');
+
+                $pdo = null;
+            } catch (PDOException $e) {
                 $message = '';
                 $backlink = '';
 
-                switch (mysql_errno()) {
+                switch ($e->getCode()) {
                     case 1045:
                         $message = lng('wrongcredentialserror');
                         $backlink = '?step=database-credentials';
@@ -304,16 +359,14 @@ SQL
                         $backlink = '?step=database-credentials';
                         break;
                     default:
-                        $message = sprintf(lng('connecterror'), mysql_errno());
+                        $message = sprintf(lng('connecterror'), $e->getCode());
                         $backlink = 'JavaScript:history.back(0)';
                         break;
                 }
 
                 p_errormsg(lng('error'), $message, $backlink);
-                exit;
             }
 
-            header('Location: '.$_SERVER['PHP_SELF'].'?step=database-select');
             exit();
         }
 

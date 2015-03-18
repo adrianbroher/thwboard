@@ -26,9 +26,6 @@ require 'install_common.inc.php';
 
 include '../inc/config.inc.php';
 
-mysql_connect($mysql_h, $mysql_u, $mysql_p);
-mysql_select_db($mysql_db);
-
 if (!$pref) {
     $pref = 'thwb_';
 }
@@ -44,7 +41,15 @@ if (!isset($_GET['step'])) {
     $_GET['step'] = 'login';
 }
 
-$r_registry = thwb_query(
+try {
+    $pdo = new PDO(
+        sprintf('mysql:host=%s;dbname=%s', $mysql_h, $mysql_db),
+        $mysql_u,
+        $mysql_p
+    );
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $stmt = $pdo->query(
 <<<SQL
 SELECT
     keyvalue
@@ -53,133 +58,130 @@ FROM
 WHERE
     keyname = 'version'
 SQL
-);
+    );
 
-list($version) = mysql_fetch_row($r_registry);
-$version = (float)($version);
+    $version = (float)$stmt->fetch(PDO::FETCH_COLUMN, 0);
 
-if ($version < 2.8) {
-    p_errormsg(lng('error'), lng('installationtooold'));
-    exit;
-}
-
-switch ($_GET['step']) {
-    case 'update-run':
-        include 'updates/'.$_SESSION['update'];
-
-        $update = new CUpdate();
-
-        $update->Prefix = $pref;
-
-        if (!$update->AllowUpdate()) {
-            p_errormsg(lng('error'), lng('cantexec'), 'JavaScript:history.back(0)');
-            exit;
-        }
-
-        if ($update->RunUpdate()) {
-            p_errormsg(lng('error'), $update->GetError(), 'JavaScript:history.back(0)');
-            exit;
-        }
-
-        p_errormsg(lng('updatesuccess'), lng('updatesuccesstxt'));
+    if ($version < 2.8) {
+        p_errormsg(lng('error'), lng('installationtooold'));
         exit;
-        break;
+    }
 
-    case 'update-show':
-        include 'updates/'.$_SESSION['update'];
+    switch ($_GET['step']) {
+        case 'update-run':
+            include 'updates/'.$_SESSION['update'];
 
-        $update = new CUpdate();
+            $update = new CUpdate($pdo);
 
-        $update->Prefix = $pref;
+            $update->Prefix = $pref;
 
-        if ($update->UpdaterVer > $cfg['updater_ver']) {
-            p_errormsg(lng('error'), lng('tooold'), 'JavaScript:history.back(0)');
+            if (!$update->AllowUpdate()) {
+                p_errormsg(lng('error'), lng('cantexec'), 'JavaScript:history.back(0)');
+                exit;
+            }
+
+            if ($update->RunUpdate()) {
+                p_errormsg(lng('error'), $update->GetError(), 'JavaScript:history.back(0)');
+                exit;
+            }
+
+            p_errormsg(lng('updatesuccess'), lng('updatesuccesstxt'));
             exit;
-        }
+            break;
 
-        echo $template->render('update-show', [
-            'about_handler' => 'install.php?step=about',
-            'step' => 'update-run',
-            'update' => $update
-        ]);
-        break;
+        case 'update-show':
+            include 'updates/'.$_SESSION['update'];
 
-    case 'update-select':
-        $a_file = [];
-        $dp = opendir('updates/');
+            $update = new CUpdate($pdo);
 
-        while ($file = readdir($dp)) {
-            if (substr($file, -7, 7) == '.update') {
-                $a_file[] = $file;
-            }
-        }
+            $update->Prefix = $pref;
 
-        if (isset($_POST['submit'])) {
-            if (empty($_POST['update-selected']) || !in_array($_POST['update-selected'], $a_file)) {
-                p_errormsg(lng('error'), lng('notfound'), 'JavaScript:history.back(0)');
+            if ($update->UpdaterVer > $cfg['updater_ver']) {
+                p_errormsg(lng('error'), lng('tooold'), 'JavaScript:history.back(0)');
                 exit;
             }
 
-            $_SESSION['update'] = $_POST['update-selected'];
+            echo $template->render('update-show', [
+                'about_handler' => 'install.php?step=about',
+                'step' => 'update-run',
+                'update' => $update
+            ]);
+            break;
 
-            header('Location: '.$_SERVER['PHP_SELF'].'?step=update-show');
-            exit();
-        }
+        case 'update-select':
+            $a_file = [];
+            $dp = opendir('updates/');
 
-        natsort($a_file);
-        echo $template->render('update-select', [
-            'about_handler' => 'install.php?step=about',
-            'step' => 'update-select',
-            'updates' => $a_file
-        ]);
-        break;
-
-    case 'login':
-        if (isset($_POST['submit'])) {
-            $_SESSION['lang'] = $_POST['lang'];
-
-            if (empty($_POST['login-username']) && empty($_POST['login-password'])) {
-                p_errormsg(lng('error'), lng('noadmincredentialserror'), '?step=login');
-                exit;
+            while ($file = readdir($dp)) {
+                if (substr($file, -7, 7) == '.update') {
+                    $a_file[] = $file;
+                }
             }
 
-            $loginUsername = addslashes($_POST['login-username']);
+            if (isset($_POST['submit'])) {
+                if (empty($_POST['update-selected']) || !in_array($_POST['update-selected'], $a_file)) {
+                    p_errormsg(lng('error'), lng('notfound'), 'JavaScript:history.back(0)');
+                    exit;
+                }
 
-            $r_user = thwb_query(
+                $_SESSION['update'] = $_POST['update-selected'];
+
+                header('Location: '.$_SERVER['PHP_SELF'].'?step=update-show');
+                exit();
+            }
+
+            natsort($a_file);
+            echo $template->render('update-select', [
+                'about_handler' => 'install.php?step=about',
+                'step' => 'update-select',
+                'updates' => $a_file
+            ]);
+            break;
+
+        case 'login':
+            if (isset($_POST['submit'])) {
+                $_SESSION['lang'] = $_POST['lang'];
+
+                    if (empty($_POST['login-username']) && empty($_POST['login-password'])) {
+                    p_errormsg(lng('error'), lng('noadmincredentialserror'), '?step=login');
+                    exit;
+                }
+
+                $stmt = $pdo->prepare(
 <<<SQL
 SELECT
-    userpassword
+    userid
 FROM
     {$pref}user
 WHERE
-    username = '{$loginUsername}' AND
+    username = :username AND
+    userpassword = :password AND
     userisadmin = 1
 SQL
-            );
+                );
 
-            if (mysql_num_rows($r_user) === 0) {
-                p_errormsg(lng('error'), lng('wrongadmincredentialserror'), '?step=login');
-                exit;
+                $stmt->bindValue(':username', $_POST['login-username'], PDO::PARAM_STR);
+                $stmt->bindValue(':password', md5($_POST['login-password']), PDO::PARAM_STR);
+                $stmt->execute();
+
+                if (!$stmt->rowCount()) {
+                    p_errormsg(lng('error'), lng('wrongadmincredentialserror'), '?step=login');
+                    exit;
+                }
+
+                $_SESSION['authenticated'] = true;
+
+                header('Location: '.$_SERVER['PHP_SELF'].'?step=update-select');
+                exit();
             }
 
-            $user = mysql_fetch_array($r_user);
-
-            if ($user['userpassword'] != md5($_POST['login-password'])) {
-                p_errormsg(lng('error'), lng('wrongadmincredentialserror'), '?step=login');
-                exit;
-            }
-
-            $_SESSION['authenticated'] = true;
-
-            header('Location: '.$_SERVER['PHP_SELF'].'?step=update-select');
-            exit();
-        }
-
-        echo $template->render('update-login', [
-            'about_handler' => 'install.php?step=about',
-            'languages' => $a_lang,
-            'step' => 'login'
-        ]);
-        break;
-
+            echo $template->render('update-login', [
+                'about_handler' => 'install.php?step=about',
+                'languages' => $a_lang,
+                'step' => 'login'
+            ]);
+            break;
+    }
+} catch (PDOException $e) {
+    p_errormsg(lng('error'), sprintf(lng('queryerror'), '', $e->getMessage()));
 }
