@@ -7,16 +7,12 @@ class CUpdate
     var        $NewVersion        = '2.85';
     var        $Prefix            = '';
     var        $Author            = 'ThWboard Development Team';
-    var        $Date            = '';
     var        $Notes            = '';
     private $pdo = null;
 
     public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
-        // this is a little hack so that we always get the correct date.
-
-        $this->Date = preg_replace('/^\$'.'Date: ([0-9]{4})\/([0-9]{2})\/([0-9]{2}) [0-9]{2}:[0-9]{2}:[0-9]{2} \$$/', '\3.\2.\1', '$Date: 2004-11-07 01:19:15 +0100 (Sun, 07 Nov 2004) $');
     }
 
     function AllowUpdate()

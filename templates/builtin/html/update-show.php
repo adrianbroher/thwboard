@@ -18,10 +18,6 @@
         <td><?= $this->e($update->Author) ?></td>
     </tr>
     <tr>
-        <th><?= $this->_('date') ?></th>
-        <td><?= $this->e($update->Date) ?></td>
-    </tr>
-    <tr>
         <th><?= $this->_('executable') ?></th>
         <td><?= ($update->AllowUpdate() ? $this->_('yes') : $this->_('no')) ?></td>
     </tr>
