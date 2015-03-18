@@ -6,7 +6,6 @@ class CUpdate
     var        $OldVersion        = '2.8';
     var        $NewVersion        = '2.81';
     var        $Prefix            = '';
-    var        $Error            = '';
     var        $Author            = 'ThWboard Development Team';
     var        $Date            = '30.12.2002';
     var        $Notes            = '';
@@ -38,21 +37,6 @@ SQL
         return ($version == $this->OldVersion);
     }
 
-    function SetError($errmsg)
-    {
-        $this->Error = $errmsg;
-    }
-
-    function GetError()
-    {
-        return $this->Error;
-    }
-
-    /*
-     * RETURN VALUE
-     *    1 - update failed (set error with $this->SetError() )
-     *    0 - update sucessfull
-     */
     function RunUpdate()
     {
         $pref = $this->Prefix;
@@ -79,7 +63,5 @@ SQL
 
         $stmt->bindValue(':version', $this->NewVersion, PDO::PARAM_STR);
         $stmt->execute();
-
-        return 0;
     }
 }

@@ -6,7 +6,6 @@ class CUpdate
     var        $OldVersion        = '2.83';
     var        $NewVersion        = '2.84';
     var        $Prefix            = '';
-    var        $Error            = '';
     var        $Author            = 'ThWboard Development Team';
     var        $Date            = '';
     var        $Notes            = '';
@@ -171,21 +170,6 @@ SQL
         return ($version == $this->OldVersion);
     }
 
-    function SetError($errmsg)
-    {
-        $this->Error = $errmsg;
-    }
-
-    function GetError()
-    {
-        return $this->Error;
-    }
-
-    /*
-     * RETURN VALUE
-     *    1 - update failed (set error with $this->SetError() )
-     *    0 - update sucessfull
-     */
     function RunUpdate()
     {
         $pref = $this->Prefix;
@@ -194,8 +178,7 @@ SQL
 
             if(!is_writable("../templates/css/") || !is_writable("../templates/css/1.css"))
           {
-            $this->SetError("You must set templates/css/ and any css files inside to be writable by php scripts. Often this means setting permissions to 777.");
-            return 1;
+            throw new RuntimeException("You must set templates/css/ and any css files inside to be writable by php scripts. Often this means setting permissions to 777.");
           }
 
         $this->pdo->exec(

@@ -80,8 +80,10 @@ SQL
                 exit;
             }
 
-            if ($update->RunUpdate()) {
-                p_errormsg(lng('error'), $update->GetError(), 'JavaScript:history.back(0)');
+            try {
+                $update->RunUpdate();
+            } catch(RuntimeException $e) {
+                p_errormsg(lng('error'), $e->getMessage(), 'JavaScript:history.back(0)');
                 exit;
             }
 
