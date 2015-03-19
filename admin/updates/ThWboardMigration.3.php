@@ -2,7 +2,7 @@
 
 require_once __DIR__.'/../Migration.class.php';
 
-class CMigration extends Migration
+class ThWboardMigration3 extends Migration
 {
     public function __construct()
     {
@@ -142,4 +142,4 @@ SQL
     }
 }
 
-return new CMigration();
+return new ThWboardMigration3();

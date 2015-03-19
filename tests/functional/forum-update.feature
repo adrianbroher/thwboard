@@ -85,13 +85,13 @@ Feature: Forum update
         And I should see "Updates"
         And I should see "Please select the update you want to run."
         And I should see the following <value> available in the select "Available updates":
-            | value               |
-            | thwb_28_281.update  |
-            | thwb_281_282.update |
-            | thwb_282_283.update |
-            | thwb_283_284.update |
-            | thwb_284_285.update |
-        When I select "thwb_283_284.update" from "Available updates"
+            | value        |
+            | 2.8 -> 2.81  |
+            | 2.81 -> 2.82 |
+            | 2.82 -> 2.83 |
+            | 2.83 -> 2.84 |
+            | 2.84 -> 2.85 |
+        When I select "2.83 -> 2.84" from "Available updates"
         And I press "Next"
         Then the returned HTML document should be valid
         And I should see "Update information"
@@ -123,13 +123,13 @@ Feature: Forum update
         And I should see "Updates"
         And I should see "Please select the update you want to run."
         And I should see the following <value> available in the select "Available updates":
-            | value               |
-            | thwb_28_281.update  |
-            | thwb_281_282.update |
-            | thwb_282_283.update |
-            | thwb_283_284.update |
-            | thwb_284_285.update |
-        When I select "thwb_284_285.update" from "Available updates"
+            | value        |
+            | 2.8 -> 2.81  |
+            | 2.81 -> 2.82 |
+            | 2.82 -> 2.83 |
+            | 2.83 -> 2.84 |
+            | 2.84 -> 2.85 |
+        When I select "2.84 -> 2.85" from "Available updates"
         And I press "Next"
         Then the returned HTML document should be valid
         And I should see "Update information"

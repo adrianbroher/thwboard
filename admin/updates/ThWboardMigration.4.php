@@ -2,7 +2,7 @@
 
 require_once __DIR__.'/../Migration.class.php';
 
-class CMigration extends Migration
+class ThWboardMigration4 extends Migration
 {
     public function __construct()
     {
@@ -148,7 +148,7 @@ SQL
             throw new RuntimeException(lng('cantexec'));
         }
 
-        /* no migration if templates/css/ does not exist */
+        /* no update if templates/css/ does not exist */
         if (!is_writable(__DIR__.'/../../templates/css/') || !is_writable(__DIR__.'/../../templates/css/1.css')) {
             throw new RuntimeException("You must set templates/css/ and any css files inside to be writable by php scripts. Often this means setting permissions to 777.");
         }
@@ -249,4 +249,4 @@ SQL
     }
 }
 
-return new CMigration();
+return new ThWboardMigration4();

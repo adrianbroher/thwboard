@@ -95,17 +95,18 @@ SQL
             break;
 
         case 'update-select':
-            $a_file = [];
+            $updates = [];
             $dp = opendir('updates/');
 
             while ($file = readdir($dp)) {
-                if (substr($file, -7, 7) == '.update') {
-                    $a_file[] = $file;
+                if (substr($file, -4, 4) == '.php') {
+                    $update = include 'updates/'.$file;
+                    $updates[$file] = sprintf('%s -> %s', $update->fromVersion, $update->toVersion);
                 }
             }
 
             if (isset($_POST['submit'])) {
-                if (empty($_POST['update-selected']) || !in_array($_POST['update-selected'], $a_file)) {
+                if (empty($_POST['update-selected']) || !in_array($_POST['update-selected'], array_keys($updates))) {
                     p_errormsg(lng('error'), lng('notfound'), 'JavaScript:history.back(0)');
                     exit;
                 }
@@ -116,11 +117,11 @@ SQL
                 exit();
             }
 
-            natsort($a_file);
+            natsort($updates);
             echo $template->render('update-select', [
                 'about_handler' => 'install.php?step=about',
                 'step' => 'update-select',
-                'updates' => $a_file
+                'updates' => $updates
             ]);
             break;
 
