@@ -99,7 +99,7 @@ Feature: Forum update
         And I should see "Version after update 2.84"
         And I should see "Author ThWboard Development Team"
         And I should see "Executable? No"
-        And I should see "Notes N/A"
+        And I should see "Notes This migration requires an unmodified database schema based on version 2.83"
         When I press "Next"
         Then the returned HTML document should be valid
         And I should see "The update cannot be executed. (Version mismatch)"
@@ -137,7 +137,7 @@ Feature: Forum update
         And I should see "Version after update 2.85"
         And I should see "Author ThWboard Development Team"
         And I should see "Executable? Yes"
-        And I should see "Notes N/A"
+        And I should see "Notes This migration requires an unmodified database schema based on version 2.84"
         When I press "Next"
         Then the returned HTML document should be valid
         And I should see "Update successful"

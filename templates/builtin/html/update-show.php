@@ -7,22 +7,22 @@
 <table summary="Attributes of the update to be installed" width="100%" border="0" cellspacing="0" cellpadding="3">
     <tr>
         <th><?= $this->_('reqver') ?></th>
-        <td><?= $this->e($update->OldVersion) ?></td>
+        <td><?= $this->e($update->fromVersion) ?></td>
     </tr>
     <tr>
         <th><?= $this->_('newver') ?></th>
-        <td><?= $this->e($update->NewVersion) ?></td>
+        <td><?= $this->e($update->toVersion) ?></td>
     </tr>
     <tr>
         <th><?= $this->_('author') ?></th>
-        <td><?= $this->e($update->Author) ?></td>
+        <td><?= $this->e($update->author) ?></td>
     </tr>
     <tr>
         <th><?= $this->_('executable') ?></th>
-        <td><?= ($update->AllowUpdate() ? $this->_('yes') : $this->_('no')) ?></td>
+        <td><?= (($update->fromVersion == $schema_version) ? $this->_('yes') : $this->_('no')) ?></td>
     </tr>
     <tr>
         <th><?= $this->_('notes') ?></th>
-        <td><?= ($update->Notes ? $update->Notes : $this->_('na')) ?></td>
+        <td><?= ($update->notes ? $update->notes : $this->_('na')) ?></td>
     </tr>
 </table>

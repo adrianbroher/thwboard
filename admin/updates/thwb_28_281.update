@@ -1,55 +1,37 @@
 <?php
 
-class CUpdate
+require_once __DIR__.'/../Migration.class.php';
+
+class CMigration extends Migration
 {
-    var        $UpdaterVer        = 1.1;
-    var        $OldVersion        = '2.8';
-    var        $NewVersion        = '2.81';
-    var        $Prefix            = '';
-    var        $Author            = 'ThWboard Development Team';
-    var        $Notes            = '';
-    private $pdo = null;
-
-    public function __construct(PDO $pdo)
+    public function __construct()
     {
-        $this->pdo = $pdo;
-    }
-
-    function AllowUpdate()
-    {
-        $stmt = $this->pdo->query(
-<<<SQL
-SELECT
-    keyvalue
-FROM
-    {$this->Prefix}registry
-WHERE
-    keyname = 'version'
-SQL
+        parent::__construct(
+            '2.8', '2.81',
+            "ThWboard Development Team",
+            "This migration requires an unmodified database schema based on version 2.8"
         );
-
-        $version = $stmt->fetch(PDO::FETCH_COLUMN, 0);
-
-        return ($version == $this->OldVersion);
     }
 
-    function RunUpdate()
+    public function upgrade(PDO $pdo)
     {
-        $pref = $this->Prefix;
+        if ($this->fromVersion != schema_version($pdo)) {
+            throw new RuntimeException(lng('cantexec'));
+        }
 
-        $this->pdo->exec(
+        $pdo->exec(
 <<<SQL
 ALTER TABLE
-    {$pref}calendar
+    {$pdo->prefix}calendar
 ADD COLUMN
     userid INT(10) UNSIGNED NOT NULL
 SQL
         );
 
-        $stmt = $this->pdo->prepare(
+        $stmt = $pdo->prepare(
 <<<SQL
 UPDATE
-    {$pref}registry
+    {$pdo->prefix}registry
 SET
     keyvalue = :version
 WHERE
@@ -57,7 +39,14 @@ WHERE
 SQL
         );
 
-        $stmt->bindValue(':version', $this->NewVersion, PDO::PARAM_STR);
+        $stmt->bindValue(':version', $this->toVersion, PDO::PARAM_STR);
         $stmt->execute();
     }
+
+    public function downgrade(PDO $pdo)
+    {
+        throw new RuntimeException(lng('cantexec'));
+    }
 }
+
+return new CMigration();

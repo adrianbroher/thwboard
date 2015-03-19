@@ -28,8 +28,6 @@ require __DIR__.'/../vendor/autoload.php';
 $template = new \League\Plates\Engine(__DIR__.'/../templates/builtin/html');
 $template->registerFunction('_', 'lng');
 
-$cfg['updater_ver'] = 1.1;
-
 error_reporting(0); // E_ERROR | E_WARNING | E_PARSE
 
 function create_tables(PDO $pdo, $prefix, $delete_existing)
@@ -532,6 +530,22 @@ SQL
     $stmt->execute();
 
     return (0 != $stmt->rowCount());
+}
+
+function schema_version(PDO $pdo)
+{
+    $stmt = $pdo->query(
+<<<SQL
+SELECT
+    keyvalue
+FROM
+    {$pdo->prefix}registry
+WHERE
+    keyname = 'version'
+SQL
+    );
+
+    return $stmt->fetch(PDO::FETCH_COLUMN, 0);
 }
 
 function install_allowed()

@@ -1,46 +1,28 @@
 <?php
 
-class CUpdate
+require_once __DIR__.'/../Migration.class.php';
+
+class CMigration extends Migration
 {
-    var        $UpdaterVer        = 1.1;
-    var        $OldVersion        = '2.81';
-    var        $NewVersion        = '2.82';
-    var        $Prefix            = '';
-    var        $Author            = 'ThWboard Development Team';
-    var        $Notes            = '';
-    private $pdo = null;
-
-    public function __construct(PDO $pdo)
+    public function __construct()
     {
-        $this->pdo = $pdo;
-    }
-
-    function AllowUpdate()
-    {
-        $stmt = $this->pdo->query(
-<<<SQL
-SELECT
-    keyvalue
-FROM
-    {$this->Prefix}registry
-WHERE
-    keyname = 'version'
-SQL
+        parent::__construct(
+            '2.81', '2.82',
+            "ThWboard Development Team",
+            "This migration requires an unmodified database schema based on version 2.81"
         );
-
-        $version = $stmt->fetch(PDO::FETCH_COLUMN, 0);
-
-        return ($version == $this->OldVersion);
     }
 
-    function RunUpdate()
+    public function upgrade(PDO $pdo)
     {
-        $pref = $this->Prefix;
+        if ($this->fromVersion != schema_version($pdo)) {
+            throw new RuntimeException(lng('cantexec'));
+        }
 
-        $this->pdo->exec(
+        $pdo->exec(
 <<<SQL
 ALTER TABLE
-    {$pref}user
+    {$pdo->prefix}user
 MODIFY COLUMN
     userinterests TINYTEXT NOT NULL,
 ADD COLUMN
@@ -48,10 +30,10 @@ ADD COLUMN
 SQL
         );
 
-        $this->pdo->exec(
+        $pdo->exec(
 <<<SQL
 ALTER TABLE
-    {$pref}online
+    {$pdo->prefix}online
 ADD COLUMN
     sessionid VARCHAR(32) DEFAULT '' NOT NULL FIRST,
 ADD INDEX
@@ -62,10 +44,10 @@ ENGINE = Heap
 SQL
         );
 
-        $this->pdo->exec(
+        $pdo->exec(
 <<<SQL
 ALTER TABLE
-    {$pref}group
+    {$pdo->prefix}group
 CHANGE COLUMN
     accessmask accessmask_old INT(10) UNSIGNED NOT NULL DEFAULT 0,
 ADD COLUMN
@@ -73,10 +55,10 @@ ADD COLUMN
 SQL
         );
 
-        $this->pdo->exec(
+        $pdo->exec(
 <<<SQL
 ALTER TABLE
-    {$pref}groupboard
+    {$pdo->prefix}groupboard
 CHANGE COLUMN
     accessmask accessmask_old INT(10) UNSIGNED NOT NULL DEFAULT 0,
 ADD COLUMN
@@ -84,47 +66,47 @@ ADD COLUMN
 SQL
         );
 
-        $this->pdo->exec(
+        $pdo->exec(
 <<<SQL
 UPDATE
-    {$pref}group
+    {$pdo->prefix}group
 SET
     accessmask = RPAD(REVERSE(BIN(accessmask_old)), 22, '0')
 SQL
         );
 
-        $this->pdo->exec(
+        $pdo->exec(
 <<<SQL
 UPDATE
-    {$pref}groupboard
+    {$pdo->prefix}groupboard
 SET
     accessmask = RPAD(REVERSE(BIN(accessmask_old)), 22, '0')
 SQL
         );
 
-        $this->pdo->exec(
+        $pdo->exec(
 <<<SQL
 ALTER TABLE
-    {$pref}group
+    {$pdo->prefix}group
 DROP COLUMN
     accessmask_old
 SQL
         );
 
-        $this->pdo->exec(
+        $pdo->exec(
 <<<SQL
 ALTER TABLE
-    {$pref}groupboard
+    {$pdo->prefix}groupboard
 DROP COLUMN
     accessmask_old
 SQL
         );
 
 
-        $this->pdo->exec(
+        $pdo->exec(
 <<<SQL
 CREATE TABLE
-    {$pref}statcache
+    {$pdo->prefix}statcache
 (
     stat_id INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     stat_stime INT(11) UNSIGNED NOT NULL DEFAULT 0,
@@ -143,22 +125,22 @@ CREATE TABLE
 SQL
         );
 
-        $this->pdo->exec(
+        $pdo->exec(
 <<<SQL
 INSERT INTO
-    {$pref}registry
+    {$pdo->prefix}registry
 VALUES
     ('session_timeout', '1800', 'integer', 'Session timeout', 'Time for sessions to expire.', 3, 13)
 SQL
         );
 
-        $posts = $this->pdo->query(
+        $posts = $pdo->query(
 <<<SQL
 SELECT
     postid,
     posttext
 FROM
-    {$pref}post
+    {$pdo->prefix}post
 WHERE
     posttext LIKE '%[QUOTE]%' OR
     posttext LIKE '%[/QUOTE]%'
@@ -168,10 +150,10 @@ SQL
         foreach ($posts as $post) {
             $post['posttext'] = preg_replace("/\[(\/|)QUOTE\]/", "[$1quote]", $post['posttext']);
 
-            $stmt = $this->pdo->prepare(
+            $stmt = $pdo->prepare(
 <<<SQL
 UPDATE
-    {$pref}post
+    {$pdo->prefix}post
 SET
     posttext = :posttext
 WHERE
@@ -184,10 +166,10 @@ SQL
             $stmt->execute();
         }
 
-        $stmt = $this->pdo->prepare(
+        $stmt = $pdo->prepare(
 <<<SQL
 UPDATE
-    {$pref}registry
+    {$pdo->prefix}registry
 SET
     keyvalue = :version
 WHERE
@@ -195,7 +177,14 @@ WHERE
 SQL
         );
 
-        $stmt->bindValue(':version', $this->NewVersion, PDO::PARAM_STR);
+        $stmt->bindValue(':version', $this->toVersion, PDO::PARAM_STR);
         $stmt->execute();
     }
+
+    public function downgrade(PDO $pdo)
+    {
+        throw new RuntimeException(lng('cantexec'));
+    }
 }
+
+return new CMigration();

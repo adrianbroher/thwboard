@@ -1,46 +1,28 @@
 <?php
 
-class CUpdate
+require_once __DIR__.'/../Migration.class.php';
+
+class CMigration extends Migration
 {
-    var        $UpdaterVer        = 1.0;
-    var        $OldVersion        = '2.84';
-    var        $NewVersion        = '2.85';
-    var        $Prefix            = '';
-    var        $Author            = 'ThWboard Development Team';
-    var        $Notes            = '';
-    private $pdo = null;
-
-    public function __construct(PDO $pdo)
+    public function __construct()
     {
-        $this->pdo = $pdo;
-    }
-
-    function AllowUpdate()
-    {
-        $stmt = $this->pdo->query(
-<<<SQL
-SELECT
-    keyvalue
-FROM
-    {$this->Prefix}registry
-WHERE
-    keyname = 'version'
-SQL
+        parent::__construct(
+            '2.84', '2.85',
+            "ThWboard Development Team",
+            "This migration requires an unmodified database schema based on version 2.84"
         );
-
-        $version = $stmt->fetch(PDO::FETCH_COLUMN, 0);
-
-        return ($version == $this->OldVersion);
     }
 
-    function RunUpdate()
+    public function upgrade(PDO $pdo)
     {
-        $pref = $this->Prefix;
+        if ($this->fromVersion != schema_version($pdo)) {
+            throw new RuntimeException(lng('cantexec'));
+        }
 
-        $this->pdo->exec(
+        $pdo->exec(
 <<<SQL
 CREATE TABLE
-    ${pref}flood
+    {$pdo->prefix}flood
 (
     userid INT(10) NOT NULL DEFAULT 0,
     type TINYINT(1) DEFAULT NULL,
@@ -50,20 +32,20 @@ CREATE TABLE
 SQL
         );
 
-        $this->pdo->exec(
+        $pdo->exec(
 <<<SQL
 INSERT INTO
-    ${pref}registrygroup
+    {$pdo->prefix}registrygroup
 VALUES
     (8, 'Flood Protection', 7),
     (9, 'Error Reporting', 8)
 SQL
         );
 
-        $this->pdo->exec(
+        $pdo->exec(
 <<<SQL
 INSERT INTO
-    ${pref}registry
+    {$pdo->prefix}registry
 VALUES
     ('flood_login_count', '3', 'integer', 'Login failure count', 'Number of failed logins before the account gets locked for specific IP.<br>(0 to disable)', 8, 1),
     ('flood_login_timeout', '15', 'integer', 'Login failure timeout', 'Time (in minutes) for which an account gets locked after several failed logins.', 8, 2),
@@ -78,10 +60,10 @@ VALUES
 SQL
         );
 
-        $stmt = $this->pdo->prepare(
+        $stmt = $pdo->prepare(
 <<<SQL
 UPDATE
-    {$pref}registry
+    {$pdo->prefix}registry
 SET
     keyvalue = :version
 WHERE
@@ -89,7 +71,14 @@ WHERE
 SQL
         );
 
-        $stmt->bindValue(':version', $this->NewVersion, PDO::PARAM_STR);
+        $stmt->bindValue(':version', $this->toVersion, PDO::PARAM_STR);
         $stmt->execute();
     }
+
+    public function downgrade(PDO $pdo)
+    {
+        throw new RuntimeException(lng('cantexec'));
+    }
 }
+
+return new CMigration();

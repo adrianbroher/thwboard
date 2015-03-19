@@ -48,6 +48,7 @@ try {
         $mysql_p
     );
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo->prefix = $pref;
 
     $stmt = $pdo->query(
 <<<SQL
@@ -69,19 +70,10 @@ SQL
 
     switch ($_GET['step']) {
         case 'update-run':
-            include 'updates/'.$_SESSION['update'];
-
-            $update = new CUpdate($pdo);
-
-            $update->Prefix = $pref;
-
-            if (!$update->AllowUpdate()) {
-                p_errormsg(lng('error'), lng('cantexec'), 'JavaScript:history.back(0)');
-                exit;
-            }
+            $update = include 'updates/'.$_SESSION['update'];
 
             try {
-                $update->RunUpdate();
+                $update->upgrade($pdo);
             } catch(RuntimeException $e) {
                 p_errormsg(lng('error'), $e->getMessage(), 'JavaScript:history.back(0)');
                 exit;
@@ -92,21 +84,13 @@ SQL
             break;
 
         case 'update-show':
-            include 'updates/'.$_SESSION['update'];
-
-            $update = new CUpdate($pdo);
-
-            $update->Prefix = $pref;
-
-            if ($update->UpdaterVer > $cfg['updater_ver']) {
-                p_errormsg(lng('error'), lng('tooold'), 'JavaScript:history.back(0)');
-                exit;
-            }
+            $update = include 'updates/'.$_SESSION['update'];
 
             echo $template->render('update-show', [
                 'about_handler' => 'install.php?step=about',
                 'step' => 'update-run',
-                'update' => $update
+                'update' => $update,
+                'schema_version' => schema_version($pdo)
             ]);
             break;
 

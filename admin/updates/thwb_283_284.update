@@ -1,20 +1,21 @@
 <?php
 
-class CUpdate
+require_once __DIR__.'/../Migration.class.php';
+
+class CMigration extends Migration
 {
-    var        $UpdaterVer        = 1.0;
-    var        $OldVersion        = '2.83';
-    var        $NewVersion        = '2.84';
-    var        $Prefix            = '';
-    var        $Author            = 'ThWboard Development Team';
-    var        $Notes            = '';
-    private $pdo = null;
+    public function __construct()
+    {
+        parent::__construct(
+            '2.83', '2.84',
+            "ThWboard Development Team",
+            "This migration requires an unmodified database schema based on version 2.83"
+        );
+    }
 
-    function writestyle($id)
-      {
-        $pref = $this->Prefix;
-
-        $stmt = $this->pdo->prepare(
+    function writestyle(PDO $pdo, $id)
+    {
+        $stmt = $pdo->prepare(
 <<<SQL
 SELECT
     colorbg,
@@ -31,7 +32,7 @@ SELECT
     col_link_hover,
     stdfont
 FROM
-    {$pref}style
+    {$pdo->prefix}style
 WHERE
     styleid = :id
 SQL
@@ -72,13 +73,11 @@ SQL
         fwrite($f, $str);
 
         fclose($f);
-      }
+    }
 
-    function updateboard($boardid)
-      {
-        $pref = $this->Prefix;
-
-        $thread_stmt = $this->pdo->prepare(
+    function updateboard(PDO $pdo, $boardid)
+    {
+        $thread_stmt = $pdo->prepare(
 <<<SQL
 SELECT
     threadid,
@@ -88,7 +87,7 @@ SELECT
     COUNT(threadid) AS threadcount,
     SUM(threadreplies) + COUNT(threadid) AS postcount
 FROM
-    {$pref}thread
+    {$pdo->prefix}thread
 WHERE
     threadlink = 0 AND
     boardid = :boardid
@@ -104,10 +103,10 @@ SQL
         $thread_stmt->bindValue(':boardid', $boardid, PDO::PARAM_INT);
         $thread_stmt->execute();
 
-        $board_stmt = $this->pdo->prepare(
+        $board_stmt = $pdo->prepare(
 <<<SQL
 UPDATE
-    {$pref}board
+    {$pdo->prefix}board
 SET
     boardlastpost = :lastpost,
     boardthreadid = :threadid,
@@ -143,53 +142,30 @@ SQL
         $board_stmt->execute();
       }
 
-    public function __construct(PDO $pdo)
+    public function upgrade(PDO $pdo)
     {
-        $this->pdo = $pdo;
-    }
+        if ($this->fromVersion != schema_version($pdo)) {
+            throw new RuntimeException(lng('cantexec'));
+        }
 
-    function AllowUpdate()
-    {
-        $stmt = $this->pdo->query(
-<<<SQL
-SELECT
-    keyvalue
-FROM
-    {$this->Prefix}registry
-WHERE
-    keyname = 'version'
-SQL
-        );
-
-        $version = $stmt->fetch(PDO::FETCH_COLUMN, 0);
-
-        return ($version == $this->OldVersion);
-    }
-
-    function RunUpdate()
-    {
-        $pref = $this->Prefix;
-
-            /* no update if templates/css/ does not exist */
-
-            if(!is_writable("../templates/css/") || !is_writable("../templates/css/1.css"))
-          {
+        /* no migration if templates/css/ does not exist */
+        if (!is_writable(__DIR__.'/../../templates/css/') || !is_writable(__DIR__.'/../../templates/css/1.css')) {
             throw new RuntimeException("You must set templates/css/ and any css files inside to be writable by php scripts. Often this means setting permissions to 777.");
-          }
+        }
 
-        $this->pdo->exec(
+        $pdo->exec(
 <<<SQL
 ALTER TABLE
-    {$pref}user
+    {$pdo->prefix}user
 DROP COLUMN
     usernoipcheck
 SQL
         );
 
-        $this->pdo->exec(
+        $pdo->exec(
 <<<SQL
 UPDATE
-    {$pref}registry
+    {$pdo->prefix}registry
 SET
     keydescription = 'Used in eMails &amp; some board features<br>It is vital to set this correctly! '
 WHERE
@@ -197,38 +173,38 @@ WHERE
 SQL
         );
 
-        $styles = $this->pdo->query(
+        $styles = $pdo->query(
 <<<SQL
 SELECT
     styleid
 FROM
-    {$pref}style
+    {$pdo->prefix}style
 WHERE
     styleid != 1
 SQL
         )->fetchAll(PDO::FETCH_COLUMN, 0);
 
         foreach ($styles as $styleid) {
-            $this->writestyle($v);
+            $this->writestyle($pdo, $v);
         }
 
-        $boards = $this->pdo->query(
+        $boards = $pdo->query(
 <<<SQL
 SELECT
     boardid
 FROM
-    {$pref}board
+    {$pdo->prefix}board
 SQL
         )->fetchAll(PDO::FETCH_COLUMN, 0);
 
         foreach ($boards as $boardid) {
-            $this->updateboard($boardid);
+            $this->updateboard($pdo, $boardid);
         }
 
-        $stmt = $this->pdo->prepare(
+        $stmt = $pdo->prepare(
 <<<SQL
 UPDATE
-    {$pref}registry
+    {$pdo->prefix}registry
 SET
     keyvalue = :version
 WHERE
@@ -236,9 +212,16 @@ WHERE
 SQL
         );
 
-        $stmt->bindValue(':version', $this->NewVersion, PDO::PARAM_STR);
+        $stmt->bindValue(':version', $this->toVersion, PDO::PARAM_STR);
         $stmt->execute();
 
         return 0;
     }
+
+    public function downgrade(PDO $pdo)
+    {
+        throw new RuntimeException(lng('cantexec'));
+    }
 }
+
+return new CMigration();
