@@ -99,7 +99,7 @@ SQL
             $dp = opendir('updates/');
 
             while ($file = readdir($dp)) {
-                if (substr($file, -4, 4) == '.php') {
+                if (substr($file, -4, 4) == '.php' && substr($file, -6, 6) != '.0.php') {
                     $update = include 'updates/'.$file;
                     $updates[$file] = sprintf('%s -> %s', $update->fromVersion, $update->toVersion);
                 }

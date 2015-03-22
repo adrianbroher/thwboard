@@ -180,6 +180,7 @@ SQL
                 $_SESSION['database-password']
             );
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $pdo->prefix = $_SESSION['table-prefix'];
 
             if (isset($_POST['submit'])) {
                 $_SESSION['table-prefix'] = $_POST['table-prefix'];
@@ -190,7 +191,7 @@ SQL
                     exit;
                 }
 
-                create_tables($pdo, $_SESSION['table-prefix'], $_SESSION['database-clear']);
+                create_tables($pdo, $_SESSION['database-clear']);
 
                 header('Location: '.$_SERVER['PHP_SELF'].'?step=administrator-create');
                 exit();

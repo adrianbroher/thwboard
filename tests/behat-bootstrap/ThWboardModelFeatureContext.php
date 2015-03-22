@@ -64,6 +64,7 @@ class ThWboardModelFeatureContext implements Context
             $this->database_password
         );
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->pdo->prefix = $this->table_prefix;
     }
 
     /** Installs the forum.
@@ -74,7 +75,7 @@ class ThWboardModelFeatureContext implements Context
     {
         require_once __DIR__.'/../../admin/install_common.inc.php';
 
-        create_tables($this->pdo, $this->table_prefix, true);
+        create_tables($this->pdo, true);
 
         $fp = @fopen(__DIR__.'/../../inc/config.inc.php', 'w');
         p_configuration($fp, [
