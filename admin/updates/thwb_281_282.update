@@ -1,17 +1,5 @@
 <?php
 
-function build_string($m)
-{
-  $str = "";
-
-  for($i = 0; $i <= 21; $i++)
-    {
-      $str .= (($m & (1 << $i)) ? 1 : 0);
-    }
-
-  return $str;
-}
-
 class CUpdate
 {
     var        $UpdaterVer        = 1.1;
@@ -98,7 +86,9 @@ SQL
 <<<SQL
 ALTER TABLE
     {$pref}group
-MODIFY COLUMN
+CHANGE COLUMN
+    accessmask accessmask_old INT(10) UNSIGNED NOT NULL DEFAULT 0,
+ADD COLUMN
     accessmask VARCHAR(50) DEFAULT '' NOT NULL
 SQL
         );
@@ -107,10 +97,49 @@ SQL
 <<<SQL
 ALTER TABLE
     {$pref}groupboard
-MODIFY COLUMN
+CHANGE COLUMN
+    accessmask accessmask_old INT(10) UNSIGNED NOT NULL DEFAULT 0,
+ADD COLUMN
     accessmask VARCHAR(50) DEFAULT '' NOT NULL
 SQL
         );
+
+        $this->pdo->exec(
+<<<SQL
+UPDATE
+    {$pref}group
+SET
+    accessmask = RPAD(REVERSE(BIN(accessmask_old)), 22, '0')
+SQL
+        );
+
+        $this->pdo->exec(
+<<<SQL
+UPDATE
+    {$pref}groupboard
+SET
+    accessmask = RPAD(REVERSE(BIN(accessmask_old)), 22, '0')
+SQL
+        );
+
+        $this->pdo->exec(
+<<<SQL
+ALTER TABLE
+    {$pref}group
+DROP COLUMN
+    accessmask_old
+SQL
+        );
+
+        $this->pdo->exec(
+<<<SQL
+ALTER TABLE
+    {$pref}groupboard
+DROP COLUMN
+    accessmask_old
+SQL
+        );
+
 
         $this->pdo->exec(
 <<<SQL
@@ -142,67 +171,6 @@ VALUES
     ('session_timeout', '1800', 'integer', 'Session timeout', 'Time for sessions to expire.', 3, 13)
 SQL
         );
-
-        $masks = $this->pdo->query(
-<<<SQL
-SELECT
-    groupid,
-    accessmask
-FROM
-    {$pref}group
-ORDER BY
-    groupid ASC
-SQL
-        )->fetchAll();
-
-        foreach ($masks as $mask) {
-            $stmt = $this->pdo->prepare(
-<<<SQL
-UPDATE
-    {$pref}group
-SET
-    accessmask = :accessmask
-WHERE
-    groupid = :groupid
-SQL
-            );
-
-            $stmt->bindValue(':accessmask', build_string($mask['accessmask']), PDO::PARAM_STR);
-            $stmt->bindValue(':groupid', $mask['groupid'], PDO::PARAM_INT);
-            $stmt->execute();
-        }
-
-        $masks = $this->pdo->query(
-<<<SQL
-SELECT
-    boardid,
-    groupid,
-    accessmask
-FROM
-    {$pref}groupboard
-ORDER BY
-    groupid ASC
-SQL
-        )->fetchAll();
-
-        foreach ($masks as $mask) {
-            $stmt = $this->pdo->prepare(
-<<<SQL
-UPDATE
-    {$pref}groupboard
-SET
-    accessmask = :accessmask,
-WHERE
-    groupid = :groupid AND
-    boardid = :boardid
-SQL
-            );
-
-            $stmt->bindValue(':accessmask', build_string($mask['accessmask']), PDO::PARAM_STR);
-            $stmt->bindValue(':groupid', $mask['groupid'], PDO::PARAM_INT);
-            $stmt->bindValue(':boardid', $mask['boardid'], PDO::PARAM_INT);
-            $stmt->execute();
-        }
 
         $posts = $this->pdo->query(
 <<<SQL
