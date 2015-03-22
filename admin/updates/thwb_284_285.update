@@ -77,7 +77,64 @@ SQL
 
     public function downgrade(PDO $pdo)
     {
-        throw new RuntimeException(lng('cantexec'));
+        $pdo->exec(
+<<<SQL
+DROP TABLE IF EXISTS
+    {$pdo->prefix}flood
+SQL
+        );
+
+        if (table_exists($pdo, $pdo->prefix.'registrygroup')) {
+            $pdo->exec(
+<<<SQL
+DELETE FROM
+    {$pdo->prefix}registrygroup
+WHERE
+    keygroupname IN (
+        'Flood Protection',
+        'Error Reporting'
+    )
+SQL
+            );
+        }
+
+        if (table_exists($pdo, $pdo->prefix.'registry')) {
+            $pdo->exec(
+<<<SQL
+DELETE FROM
+    {$pdo->prefix}registry
+WHERE
+    keyname IN (
+        'flood_login_count',
+        'flood_login_timeout',
+        'flood_register_count',
+        'flood_register_timeout',
+        'flood_mail_count',
+        'flood_mail_timeout',
+        'debug_what',
+        'debug_mail',
+        'debug_do_log',
+        'debug_log_path'
+    )
+SQL
+            );
+        }
+
+        if (table_exists($pdo, $pdo->prefix.'registry')) {
+            $stmt = $pdo->prepare(
+<<<SQL
+UPDATE
+    {$pdo->prefix}registry
+SET
+    keyvalue = :version
+WHERE
+    keyname = 'version'
+SQL
+            );
+
+            $stmt->bindValue(':version', $this->fromVersion, PDO::PARAM_STR);
+            $stmt->execute();
+        }
     }
 }
 

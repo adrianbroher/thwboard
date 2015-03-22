@@ -78,7 +78,67 @@ SQL
 
     public function downgrade(PDO $pdo)
     {
-        throw new RuntimeException(lng('cantexec'));
+        if (table_exists($pdo, $pdo->prefix.'user')) {
+            $pdo->exec(
+<<<SQL
+ALTER TABLE
+    {$pdo->prefix}user
+DROP COLUMN
+    usernoipcheck
+SQL
+            );
+        }
+
+        if (table_exists($pdo, $pdo->prefix.'style')) {
+            $pdo->exec(
+<<<SQL
+UPDATE
+    {$pdo->prefix}style
+SET
+    boardimage = './templates/default/images/space.gif'
+WHERE
+    boardimage = './templates/default/images/space.png'
+SQL
+            );
+
+            $pdo->exec(
+<<<SQL
+UPDATE
+    {$pdo->prefix}style
+SET
+    boardimage = './templates/default/images/newtopic.gif'
+WHERE
+    boardimage = './templates/default/images/newtopic.png'
+SQL
+            );
+
+            $pdo->exec(
+<<<SQL
+UPDATE
+    {$pdo->prefix}style
+SET
+    stdfont = 'Verdana'
+WHERE
+    stdfont = 'Verdana, Helevetica'
+SQL
+            );
+        }
+
+        if (table_exists($pdo, $pdo->prefix.'registry')) {
+            $stmt = $pdo->prepare(
+<<<SQL
+UPDATE
+    {$pdo->prefix}registry
+SET
+    keyvalue = :version
+WHERE
+    keyname = 'version'
+SQL
+            );
+
+            $stmt->bindValue(':version', $this->fromVersion, PDO::PARAM_STR);
+            $stmt->execute();
+        }
     }
 }
 

@@ -501,6 +501,33 @@ function WriteAccess($file)
 }
 
 /**
+ * Checks if a table exists
+ *
+ * @param PDO $pdo A database connection. This connection needs to have
+ *   a database selected.
+ * @param string $table The name of the table, which should exist.
+ */
+function table_exists(PDO $pdo, $table)
+{
+    $stmt = $pdo->prepare(
+<<<SQL
+SELECT
+    *
+FROM
+    INFORMATION_SCHEMA.TABLES
+WHERE
+    TABLE_SCHEMA = DATABASE() AND
+    TABLE_NAME = :tablename
+SQL
+    );
+
+    $stmt->bindValue(':tablename', $table, PDO::PARAM_STR);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_COLUMN, 0);
+}
+
+/**
  * Checks if a column in the given table exists
  *
  * @param PDO $pdo A database connection. This connection needs to have

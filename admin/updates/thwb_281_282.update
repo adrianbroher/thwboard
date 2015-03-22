@@ -183,7 +183,130 @@ SQL
 
     public function downgrade(PDO $pdo)
     {
-        throw new RuntimeException(lng('cantexec'));
+        if (table_exists($pdo, $pdo->prefix.'user')) {
+            $pdo->exec(
+<<<SQL
+ALTER TABLE
+    {$pdo->prefix}user
+MODIFY COLUMN
+    userinterests MEDIUMTEXT NOT NULL,
+DROP COLUMN
+    useractivate
+SQL
+            );
+        }
+
+        if (table_exists($pdo, $pdo->prefix.'online')) {
+            $pdo->exec(
+<<<SQL
+ALTER TABLE
+    {$pdo->prefix}online
+DROP INDEX
+    sessionid,
+DROP COLUMN
+    sessionid,
+ADD COLUMN
+    onlineid INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+ADD PRIMARY KEY
+    (onlineid),
+ENGINE = Heap
+SQL
+            );
+        }
+
+        if (table_exists($pdo, $pdo->prefix.'group')) {
+            $pdo->exec(
+<<<SQL
+ALTER TABLE
+    {$pdo->prefix}group
+CHANGE COLUMN
+    accessmask accessmask_new VARCHAR(50) DEFAULT '' NOT NULL,
+ADD COLUMN
+    accessmask INT(10) UNSIGNED NOT NULL DEFAULT 0
+SQL
+            );
+
+            $pdo->exec(
+<<<SQL
+UPDATE
+    {$pdo->prefix}group
+SET
+    accessmask = CONVERT(REVERSE(accessmask_new), UNSIGNED INT)
+SQL
+            );
+
+            $pdo->exec(
+<<<SQL
+ALTER TABLE
+    {$pdo->prefix}group
+DROP COLUMN
+    accessmask_new
+SQL
+            );
+        }
+
+        if (table_exists($pdo, $pdo->prefix.'groupboard')) {
+            $pdo->exec(
+<<<SQL
+ALTER TABLE
+    {$pdo->prefix}groupboard
+CHANGE COLUMN
+    accessmask accessmask_new VARCHAR(50) DEFAULT '' NOT NULL,
+ADD COLUMN
+    accessmask INT(10) UNSIGNED NOT NULL DEFAULT 0
+SQL
+            );
+
+            $pdo->exec(
+<<<SQL
+UPDATE
+    {$pdo->prefix}groupboard
+SET
+    accessmask = CONVERT(REVERSE(accessmask_new), UNSIGNED INT)
+SQL
+            );
+
+            $pdo->exec(
+<<<SQL
+ALTER TABLE
+    {$pdo->prefix}groupboard
+DROP COLUMN
+    accessmask_new
+SQL
+            );
+        }
+
+        $pdo->exec(
+<<<SQL
+DROP TABLE IF EXISTS
+    {$pdo->prefix}statcache
+SQL
+        );
+
+        if (table_exists($pdo, $pdo->prefix.'registry')) {
+            $pdo->exec(
+<<<SQL
+DELETE FROM
+    {$pdo->prefix}registry
+WHERE
+    keyname = 'session_timeout'
+SQL
+            );
+
+            $stmt = $pdo->prepare(
+<<<SQL
+UPDATE
+    {$pdo->prefix}registry
+SET
+    keyvalue = :version
+WHERE
+    keyname = 'version'
+SQL
+            );
+
+            $stmt->bindValue(':version', $this->fromVersion, PDO::PARAM_STR);
+            $stmt->execute();
+        }
     }
 }
 

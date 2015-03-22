@@ -220,7 +220,32 @@ SQL
 
     public function downgrade(PDO $pdo)
     {
-        throw new RuntimeException(lng('cantexec'));
+        if (table_exists($pdo, $pdo->prefix.'user')) {
+            $pdo->exec(
+<<<SQL
+ALTER TABLE
+    {$pdo->prefix}user
+ADD COLUMN
+    usernoipcheck TINYINT(1) UNSIGNED NOT NULL DEFAULT 0
+SQL
+            );
+        }
+
+        if (table_exists($pdo, $pdo->prefix.'registry')) {
+            $stmt = $pdo->prepare(
+<<<SQL
+UPDATE
+    {$pdo->prefix}registry
+SET
+    keyvalue = :version
+WHERE
+    keyname = 'version'
+SQL
+            );
+
+            $stmt->bindValue(':version', $this->fromVersion, PDO::PARAM_STR);
+            $stmt->execute();
+        }
     }
 }
 
