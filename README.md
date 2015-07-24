@@ -18,7 +18,7 @@ Documentation
 -------------
 
 The most up-to-date documentation can be found at
-  <document url>.
+  <https://github.com/adrianbroher/thwboard/wiki>.
 
 
 Installation
@@ -34,7 +34,7 @@ Installation
 Licensing
 ---------
 
-Please see the file called COPYING.
+Please see the file called [COPYING](COPYING).
 
 
 ----------------------------------------------------------------------
