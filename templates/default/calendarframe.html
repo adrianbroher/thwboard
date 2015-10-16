@@ -7,64 +7,64 @@
                         $style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>&nbsp;ThWboard Kalender</strong></span>$style[smallfontend]
                     </td>
                 </tr>
-                <tr class="cellB">
+                <tr class="cellb">
                     <td>
-                        <Table border="0" cellspacing="0" cellpadding="0" width="100%">
+                        <table border="0" cellspacing="0" cellpadding="0" width="100%">
                             <tr>
-                                <TD align=center colspan="2" width="100%">
-                                    <Table border="0" width="100%" cellspacing="0" cellpadding="0">
+                                <td align=center colspan="2" width="100%">
+                                    <table border="0" width="100%" cellspacing="0" cellpadding="0">
                                         <tr>
-                                            <TD width="50%" valign=top>
-                                                <Table>
+                                            <td width="50%" valign=top>
+                                                <table>
                                                     <tr>
-                                                        <TD width="20">
+                                                        <td width="20">
                                                             &nbsp;
-                                                        </TD>
+                                                        </td>
                                                         <td>
                                                             $style[smallfont]Heute ist der <a href="_('calendar.php?month=$a_current[month]&amp;year=$a_current[year]')">$a_current[date]</a> $calendaradmin $style[smallfontend]
-                                                        </TD>
-                                                    </TR>
+                                                        </td>
+                                                    </tr>
                                                     <tr>
                                                         <form action="_('calendar.php')" method="post" name="calendarform">
-                                                            <TD width="20">
+                                                            <td width="20">
                                                                 &nbsp;
-                                                            </TD>
+                                                            </td>
                                                             <td>
                                                                 $gotomonthform
                                                                 .
                                                                 $gotoyearform
                                                                 <input type="submit" value="Los !" class="tbbutton"></strong>
-                                                            </TD>
+                                                            </td>
                                                         </form>
-                                                    </TR>
-                                                </TABLE>
-                                            </TD>
-                                            <TD width="50%" align=right>
-                                                <Table border="0" width="200" cellspacing="0" cellpadding="0">
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                            <td width="50%" align=right>
+                                                <table border="0" width="200" cellspacing="0" cellpadding="0">
                                                     <tr>
                                                         $eventbox
-                                                    </TR>
-                                                </TABLE>
-                                            </TD>
-                                        </TR>
-                                    </TABLE>
-                                </TD>
-                            </TR>
-                            <tr>
-                                <TD align=center colspan="2" width="100%">
-                                    <table>
-                                        <tr>
-                                            <td>
-                                                <A HREF="_('calendar.php?month=$lastmonth&amp;year=$lastyear')">&laquo;</A>
-                                                $style[stdfont] <strong>$month_name $year</strong> $style[stdfontend]
-                                                <A HREF="_('calendar.php?month=$nextmonth&amp;year=$nextyear')">&raquo;</A>
+                                                    </tr>
+                                                </table>
                                             </td>
                                         </tr>
                                     </table>
-                                </TD>
-                            </TR>
+                                </td>
+                            </tr>
                             <tr>
-                                <TD width="100%" colspan="2">
+                                <td align=center colspan="2" width="100%">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <a href="_('calendar.php?month=$lastmonth&amp;year=$lastyear')">&laquo;</a>
+                                                $style[stdfont] <strong>$month_name $year</strong> $style[stdfontend]
+                                                <a href="_('calendar.php?month=$nextmonth&amp;year=$nextyear')">&raquo;</a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="100%" colspan="2">
                                     <table class="border-col" cellpadding=2 cellspacing=1 border=0 width="100%">
                                         <tr class="color4">
                                             <td width=14%>
@@ -91,22 +91,22 @@
                                         </tr>
                                         $calendar
                                     </table>
-                                </TD>
-                            </TR>
+                                </td>
+                            </tr>
                             <tr>
-                                <TD align=center colspan="2">
+                                <td align=center colspan="2">
                                     <table>
                                         <tr>
                                             <td>
-                                                <A HREF="_('calendar.php?month=$lastmonth&amp;year=$lastyear')">&laquo;</A>
+                                                <a href="_('calendar.php?month=$lastmonth&amp;year=$lastyear')">&laquo;</a>
                                                 $style[stdfont] <strong>$month_name $year</strong> $style[stdfontend]
-                                                <A HREF="_('calendar.php?month=$nextmonth&amp;year=$nextyear')">&raquo;</A>
+                                                <a href="_('calendar.php?month=$nextmonth&amp;year=$nextyear')">&raquo;</a>
                                             </td>
                                         </tr>
                                     </table>
-                                </TD>
-                            </TR>
-                        </TABLE>
+                                </td>
+                            </tr>
+                        </table>
                     </td>
                 </tr>
                 <tr>

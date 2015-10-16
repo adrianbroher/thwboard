@@ -1,14 +1,14 @@
-<FORM name="searchform" action="_('search.php')" method="post">
+<form name="searchform" action="_('search.php')" method="post">
     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
         <tr>
             <td>
-                <TABLE cellSpacing="1" cellPadding="3" width="100%" border="0">
-                    <TR class="color4">
+                <table cellspacing="1" cellpadding="3" width="100%" border="0">
+                    <tr class="color4">
                         <td>
                             $style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>Suchen</strong></span>$style[smallfontend]
-                        </TD>
-                    </TR>
-                    <TR class="cellA">
+                        </td>
+                    </tr>
+                    <tr class="cella">
                         <td>
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
@@ -28,28 +28,28 @@
                                     </td>
                                 </tr>
                             </table>
-                        </TD>
-                    </TR>
-                    <TR class="cellB">
+                        </td>
+                    </tr>
+                    <tr class="cellb">
                         <td>
                             $style[stdfont]Suchen nach ...<br />
                             <input type="radio" name="searchfor" value="topic" checked> Betreff<br />
                             <input type="radio" name="searchfor" value="post"> Post<br />
                             <input type="radio" name="searchfor" value="author"> Benutzernamen
                             $style[stdfontend]
-                        </TD>
-                    </TR>
-                    <tr class="cellA">
+                        </td>
+                    </tr>
+                    <tr class="cella">
                         <td>
                             $style[stdfont]Wie wollen Sie suchen?$style[stdfontend]<br />
-                            <input type="radio" CHECKED value="AND" name="searchmethod">
+                            <input type="radio" checked="checked" value="AND" name="searchmethod">
                             $style[smallfont]UND Suche (Zeigt postings an, die alle angegebenen W&ouml;rter enthalten)<br />
                             <input type="radio" value="OR" name="searchmethod">
                             ODER Suche (Zeigt postings an, die mindestens eines der angegebenen W&ouml;rter
                             enthalten)$style[smallfontend]
                         </td>
                     </tr>
-                    <TR class="cellB">
+                    <tr class="cellb">
                         <td>
                             <input type="checkbox" name="repliesonly" value="yes">
                             $style[stdfont]Nur Threads mit Antworten anzeigen<br />
@@ -93,21 +93,21 @@
                                     $style[stdfontend]
                                 </blockquote>
                             </blockquote>
-                        </TD>
-                    </TR>
-                    <TR class="color4">
+                        </td>
+                    </tr>
+                    <tr class="color4">
                         <td>
-                            <CENTER>
-                                <INPUT type="hidden" value="1" name="startsearch">
-                                <INPUT class="tbbutton" type="submit" value="Suche starten" name="Submit">
-                            </CENTER>
-                        </TD>
-                    </TR>
-                </TABLE>
+                            <center>
+                                <input type="hidden" value="1" name="startsearch">
+                                <input class="tbbutton" type="submit" value="Suche starten" name="Submit">
+                            </center>
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </table>
-</FORM>
+</form>
 <script type="text/javascript">
 <!--
 if (document.searchform) document.searchform.words.focus();
