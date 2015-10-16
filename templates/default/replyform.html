@@ -1,14 +1,12 @@
 <form method="post" action="_('reply.php')" name="replyform">
   <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
     <tr>
-      <td> <a name="reply"></a> 
+      <td> <a name="reply"></a>
         <table width="100%" border="0" cellspacing="1" cellpadding="3">
-          <tr class="color4"> 
+          <tr class="color4">
             <td colspan="2" align="center">
-              
           $style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>Antwort hinzuf&uuml;gen
           </strong></span>$style[smallfontend]
-              
             </td>
           </tr>
           <tr class="cellA">
@@ -19,43 +17,41 @@
               $replyusername
             </td>
           </tr>
-          <tr class="cellB"> 
+          <tr class="cellB">
             <td valign="top">$style[stdfont]Text$style[stdfontend]<br />
         $style[smallfont]<br />
               <a href="_('help.php?page=format')" target="_blank">Formatierungs-<br />
               m&ouml;glichkeiten</a><br />
               <br />
               Smilies sind <strong>$smilies_on_off</strong>$style[smallfontend]</td>
-            <td> 
+            <td>
               <textarea class="tbtextarea" name="post[posttext]" rows="15" cols="75" wrap="virtual">$replytext</textarea>
             </td>
           </tr>
-          <tr class="cellA"> 
+          <tr class="cellA">
             <td>$style[stdfont]Email Notify$style[stdfontend]</td>
-            <td> 
+            <td>
               <input type="checkbox" name="post[postemailnotify]" value="1">
-                $style[smallfont]Aktivieren Sie dieses K&auml;stchen, um &uuml;ber weitere Antworten 
+                $style[smallfont]Aktivieren Sie dieses K&auml;stchen, um &uuml;ber weitere Antworten
                 per Mail informiert zu werden.$notifyavailable$style[smallfontend]</td>
           </tr>
-          <tr class="cellB"> 
+          <tr class="cellB">
             <td>$style[stdfont]Smilies$style[stdfontend]</td>
-            <td> 
+            <td>
               <input type="checkbox" name="post[postsmilies]" value="1" checked>
                 $style[smallfont]Smilies wie :), ;) usw. in kleine Grafiken verwandeln? (Nur sinnvoll wenn Smilies vom Administrator aktiviert sind.)$style[smallfontend]</td>
           </tr>
-          <tr class="cellA"> 
+          <tr class="cellA">
             <td>$style[stdfont]ThWboard Code$style[stdfontend]</td>
-            <td> 
+            <td>
               <input type="checkbox" name="post[postcode]" value="1" checked>
                 $style[smallfont]Soll ThWboard code in ihrer Nachricht aktiviert werden?$style[smallfontend]</td>
           </tr>
-          <tr class="color4"> 
-            <td colspan="2" align="center"> 
-              
+          <tr class="color4">
+            <td colspan="2" align="center">
                 <input type="hidden" name="time" value="$time">
                 <input type="hidden" name="thread[threadid]" value="$thread[threadid]">
                 <input class="tbbutton" type="submit" name="Submit" value="Antwort erstellen">
-              
             </td>
           </tr>
         </table>
