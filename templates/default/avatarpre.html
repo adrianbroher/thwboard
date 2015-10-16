@@ -1,29 +1,29 @@
-	     $style[smallfont]Hier k&ouml;nnen Sie vorinstallierte Avatare ausw&auml;hlen:$style[smallfontend]<br />
-	     <table width="50%" height="100">
-	       <tr align="left">
-	         <td>
-	           <select name="intavatar" onChange="generateimage(this.options[this.selectedIndex].value)" size='6' class="tbtextarea">
-	            $avatarselect
-	           </select>
-	         </td>
-	         <td>
-	          $style[smallfont]Ausgew&auml;hlter Avatar:$style[smallfontend]<br />
-	          <br />
-	           <ilayer id="dynamic1" width="100%" height="178">
-	             <layer id="dynamic2" width="100%" height="178">
-	               <div id="dynamic3">
-	               </div>
-	             </layer>
-	           </ilayer>
-	         </td>
-	       </tr>
-	       <tr>
-	         <td>
-	           $style[stdfont]<a href="#avatar" onclick="window.open('listavatar.php','show_event','width=700,height=480,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,statusbar=no')"> Avatarliste </a>$style[stdfontend]
-	         </td>
-	       </tr>
-	     </table>
-	     <script type="text/javascript"><!--
+         $style[smallfont]Hier k&ouml;nnen Sie vorinstallierte Avatare ausw&auml;hlen:$style[smallfontend]<br />
+         <table width="50%" height="100">
+           <tr align="left">
+             <td>
+               <select name="intavatar" onChange="generateimage(this.options[this.selectedIndex].value)" size='6' class="tbtextarea">
+                $avatarselect
+               </select>
+             </td>
+             <td>
+              $style[smallfont]Ausgew&auml;hlter Avatar:$style[smallfontend]<br />
+              <br />
+               <ilayer id="dynamic1" width="100%" height="178">
+                 <layer id="dynamic2" width="100%" height="178">
+                   <div id="dynamic3">
+                   </div>
+                 </layer>
+               </ilayer>
+             </td>
+           </tr>
+           <tr>
+             <td>
+               $style[stdfont]<a href="#avatar" onclick="window.open('listavatar.php','show_event','width=700,height=480,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,statusbar=no')"> Avatarliste </a>$style[stdfontend]
+             </td>
+           </tr>
+         </table>
+         <script type="text/javascript"><!--
                var tempobj=document.profileform.intavatar;
 
                function generateimage(which){
