@@ -1,33 +1,40 @@
 <form method="post" action="_('changeemail.php')" name="changeemailform">
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
-    <tr>
-      <td>
-        <table width="100%" border="0" cellspacing="1" cellpadding="3">
-          <tr class="color4">
-            <td colspan="2">$style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>Email-Adresse &Auml;ndern</strong></span>$style[smallfontend]</td>
-          </tr>
-          <tr class="cellA">
-            <td width="20%">$style[stdfont]Derzeitiges Passwort$style[stdfontend]</td>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
+        <tr>
             <td>
-              <input class="tbinput" type="password" name="user[useroldpassword]">
-              $style[smallfont]Bitte geben Sie ihr derzeitiges Passwort an! (<a href="_('send_password.php')">Passwort
-              vergessen?</a>) $style[smallfontend]</td>
-          </tr>
-          <tr class="cellB">
-            <td width="20%">$style[stdfont]Neue Email-Adresse$style[stdfontend]</td>
-            <td>
-              <input class="tbinput" type="text" name="user[usernewemail]">
-              $style[smallfont]Ihre neue Email Adresse$style[smallfontend]</td>
-          </tr>
-          $t_changewarning
-          <tr class="color4">
-            <td colspan="2" align="center">
-                <input type="hidden" class="tbbutton" name="change" value="1">
-                <input type="submit" class="tbbutton" name="Submit" value="Profil &auml;ndern">
+                <table width="100%" border="0" cellspacing="1" cellpadding="3">
+                    <tr class="color4">
+                        <td colspan="2">
+                            $style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>Email-Adresse &Auml;ndern</strong></span>$style[smallfontend]
+                        </td>
+                    </tr>
+                    <tr class="cellA">
+                        <td width="20%">
+                            $style[stdfont]Derzeitiges Passwort$style[stdfontend]
+                        </td>
+                        <td>
+                            <input class="tbinput" type="password" name="user[useroldpassword]">
+                            $style[smallfont]Bitte geben Sie ihr derzeitiges Passwort an! (<a href="_('send_password.php')">Passwort vergessen?</a>) $style[smallfontend]
+                        </td>
+                    </tr>
+                    <tr class="cellB">
+                        <td width="20%">
+                            $style[stdfont]Neue Email-Adresse$style[stdfontend]
+                        </td>
+                        <td>
+                            <input class="tbinput" type="text" name="user[usernewemail]">
+                            $style[smallfont]Ihre neue Email Adresse$style[smallfontend]
+                        </td>
+                    </tr>
+                    $t_changewarning
+                    <tr class="color4">
+                        <td colspan="2" align="center">
+                            <input type="hidden" class="tbbutton" name="change" value="1">
+                            <input type="submit" class="tbbutton" name="Submit" value="Profil &auml;ndern">
+                        </td>
+                    </tr>
+                </table>
             </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
+        </tr>
+    </table>
 </form>

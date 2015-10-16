@@ -1,46 +1,74 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
-  <tr>
-    <td>
-      <table width="100%" border="0" cellspacing="1" cellpadding="3">
-        <tr class="color4">
-          <td><span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Nachricht Anzeigen</strong>$style[smallfontend]</span></td>
-        </tr>
-        <tr class="cellB">
-          <td>
-            <table width="100%" border="0" cellspacing="0" cellpadding="2">
-              <tr>
-                <td><strong>$style[smallfont]Von$style[smallfontend]</strong></td>
-                <td>$style[smallfont]$pm[username]$style[smallfontend]</td>
-              </tr>
-              <tr>
-                <td><strong>$style[smallfont]Datum$style[smallfontend]</strong></td>
-                <td>$style[smallfont]$pm[pmtime]$style[smallfontend]</td>
-              </tr>
-              <tr>
-                <td><strong>$style[smallfont]An$style[smallfontend]</strong></td>
-                <td>$style[smallfont]$pm[tousername]$style[smallfontend]</td>
-              </tr>
-              <tr>
-                <td><strong>$style[smallfont]Betreff$style[smallfontend]</strong></td>
-                <td>$style[smallfont]$pm[pmtopic]$style[smallfontend]</td>
-              </tr>
-              <tr>
-                <td><strong>$style[smallfont]Optionen$style[smallfontend]</strong></td>
-                <td>$style[smallfont]<a href="_('pm.php?action=new&replyto=$pm[pmid]')">Antworten</a> || <a href="_('pm.php?action=new&insert=$pm[pmid]')">Zitatantwort</a> || <a href="_('pm.php?action=new&forward=$pm[pmid]')">Weiterleiten</a>
-                  || <a href="_('pm.php?deletepm=$pm[pmid]')">L&ouml;schen</a>$style[smallfontend]</td>
-              </tr>
+    <tr>
+        <td>
+            <table width="100%" border="0" cellspacing="1" cellpadding="3">
+                <tr class="color4">
+                    <td>
+                        <span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Nachricht Anzeigen</strong>$style[smallfontend]</span>
+                    </td>
+                </tr>
+                <tr class="cellB">
+                    <td>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="2">
+                            <tr>
+                                <td>
+                                    <strong>$style[smallfont]Von$style[smallfontend]</strong>
+                                </td>
+                                <td>
+                                    $style[smallfont]$pm[username]$style[smallfontend]
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>$style[smallfont]Datum$style[smallfontend]</strong>
+                                </td>
+                                <td>
+                                    $style[smallfont]$pm[pmtime]$style[smallfontend]
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>$style[smallfont]An$style[smallfontend]</strong>
+                                </td>
+                                <td>
+                                    $style[smallfont]$pm[tousername]$style[smallfontend]
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>$style[smallfont]Betreff$style[smallfontend]</strong>
+                                </td>
+                                <td>
+                                    $style[smallfont]$pm[pmtopic]$style[smallfontend]
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>$style[smallfont]Optionen$style[smallfontend]</strong>
+                                </td>
+                                <td>
+                                    $style[smallfont]
+                                    <a href="_('pm.php?action=new&replyto=$pm[pmid]')">Antworten</a> ||
+                                    <a href="_('pm.php?action=new&insert=$pm[pmid]')">Zitatantwort</a> ||
+                                    <a href="_('pm.php?action=new&forward=$pm[pmid]')">Weiterleiten</a> ||
+                                    <a href="_('pm.php?deletepm=$pm[pmid]')">L&ouml;schen</a>
+                                    $style[smallfontend]
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="cellA">
+                    <td>
+                        $style[stdfont]$pm[pmtext]$style[stdfontend]
+                    </td>
+                </tr>
+                <tr class="color4">
+                    <td height=18>
+                        <span style="color:$style[col_he_fo_font]"><strong>$style[smallfont][ <a href="_('pm.php')" class="hefo">zur&uuml;ck zur &Uuml;bersicht</a> ]$style[smallfontend]</strong></span>
+                    </td>
+                </tr>
             </table>
-          </td>
         </tr>
-        <tr class="cellA">
-          <td>
-            $style[stdfont]$pm[pmtext]$style[stdfontend]
-          </td>
-        </tr>
-        <tr class="color4">
-          <td height=18><span style="color:$style[col_he_fo_font]"><strong>$style[smallfont][ <a href="_('pm.php')" class="hefo">zur&uuml;ck zur &Uuml;bersicht</a> ]$style[smallfontend]</strong></span></td>
-        </tr>
-      </table>
-    </tr>
-  </td>
+    </td>
 </table>

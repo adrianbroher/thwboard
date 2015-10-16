@@ -1,46 +1,65 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="8">
-  <tr>
-    <td valign="top">$style[stdfont]<strong><a class="bglink" href="_('newtopic.php?boardid=$board[boardid]')">Neues Thema erstellen</a></strong>$style[stdfontend]</td>
-    <td valign="top" align="right"><form method="post" action="_('board.php')" name="jumpform">$JUMP_MENU</form></td>
-  </tr>
+    <tr>
+        <td valign="top">
+            $style[stdfont]<strong><a class="bglink" href="_('newtopic.php?boardid=$board[boardid]')">Neues Thema erstellen</a></strong>$style[stdfontend]
+        </td>
+        <td valign="top" align="right">
+            <form method="post" action="_('board.php')" name="jumpform">
+                $JUMP_MENU
+            </form>
+        </td>
+    </tr>
 </table>
-
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td>
-      <font color="$style[colorbgfont]">$style[smallfont]<strong>$topic_pages</strong> Seite(n): $pages_nav$style[smallfontend]</span>
-    </td>
-  </tr>
+    <tr>
+        <td>
+            <font color="$style[colorbgfont]">$style[smallfont]<strong>$topic_pages</strong> Seite(n): $pages_nav$style[smallfontend]</span>
+        </td>
+    </tr>
 </table>
-
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
-  <tr>
-    <td>
-      <table width="100%" border="0" cellspacing="1" cellpadding="3">
-        <tr class="color4">
-          <td colspan="2"><span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Betreff</strong>$style[smallfontend]</span></td>
-          <td align="center"><span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Beitr&auml;ge</strong>$style[smallfontend]</span></td>
-          <td align="center"><span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Aufrufe</strong>$style[smallfontend]</span></td>
-          <td><span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Autor</strong>$style[smallfontend]</span></td>
-          <td><span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Letzter Beitrag</strong>$style[smallfontend]</span></td>
-        </tr>
-$TOPICROWS
-        <tr class="color4">
-          <td colspan="6">$style[smallfont]&nbsp;$style[smallfontend]</td>
-        </tr>
-      </table>
-    </td>
-  </tr>
+    <tr>
+        <td>
+            <table width="100%" border="0" cellspacing="1" cellpadding="3">
+                <tr class="color4">
+                    <td colspan="2">
+                        <span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Betreff</strong>$style[smallfontend]</span>
+                    </td>
+                    <td align="center">
+                        <span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Beitr&auml;ge</strong>$style[smallfontend]</span>
+                    </td>
+                    <td align="center">
+                        <span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Aufrufe</strong>$style[smallfontend]</span>
+                    </td>
+                    <td>
+                        <span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Autor</strong>$style[smallfontend]</span>
+                    </td>
+                    <td>
+                        <span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Letzter Beitrag</strong>$style[smallfontend]</span>
+                    </td>
+                </tr>
+                $TOPICROWS
+                <tr class="color4">
+                    <td colspan="6">
+                        $style[smallfont]&nbsp;$style[smallfontend]
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
 </table>
-
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td valign="top"><font color="$style[colorbgfont]">$style[smallfont]<strong>Farbiges Icon:</strong> Neue Antworten seit Ihrem letzten Besuch<br />
-      <strong>Graues Icon:</strong> Keine neuen Antworten seit Ihrem letzten Besuch<br />
-      <br />
-      <strong>Berechtigungen:</strong><br />
-      Neue Themen erstellen: <strong>$canpostnew</strong><br />
-      Antworten erstellen: <strong>$canreply</strong><br />$style[smallfontend]</span></td>
-    <td valign="top" align="right"><font color="$style[colorbgfont]">$style[smallfont]Seite(n): $pages_nav$style[smallfontend]</span></td>
-  </tr>
+    <tr>
+        <td valign="top">
+            <font color="$style[colorbgfont]">$style[smallfont]<strong>Farbiges Icon:</strong> Neue Antworten seit Ihrem letzten Besuch<br />
+            <strong>Graues Icon:</strong> Keine neuen Antworten seit Ihrem letzten Besuch<br />
+            <br />
+            <strong>Berechtigungen:</strong><br />
+            Neue Themen erstellen: <strong>$canpostnew</strong><br />
+            Antworten erstellen: <strong>$canreply</strong><br />$style[smallfontend]</span>
+        </td>
+        <td valign="top" align="right">
+            <font color="$style[colorbgfont]">$style[smallfont]Seite(n): $pages_nav$style[smallfontend]</span>
+        </td>
+    </tr>
 </table>

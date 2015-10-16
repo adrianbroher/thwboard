@@ -1,37 +1,55 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
-  <tr>
-    <td>
-      <table width="100%" border="0" cellspacing="1" cellpadding="0">
-        <tr class="color4">
-          <td height="18">$style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>&nbsp;ThWboard Kalender - Neuer Eintrag</strong></span>$style[smallfontend]</td>
-        </tr>
-        <tr class="cellB">
-          <td>
-            <form method="post" action="_('do_newcevent.php')" name="calendareventform">
-              <table width="100%" border="0" cellpadding="1" cellspacing="1">
-                <tr>
-                  <td width="20%" valign="top">$style[stdfont]Datum:$style[stdfontend]</td>
-                  <td width="80%" valign="top"><input class="tbinput" type="text" name="event[day]" value="$event[day]" size="2" maxlength="2">.<input class="tbinput" type="text" name="event[month]" value="$event[month]" size="2" maxlength="2">.<input class="tbinput" type="text" name="event[year]" value="$event[year]" size="4" maxlength="4"></td>
+    <tr>
+        <td>
+            <table width="100%" border="0" cellspacing="1" cellpadding="0">
+                <tr class="color4">
+                    <td height="18">
+                        $style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>&nbsp;ThWboard Kalender - Neuer Eintrag</strong></span>$style[smallfontend]
+                    </td>
+                </tr>
+                <tr class="cellB">
+                    <td>
+                        <form method="post" action="_('do_newcevent.php')" name="calendareventform">
+                            <table width="100%" border="0" cellpadding="1" cellspacing="1">
+                                <tr>
+                                    <td width="20%" valign="top">
+                                        $style[stdfont]Datum:$style[stdfontend]
+                                    </td>
+                                    <td width="80%" valign="top">
+                                        <input class="tbinput" type="text" name="event[day]" value="$event[day]" size="2" maxlength="2">.<input class="tbinput" type="text" name="event[month]" value="$event[month]" size="2" maxlength="2">.<input class="tbinput" type="text" name="event[year]" value="$event[year]" size="4" maxlength="4">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="20%" valign="top">
+                                        $style[stdfont]Subject:$style[stdfontend]
+                                    </td>
+                                    <td width="80%" valign="top">
+                                        <input class="tbinput" type="text" name="event[subject]" value="$event[subject]" size="30">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="20%" valign="top">
+                                        $style[stdfont]Text:$style[stdfontend]
+                                    </td>
+                                    <td width="80%" valign="top">
+                                        <textarea class="tbinput" cols="30" rows="10" name="event[text]">$event[text]</textarea>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="100%" valign="top" align="center" colspan="2">
+                                        <input class="tbinput" type="reset" value="zur&uuml;cksetzen">&nbsp;&nbsp;<input class="tbinput" type="submit" value="Eintragen">
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </td>
                 </tr>
                 <tr>
-                  <td width="20%" valign="top">$style[stdfont]Subject:$style[stdfontend]</td>
-                  <td width="80%" valign="top"><input class="tbinput" type="text" name="event[subject]" value="$event[subject]" size="30"></td>
+                    <td colspan="" class="color4">
+                        $style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>&nbsp;</strong></span>$style[smallfontend]
+                    </td>
                 </tr>
-                <tr>
-                  <td width="20%" valign="top">$style[stdfont]Text:$style[stdfontend]</td>
-                  <td width="80%" valign="top"><textarea class="tbinput" cols="30" rows="10" name="event[text]">$event[text]</textarea></td>
-                </tr>
-                <tr>
-                  <td width="100%" valign="top" align="center" colspan="2"><input class="tbinput" type="reset" value="zur&uuml;cksetzen">&nbsp;&nbsp;<input class="tbinput" type="submit" value="Eintragen"></td>
-                </tr>
-              </table>
-            </form>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="" class="color4">$style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>&nbsp;</strong></span>$style[smallfontend]</td>
-        </tr>
-      </table>
-    </td>
-  </tr>
+            </table>
+        </td>
+    </tr>
 </table>

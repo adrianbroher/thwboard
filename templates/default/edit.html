@@ -1,57 +1,72 @@
 <form method="post" action="_('edit.php')" name="editform">
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
-    <tr>
-      <td> <a name="reply"></a>
-        <table width="100%" border="0" cellspacing="1" cellpadding="3">
-          <tr class="color4">
-            <td colspan="2" align="center">
-              $style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>Beitrag editieren
-              </strong></span>$style[smallfontend]
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
+        <tr>
+            <td>
+                <a name="reply"></a>
+                <table width="100%" border="0" cellspacing="1" cellpadding="3">
+                    <tr class="color4">
+                        <td colspan="2" align="center">
+                            $style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>Beitrag editieren</strong></span>$style[smallfontend]
+                        </td>
+                    </tr>
+                    <tr class="cellA">
+                        <td>
+                            $style[stdfont]Subject$style[stdfontend]
+                        </td>
+                        <td>
+                            $style[stdfont]$post[printtopic] $style[stdfontend]
+                        </td>
+                    </tr>
+                    <tr class="cellB">
+                        <td valign="top">
+                            $style[stdfont]Text$style[stdfontend]<br />
+                            $style[smallfont]<br />
+                            <a href="_('help.php?page=format')" target="_blank">Formatierungs-<br />
+                            m&ouml;glichkeiten</a><br />
+                            <br />
+                            Smilies sind <strong>$smilies_on_off</strong>$style[smallfontend]
+                        </td>
+                        <td>
+                            <textarea class="tbtextarea" name="newpost[posttext]" rows="15" cols="75" wrap="virtual">$post[posttext]</textarea>
+                        </td>
+                    </tr>
+                    <tr class="cellA">
+                        <td>
+                            $style[stdfont]Email Notify$style[stdfontend]
+                        </td>
+                        <td>
+                            <input type="checkbox" name="newpost[postemailnotify]" value="1"$mailchecked>
+                            $style[smallfont]Aktivieren Sie dieses K&auml;stchen, um &uuml;ber weitere Antworten
+                            per Mail informiert zu werden.$style[smallfontend]
+                        </td>
+                    </tr>
+                    <tr class="cellB">
+                        <td>
+                            $style[stdfont]Smilies$style[stdfontend]
+                        </td>
+                        <td>
+                            <input type="checkbox" name="newpost[postsmilies]" value="1"$smilieschecked>
+                            $style[smallfont]Smilies wie :), ;) usw. in kleine Grafiken verwandeln? (Nur sinnvoll wenn Smilies vom Administrator aktiviert sind.)$style[smallfontend]
+                        </td>
+                    </tr>
+                    <tr class="cellA">
+                        <td>
+                            $style[stdfont]ThWboard Code$style[stdfontend]
+                        </td>
+                        <td>
+                            <input type="checkbox" name="newpost[postcode]" value="1"$codechecked>
+                            $style[smallfont]Soll ThWboard code in ihrer Nachricht aktiviert werden?$style[smallfontend]
+                        </td>
+                    </tr>
+                    <tr class="color4">
+                        <td colspan="2" align="center">
+                            <input type="hidden" name="time" value="$time">
+                            <input type="hidden" name="post[postid]" value="$post[postid]">
+                            <input class="tbbutton" type="submit" name="Submit" value="Beitrag aktualisieren">
+                        </td>
+                    </tr>
+                </table>
             </td>
-          </tr>
-          <tr class="cellA">
-            <td>$style[stdfont]Subject$style[stdfontend]</td>
-            <td>$style[stdfont]$post[printtopic] $style[stdfontend]
-              </td>
-          </tr>
-          <tr class="cellB">
-            <td valign="top">$style[stdfont]Text$style[stdfontend]<br />$style[smallfont]<br />
-              <a href="_('help.php?page=format')" target="_blank">Formatierungs-<br />
-              m&ouml;glichkeiten</a><br />
-              <br />
-              Smilies sind <strong>$smilies_on_off</strong>$style[smallfontend]</td>
-            <td>
-              <textarea class="tbtextarea" name="newpost[posttext]" rows="15" cols="75" wrap="virtual">$post[posttext]</textarea>
-            </td>
-          </tr>
-          <tr class="cellA">
-            <td>$style[stdfont]Email Notify$style[stdfontend]</td>
-            <td>
-              <input type="checkbox" name="newpost[postemailnotify]" value="1"$mailchecked>
-                $style[smallfont]Aktivieren Sie dieses K&auml;stchen, um &uuml;ber weitere Antworten
-                per Mail informiert zu werden.$style[smallfontend]</td>
-          </tr>
-          <tr class="cellB">
-            <td>$style[stdfont]Smilies$style[stdfontend]</td>
-            <td>
-              <input type="checkbox" name="newpost[postsmilies]" value="1"$smilieschecked>
-                $style[smallfont]Smilies wie :), ;) usw. in kleine Grafiken verwandeln? (Nur sinnvoll wenn Smilies vom Administrator aktiviert sind.)$style[smallfontend]</td>
-          </tr>
-          <tr class="cellA">
-            <td>$style[stdfont]ThWboard Code$style[stdfontend]</td>
-            <td>
-              <input type="checkbox" name="newpost[postcode]" value="1"$codechecked>
-                $style[smallfont]Soll ThWboard code in ihrer Nachricht aktiviert werden?$style[smallfontend]</td>
-          </tr>
-          <tr class="color4">
-            <td colspan="2" align="center">
-                <input type="hidden" name="time" value="$time">
-                <input type="hidden" name="post[postid]" value="$post[postid]">
-                <input class="tbbutton" type="submit" name="Submit" value="Beitrag aktualisieren">
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
+        </tr>
+    </table>
 </form>

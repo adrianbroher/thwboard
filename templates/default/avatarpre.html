@@ -1,48 +1,48 @@
-         $style[smallfont]Hier k&ouml;nnen Sie vorinstallierte Avatare ausw&auml;hlen:$style[smallfontend]<br />
-         <table width="50%" height="100">
-           <tr align="left">
-             <td>
-               <select name="intavatar" onChange="generateimage(this.options[this.selectedIndex].value)" size='6' class="tbtextarea">
+$style[smallfont]Hier k&ouml;nnen Sie vorinstallierte Avatare ausw&auml;hlen:$style[smallfontend]<br />
+<table width="50%" height="100">
+    <tr align="left">
+        <td>
+            <select name="intavatar" onChange="generateimage(this.options[this.selectedIndex].value)" size='6' class="tbtextarea">
                 $avatarselect
-               </select>
-             </td>
-             <td>
-              $style[smallfont]Ausgew&auml;hlter Avatar:$style[smallfontend]<br />
-              <br />
-               <ilayer id="dynamic1" width="100%" height="178">
-                 <layer id="dynamic2" width="100%" height="178">
-                   <div id="dynamic3">
-                   </div>
-                 </layer>
-               </ilayer>
-             </td>
-           </tr>
-           <tr>
-             <td>
-               $style[stdfont]<a href="#avatar" onclick="window.open('listavatar.php','show_event','width=700,height=480,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,statusbar=no')"> Avatarliste </a>$style[stdfontend]
-             </td>
-           </tr>
-         </table>
-         <script type="text/javascript"><!--
-               var tempobj=document.profileform.intavatar;
+            </select>
+        </td>
+        <td>
+            $style[smallfont]Ausgew&auml;hlter Avatar:$style[smallfontend]<br />
+            <br />
+            <ilayer id="dynamic1" width="100%" height="178">
+                <layer id="dynamic2" width="100%" height="178">
+                    <div id="dynamic3">
+                    </div>
+                </layer>
+            </ilayer>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            $style[stdfont]<a href="#avatar" onclick="window.open('listavatar.php','show_event','width=700,height=480,scrollbars=yes,resizable=yes,menubar=no,toolbar=no,statusbar=no')"> Avatarliste </a>$style[stdfontend]
+        </td>
+    </tr>
+</table>
+<script type="text/javascript"><!--
+    var tempobj=document.profileform.intavatar;
 
-               function generateimage(which){
-                if (document.all){
-                 dynamic3.innerHTML='<div align="center">Loading image...</div>'
-                 dynamic3.innerHTML='<img src="'+which+'" border=0>'
-                }
-                else if (document.layers){
-                 document.dynamic1.document.dynamic2.document.write('<img src="'+which+'" border=0>')
-                 document.dynamic1.document.dynamic2.document.close()
-                }
-               }
+    function generateimage(which){
+        if (document.all){
+            dynamic3.innerHTML='<div align="center">Loading image...</div>'
+            dynamic3.innerHTML='<img src="'+which+'" border=0>'
+        }
+        else if (document.layers){
+            document.dynamic1.document.dynamic2.document.write('<img src="'+which+'" border=0>')
+            document.dynamic1.document.dynamic2.document.close()
+        }
+    }
 
-               function generatedefault(){
-                generateimage(tempobj.options[tempobj.options.selectedIndex].value)
-               }
+    function generatedefault(){
+        generateimage(tempobj.options[tempobj.options.selectedIndex].value)
+    }
 
-               if (document.all||document.layers){
-                if (tempobj.options.selectedIndex!=-1)
-                 window.onload=generatedefault
-               }
-             --></script>
+    if (document.all||document.layers){
+        if (tempobj.options.selectedIndex!=-1)
+            window.onload=generatedefault
+    }
+--></script>

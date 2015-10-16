@@ -1,49 +1,92 @@
 <form method="post" action="_('memberlist.php')" name="sortorderform">
-  <table class="border-col" width="100%" border="0" cellspacing="0" cellpadding="0">
-    <tr>
-      <td>
-        <table width="100%" border="0" cellspacing="1" cellpadding="3">
-          <tr class="color4">
-            <td colspan="8"><strong>$style[smallfont]<span style="color:$style[col_he_fo_font]">Membersuche</span>$style[smallfont]</strong></td>
-          </tr>
-          <tr class="cellB">
-            <td colspan="8">
-              <strong>$style[stdfont]Anzeigeoptionen$style[stdfontend]</strong>
-        <table><tr><td>
-                $style[smallfont]Anfangsbuchstaben: $style[smallfontend]</td><td>$style[smallfont] <a href="_('memberlist.php')">alle anzeigen</a> | <a href="_('memberlist.php?char=digit')">0-9</a> $charselect$style[smallfontend]</td>
-          </tr><tr><td>
-           $style[smallfont] Mitglieder in$style[smallfontend]</td><td>$style[smallfont]
-                <select class="tbselect" name="ordertype">
-                  <option value="desc"$descselected>absteigender</option>
-                  <option value="asc"$ascselected>aufsteigender</option>
-                </select>
-                  Reihenfolge anzeigen, geordnet nach
-                <select class="tbselect" name="orderby">
-$t_orderbyoptions$style[smallfontend]
-                </select></td></tr>
-          <tr><td>$style[smallfont]
-              Name beginnt mit: $style[smallfontend]</td><td>$style[smallfont] <input class="tbinput" type="text" name="search" value="$search" maxlength="64">$style[smallfontend]</td></tr>
-          <tr><td colspan="2" align="center">$style[smallfont]
-                <input class="tbbutton" type="submit" name="Submit" value="anzeigen">$style[smallfontend]</td></tr>
-          </table>
+    <table class="border-col" width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td>
+                <table width="100%" border="0" cellspacing="1" cellpadding="3">
+                    <tr class="color4">
+                        <td colspan="8">
+                            <strong>$style[smallfont]<span style="color:$style[col_he_fo_font]">Membersuche</span>$style[smallfont]</strong>
+                        </td>
+                    </tr>
+                    <tr class="cellB">
+                        <td colspan="8">
+                            <strong>$style[stdfont]Anzeigeoptionen$style[stdfontend]</strong>
+                            <table>
+                                <tr>
+                                    <td>
+                                        $style[smallfont]Anfangsbuchstaben: $style[smallfontend]
+                                    </td>
+                                    <td>
+                                        $style[smallfont] <a href="_('memberlist.php')">alle anzeigen</a> | <a href="_('memberlist.php?char=digit')">0-9</a> $charselect$style[smallfontend]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        $style[smallfont] Mitglieder in$style[smallfontend]
+                                    </td>
+                                    <td>
+                                        $style[smallfont]
+                                        <select class="tbselect" name="ordertype">
+                                            <option value="desc"$descselected>absteigender</option>
+                                            <option value="asc"$ascselected>aufsteigender</option>
+                                        </select>
+                                        Reihenfolge anzeigen, geordnet nach
+                                        <select class="tbselect" name="orderby">
+                                            $t_orderbyoptions$style[smallfontend]
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        $style[smallfont]
+                                        Name beginnt mit: $style[smallfontend]
+                                    </td>
+                                    <td>
+                                        $style[smallfont] <input class="tbinput" type="text" name="search" value="$search" maxlength="64">$style[smallfontend]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" align="center">
+                                        $style[smallfont]<input class="tbbutton" type="submit" name="Submit" value="anzeigen">$style[smallfontend]
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr class="color4">
+                        <td>
+                            <strong>$style[smallfont]<span style="color:$style[col_he_fo_font]">Name</span>$style[smallfontend]</strong>
+                        </td>
+                        <td>
+                            <strong>$style[smallfont]<span style="color:$style[col_he_fo_font]">Email</span>$style[smallfontend]</strong>
+                        </td>
+                        <td>
+                            <strong>$style[smallfont]<span style="color:$style[col_he_fo_font]">ICQ</span>$style[smallfontend]</strong>
+                        </td>
+                        <td>
+                            <strong>$style[smallfont]<span style="color:$style[col_he_fo_font]">Homepage</span>$style[smallfontend]</strong>
+                        </td>
+                        <td>
+                            <strong>$style[smallfont]<span style="color:$style[col_he_fo_font]">Wohnort</span>$style[smallfontend]</strong>
+                        </td>
+                        <td>
+                            <strong>$style[smallfont]<span style="color:$style[col_he_fo_font]">Beitr&auml;ge</span>$style[smallfontend]</strong>
+                        </td>
+                        <td>
+                            <strong>$style[smallfont]<span style="color:$style[col_he_fo_font]">Registrierdatum</span>$style[smallfontend]</strong>
+                        </td>
+                        <td>
+                            <strong>$style[smallfont]<span style="color:$style[col_he_fo_font]">Letzter Beitrag</span>$style[smallfontend]</strong>
+                        </td>
+                    </tr>
+                    $MEMBER_ROWS
+                    <tr class="color4">
+                        <td colspan="8">
+                            $style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>$pages Seite(n):</strong> $pagesstring</span>$style[smallfontend]
+                        </td>
+                    </tr>
+                </table>
             </td>
-          </tr>
-          <tr class="color4">
-            <td><strong>$style[smallfont]<span style="color:$style[col_he_fo_font]">Name</span>$style[smallfontend]</strong></td>
-            <td><strong>$style[smallfont]<span style="color:$style[col_he_fo_font]">Email</span>$style[smallfontend]</strong></td>
-            <td><strong>$style[smallfont]<span style="color:$style[col_he_fo_font]">ICQ</span>$style[smallfontend]</strong></td>
-            <td><strong>$style[smallfont]<span style="color:$style[col_he_fo_font]">Homepage</span>$style[smallfontend]</strong></td>
-            <td><strong>$style[smallfont]<span style="color:$style[col_he_fo_font]">Wohnort</span>$style[smallfontend]</strong></td>
-            <td><strong>$style[smallfont]<span style="color:$style[col_he_fo_font]">Beitr&auml;ge</span>$style[smallfontend]</strong></td>
-            <td><strong>$style[smallfont]<span style="color:$style[col_he_fo_font]">Registrierdatum</span>$style[smallfontend]</strong></td>
-            <td><strong>$style[smallfont]<span style="color:$style[col_he_fo_font]">Letzter Beitrag</span>$style[smallfontend]</strong></td>
-          </tr>
-$MEMBER_ROWS
-          <tr class="color4">
-            <td colspan="8">$style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>$pages Seite(n):</strong> $pagesstring</span>$style[smallfontend]</td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
+        </tr>
+    </table>
 </form>

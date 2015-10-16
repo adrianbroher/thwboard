@@ -1,104 +1,112 @@
 <FORM name="searchform" action="_('search.php')" method="post">
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
-    <tr>
-      <td>
-        <TABLE cellSpacing="1" cellPadding="3" width="100%" border="0">
-          <TR class="color4">
-            <td>$style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>Suchen</strong></span>$style[smallfontend]</TD>
-          </TR>
-          <TR class="cellA">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
+        <tr>
             <td>
-              <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                <tr>
-                  <td valign="top" width="50%">$style[stdfont]Suchbegriffe:$style[stdfontend]<br />
-                    <input class="tbinput" name="words" maxlength="35" size="35">
-              <br />
-              $style[smallfont]Einzelne W&ouml;rter bitte mit einem <strong>Leerzeichen</strong> trennen.$style[smallfontend]</td>
-                  <td valign="top" width="50%">$style[stdfont]In diesen Foren:$style[stdfontend]<br />
-                    <select class="tbselect" name="selectedboards[]" size="6" multiple>
-                      <option value="0" selected> ( Alle Foren ) </option>$boards
-                    </select><br />
-                    $style[smallfont]Verwenden Sie STRG, um mehrere Foren zu markieren.$style[smallfontend]
-                  </td>
-                </tr>
-              </table>
-            </TD>
-          </TR>
-          <TR class="cellB">
-            <td>$style[stdfont]Suchen nach ...<br />
-              <input type="radio" name="searchfor" value="topic" checked>
-        Betreff<br />
-              <input type="radio" name="searchfor" value="post">
-        Post<br />
-              <input type="radio" name="searchfor" value="author">
-        Benutzernamen$style[stdfontend] </TD>
-          </TR>
-          <tr class="cellA">
-            <td>$style[stdfont]Wie wollen Sie suchen?$style[stdfontend]<br />
-              <input
-      type="radio" CHECKED value="AND" name="searchmethod">
-        $style[smallfont]UND Suche (Zeigt postings an, die alle angegebenen W&ouml;rter
-        enthalten)<br />
-              <input type="radio" value="OR"
-      name="searchmethod">
-        ODER Suche (Zeigt postings an, die mindestens eines der angegebenen W&ouml;rter
-        enthalten)$style[smallfontend]</td>
-          </tr>
-          <TR class="cellB">
-            <td>
-              <input type="checkbox" name="repliesonly" value="yes">
-        $style[stdfont]Nur Threads mit Antworten anzeigen<br />
-        $style[stdfontend]
-              <input type="checkbox" name="period" value="yes">
-        $style[stdfont]Zeitraum:<br />
-              <blockquote> Anfang
-                <select class="tbselect" name="startmonth">
-                  <option value="1">Januar</option>
-                  <option value="2">Februar</option>
-                  <option value="3">M&auml;rz</option>
-                  <option value="4">April</option>
-                  <option value="5">Mai</option>
-                  <option value="6">Juni</option>
-                  <option value="7">Juli</option>
-                  <option value="8">August</option>
-                  <option value="9">September</option>
-                  <option value="10">Oktober</option>
-                  <option value="11">November</option>
-                  <option value="12">Dezember</option>
-                </select>
-                <input class="tbinput" type="text" name="startyear" size="4" value="$getdate[year]">
-          bis Ende
-                <select class="tbselect" name="endmonth">
-                  <option value="1">Januar</option>
-                  <option value="2">Februar</option>
-                  <option value="3">M&auml;rz</option>
-                  <option value="4">April</option>
-                  <option value="5">Mai</option>
-                  <option value="6">Juni</option>
-                  <option value="7">Juli</option>
-                  <option value="8">August</option>
-                  <option value="9">September</option>
-                  <option value="10">Oktober</option>
-                  <option value="11">November</option>
-                  <option value="12">Dezember</option>
-                </select>
-                <input class="tbinput" type="text" name="endyear" size="4" value="$getdate[year]">
-                <blockquote>$style[stdfontend]</blockquote>
-              </blockquote>
-            </TD>
-          </TR>
-          <TR class="color4">
-            <td>
-              <CENTER>
-                <INPUT type="hidden" value="1" name="startsearch">
-                <INPUT class="tbbutton" type="submit" value="Suche starten" name="Submit">
-              </CENTER>
-            </TD>
-          </TR>
-        </TABLE>
-      </td>
-    </tr>
-  </table>
+                <TABLE cellSpacing="1" cellPadding="3" width="100%" border="0">
+                    <TR class="color4">
+                        <td>
+                            $style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>Suchen</strong></span>$style[smallfontend]
+                        </TD>
+                    </TR>
+                    <TR class="cellA">
+                        <td>
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td valign="top" width="50%">
+                                        $style[stdfont]Suchbegriffe:$style[stdfontend]<br />
+                                        <input class="tbinput" name="words" maxlength="35" size="35">
+                                        <br />
+                                        $style[smallfont]Einzelne W&ouml;rter bitte mit einem <strong>Leerzeichen</strong> trennen.$style[smallfontend]
+                                    </td>
+                                    <td valign="top" width="50%">
+                                        $style[stdfont]In diesen Foren:$style[stdfontend]<br />
+                                        <select class="tbselect" name="selectedboards[]" size="6" multiple>
+                                            <option value="0" selected> ( Alle Foren ) </option>
+                                            $boards
+                                        </select><br />
+                                        $style[smallfont]Verwenden Sie STRG, um mehrere Foren zu markieren.$style[smallfontend]
+                                    </td>
+                                </tr>
+                            </table>
+                        </TD>
+                    </TR>
+                    <TR class="cellB">
+                        <td>
+                            $style[stdfont]Suchen nach ...<br />
+                            <input type="radio" name="searchfor" value="topic" checked> Betreff<br />
+                            <input type="radio" name="searchfor" value="post"> Post<br />
+                            <input type="radio" name="searchfor" value="author"> Benutzernamen
+                            $style[stdfontend]
+                        </TD>
+                    </TR>
+                    <tr class="cellA">
+                        <td>
+                            $style[stdfont]Wie wollen Sie suchen?$style[stdfontend]<br />
+                            <input type="radio" CHECKED value="AND" name="searchmethod">
+                            $style[smallfont]UND Suche (Zeigt postings an, die alle angegebenen W&ouml;rter enthalten)<br />
+                            <input type="radio" value="OR" name="searchmethod">
+                            ODER Suche (Zeigt postings an, die mindestens eines der angegebenen W&ouml;rter
+                            enthalten)$style[smallfontend]
+                        </td>
+                    </tr>
+                    <TR class="cellB">
+                        <td>
+                            <input type="checkbox" name="repliesonly" value="yes">
+                            $style[stdfont]Nur Threads mit Antworten anzeigen<br />
+                            $style[stdfontend]
+                            <input type="checkbox" name="period" value="yes">
+                            $style[stdfont]Zeitraum:<br />
+                            <blockquote>
+                                Anfang
+                                <select class="tbselect" name="startmonth">
+                                    <option value="1">Januar</option>
+                                    <option value="2">Februar</option>
+                                    <option value="3">M&auml;rz</option>
+                                    <option value="4">April</option>
+                                    <option value="5">Mai</option>
+                                    <option value="6">Juni</option>
+                                    <option value="7">Juli</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">Oktober</option>
+                                    <option value="11">November</option>
+                                    <option value="12">Dezember</option>
+                                </select>
+                                <input class="tbinput" type="text" name="startyear" size="4" value="$getdate[year]">
+                                bis Ende
+                                <select class="tbselect" name="endmonth">
+                                    <option value="1">Januar</option>
+                                    <option value="2">Februar</option>
+                                    <option value="3">M&auml;rz</option>
+                                    <option value="4">April</option>
+                                    <option value="5">Mai</option>
+                                    <option value="6">Juni</option>
+                                    <option value="7">Juli</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">Oktober</option>
+                                    <option value="11">November</option>
+                                    <option value="12">Dezember</option>
+                                </select>
+                                <input class="tbinput" type="text" name="endyear" size="4" value="$getdate[year]">
+                                <blockquote>
+                                    $style[stdfontend]
+                                </blockquote>
+                            </blockquote>
+                        </TD>
+                    </TR>
+                    <TR class="color4">
+                        <td>
+                            <CENTER>
+                                <INPUT type="hidden" value="1" name="startsearch">
+                                <INPUT class="tbbutton" type="submit" value="Suche starten" name="Submit">
+                            </CENTER>
+                        </TD>
+                    </TR>
+                </TABLE>
+            </td>
+        </tr>
+    </table>
 </FORM>
 <script type="text/javascript">
 <!--

@@ -1,70 +1,87 @@
 <form method="post" action="_('newtopic.php')" name="newtopicform">
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
-    <tr>
-      <td>
-        <table width="100%" border="0" cellspacing="1" cellpadding="3">
-          <tr class="color4">
-            <td colspan="2" align="center">
-          $style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>Neues Topic </strong></span>$style[smallfontend]
-            </td>
-          </tr>
-          <tr class="cellB">
-            <td>$style[stdfont]Benutzername$style[stdfontend]</td>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
+        <tr>
             <td>
-              $replyusername
+                <table width="100%" border="0" cellspacing="1" cellpadding="3">
+                    <tr class="color4">
+                        <td colspan="2" align="center">
+                            $style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>Neues Topic </strong></span>$style[smallfontend]
+                        </td>
+                    </tr>
+                    <tr class="cellB">
+                        <td>
+                            $style[stdfont]Benutzername$style[stdfontend]
+                        </td>
+                        <td>
+                            $replyusername
+                        </td>
+                    </tr>
+                    <tr class="cellA">
+                        <td>
+                            $style[stdfont]Subject$style[stdfontend]
+                        </td>
+                        <td>
+                            <input class="tbinput" type="text" name="thread[threadtopic]" size="50" maxlength="75">
+                        </td>
+                    </tr>
+                    <tr class="cellB">
+                        <td valign="top">
+                            $style[stdfont]Icon$style[stdfontend]<br />
+                            <input type="radio" name="thread[threadiconid]" value="0" checked>$style[smallfont]Kein Icon$style[smallfontend]
+                        </td>
+                        <td valign="top">
+                            $style[stdfont]$newtopicicons$style[stdfontend]
+                        </td>
+                    </tr>
+                    <tr class="cellA">
+                        <td valign="top">
+                            $style[stdfont]Text$style[stdfontend]<br />
+                            <br />
+                            $style[smallfont]<a href="_('help.php?page=format')" target="_blank">Formatierungs-<br />
+                            m&ouml;glichkeiten</a><br />
+                            <br />
+                            Smilies sind <strong>$smilies_on_off</strong>$style[smallfontend]
+                        </td>
+                        <td valign="top">
+                            <textarea class="tbtextarea" name="post[posttext]" rows="15" cols="75" nowrap="nowrap"></textarea>
+                        </td>
+                    </tr>
+                    <tr class="cellB">
+                        <td>
+                            $style[stdfont]Email Notify$style[stdfontend]
+                        </td>
+                        <td>
+                            <input type="checkbox" name="post[postemailnotify]" value="1">
+                            $style[smallfont]Aktiviere dieses K&auml;stchen, um &uuml;ber weitere Antworten
+                            per Mail informiert zu werden.$notifyavailable$style[smallfontend]
+                        </td>
+                    </tr>
+                    <tr class="cellA">
+                        <td>
+                            $style[stdfont]Smilies$style[stdfontend]
+                        </td>
+                        <td>
+                            <input type="checkbox" name="post[postsmilies]" value="1" checked>
+                            $style[smallfont]Smilies wie :), ;) usw. in kleine Grafiken verwandeln? (Nur sinnvoll wenn Smilies vom Administrator aktiviert sind.)$style[smallfontend]
+                        </td>
+                    </tr>
+                    <tr class="cellB">
+                        <td>
+                            $style[stdfont]ThWboard Code$style[stdfontend]
+                        </td>
+                        <td>
+                            <input type="checkbox" name="post[postcode]" value="1" checked>
+                            $style[smallfont]Soll ThWboard code in ihrer Nachricht aktiviert werden?$style[smallfontend]
+                        </td>
+                    </tr>
+                    <tr class="color4">
+                        <td colspan="2" align="center">
+                            <input type="hidden" name="board[boardid]" value="$board[boardid]">
+                            <input class="tbbutton" type="submit" name="Submit" value="Thema erstellen">
+                        </td>
+                    </tr>
+                </table>
             </td>
-          </tr>
-          <tr class="cellA">
-            <td>$style[stdfont]Subject$style[stdfontend]</td>
-            <td>
-              <input class="tbinput" type="text" name="thread[threadtopic]" size="50" maxlength="75">
-            </td>
-          </tr>
-          <tr class="cellB">
-            <td valign="top">$style[stdfont]Icon$style[stdfontend]<br />
-            <input type="radio" name="thread[threadiconid]" value="0" checked>$style[smallfont]Kein Icon$style[smallfontend]</td>
-            <td valign="top">
-              $style[stdfont]$newtopicicons$style[stdfontend]
-            </td>
-          </tr>
-          <tr class="cellA">
-            <td valign="top">$style[stdfont]Text$style[stdfontend]<br />
-              <br />
-              $style[smallfont]<a href="_('help.php?page=format')" target="_blank">Formatierungs-<br />
-              m&ouml;glichkeiten</a><br />
-              <br />
-              Smilies sind <strong>$smilies_on_off</strong>$style[smallfontend]</td>
-            <td valign="top">
-              <textarea class="tbtextarea" name="post[posttext]" rows="15" cols="75" nowrap="nowrap"></textarea>
-            </td>
-          </tr>
-          <tr class="cellB">
-            <td>$style[stdfont]Email Notify$style[stdfontend]</td>
-            <td>
-              <input type="checkbox" name="post[postemailnotify]" value="1">
-              $style[smallfont]Aktiviere dieses K&auml;stchen, um &uuml;ber weitere Antworten
-              per Mail informiert zu werden.$notifyavailable$style[smallfontend]</td>
-          </tr>
-          <tr class="cellA">
-            <td>$style[stdfont]Smilies$style[stdfontend]</td>
-            <td>
-              <input type="checkbox" name="post[postsmilies]" value="1" checked>
-                $style[smallfont]Smilies wie :), ;) usw. in kleine Grafiken verwandeln? (Nur sinnvoll wenn Smilies vom Administrator aktiviert sind.)$style[smallfontend]</td>
-          </tr>
-          <tr class="cellB">
-            <td>$style[stdfont]ThWboard Code$style[stdfontend]</td>
-            <td>
-              <input type="checkbox" name="post[postcode]" value="1" checked>
-                $style[smallfont]Soll ThWboard code in ihrer Nachricht aktiviert werden?$style[smallfontend]</td>
-          </tr>
-          <tr class="color4">
-            <td colspan="2" align="center">
-                <input type="hidden" name="board[boardid]" value="$board[boardid]">
-                <input class="tbbutton" type="submit" name="Submit" value="Thema erstellen">
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
+        </tr>
+    </table>
 </form>

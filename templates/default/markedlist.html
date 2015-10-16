@@ -1,41 +1,47 @@
 <form method="POST" action="_('listthreads.php')" name="markform">
-<input type="hidden" name="do_delthreads" value="1">
-<table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
-  <tr>
-    <td>
-      <table width="100%" border="0" cellspacing="1" cellpadding="3">
-        <tr class="color4">
-          <td colspan="2"><span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Betreff</strong>$style[smallfontend]</span></td>
-          <td align="center"><span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Beitr&auml;ge</strong>$style[smallfontend]</span></td>
-          <td align="center"><span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Aufrufe</strong>$style[smallfontend]</span></td>
-          <td><span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Autor</strong>$style[smallfontend]</span></td>
-          <td><span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Letzter Beitrag</strong>$style[smallfontend]</span></td>
+    <input type="hidden" name="do_delthreads" value="1">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
+        <tr>
+            <td>
+                <table width="100%" border="0" cellspacing="1" cellpadding="3">
+                    <tr class="color4">
+                        <td colspan="2">
+                            <span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Betreff</strong>$style[smallfontend]</span>
+                        </td>
+                        <td align="center">
+                            <span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Beitr&auml;ge</strong>$style[smallfontend]</span>
+                        </td>
+                        <td align="center">
+                            <span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Aufrufe</strong>$style[smallfontend]</span>
+                        </td>
+                        <td>
+                            <span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Autor</strong>$style[smallfontend]</span>
+                        </td>
+                        <td>
+                            <span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Letzter Beitrag</strong>$style[smallfontend]</span>
+                        </td>
+                    </tr>
+                    $TOPICROWS
+                    <tr class="color4">
+                        <td colspan="6" align="right">
+                            $style[smallfont]<strong><span style="color:$style[col_he_fo_font]">[ <a class="hefo" href="javascript:invert_selection();">Auswahl umkehren</a> | <a href="javascript:document.markform.submit();" class="hefo">markierte Themen abbestellen</a> ]</span></strong>$style[smallfontend]
+                        </td>
+                    </tr>
+                </table>
+            </td>
         </tr>
-$TOPICROWS
-        <tr class="color4">
-            <script type="text/javascript">
-              function invert_selection()
-              {
-                  var c = document.forms[0].delthreads;
-
-                  if(c.length)
-                  {
-                      for(var i = 0; i < c.length; ++i)
-                      {
-                          c[i].checked = !c[i].checked;
-                      }
-                  }
-                  else
-                  {
-                      c.checked = !c.checked;
-                  }
-              }
-            </script>
-
-          <td colspan="6" align="right">$style[smallfont]<strong><span style="color:$style[col_he_fo_font]">[ <a class="hefo" href="javascript:invert_selection();">Auswahl umkehren</a> | <a href="javascript:document.markform.submit();" class="hefo">markierte Themen abbestellen</a> ]</span></strong>$style[smallfontend]</td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-</table>
+    </table>
 </form>
+<script type="text/javascript">
+    function invert_selection() {
+        var c = document.forms[0].delthreads;
+
+        if(c.length) {
+            for(var i = 0; i < c.length; ++i) {
+                c[i].checked = !c[i].checked;
+            }
+        } else {
+            c.checked = !c.checked;
+        }
+    }
+</script>

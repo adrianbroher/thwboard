@@ -1,33 +1,47 @@
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
-  <tr>
-    <td>
-      <table width="100%" border="0" cellspacing="1" cellpadding="3">
-        <tr class="cellB">
-          <td width="15%" valign="top"><a name="$post[postid]"></a>$lastpost$style[smallfont]$post[postnumber]<br />
-            $post[posttime]<br />
-            $style[stdfont]<strong>$post[username]</strong>$style[stdfontend]<br />
-            $post[usertitle]$post[userrank]$post[avatar]<br /><br />$style[smallfontend]</td>
-          <td width="90%" valign="top">$style[stdfont]$post[posttext]$style[stdfontend]$post[posteditnotes]</td>
-        </tr>
-        <tr class="cellA">
-          <td width="15%" align="right">$style[smallfont]<a href="#top"><img src="templates/$style[styletemplate]/images/top.png" alt="Seitenanfang" border="0"></a> <a href="#bottom"><img src="templates/$style[styletemplate]/images/bottom.png" alt="Seitenende" border="0"></a>$style[smallfontend]</td>
-          <td width="90%">
-            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-              <tr valign="bottom">
-                <td>$style[smallfont]
-$postingoptions
-                $style[smallfontend]</td>
-                <td align="right">$style[smallfont]
-                  <a href="_('showtopic.php?threadid=$thread[threadid]&replyto=$post[postid]&time=$time&pagenum=lastpage#reply')">Zitatantwort</a> ||
-                  <a href="_('edit.php?postid=$post[postid]')">Editieren</a> ||
-                  <a href="_('postops.php?action=delete&postid=$post[postid]')">L&ouml;schen</a> ||
-                  <a href="_('postops.php?action=showip&postid=$post[postid]')">IP</a>
-                $style[smallfontend]</td>
-              </tr>
+    <tr>
+        <td>
+            <table width="100%" border="0" cellspacing="1" cellpadding="3">
+                <tr class="cellB">
+                    <td width="15%" valign="top">
+                        <a name="$post[postid]"></a>
+                        $lastpost$style[smallfont]$post[postnumber]<br />
+                        $post[posttime]<br />
+                        $style[stdfont]<strong>$post[username]</strong>$style[stdfontend]<br />
+                        $post[usertitle]$post[userrank]$post[avatar]<br />
+                        <br />
+                        $style[smallfontend]
+                    </td>
+                    <td width="90%" valign="top">
+                        $style[stdfont]$post[posttext]$style[stdfontend]$post[posteditnotes]
+                    </td>
+                </tr>
+                <tr class="cellA">
+                    <td width="15%" align="right">
+                        $style[smallfont]<a href="#top"><img src="templates/$style[styletemplate]/images/top.png" alt="Seitenanfang" border="0"></a>
+                        <a href="#bottom"><img src="templates/$style[styletemplate]/images/bottom.png" alt="Seitenende" border="0"></a>$style[smallfontend]
+                    </td>
+                    <td width="90%">
+                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                            <tr valign="bottom">
+                                <td>
+                                    $style[smallfont]
+                                    $postingoptions
+                                    $style[smallfontend]
+                                </td>
+                                <td align="right">
+                                    $style[smallfont]
+                                    <a href="_('showtopic.php?threadid=$thread[threadid]&replyto=$post[postid]&time=$time&pagenum=lastpage#reply')">Zitatantwort</a> ||
+                                    <a href="_('edit.php?postid=$post[postid]')">Editieren</a> ||
+                                    <a href="_('postops.php?action=delete&postid=$post[postid]')">L&ouml;schen</a> ||
+                                    <a href="_('postops.php?action=showip&postid=$post[postid]')">IP</a>
+                                    $style[smallfontend]
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
             </table>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
+        </td>
+    </tr>
 </table>

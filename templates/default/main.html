@@ -1,65 +1,87 @@
 <form action="_('search.php')" method="POST" target="_self" name="searchform">
-
-<table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
-  <tr>
-    <td>
-      <table width="100%" border="0" cellspacing="1" cellpadding="3">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
         <tr>
-          <td class="color4">$style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>Willkommen $g_user[userhtmlname]!</strong></span>$style[smallfontend]</td>
+            <td>
+                <table width="100%" border="0" cellspacing="1" cellpadding="3">
+                    <tr>
+                        <td class="color4">
+                            $style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>Willkommen $g_user[userhtmlname]!</strong></span>$style[smallfontend]
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cellB">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td valign="top">
+                                        $style[stdfont]<strong>Neue Nachrichten?</strong><br />
+                                        $style[stdfontend]$style[smallfont]$privmsgs$style[smallfontend]
+                                    </td>
+                                    <td align="right">
+                                        $style[smallfont]$newthreads <a href="_('search.php?startsearch=1&searchfor=lastvisit')">Beitr&auml;ge seit letztem Besuch</a><!-- || <A href="listthreads.php">Markierte Threads</A> --><br />
+                                        $stats$style[smallfontend]
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cellA">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td>
+                                        $style[stdfont]<strong>Wer ist online?</strong>$style[stdfontend]
+                                    </td>
+                                    <td align="right">
+                                        $lastthreads
+                                    </td>
+                                </tr>
+                            </table>
+                            $style[smallfont]$useronline$style[smallfontend]
+                        </td>
+                    </tr>
+                </table>
+            </td>
         </tr>
+    </table>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
         <tr>
-          <td class="cellB">
-            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-              <tr>
-                <td valign="top">$style[stdfont]<strong>Neue Nachrichten?</strong><br />
-                  $style[stdfontend]$style[smallfont]$privmsgs$style[smallfontend]</td>
-                <td align="right">$style[smallfont]$newthreads <a href="_('search.php?startsearch=1&searchfor=lastvisit')">Beitr&auml;ge seit letztem Besuch</a><!-- || <A href="listthreads.php">Markierte Threads</A> --><br />
-                  $stats$style[smallfontend]</td>
-              </tr>
-            </table>
-          </td>
+            <td>
+                <table width="100%" border="0" cellspacing="1" cellpadding="3">
+                    <tr>
+                        <td width="1" class="color4">
+                            $style[smallfont]&nbsp;$style[smallfontend]
+                        </td>
+                        <td class="color4">
+                            $style[smallfont]<strong><span style="color:$style[col_he_fo_font]">Name</span></strong>$style[smallfontend]
+                        </td>
+                        <td width="48" class="color4" align="center">
+                            $style[smallfont]<strong><span style="color:$style[col_he_fo_font]">Themen</span></strong>$style[smallfontend]
+                        </td>
+                        <td width="48" class="color4" align="center">
+                            $style[smallfont]<strong><span style="color:$style[col_he_fo_font]">Beitr&auml;ge</span></strong>$style[smallfontend]
+                        </td>
+                        <td class="color4">
+                            $style[smallfont]<strong><span style="color:$style[col_he_fo_font]">Letzter Beitrag</span></strong>$style[smallfontend]
+                        </td>
+                    </tr>
+                    $INDEXROWS
+                    <tr>
+                        <td colspan="5" class="color4">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td>
+                                        $style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>$servertime</strong></span>$style[smallfontend]
+                                    </td>
+                                    <td align="right">
+                                        $style[smallfont]<strong><span style="color:$style[col_he_fo_font]">[ <a class="hefo" href="_('misc.php?action=clearboards')">Alle Boards als gelesen markieren</a> ]</span></strong>$style[smallfontend]
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </td>
         </tr>
-        <tr>
-          <td class="cellA">
-            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-              <tr>
-                <td>$style[stdfont]<strong>Wer ist online?</strong>$style[stdfontend]</td>
-                <td align="right">
-$lastthreads
-                </td>
-              </tr>
-            </table>
-            $style[smallfont]$useronline$style[smallfontend]</td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-</table>
-<table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
-  <tr>
-    <td>
-      <table width="100%" border="0" cellspacing="1" cellpadding="3">
-        <tr>
-          <td width="1" class="color4">$style[smallfont]&nbsp;$style[smallfontend]</td>
-          <td class="color4">$style[smallfont]<strong><span style="color:$style[col_he_fo_font]">Name</span></strong>$style[smallfontend]</td>
-          <td width="48" class="color4" align="center">$style[smallfont]<strong><span style="color:$style[col_he_fo_font]">Themen</span></strong>$style[smallfontend]</td>
-          <td width="48" class="color4" align="center">$style[smallfont]<strong><span style="color:$style[col_he_fo_font]">Beitr&auml;ge</span></strong>$style[smallfontend]</td>
-          <td class="color4">$style[smallfont]<strong><span style="color:$style[col_he_fo_font]">Letzter Beitrag</span></strong>$style[smallfontend]</td>
-        </tr>
-$INDEXROWS
-        <tr>
-          <td colspan="5" class="color4">
-            <table width="100%" border="0" cellspacing="0" cellpadding="0">
-              <tr>
-                <td>$style[smallfont]<span style="color:$style[col_he_fo_font]"><strong>$servertime</strong></span>$style[smallfontend]</td>
-                <td align="right">$style[smallfont]<strong><span style="color:$style[col_he_fo_font]">[ <a class="hefo" href="_('misc.php?action=clearboards')">Alle Boards als gelesen markieren</a> ]</span></strong>$style[smallfontend]</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-</table>
+    </table>
 </form>
 $javascript

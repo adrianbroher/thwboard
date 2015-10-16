@@ -1,53 +1,71 @@
 <form method="post" action="_('pm.php')" name="pmform">
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
-    <tr>
-      <td>
-        <table width="100%" border="0" cellspacing="1" cellpadding="3">
-          <tr class="color4">
-            <td colspan="2"><span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Neue Nachricht</strong>$style[smallfontend]</span></td>
-          </tr>
-          <tr class="cellB">
-            <td>$style[stdfont]Empf&auml;nger$style[stdfontend]</TD>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="border-col">
+        <tr>
             <td>
-              <input type="text" class="tbinput" name="pm[username]" size="16" value="$recipient">
+                <table width="100%" border="0" cellspacing="1" cellpadding="3">
+                    <tr class="color4">
+                        <td colspan="2">
+                            <span style="color:$style[col_he_fo_font]">$style[smallfont]<strong>Neue Nachricht</strong>$style[smallfontend]</span>
+                        </td>
+                    </tr>
+                    <tr class="cellB">
+                        <td>
+                            $style[stdfont]Empf&auml;nger$style[stdfontend]
+                        </TD>
+                        <td>
+                            <input type="text" class="tbinput" name="pm[username]" size="16" value="$recipient">
+                        </TD>
+                    </TR>
+                    <tr class="cellA">
+                        <td>
+                            $style[stdfont]Versandart$style[stdfontend]
+                        </TD>
+                        <td>
+                            <input type="radio" name="pm[pmmethod]" value="pm" checked>
+                            $style[stdfont]Private Message $print_emailradio $style[stdfontend]
+                        </TD>
+                    </TR>
+                    <tr class="cellB">
+                        <td valign="top">
+                            $style[stdfont]Titel$style[stdfontend]
+                        </TD>
+                        <td>
+                            <input type="text" size="50" class="tbinput" name="pm[pmtopic]" value="$pm[pmtopic]">
+                            <br />
+                            $style[smallfont](mindestens 3 Zeichen)$style[smallfontend]
+                        </TD>
+                    </TR>
+                    <tr class="cellA">
+                        <td valign="top">
+                            $style[stdfont]Text$style[stdfontend]<br />
+                            <br />
+                            $style[smallfont]<a href="_('help.php?page=format')" target="_blank">Formatierungs-<br />
+                            m&ouml;glichkeiten</a>$style[smallfontend]
+                        </TD>
+                        <td>
+                            <textarea class="tbtextarea" rows="15" cols="75" name="pm[pmtext]">$pm[pmtext]</textarea>
+                            <br />
+                            $style[smallfont](mindestens 3; maximal $config[pm_maxlength] Zeichen)$style[smallfontend]
+                        </TD>
+                    </TR>
+                    <tr class="cellB">
+                        <td>
+                            $style[stdfont]Optionen$style[stdfontend]
+                        </TD>
+                        <td>
+                            $style[smallfont]<input type="checkbox" name="pm[pmsaveinoutbox]" value="1">
+                            Eine Kopie der Nachricht im Ordner "Postausgang" speichern$style[smallfontend]
+                        </TD>
+                    </TR>
+                    <tr class="color4">
+                        <td colspan="2" align="center" height=18>
+                            <input class="tbbutton" type="submit" name="Submit" value="Private Message Senden">
+                        </td>
+                    </tr>
+                </table>
             </TD>
-          </TR>
-          <tr class="cellA">
-            <td>$style[stdfont]Versandart$style[stdfontend]</TD>
-            <td>
-              <input type="radio" name="pm[pmmethod]" value="pm" checked>
-              $style[stdfont]Private Message $print_emailradio $style[stdfontend]</TD>
-          </TR>
-          <tr class="cellB">
-            <td valign="top">$style[stdfont]Titel$style[stdfontend]</TD>
-            <td>
-              <input type="text" size="50" class="tbinput" name="pm[pmtopic]" value="$pm[pmtopic]">
-              <br />
-              $style[smallfont](mindestens 3 Zeichen)$style[smallfontend]</TD>
-          </TR>
-          <tr class="cellA">
-            <td valign="top">$style[stdfont]Text$style[stdfontend]<br />
-              <br />
-              $style[smallfont]<a href="_('help.php?page=format')" target="_blank">Formatierungs-<br />
-              m&ouml;glichkeiten</a>$style[smallfontend]</TD>
-            <td>
-              <textarea class="tbtextarea" rows="15" cols="75" name="pm[pmtext]">$pm[pmtext]</textarea>
-              <br />
-              $style[smallfont](mindestens 3; maximal $config[pm_maxlength] Zeichen)$style[smallfontend]</TD>
-          </TR>
-          <tr class="cellB">
-            <td>$style[stdfont]Optionen$style[stdfontend]</TD>
-            <td>
-              $style[smallfont]<input type="checkbox" name="pm[pmsaveinoutbox]" value="1">
-              Eine Kopie der Nachricht im Ordner "Postausgang" speichern$style[smallfontend]</TD>
-          </TR>
-          <tr class="color4">
-            <td colspan="2" align="center" height=18><input class="tbbutton" type="submit" name="Submit" value="Private Message Senden"></td>
-          </tr>
-        </table>
-      </TD>
-    </TR>
-  </table>
-<input type="hidden" name="send" value="1">
-<input type="hidden" name="action" value="new">
+        </TR>
+    </table>
+    <input type="hidden" name="send" value="1">
+    <input type="hidden" name="action" value="new">
 </form>
